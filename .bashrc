@@ -8,8 +8,6 @@ rvm use 1.9.2
 
 alias rgu='rvm gemset use'
 
-eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)
-
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
     . /usr/local/etc/bash_completion.d/git-completion.bash
 fi
