@@ -7,8 +7,6 @@ export BASH_COMPLETION_DIR=/usr/local/etc/bash_completion.d
 rvm use 1.9.2
 
 alias rgu='rvm gemset use'
-alias cd="pushd"
-alias bd="popd"
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
     . /usr/local/etc/bash_completion.d/git-completion.bash
