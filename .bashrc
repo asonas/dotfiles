@@ -7,6 +7,8 @@ export BASH_COMPLETION_DIR=/usr/local/etc/bash_completion.d
 rvm use 1.9.2
 
 alias rgu='rvm gemset use'
+alias cd="pushd"
+alias bd="popd"
 
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
     . /usr/local/etc/bash_completion.d/git-completion.bash
@@ -24,4 +26,7 @@ __git_reminder() {
 #_cse="\]"
 #_colreset="${_colesc}0m${_cse}"
 
+#export PS1="\u@\h \w[\$(__git_ps1 \"${_colesc}${_cse}%s${_colesc}${_cse}\$(__git_reminder)${_colreset}\")]\\$ "
+#export PS1="[\u@\h \w]\$(__git_branch)${_colesc};1m${_cse}${_colesc}31;1m${_cse}\$(__git_reminder)${_colreset}$ "
 export PS1="\u@\h \w[\$(__git_ps1 \"${_colesc}${_cse}%s${_colesc}${_cse}\$(__git_reminder)${_colreset}\")]\\$ "
+
