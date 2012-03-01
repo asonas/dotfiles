@@ -1,7 +1,7 @@
 .DS_Store
 *~
 miserarenaiyo/*
-.swp
-.swo
-.swn
+*.swp
+*.swo
+*.swn
 
