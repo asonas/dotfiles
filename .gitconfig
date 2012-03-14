@@ -12,6 +12,8 @@
     last = log -1 HEAD
     me = log --author=asonas
     ci = commit
+    bull = pull
+
 [color]
     ui = true
     diff = true
