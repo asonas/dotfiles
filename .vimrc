@@ -72,7 +72,8 @@ set expandtab
 
 "#前回終了したカーソル行に移動幅
 autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g`\"" | endif
-
+autocmd BufWritePre * :%s/\s\+$//ge
+autocmd BufWritePre * :%s/\t/ /ge
 
 setlocal omnifunc=syntaxcomplete#Complete
 
