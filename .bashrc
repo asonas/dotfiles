@@ -8,7 +8,8 @@ rvm use 1.9.2
 #ruby $HOME/dotfiles/miserarenaiyo/start_up_term.rb
 
 alias rgu='rvm gemset use'
-alias g="g"
+alias g="git"
+alias bw="cd ~/Dropbox/Apps/Byword/"
 if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
     . /usr/local/etc/bash_completion.d/git-completion.bash
 fi
