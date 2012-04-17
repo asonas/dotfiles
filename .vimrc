@@ -147,12 +147,9 @@ let NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 40
 
 
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/vundle
 call vundle#rc()
 
-" let Vundle manage Vundle
-" required!
-Bundle 'gmarik/vundle'
 
 " My Bundles here:
 "
