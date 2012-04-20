@@ -148,3 +148,5 @@ local DEFAULT=$'%{\e[1;m%}'
 PROMPT='[%n@%m]%~%# '    # default prompt
 
 zstyle ':completion:*:default' menu select=1
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting

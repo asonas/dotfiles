@@ -1,10 +1,8 @@
 export PATH=$PATH:~/.rvm/bin:/usr/local/sbin
 export PATH=~/local/bin:$PATH
 
-[[ -s "~/.rvm/scripts/rvm" ]] && source "~/.rvm/scripts/rvm"  # This loads RVM into a shell session.
-
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 rvm use 1.9.2
-#ruby $HOME/dotfiles/miserarenaiyo/start_up_term.rb
 
 alias rgu='rvm gemset use'
 alias g="git"
