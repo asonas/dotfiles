@@ -4,7 +4,7 @@ autocmd BufWritePre * :%s/\s\+$//ge
 autocmd BufWritePre * :%s/\t/ /ge
 
 colorscheme zenburn
-set background=light
+set number
 
 imap <C-g> <esc>
 
@@ -13,19 +13,16 @@ imap <C-g> <esc>
 " -------------------
 syntax on
 
-highlight LineNr ctermfg=darkyellow    " 行番号
-highlight NonText ctermfg=darkgrey
-highlight Folded ctermfg=blue
-highlight SpecialKey cterm=underline ctermfg=darkgrey
-
 " 全角スペースを視覚化
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
 match ZenkakuSpace /　/
 
 " タブ幅
-set ts=4 sw=4
+set tabstop=4
+set shiftwidth=4
 set softtabstop=4
 set expandtab
+set autoindent
 
 "常にステータス行を表示
 set laststatus=2
@@ -36,28 +33,21 @@ set hlsearch
 "検索時にインクリメンタルサーチを行う
 set incsearch
 set showmode
-
 set cursorline
-
+set whichwrap=b,s,h,l,<,>,[,]
 "Escの2回押しでハイライト消去
 nmap <ESC><ESC> ;nohlsearch<CR><ESC>
 
-set autoindent
-set number
-set incsearch
 set ignorecase
-set nohlsearch "検索時にハイライト無効
 set showmatch
-set showmode
 set backspace=2
 set title
 set ruler
-set tabstop=4
-set shiftwidth=4
-set expandtab
+
+"ステータスラインに文字コード/改行文字種別を表示
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 
 " neocomp
-
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplcache.
@@ -75,7 +65,6 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 " Define dictionary.
 let g:neocomplcache_dictionary_filetype_lists = {
     \ 'default' : '',
-    \ 'scheme' : $HOME.'/.gosh_completions'
         \ }
 
 " Define keyword.
