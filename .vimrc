@@ -1,3 +1,13 @@
+" 保存時に行末の空白を除去する
+autocmd BufWritePre * :%s/\s\+$//ge
+" 保存時にtabをスペースに変換する
+autocmd BufWritePre * :%s/\t/ /ge
+
+colorscheme zenburn
+set background=light
+
+imap <C-g> <esc>
+
 " -------------------
 " 色の設定
 " -------------------
@@ -27,11 +37,52 @@ set hlsearch
 set incsearch
 set showmode
 
+set cursorline
+
+"Escの2回押しでハイライト消去
+nmap <ESC><ESC> ;nohlsearch<CR><ESC>
+
+set autoindent
+set number
+set incsearch
+set ignorecase
+set nohlsearch "検索時にハイライト無効
+set showmatch
+set showmode
+set backspace=2
+set title
+set ruler
+set tabstop=4
+set shiftwidth=4
+set expandtab
 
 " neocomp
-let g:neocomplcache_enable_at_startup = 1 " 起動時に有効化
 
-setlocal omnifunc=syntaxcomplete#Complete
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Use camel case completion.
+let g:neocomplcache_enable_camel_case_completion = 1
+" Use underbar completion.
+let g:neocomplcache_enable_underbar_completion = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : '',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplcache_keyword_patterns')
+    let g:neocomplcache_keyword_patterns = {}
+endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 set fileformats=unix,dos,mac
 " □とか○の文字があってもカーソル位置がずれないようにする
@@ -63,6 +114,9 @@ Bundle 'git://git.wincent.com/command-t.git'
 " ...
 filetype plugin indent on     " required!
 Bundle 'tpope/vim-rails'
+Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/unite.vim'
+Bundle 'gtags.vim'
 
 "
 " Brief help
