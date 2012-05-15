@@ -71,15 +71,9 @@ call vundle#rc()
 "
 " original repos on github
 Bundle 'vim-ruby/vim-ruby'
-Bundle 'tpope/vim-fugitive'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'tpope/vim-rails.git'
-" non github repos
-Bundle 'git://git.wincent.com/command-t.git'
 " ...
 filetype plugin indent on     " required!
-Bundle 'tpope/vim-rails'
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
 Bundle 'gtags.vim'
