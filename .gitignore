@@ -4,4 +4,4 @@ miserarenaiyo/*
 *.swp
 *.swo
 *.swn
-bundle/
+.vim/bundle/
