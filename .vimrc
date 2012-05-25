@@ -48,7 +48,7 @@ set ruler
 set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 
 "補完関連
-source ~/dotfile/.vimrc.completion
+source ~/dotfiles/.vimrc.completion
 
 set fileformats=unix,dos,mac
 " □とか○の文字があってもカーソル位置がずれないようにする
