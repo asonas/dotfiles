@@ -77,8 +77,56 @@ filetype plugin indent on     " required!
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
 Bundle 'gtags.vim'
-Bundle 'Lokaltog/vim-powerline'
+"Bundle 'Lokaltog/vim-powerline'
 Bundle 'scrooloose/syntastic'
+
+
+" Completion {{{
+  " 補完 neocomplcache.vim : 究極のVim的補完環境
+  Bundle 'Shougo/neocomplcache'
+  " neocomplcacheのsinpet補完
+  Bundle 'Shougo/neocomplcache-snippets-complete'
+" }}}
+
+" Searching/Moving{{{
+  " smooth_scroll.vim : スクロールを賢く
+  "Bundle 'Smooth-Scroll'
+  " vim-smartword : 単語移動がスマートな感じで
+  Bundle 'smartword'
+  " camelcasemotion : CamelCaseやsnake_case単位でのワード移動
+  Bundle 'camelcasemotion'
+  " <Leader><Leader>w/fなどで、motion先をhilightする
+  Bundle 'EasyMotion'
+  " matchit.vim : 「%」による対応括弧へのカーソル移動機能を拡張
+  Bundle 'matchit.zip'
+  " ruby用のmatchit拡張
+  Bundle 'ruby-matchit'
+  " grep.vim : 外部のgrep利用。:Grepで対話形式でgrep :Rgrepは再帰
+  Bundle 'grep.vim'
+  " eregex.vim : vimの正規表現をrubyやperlの正規表現な入力でできる :%S/perlregex/
+  Bundle 'eregex.vim'
+  " open-browser.vim : カーソルの下のURLを開くor単語を検索エンジンで検索
+  Bundle 'tyru/open-browser.vim'
+
+" Syntax {{{
+  " haml
+  Bundle 'haml.zip'
+  " JavaScript
+  Bundle 'JavaScript-syntax'
+  " jQuery
+  Bundle 'jQuery'
+  " nginx conf
+  Bundle 'nginx.vim'
+  " markdown
+  Bundle 'tpope/vim-markdown'
+  " coffee script
+  Bundle 'kchmck/vim-coffee-script'
+  " python
+  Bundle 'yuroyoro/vim-python'
+  " syntax checking plugins exist for eruby, haml, html, javascript, php, python, ruby and sass.
+  Bundle 'scrooloose/syntastic'
+" }}}
+Bundle 'mattn/benchvimrc-vim'
 
 "
 " Brief help
