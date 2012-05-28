@@ -48,7 +48,7 @@ set ruler
 set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 
 "補完関連
-source ~/dotfiles/.vimrc.completion
+"source ~/dotfiles/.vimrc.completion
 
 set fileformats=unix,dos,mac
 " □とか○の文字があってもカーソル位置がずれないようにする
@@ -92,9 +92,9 @@ Bundle 'scrooloose/syntastic'
   " smooth_scroll.vim : スクロールを賢く
   "Bundle 'Smooth-Scroll'
   " vim-smartword : 単語移動がスマートな感じで
-  Bundle 'smartword'
+"  Bundle 'smartword'
   " camelcasemotion : CamelCaseやsnake_case単位でのワード移動
-  Bundle 'camelcasemotion'
+"  Bundle 'camelcasemotion'
   " <Leader><Leader>w/fなどで、motion先をhilightする
   Bundle 'EasyMotion'
   " matchit.vim : 「%」による対応括弧へのカーソル移動機能を拡張
