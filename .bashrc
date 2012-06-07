@@ -7,8 +7,8 @@ rvm use 1.9.3-p194
 alias rgu='rvm gemset use'
 alias g="git"
 alias bw="cd ~/Dropbox/Apps/Byword/"
-if [ -f $HOME/git-completion.bash ]; then
-    . $HOME/git-completion.bash
+if [ -f $HOME/dotfiles/git-completion.bash ]; then
+    . $HOME/dotfiles/git-completion.bash
 fi
 
 
