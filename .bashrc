@@ -15,8 +15,8 @@ alias red='git'
 
 export GIT_EDITOR=vim
 
-if [ -f $HOME/git-completion.bash ]; then
-    . $HOME/git-completion.bash
+if [ -f $HOME/dotfiles/git-completion.bash ]; then
+    . $HOME/dotfiles/git-completion.bash
 fi
 
 
