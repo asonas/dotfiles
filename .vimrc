@@ -35,8 +35,6 @@ set incsearch
 set showmode
 set cursorline
 set whichwrap=b,s,h,l,<,>,[,]
-"Escの2回押しでハイライト消去
-nmap <ESC><ESC> ;nohlsearch<CR><ESC>
 
 set ignorecase
 set showmatch
