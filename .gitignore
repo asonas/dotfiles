@@ -5,3 +5,5 @@ miserarenaiyo/*
 *.swo
 *.swn
 .vim/bundle
+.bash_profile
+
