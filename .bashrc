@@ -1,6 +1,6 @@
 export PATH=$PATH:~/.rvm/bin:/usr/local/sbin
 export PATH=~/local/bin:$PATH
-
+export PATH=$PATH:~/.nave/src/0.4.6/build/bin
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 rvm use 1.9.3-p194
 
@@ -20,3 +20,4 @@ alias vima='vim **/*'
 
 export GIT_EDITOR=vim
 
+export PS1='\[\033[01;32m\]\u@\h\[\033[01;33m\] \w$(__git_ps1) \n\[\033[01;34m\]\$\[\033[00m\] '
