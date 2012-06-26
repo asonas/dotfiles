@@ -72,7 +72,6 @@ filetype plugin indent on     " required!
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
 Bundle 'gtags.vim'
-"Bundle 'Lokaltog/vim-powerline'
 Bundle 'scrooloose/syntastic'
 
 
