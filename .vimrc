@@ -22,7 +22,6 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
-set autoindent
 
 "常にステータス行を表示
 set laststatus=2
