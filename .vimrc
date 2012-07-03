@@ -1,7 +1,5 @@
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
-" 保存時にtabをスペースに変換する
-autocmd BufWritePre * :%s/\t/ /ge
 
 colorscheme railscasts
 set number
@@ -74,7 +72,6 @@ filetype plugin indent on     " required!
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
 Bundle 'gtags.vim'
-"Bundle 'Lokaltog/vim-powerline'
 Bundle 'scrooloose/syntastic'
 
 
