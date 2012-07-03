@@ -3,7 +3,7 @@ autocmd BufWritePre * :%s/\s\+$//ge
 " 保存時にtabをスペースに変換する
 autocmd BufWritePre * :%s/\t/ /ge
 
-colorscheme zenburn
+colorscheme railscasts
 set number
 
 imap <C-g> <esc>
