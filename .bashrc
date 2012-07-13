@@ -12,7 +12,9 @@ alias ll='ls -lG'
 alias la='ls -laG'
 alias vi='vim'
 alias red='git'
-alias vima='vim **/*'
+alias via='vim **/*'
+alias r='rails'
+alias rgl='rvm gemset list'
 
 export GIT_EDITOR=vim
 
