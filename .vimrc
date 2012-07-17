@@ -51,6 +51,13 @@ if exists('&ambiwidth')
   set ambiwidth=double
 endif
 
+"
+" indent guides
+"
+hi IndentGuidesOdd  ctermbg=white
+hi IndentGuidesEven ctermbg=lightgrey
+let g:indent_guides_guide_size = 1
+
 "------------------------------------
 " NERD Tree
 "------------------------------------
@@ -73,7 +80,7 @@ Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
 Bundle 'gtags.vim'
 Bundle 'scrooloose/syntastic'
-
+Bundle 'nathanaelkane/vim-indent-guides'
 
 " Completion {{{
   " 補完 neocomplcache.vim : 究極のVim的補完環境
