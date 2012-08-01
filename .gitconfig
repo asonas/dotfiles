@@ -14,8 +14,8 @@
     me = log --author=asonas
     ci = commit
     bull = pull
-    ore = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short --author=fujiwara
-    dfc = diff --color-words
+    dfw = diff --color-words
+    b = branch
 
 [color]
     ui = true
