@@ -13,6 +13,7 @@ alias la='ls -laG'
 alias vi='vim'
 alias red='git'
 alias vima='vim **/*'
+alias r='rails'
 
 export GIT_EDITOR=vim
 
