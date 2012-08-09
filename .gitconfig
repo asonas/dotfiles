@@ -16,6 +16,7 @@
     bull = pull
     dfw = diff --color-words
     b = branch
+    log = log --decorate
 
 [color]
     ui = true
