@@ -17,6 +17,7 @@
     dfw = diff --color-words
     b = branch
     log = log --decorate
+    l = log --decorate
 
 [color]
     ui = true
