@@ -45,11 +45,21 @@ set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V
 "補完関連
 "source ~/dotfiles/.vimrc.completion
 
+" unite.vim
+source ~/dotfiles/.vimrc.unite
+
 set fileformats=unix,dos,mac
 " □とか○の文字があってもカーソル位置がずれないようにする
 if exists('&ambiwidth')
   set ambiwidth=double
 endif
+
+"
+" indent guides
+"
+hi IndentGuidesOdd  ctermbg=white
+hi IndentGuidesEven ctermbg=lightgrey
+let g:indent_guides_guide_size = 1
 
 "------------------------------------
 " NERD Tree
@@ -73,11 +83,9 @@ Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
 Bundle 'gtags.vim'
 Bundle 'scrooloose/syntastic'
-
+Bundle 'nathanaelkane/vim-indent-guides'
 
 " Completion {{{
-  " 補完 neocomplcache.vim : 究極のVim的補完環境
-  Bundle 'Shougo/neocomplcache'
   " neocomplcacheのsinpet補完
   Bundle 'Shougo/neocomplcache-snippets-complete'
 " }}}
