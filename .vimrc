@@ -39,6 +39,8 @@ set backspace=2
 set title
 set ruler
 
+nnoremap <Esc><Esc> :set nohlsearch<CR>
+
 "ステータスラインに文字コード/改行文字種別を表示
 set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 

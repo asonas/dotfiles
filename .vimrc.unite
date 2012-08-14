@@ -1,3 +1,5 @@
+let g:unite_update_time = 1000
+
 " 入力モードで開始
 let g:unite_enable_start_insert=1
 
