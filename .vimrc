@@ -72,73 +72,67 @@ nmap <silent> <F1> :NERDTreeToggle<CR>
 let NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 40
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
 
+"------------------------------------
+" NeoBundle
+"------------------------------------
+set nocompatible               " Be iMproved
+filetype off                   " Required!
+filetype plugin indent off     " Required!
+
+if has('vim_starting')
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+call neobundle#rc(expand('~/.vim/bundle/'))
 " My Bundles here:
 "
 " original repos on github
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'tpope/vim-rails.git'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'tpope/vim-rails.git'
 " ...
 filetype plugin indent on     " required!
-Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/unite.vim'
-Bundle 'gtags.vim'
-Bundle 'scrooloose/syntastic'
-Bundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'gtags.vim'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " Completion {{{
   " neocomplcacheのsinpet補完
-  Bundle 'Shougo/neocomplcache-snippets-complete'
+  NeoBundle 'Shougo/neocomplcache-snippets-complete'
 " }}}
 
 " Searching/Moving{{{
   " smooth_scroll.vim : スクロールを賢く
-  "Bundle 'Smooth-Scroll'
+  NeoBundle 'Smooth-Scroll'
   " vim-smartword : 単語移動がスマートな感じで
-"  Bundle 'smartword'
-  " camelcasemotion : CamelCaseやsnake_case単位でのワード移動
-"  Bundle 'camelcasemotion'
-  " <Leader><Leader>w/fなどで、motion先をhilightする
-  Bundle 'EasyMotion'
+  NeoBundle 'smartword'
   " matchit.vim : 「%」による対応括弧へのカーソル移動機能を拡張
-  Bundle 'matchit.zip'
+  NeoBundle 'matchit.zip'
   " ruby用のmatchit拡張
-  Bundle 'ruby-matchit'
-  " grep.vim : 外部のgrep利用。:Grepで対話形式でgrep :Rgrepは再帰
-  Bundle 'grep.vim'
+  NeoBundle 'ruby-matchit'
   " eregex.vim : vimの正規表現をrubyやperlの正規表現な入力でできる :%S/perlregex/
-  Bundle 'eregex.vim'
+  NeoBundle 'eregex.vim'
   " open-browser.vim : カーソルの下のURLを開くor単語を検索エンジンで検索
-  Bundle 'tyru/open-browser.vim'
+  NeoBundle 'tyru/open-browser.vim'
 
 " Syntax {{{
   " haml
-  Bundle 'haml.zip'
+  NeoBundle 'haml.zip'
   " JavaScript
-  Bundle 'JavaScript-syntax'
+  NeoBundle 'JavaScript-syntax'
   " jQuery
-  Bundle 'jQuery'
+  NeoBundle 'jQuery'
   " nginx conf
-  Bundle 'nginx.vim'
+  NeoBundle 'nginx.vim'
   " markdown
-  Bundle 'tpope/vim-markdown'
+  NeoBundle 'tpope/vim-markdown'
   " coffee script
-  Bundle 'kchmck/vim-coffee-script'
+  NeoBundle 'kchmck/vim-coffee-script'
   " python
-  Bundle 'yuroyoro/vim-python'
+  NeoBundle 'yuroyoro/vim-python'
   " syntax checking plugins exist for eruby, haml, html, javascript, php, python, ruby and sass.
-  Bundle 'scrooloose/syntastic'
+  NeoBundle 'scrooloose/syntastic'
 " }}}
-Bundle 'mattn/benchvimrc-vim'
-
-"
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-"
-" see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
+NeoBundle 'mattn/benchvimrc-vim'
