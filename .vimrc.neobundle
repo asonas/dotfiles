@@ -13,7 +13,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " My Bundles here:
 "
 " original repos on github
-NeoBundle 'vim-ruby/vim-ruby'
+" NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-rails.git'
 " ...
 filetype plugin indent on     " required!
