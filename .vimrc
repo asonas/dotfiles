@@ -76,7 +76,7 @@ endif
 "source ~/dotfiles/.vimrc.completion
 
 " unite.vim
-source ~/dotfiles/.vimrc.unite
+" source ~/dotfiles/.vimrc.unite
 
 " neobundle
 source ~/dotfiles/.vimrc.neobundle
