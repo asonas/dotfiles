@@ -1,11 +1,61 @@
+"" 共通設定
+set nocompatible
+colorscheme railscasts
+" Ctrl+gでエスケープ
+imap <C-g> <esc>
+
+"" file系
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
+" 色の設定
+syntax on
+" 全角スペースを視覚化
+highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
+match ZenkakuSpace /　/
+set autoread
+set hidden
+set noswapfile
+set nobackup
 
-colorscheme railscasts
-
+"" 見た目
 set number
+set cursorline
+set showmatch
+set showcmd
+set showmode
+set nowrap
+set list
+set listchars=tab:>\
+set notitle
+set scrolloff=5
 
-imap <C-g> <esc>
+"" ステータスライン
+" ステータスラインに文字コード/改行文字種別を表示
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+" 常にステータス行を表示
+set laststatus=2
+
+"" インデント
+set tabstop=4 shiftwidth=4 softtabstop=0
+set autoindent smartindent
+" spaceがいい
+set expandtab
+
+"" 入力
+set whichwrap=b,s,h,l,<,>,[,]
+
+"" 補完
+set wildmenu
+set wildmode=list:full
+
+"" 検索
+set wrapscan
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+
+
 
 " Don't screw up folds when inserting text that might affect them, until
 " leaving insert mode. Foldmethod is local to the window. Protect against
@@ -14,42 +64,12 @@ imap <C-g> <esc>
 "autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
 "autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
-" 色の設定
-syntax on
-
-" 全角スペースを視覚化
-highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
-match ZenkakuSpace /　/
-
-"ステータスラインに文字コード/改行文字種別を表示
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 
 
-" タブ幅
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set expandtab
-
-"常にステータス行を表示
-set laststatus=2
 "if(){}などのインデント
-set cindent
-"検索時にヒット部位の色を変更
-set hlsearch
-"検索時にインクリメンタルサーチを行う
-set incsearch
-set showmode
-set cursorline
-set whichwrap=b,s,h,l,<,>,[,]
+"set cindent
 
-set ignorecase
-set showmatch
-set backspace=2
-set title
-set ruler
-
-nnoremap <Esc><Esc> :set nohlsearch<CR>
+"nnoremap <Esc><Esc> :set nohlsearch<CR>
 
 "------------------------------------
 " indent guides
@@ -79,4 +99,4 @@ endif
 " source ~/dotfiles/.vimrc.unite
 
 " neobundle
-source ~/dotfiles/.vimrc.neobundle
+ source ~/dotfiles/.vimrc.neobundle

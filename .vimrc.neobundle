@@ -14,50 +14,40 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 "
 " original repos on github
 " NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'tpope/vim-rails.git'
+" NeoBundle 'tpope/vim-rails.git'
 " ...
 filetype plugin indent on     " required!
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'gtags.vim'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'nathanaelkane/vim-indent-guides'
+" NeoBundle 'Shougo/neocomplcache'
+" NeoBundle 'Shougo/unite.vim'
+"NeoBundle 'gtags.vim'
+"NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " Completion {{{
   " neocomplcacheのsinpet補完
-  NeoBundle 'Shougo/neocomplcache-snippets-complete'
+   "
+   "NeoBundle 'Shougo/neocomplcache-snippets-complete'
 " }}}
 
 " Searching/Moving{{{
-  " smooth_scroll.vim : スクロールを賢く
-  NeoBundle 'Smooth-Scroll'
-  " vim-smartword : 単語移動がスマートな感じで
-  NeoBundle 'smartword'
-  " matchit.vim : 「%」による対応括弧へのカーソル移動機能を拡張
-  NeoBundle 'matchit.zip'
-  " ruby用のmatchit拡張
-  NeoBundle 'ruby-matchit'
-  " eregex.vim : vimの正規表現をrubyやperlの正規表現な入力でできる :%S/perlregex/
-  NeoBundle 'eregex.vim'
   " open-browser.vim : カーソルの下のURLを開くor単語を検索エンジンで検索
-  NeoBundle 'tyru/open-browser.vim'
+ " NeoBundle 'tyru/open-browser.vim'
 
 " Syntax {{{
   " haml
-  NeoBundle 'haml.zip'
+  "NeoBundle 'haml.zip'
   " JavaScript
-  NeoBundle 'JavaScript-syntax'
+  "NeoBundle 'JavaScript-syntax'
   " jQuery
-  NeoBundle 'jQuery'
+  "NeoBundle 'jQuery'
   " nginx conf
-  NeoBundle 'nginx.vim'
+  "NeoBundle 'nginx.vim'
   " markdown
-  NeoBundle 'tpope/vim-markdown'
+  "NeoBundle 'tpope/vim-markdown'
   " coffee script
-  NeoBundle 'kchmck/vim-coffee-script'
+  "NeoBundle 'kchmck/vim-coffee-script'
   " python
-  NeoBundle 'yuroyoro/vim-python'
+  "NeoBundle 'yuroyoro/vim-python'
   " syntax checking plugins exist for eruby, haml, html, javascript, php, python, ruby and sass.
-  NeoBundle 'scrooloose/syntastic'
+  "NeoBundle 'scrooloose/syntastic'
 " }}}
-NeoBundle 'mattn/benchvimrc-vim'
+"NeoBundle 'mattn/benchvimrc-vim'
