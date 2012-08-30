@@ -43,10 +43,8 @@ set expandtab
 
 "" 入力
 set whichwrap=b,s,h,l,<,>,[,]
-
-"" 補完
-set wildmenu
-set wildmode=list:full
+" バックスペースでインデントや改行を削除できるようにする
+set backspace=2
 
 "" 検索
 set wrapscan
@@ -99,4 +97,4 @@ endif
 " source ~/dotfiles/.vimrc.unite
 
 " neobundle
- source ~/dotfiles/.vimrc.neobundle
+source ~/dotfiles/.vimrc.neobundle

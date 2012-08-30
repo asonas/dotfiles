@@ -5,6 +5,7 @@ set nocompatible               " Be iMproved
 filetype off                   " Required!
 filetype plugin indent off     " Required!
 
+
 if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
@@ -13,19 +14,19 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " My Bundles here:
 "
 " original repos on github
-" NeoBundle 'vim-ruby/vim-ruby'
-" NeoBundle 'tpope/vim-rails.git'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'tpope/vim-rails.git'
 " ...
 filetype plugin indent on     " required!
-" NeoBundle 'Shougo/neocomplcache'
-" NeoBundle 'Shougo/unite.vim'
-"NeoBundle 'gtags.vim'
-"NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'gtags.vim'
+NeoBundle 'nathanaelkane/vim-indent-guides'
 
 " Completion {{{
   " neocomplcacheのsinpet補完
    "
-   "NeoBundle 'Shougo/neocomplcache-snippets-complete'
+   NeoBundle 'Shougo/neocomplcache-snippets-complete'
 " }}}
 
 " Searching/Moving{{{
