@@ -44,8 +44,6 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
   "NeoBundle 'nginx.vim'
   " markdown
   "NeoBundle 'tpope/vim-markdown'
-  " coffee script
-  "NeoBundle 'kchmck/vim-coffee-script'
   " python
   "NeoBundle 'yuroyoro/vim-python'
   " syntax checking plugins exist for eruby, haml, html, javascript, php, python, ruby and sass.
