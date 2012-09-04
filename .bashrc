@@ -15,6 +15,7 @@ alias red='git'
 alias via='vim **/*'
 alias r='rails'
 alias rgl='rvm gemset list'
+alias ru='rvm use'
 
 export GIT_EDITOR=vim
 
