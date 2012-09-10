@@ -41,3 +41,12 @@ NeoBundle 'basyura/unite-rails'
 " reference環境
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'taichouchou2/vim-ref-ri'
+
+" syntax
+NeoBundle 'haml.zip'
+NeoBundle 'tpope/vim-markdown'
+NeoBundle 'JavaScript-syntax'
+NeoBundle 'jQuery'
+NeoBundle 'nginx.vim'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'git://github.com/kchmck/vim-coffee-script.git'

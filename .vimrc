@@ -64,10 +64,14 @@ hi PmenuThumb ctermbg=lightgray
 " leaving insert mode. Foldmethod is local to the window. Protect against
 " screwing up folding when switching between windows.
 " http://d.hatena.ne.jp/gnarl/20120308/1331180615
-"autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
-"autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
+autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
-
+" coffeescript javascript
+autocmd FileType coffee setlocal dictionary=$HOME/dotfiles/vimfiles/javascript.dict,$HOME/dotfiles/vimfiles/jQuery.dict
+autocmd FileType javascript,coffee setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType coffee set tabstop=4 shiftwidth=4
+autocmd BufWritePost *.coffee silent CoffeeMake! -c | cwindow | redraw!
 
 "if(){}などのインデント
 "set cindent
