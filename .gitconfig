@@ -18,6 +18,7 @@
     b = branch
     log = log --decorate
     l = log --decorate
+    g = grep
 
 [color]
     ui = true
