@@ -53,6 +53,11 @@ set smartcase
 set incsearch
 set hlsearch
 
+" popup menu color
+hi Pmenu ctermbg=lightcyan ctermfg=black
+hi PmenuSel ctermbg=blue ctermfg=black
+hi PmenuSbar ctermbg=darkgray
+hi PmenuThumb ctermbg=lightgray
 
 
 " Don't screw up folds when inserting text that might affect them, until
@@ -91,10 +96,10 @@ if exists('&ambiwidth')
 endif
 
 " 補完関連
-"source ~/dotfiles/.vimrc.completion
+source ~/dotfiles/.vimrc.completion
 
 " unite.vim
-" source ~/dotfiles/.vimrc.unite
+source ~/dotfiles/.vimrc.unite
 
 " neobundle
 source ~/dotfiles/.vimrc.neobundle

@@ -1,6 +1,8 @@
 export PATH=$PATH:~/.rvm/bin:/usr/local/sbin
 export PATH=~/local/bin:$PATH
 export PATH=$PATH:~/.nave/src/0.4.6/build/bin
+export RSENSE_HOME=$HOME/.vim/ref/rsense-0.3
+
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 alias rgu='rvm gemset use'
