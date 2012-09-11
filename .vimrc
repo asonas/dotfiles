@@ -59,6 +59,16 @@ hi PmenuSel ctermbg=blue ctermfg=black
 hi PmenuSbar ctermbg=darkgray
 hi PmenuThumb ctermbg=lightgray
 
+" rsence
+let g:rsenseUseOmniFunc = 1
+let g:rsenseHome = expand('~/.vim/ref/rsense-0.3')
+
+function! SetUpRubySetting()
+  setlocal completefunc=RSenseCompleteFunction
+  nmap <buffer>tj :RSenseJumpToDefinition<CR>
+  nmap <buffer>tk :RSenseWhereIs<CR>
+  nmap <buffer>td :RSenseTypeHelp<CR>
+endfunction
 
 " Don't screw up folds when inserting text that might affect them, until
 " leaving insert mode. Foldmethod is local to the window. Protect against
