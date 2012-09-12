@@ -88,7 +88,6 @@ set history=1000
 set noautochdir
 set nobackup
 set tw=0
-syntax enable
 au FileType ruby setlocal nowrap tabstop=8 tw=0 sw=2 expandtab
 
 set foldenable
