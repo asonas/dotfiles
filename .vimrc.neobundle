@@ -21,6 +21,8 @@ NeoBundle 'Shougo/vimproc', {
 NeoBundle 'tpope/vim-endwise.git'
 NeoBundle 'ruby-matchit'
 NeoBundle 'vim-scripts/dbext.vim'
+NeoBundle 'http://github.com/nathanaelkane/vim-indent-guides.git'
+NeoBundle 'vim-ruby.vim'
 
 " 補完
 NeoBundle 'Shougo/neocomplcache'

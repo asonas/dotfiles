@@ -8,7 +8,9 @@ imap <C-g> <esc>
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
 " 色の設定
+set background=dark
 syntax on
+let g:solarized_termcolors=256
 " 全角スペースを視覚化
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
 match ZenkakuSpace /　/
@@ -16,6 +18,9 @@ set autoread
 set hidden
 set noswapfile
 set nobackup
+filetype on
+filetype plugin on
+filetype indent on
 
 "" 見た目
 set number
@@ -36,8 +41,8 @@ set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V
 set laststatus=2
 
 "" インデント
-set tabstop=4 shiftwidth=4 softtabstop=0
-set autoindent smartindent
+set tabstop=2 shiftwidth=2
+set autoindent smarttab
 " spaceがいい
 set expandtab
 
@@ -63,6 +68,9 @@ hi PmenuThumb ctermbg=lightgray
 let g:rsenseUseOmniFunc = 1
 let g:rsenseHome = expand('~/.vim/ref/rsense-0.3')
 
+" coffeescript
+autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
+
 function! SetUpRubySetting()
   setlocal completefunc=RSenseCompleteFunction
   nmap <buffer>tj :RSenseJumpToDefinition<CR>
@@ -70,12 +78,30 @@ function! SetUpRubySetting()
   nmap <buffer>td :RSenseTypeHelp<CR>
 endfunction
 
+" memo
+set noruler
+set showmatch
+set wrap
+set title
+set backspace=2
+set history=1000
+set noautochdir
+set nobackup
+set tw=0
+syntax enable
+au FileType ruby setlocal nowrap tabstop=8 tw=0 sw=2 expandtab
+
+set foldenable
+set foldmethod=marker
+set foldcolumn=3
+
 " Don't screw up folds when inserting text that might affect them, until
 " leaving insert mode. Foldmethod is local to the window. Protect against
 " screwing up folding when switching between windows.
 " http://d.hatena.ne.jp/gnarl/20120308/1331180615
 autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
 autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+
 
 " coffeescript javascript
 autocmd FileType coffee setlocal dictionary=$HOME/dotfiles/vimfiles/javascript.dict,$HOME/dotfiles/vimfiles/jQuery.dict
