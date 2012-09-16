@@ -1,6 +1,6 @@
 "" 共通設定
-set nocompatible
 colorscheme railscasts
+set nocompatible
 " Ctrl+gでエスケープ
 imap <C-g> <esc>
 
@@ -9,8 +9,6 @@ imap <C-g> <esc>
 autocmd BufWritePre * :%s/\s\+$//ge
 " 色の設定
 set background=dark
-syntax on
-let g:solarized_termcolors=256
 " 全角スペースを視覚化
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
 match ZenkakuSpace /　/
@@ -142,3 +140,5 @@ source ~/dotfiles/.vimrc.unite
 
 " neobundle
 source ~/dotfiles/.vimrc.neobundle
+
+syntax on
