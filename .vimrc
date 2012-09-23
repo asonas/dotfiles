@@ -62,6 +62,12 @@ hi PmenuSel ctermbg=blue ctermfg=black
 hi PmenuSbar ctermbg=darkgray
 hi PmenuThumb ctermbg=lightgray
 
+" 便利
+nnoremap <silent> <Space>q :quit<CR>
+nnoremap <silent> <Space>Q :quit!<CR>
+nnoremap <silent> <Space>e :wq<CR>
+nnoremap <silent> <Space><Space> :w<CR>
+
 " rsence
 let g:rsenseUseOmniFunc = 1
 let g:rsenseHome = expand('~/.vim/ref/rsense-0.3')
