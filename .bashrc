@@ -18,6 +18,9 @@ alias via='vim **/*'
 alias r='rails'
 alias rgl='rvm gemset list'
 alias ru='rvm use'
+alias rb='rbenv'
+alias rl='rbenv local'
+alias be='bundle exec'
 
 export GIT_EDITOR=vim
 
