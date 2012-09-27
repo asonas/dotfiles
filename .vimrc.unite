@@ -5,12 +5,12 @@ let g:unite_enable_start_insert=1
 
 
 "mru,reg,buf
-noremap <C-r> :Unite file_mru -buffer-name=file_mru<CR>
-noremap <C-t> :Unite register -buffer-name=register<CR>
-noremap <C-e> :Unite buffer -buffer-name=buffer<CR>
+"noremap <C-> :Unite file_mru -buffer-name=file_mru<CR>
+"noremap <C-t> :Unite register -buffer-name=register<CR>
+"noremap <C-e> :Unite buffer -buffer-name=buffer<CR>
 
 "file current_dir
-noremap <C-q> :Unite file -buffer-name=file<CR>
+"noremap <C-q> :Unite file -buffer-name=file<CR>
 
 "file file_current_dir
 "noremap :uff :<C-h>UniteWithBufferDir file -buffer-name=file<CR>

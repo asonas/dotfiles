@@ -22,7 +22,7 @@ NeoBundle 'tpope/vim-endwise.git'
 NeoBundle 'ruby-matchit'
 NeoBundle 'vim-scripts/dbext.vim'
 NeoBundle 'http://github.com/nathanaelkane/vim-indent-guides.git'
-NeoBundle 'vim-ruby.vim'
+NeoBundle 'http://github.com/mattn/benchvimrc-vim.git'
 
 " 補完
 NeoBundle 'Shougo/neocomplcache'

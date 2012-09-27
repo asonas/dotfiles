@@ -1,5 +1,5 @@
 "" 共通設定
-colorscheme railscasts
+"colorscheme zenburn
 set nocompatible
 " Ctrl+gでエスケープ
 imap <C-g> <esc>
@@ -8,10 +8,10 @@ imap <C-g> <esc>
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
 " 色の設定
-set background=dark
+set background=light
 " 全角スペースを視覚化
-highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
-match ZenkakuSpace /　/
+"highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
+"match ZenkakuSpace /　/
 set autoread
 set hidden
 set noswapfile
@@ -67,6 +67,8 @@ nnoremap <silent> <Space>q :quit<CR>
 nnoremap <silent> <Space>Q :quit!<CR>
 nnoremap <silent> <Space>e :wq<CR>
 nnoremap <silent> <Space><Space> :w<CR>
+nnoremap <PageDown> <C-F>
+nnoremap <PageUp> <C-B>
 
 " rsence
 let g:rsenseUseOmniFunc = 1
@@ -88,7 +90,7 @@ set showmatch
 set wrap
 set title
 set backspace=2
-set history=1000
+set history=100
 set noautochdir
 set nobackup
 set tw=0
