@@ -19,7 +19,7 @@
     log = log --decorate
     l = log --decorate
     g = grep
-
+    fe = fetch
 [color]
     ui = true
     diff = true
