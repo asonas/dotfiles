@@ -1,5 +1,5 @@
 "" 共通設定
-"colorscheme zenburn
+colorscheme railscasts
 set nocompatible
 " Ctrl+gでエスケープ
 imap <C-g> <esc>
@@ -8,7 +8,7 @@ imap <C-g> <esc>
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
 " 色の設定
-set background=light
+set background=dark
 " 全角スペースを視覚化
 "highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
 "match ZenkakuSpace /　/
