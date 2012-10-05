@@ -21,6 +21,7 @@
     g = grep
     fe = fetch
     cp = cherry-pick
+    tag = tag -n
 [color]
     ui = true
     diff = true
