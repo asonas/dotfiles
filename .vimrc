@@ -74,8 +74,6 @@ nnoremap <PageUp> <C-B>
 let g:rsenseUseOmniFunc = 1
 let g:rsenseHome = expand('~/.vim/ref/rsense-0.3')
 
-" coffeescript
-autocmd BufWritePost *.coffee silent CoffeeMake! -cb | cwindow | redraw!
 
 function! SetUpRubySetting()
   setlocal completefunc=RSenseCompleteFunction
@@ -112,7 +110,6 @@ autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:las
 autocmd FileType coffee setlocal dictionary=$HOME/dotfiles/vimfiles/javascript.dict,$HOME/dotfiles/vimfiles/jQuery.dict
 autocmd FileType javascript,coffee setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType coffee set tabstop=4 shiftwidth=4
-autocmd BufWritePost *.coffee silent CoffeeMake! -c | cwindow | redraw!
 
 "if(){}などのインデント
 "set cindent
