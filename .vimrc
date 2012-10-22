@@ -56,6 +56,9 @@ set smartcase
 set incsearch
 set hlsearch
 
+" 音がなる
+"autocmd CursorMovedI * :call vimproc#system_bg($HOME . "/bin/vim-key-sound.rb '" . getline('.')[col('.') - 2] . "'")
+
 " popup menu color
 hi Pmenu ctermbg=lightcyan ctermfg=black
 hi PmenuSel ctermbg=blue ctermfg=black
