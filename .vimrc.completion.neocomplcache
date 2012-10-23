@@ -1,16 +1,15 @@
 "------------------------------------
 " neocomplecache.vim
 "------------------------------------
-let g:acp_enableAtStartup = 0
 " NeoComplCacheを有効にする
 let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_underbar_completion = 1
-let g:NeoComplCache_enable_info = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_auto_select = 1
-let g:neocomplcache_max_list = 20
-let g:neocomplcache_manual_completion_start_length = 2
+"let g:neocomplcache_enable_camel_case_completion = 1
+"let g:neocomplcache_enable_underbar_completion = 1
+"let g:NeoComplCache_enable_info = 1
+"let g:neocomplcache_enable_smart_case = 1
+"let g:neocomplcache_enable_auto_select = 1
+"let g:neocomplcache_max_list = 10
+"let g:neocomplcache_manual_completion_start_length = 2
 
 nnoremap <silent> <C-s> :NeoComplCacheToggle<Return>
 
@@ -19,12 +18,7 @@ if !exists('g:neocomplcache_include_paths')
 endif
 let g:neocomplcache_include_paths['ruby'] = ".,".$HOME."/.rvm/rubies/ruby-1.9.3-p194/lib/ruby"
 
-"push C-a to toggle spell check
-nnoremap <silent> <C-a> :setl spell!<Return>
-
 imap <C-F> <Plug>(neocomplcache_snippets_expand)
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
-imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ?
-  \"\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
