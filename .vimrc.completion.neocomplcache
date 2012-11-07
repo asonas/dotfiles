@@ -7,7 +7,7 @@ let g:neocomplcache_enable_at_startup = 1
 "let g:neocomplcache_enable_underbar_completion = 1
 "let g:NeoComplCache_enable_info = 1
 "let g:neocomplcache_enable_smart_case = 1
-"let g:neocomplcache_enable_auto_select = 1
+let g:neocomplcache_enable_auto_select = 1
 "let g:neocomplcache_max_list = 10
 "let g:neocomplcache_manual_completion_start_length = 2
 
