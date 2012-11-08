@@ -25,8 +25,8 @@ NeoBundle 'http://github.com/nathanaelkane/vim-indent-guides.git'
 NeoBundle 'http://github.com/mattn/benchvimrc-vim.git'
 
 " 補完
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neocomplcache-snippets-complete'
+NeoBundle 'Shougo/neocomplcache.git'
+NeoBundle 'Shougo/neosnippet.git'
 NeoBundle 'taichouchou2/vim-rsense'
 
 " コメント

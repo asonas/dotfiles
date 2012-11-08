@@ -1,4 +1,5 @@
 "" 共通設定
+syntax on
 colorscheme railscasts
 set nocompatible
 " Ctrl+gでエスケープ
@@ -72,11 +73,13 @@ nnoremap <silent> <Space>e :wq<CR>
 nnoremap <silent> <Space><Space> :w<CR>
 nnoremap <PageDown> <C-F>
 nnoremap <PageUp> <C-B>
+nnoremap <silent> <Space>a :tabn<CR>
+nnoremap <silent> <Space>s :tabe<CR>
+nnoremap <silent> <Space>d :tabp<CR>
 
 " rsence
-let g:rsenseUseOmniFunc = 1
-let g:rsenseHome = expand('~/.vim/ref/rsense-0.3')
-
+"let g:rsenseUseOmniFunc = 1
+"let g:rsenseHome = expand('~/.vim/ref/rsense-0.3')
 
 function! SetUpRubySetting()
   setlocal completefunc=RSenseCompleteFunction
@@ -108,7 +111,6 @@ set foldcolumn=3
 autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
 autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
-
 " coffeescript javascript
 autocmd FileType coffee setlocal dictionary=$HOME/dotfiles/vimfiles/javascript.dict,$HOME/dotfiles/vimfiles/jQuery.dict
 autocmd FileType javascript,coffee setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -131,6 +133,7 @@ let g:indent_guides_enable_on_vim_startup = 1
 " NERD Tree
 "------------------------------------
 nmap <silent> <F1> :NERDTreeToggle<CR>
+nmap <silent> <Space>p :NERDTreeToggle<CR>
 let NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 40
 
@@ -149,4 +152,3 @@ source ~/dotfiles/.vimrc.unite
 " neobundle
 source ~/dotfiles/.vimrc.neobundle
 
-syntax on
