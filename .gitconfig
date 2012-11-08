@@ -26,3 +26,5 @@
     ui = true
     diff = true
 
+[branch]
+	autosetuprebase = always
