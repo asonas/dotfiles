@@ -77,10 +77,6 @@ nnoremap <silent> <Space>a :tabn<CR>
 nnoremap <silent> <Space>s :tabe<CR>
 nnoremap <silent> <Space>d :tabp<CR>
 
-" rsence
-"let g:rsenseUseOmniFunc = 1
-"let g:rsenseHome = expand('~/.vim/ref/rsense-0.3')
-
 function! SetUpRubySetting()
   setlocal completefunc=RSenseCompleteFunction
   nmap <buffer>tj :RSenseJumpToDefinition<CR>
