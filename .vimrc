@@ -1,9 +1,10 @@
 "" 共通設定
-syntax on
+syntax enable
 colorscheme railscasts
 set nocompatible
-" Ctrl+gでエスケープ
+" Ctrl+cでエスケープ
 imap <C-g> <esc>
+imap <C-c> <esc>
 
 "" file系
 " 保存時に行末の空白を除去する
@@ -61,10 +62,10 @@ set hlsearch
 "autocmd CursorMovedI * :call vimproc#system_bg($HOME . "/bin/vim-key-sound.rb '" . getline('.')[col('.') - 2] . "'")
 
 " popup menu color
-hi Pmenu ctermbg=lightcyan ctermfg=black
-hi PmenuSel ctermbg=blue ctermfg=black
-hi PmenuSbar ctermbg=darkgray
-hi PmenuThumb ctermbg=lightgray
+"hi Pmenu ctermbg=lightcyan ctermfg=black
+"hi PmenuSel ctermbg=blue ctermfg=black
+"hi PmenuSbar ctermbg=darkgray
+"hi PmenuThumb ctermbg=lightgray
 
 " 便利
 nnoremap <silent> <Space>q :quit<CR>
@@ -148,3 +149,4 @@ source ~/dotfiles/.vimrc.unite
 " neobundle
 source ~/dotfiles/.vimrc.neobundle
 
+syntax on

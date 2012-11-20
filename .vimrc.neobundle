@@ -27,7 +27,6 @@ NeoBundle 'http://github.com/mattn/benchvimrc-vim.git'
 " 補完
 NeoBundle 'Shougo/neocomplcache.git'
 NeoBundle 'Shougo/neosnippet.git'
-NeoBundle 'taichouchou2/vim-rsense'
 
 " コメント
 NeoBundle 'tomtom/tcomment_vim'
