@@ -2,11 +2,5 @@
 " 補完・履歴 Complete
 "-------------------------------------------------------------------------------
 
-" Ex-modeでの<C-p><C-n>をzshのヒストリ補完っぽくする
-cnoremap <C-p> <Up>
-cnoremap <Up>  <C-p>
-cnoremap <C-n> <Down>
-cnoremap <Down>  <C-n>
-
 " 補完にneocomplcacheを使う
 source ~/dotfiles/.vimrc.completion.neocomplcache
