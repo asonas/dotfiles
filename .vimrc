@@ -128,6 +128,12 @@ if exists('&ambiwidth')
   set ambiwidth=double
 endif
 
+"------------------------------------
+" MacVim
+"------------------------------------
+if has('gui_macvim')
+endif
+
 " 補完関連
 source ~/dotfiles/.vimrc.completion
 
