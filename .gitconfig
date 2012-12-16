@@ -3,6 +3,7 @@
     email = hzw1258@gmail.com
 [core]
     excludesfile = ~/.gitignore
+    pager = "lv -c"
 
 [alias]
     graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
