@@ -21,7 +21,7 @@ alias ru='rvm use'
 alias rb='rbenv'
 alias rl='rbenv local'
 alias be='bundle exec'
-
+alias pythonserver='python -m SimpleHTTPServer'
 export GIT_EDITOR=vim
 
 if [ -f $HOME/dotfiles/.git-completion.bash ]; then
