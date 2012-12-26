@@ -87,6 +87,7 @@ set history=100
 set noautochdir
 set nobackup
 set tw=0
+set fileencodings=ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932,utf-8
 au FileType ruby setlocal nowrap tabstop=8 tw=0 sw=2 expandtab
 
 " Don't screw up folds when inserting text that might affect them, until
@@ -99,7 +100,7 @@ au FileType ruby setlocal nowrap tabstop=8 tw=0 sw=2 expandtab
 " coffeescript javascript
 "autocmd FileType coffee setlocal dictionary=$HOME/dotfiles/vimfiles/javascript.dict,$HOME/dotfiles/vimfiles/jQuery.dict
 "autocmd FileType javascript,coffee setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType coffee set tabstop=4 shiftwidth=4
+autocmd FileType coffee set tabstop=2 shiftwidth=2
 
 "if(){}などのインデント
 "set cindent
