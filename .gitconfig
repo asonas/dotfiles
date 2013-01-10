@@ -23,6 +23,7 @@
     fe = fetch
     cp = cherry-pick
     tag = tag -n
+    pr = pull --rebase
 [color]
     ui = true
     diff = true
