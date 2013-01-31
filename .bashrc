@@ -24,3 +24,14 @@ source $HOME/dotfiles/.git-completion.bash
 source $HOME/dotfiles/git-prompt.sh
 
 export PS1='\[\033[01;32m\]\u@\h\[\033[01;33m\] \w$(__git_ps1) \n\[\033[01;34m\]\$\[\033[00m\] '
+
+function share_history {  # 以下の内容を関数として定義
+  history -a  # .bash_historyに前回コマンドを1行追記
+  history -c  # 端末ローカルの履歴を一旦消去
+  history -r  # .bash_historyから履歴を読み込み直す
+}
+
+PROMPT_COMMAND='share_history'
+shopt -u histappend
+export HISTFILE=~/.bash_history
+export HISTSIZE=530000

@@ -133,6 +133,7 @@ endif
 " MacVim
 "------------------------------------
 if has('gui_macvim')
+  colorscheme zenburn
 endif
 
 " 補完関連

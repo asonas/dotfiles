@@ -138,7 +138,6 @@ esac
 
 setopt COMPLETE_IN_WORD
 
-
 local GREEN=$'%{\e[1;32m%}'
 local YELLOW=$'%{\e[1;33m%}'
 local BLUE=$'%{\e[1;34m%}'
@@ -148,5 +147,3 @@ local DEFAULT=$'%{\e[1;m%}'
 PROMPT='[%n@%m]%~%# '    # default prompt
 
 zstyle ':completion:*:default' menu select=1
-
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
