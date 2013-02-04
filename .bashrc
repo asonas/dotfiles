@@ -15,6 +15,9 @@ alias rb='rbenv'
 alias rl='rbenv local'
 alias be='bundle exec'
 alias pythonserver='python -m SimpleHTTPServer'
+alias rmstore="rm .DS_Store; rm */.DS_Store"
+alias rmstorer="rm **/.DS_Store"
+
 export GIT_EDITOR=vim
 
 if [ -f $HOME/dotfiles/.git-completion.bash ]; then
