@@ -10,8 +10,8 @@ imap <C-c> <esc>
 " 保存時に行末の空白を除去する
 autocmd BufWritePre * :%s/\s\+$//ge
 " 全角スペースを視覚化
-"highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
-"match ZenkakuSpace /　/
+highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
+match ZenkakuSpace /　/
 set autoread
 set hidden
 set noswapfile
