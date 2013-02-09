@@ -56,15 +56,6 @@ set smartcase
 set incsearch
 set hlsearch
 
-" 音がなる
-"autocmd CursorMovedI * :call vimproc#system_bg($HOME . "/bin/vim-key-sound.rb '" . getline('.')[col('.') - 2] . "'")
-
-" popup menu color
-"hi Pmenu ctermbg=lightcyan ctermfg=black
-"hi PmenuSel ctermbg=blue ctermfg=black
-"hi PmenuSbar ctermbg=darkgray
-"hi PmenuThumb ctermbg=lightgray
-
 " 便利
 nnoremap <silent> <Space>q :quit<CR>
 nnoremap <silent> <Space>Q :quit!<CR>
@@ -75,7 +66,6 @@ nnoremap <PageUp> <C-B>
 nnoremap <silent> <Space>j :tabn<CR>
 nnoremap <silent> <Space>k :tabe<CR>
 nnoremap <silent> <Space>l :tabp<CR>
-
 
 " memo
 set noruler
@@ -89,20 +79,7 @@ set nobackup
 set tw=0
 au FileType ruby setlocal nowrap tabstop=8 tw=0 sw=2 expandtab
 
-" Don't screw up folds when inserting text that might affect them, until
-" leaving insert mode. Foldmethod is local to the window. Protect against
-" screwing up folding when switching between windows.
-" http://d.hatena.ne.jp/gnarl/20120308/1331180615
-"autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
-"autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
-
-" coffeescript javascript
-"autocmd FileType coffee setlocal dictionary=$HOME/dotfiles/vimfiles/javascript.dict,$HOME/dotfiles/vimfiles/jQuery.dict
-"autocmd FileType javascript,coffee setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType coffee set tabstop=2 shiftwidth=2
-
-"if(){}などのインデント
-"set cindent
 
 "nnoremap <Esc><Esc> :set nohlsearch<CR>
 
