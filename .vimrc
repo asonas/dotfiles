@@ -114,6 +114,7 @@ endif
 
 "------------------------------------
 " Dash
+" http://qiita.com/items/292e99a521a9653e75fb
 "------------------------------------
 function! s:dash(...)
   let ft = &filetype
