@@ -1,6 +1,7 @@
 "" 共通設定
 syntax enable
-colorscheme railscasts
+let g:hybrid_use_Xresources = 1
+colorscheme hybrid
 set nocompatible
 " Ctrl+cでエスケープ
 imap <C-g> <esc>
@@ -109,7 +110,7 @@ endif
 " MacVim
 "------------------------------------
 if has('gui_macvim')
-  colorscheme zenburn
+  colorscheme hybrid
 endif
 
 "------------------------------------
