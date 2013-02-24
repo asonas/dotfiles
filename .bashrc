@@ -1,5 +1,4 @@
 export PATH=~/local/bin:$PATH
-export PATH=$PATH:~/.nave/src/0.4.6/build/bin
 
 alias g="git"
 alias bw="cd ~/Dropbox/Apps/Byword/"
