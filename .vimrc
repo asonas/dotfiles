@@ -5,7 +5,6 @@ colorscheme hybrid
 set nocompatible
 " Ctrl+cでエスケープ
 imap <C-g> <esc>
-imap <C-c> <esc>
 
 "" file系
 " 保存時に行末の空白を除去する
