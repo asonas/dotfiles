@@ -21,7 +21,7 @@
     b = branch
     log = log --decorate
     l = log --decorate
-    g = grep
+    g = grep -i
     fe = fetch
     cp = cherry-pick
     tag = tag -n
