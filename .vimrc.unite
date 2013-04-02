@@ -8,6 +8,7 @@ let g:unite_enable_start_insert=1
 
 "file current_dir
 noremap <C-c> :Unite file -buffer-name=file<CR>
+noremap <Space>f :Unite file_mru -buffer-name=file_mru<CR>
 
 "file file_current_dir
 "noremap :uff :<C-h>UniteWithBufferDir file -buffer-name=file<CR>
