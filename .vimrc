@@ -64,7 +64,6 @@ nnoremap <silent> <Space><Space> :w<CR>
 nnoremap <PageDown> <C-F>
 nnoremap <PageUp> <C-B>
 nnoremap <silent> <Space>j :tabn<CR>
-nnoremap <silent> <Space>k :tabe<CR>
 nnoremap <silent> <Space>l :tabp<CR>
 
 " memo
