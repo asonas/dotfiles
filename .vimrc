@@ -65,6 +65,7 @@ nnoremap <PageDown> <C-F>
 nnoremap <PageUp> <C-B>
 nnoremap <silent> <Space>j :tabn<CR>
 nnoremap <silent> <Space>l :tabp<CR>
+nnoremap <silent> <Space>t :tabe<CR>
 
 " memo
 set noruler
