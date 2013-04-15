@@ -1,0 +1,5 @@
+;;(install-elisp "http://www.emacswiki.org/emacs/download/redo+.el")
+;;(install-elisp "http://bit.ly/pkg-el23")
+;;(auto-install-batch "anything")
+;;(install-elisp "http://php-mode.svn.sourceforge.net/svnroot/php-mode/tags/php-mode-1.5.0/php-mode.el")
+(install-elisp "http://homepage3.nifty.com/satomii/software/jaspace.el")
