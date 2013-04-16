@@ -96,7 +96,6 @@ let g:indent_guides_enable_on_vim_startup = 1
 "------------------------------------
 " NERD Tree
 "------------------------------------
-nmap <silent> <F1> :NERDTreeToggle<CR>
 nmap <silent> <Space>p :NERDTreeToggle<CR>
 let NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 40
