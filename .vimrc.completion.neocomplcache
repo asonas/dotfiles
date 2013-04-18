@@ -16,7 +16,6 @@ nnoremap <silent> <C-s> :NeoComplCacheToggle<Return>
 if !exists('g:neocomplcache_include_paths')
   let g:neocomplcache_include_paths = {}
 endif
-let g:neocomplcache_include_paths['ruby'] = ".,".$HOME."/.rvm/rubies/ruby-1.9.3-p194/lib/ruby"
 
 imap <C-F> <Plug>(neocomplcache_snippets_expand)
 if has('conceal')
