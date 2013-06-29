@@ -4,6 +4,7 @@
 [core]
     excludesfile = ~/.gitignore
     pager = "lv -c"
+	editor = vim -c \"set fenc=utf-8\"
 
 [alias]
     graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
