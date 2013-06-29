@@ -1,6 +1,17 @@
 # 少し凝った zshrc
 # https://gist.github.com/mollifier/4979906
 
+#######################################
+# Alias
+
+alias be="bundle exec"
+alias g="git"
+alias r="rails"
+alias rmstore="rm .DS_Store; rm */.DS_Store"
+alias rmstorer="rm **/.DS_Store"
+alias pserver='python -m SimpleHTTPServer'
+
+
 ########################################
 # 環境変数
 export LANG=ja_JP.UTF-8
