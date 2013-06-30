@@ -39,6 +39,7 @@ PROMPT="%{${fg[black]}%}[%T]%{${reset_color}%} %{$fg[cyan]%}%n%{${reset_color}%}
 export PATH="$HOME/dev/bin:$PATH"
 
 # rbenv
+export PATH="$HOME/.rbenv/shims:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
