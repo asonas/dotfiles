@@ -58,7 +58,7 @@ autoload -Uz compinit
 compinit
 
 # 補完で小文字でも大文字にマッチさせる
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+#zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # ../ の後は今いるディレクトリを補完しない
 zstyle ':completion:*' ignore-parents parent pwd ..
