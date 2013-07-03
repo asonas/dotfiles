@@ -1,7 +1,7 @@
 "" 共通設定
 syntax enable
 let g:hybrid_use_Xresources = 1
-colorscheme hybrid
+colorscheme pyte
 set nocompatible
 " Ctrl+cでエスケープ
 imap <C-g> <esc>
@@ -20,7 +20,7 @@ filetype on
 filetype plugin on
 filetype indent on
 " 色の設定
-set background=dark
+"set background=dark
 
 "" 見た目
 set number
@@ -69,6 +69,11 @@ nnoremap <silent> <Space>t :tabe<CR>
 nnoremap <silent> <Space>n :sp<CR>
 nnoremap <silent> <Space>m :vs<CR>
 
+"nnoremap ] :<C-u>set transparency=
+"noremap <Up> :<C-u>set transparency+=5<Cr>
+"noremap <Down> :<C-u>set transparency-=5<Cr>
+
+
 " memo
 set noruler
 set showmatch
@@ -110,7 +115,7 @@ endif
 " MacVim
 "------------------------------------
 if has('gui_macvim')
-  colorscheme hybrid
+  colorscheme pyte
 endif
 
 "------------------------------------
