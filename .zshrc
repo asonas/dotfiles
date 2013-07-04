@@ -78,6 +78,9 @@ function precmd () {
   z --add "$(pwd -P)"
 }
 
+# git
+a() { git add $*; git status -s }
+
 ########################################
 # vcs_info
 
