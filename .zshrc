@@ -37,6 +37,7 @@ PROMPT="%{${fg[black]}%}[%T]%{${reset_color}%} %{$fg[cyan]%}%n%{${reset_color}%}
 
 # personal bin directory
 export PATH="$HOME/dev/bin:$PATH"
+export PATH="$HOME/dev/local/bin:$PATH"
 
 # rbenv
 export PATH="$HOME/.rbenv/shims:$PATH"
