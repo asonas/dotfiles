@@ -32,7 +32,7 @@ SAVEHIST=1000000
 # 1行表示
 # PROMPT="%~ %# "
 # 2行表示
-PROMPT="%{${fg[black]}%}[%T]%{${reset_color}%} %{$fg[cyan]%}%n%{${reset_color}%}:%~ %1(v|%F{yellow}%1v%f|)
+PROMPT="%{${fg[black]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
 %# "
 
 # personal bin directory
