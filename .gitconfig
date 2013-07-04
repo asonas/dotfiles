@@ -10,7 +10,7 @@
     graph = log --graph --date-order -C -M --pretty=format:\"<%h> %ad [%an] %Cgreen%d%Creset %s\" --all --date=short
     gr = log --graph --pretty='format:%C(yellow)%h%Cblue%d%Creset %s %C(black bold)%an, %ar%Creset'
     delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
-    st = status
+    st = status -sb
     df = diff
     dfc = diff --cached
     co = checkout
