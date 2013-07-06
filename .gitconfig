@@ -16,7 +16,7 @@
     co = checkout
     last = show -1 HEAD --stat -p
     me = log --author=asonas
-    ci = commit
+    ci = commit -v
     bull = pull
     dfw = diff --color-words
     b = branch
