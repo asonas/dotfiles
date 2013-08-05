@@ -45,7 +45,6 @@ NeoBundle 'taichouchou2/vim-ref-ri'
 
 " syntax
 NeoBundle 'haml.zip'
-NeoBundle 'tpope/vim-markdown'
 NeoBundle 'JavaScript-syntax'
 NeoBundle 'jQuery'
 NeoBundle 'nginx.vim'
