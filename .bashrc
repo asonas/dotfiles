@@ -37,3 +37,6 @@ PROMPT_COMMAND='share_history'
 shopt -u histappend
 export HISTFILE=~/.bash_history
 export HISTSIZE=530000
+
+# added by travis gem
+source /Users/asonas/.travis/travis.sh

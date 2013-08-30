@@ -193,3 +193,6 @@ case ${OSTYPE} in
 esac
 
 # vim:set ft=zsh:
+
+# added by travis gem
+source /Users/asonas/.travis/travis.sh
