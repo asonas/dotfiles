@@ -31,7 +31,7 @@ set nowrap
 set list
 set listchars=tab:>\
 set scrolloff=5
-set guifont=SourceCodePro-Light:h13
+set guifont=SourceCodePro-Light:h12
 
 "" ステータスライン
 " ステータスラインに文字コード/改行文字種別を表示
