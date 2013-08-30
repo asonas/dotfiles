@@ -35,6 +35,8 @@ SAVEHIST=1000000
 PROMPT="%{${fg[black]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
 %# "
 
+RPROMPT=%{${fg[black]}%}$JOJO_TRAIN_STATUS%{${reset_color}%}
+
 # personal bin directory
 export PATH="$HOME/dev/bin:$PATH"
 export PATH="$HOME/dev/local/bin:$PATH"
@@ -196,3 +198,8 @@ esac
 
 # added by travis gem
 source /Users/asonas/.travis/travis.sh
+
+# !!! JOJO ABS TRAIN !!!
+precmd() {
+  JOJO_TRAIN_STATUS="$(curl -s 'http://jojoasbtrain.jp/api/getTrainInfo' | jq '.data.news')"
+}
