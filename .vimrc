@@ -69,6 +69,7 @@ nnoremap <silent> <Space>l :tabp<CR>
 nnoremap <silent> <Space>t :tabe<CR>
 nnoremap <silent> <Space>n :sp<CR>
 nnoremap <silent> <Space>m :vs<CR>
+set clipboard=unnamed
 
 "nnoremap ] :<C-u>set transparency=
 "noremap <Up> :<C-u>set transparency+=5<Cr>
