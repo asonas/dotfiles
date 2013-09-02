@@ -1,4 +1,4 @@
-# 少し凝った zshrc
+# see also
 # https://gist.github.com/mollifier/4979906
 
 #######################################
@@ -10,7 +10,6 @@ alias r="rails"
 alias rmstore="rm .DS_Store; rm */.DS_Store"
 alias rmstorer="rm **/.DS_Store"
 alias pserver='python -m SimpleHTTPServer'
-
 
 ########################################
 # 環境変数
@@ -32,12 +31,13 @@ SAVEHIST=1000000
 # 1行表示
 # PROMPT="%~ %# "
 # 2行表示
-PROMPT="%{${fg[black]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|) %{${fg[red]}%}$JOJO_TRAIN_STATUS%{${reset_color}%}
+PROMPT="%{${fg[black]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
 %# "
 
 # personal bin directory
 export PATH="$HOME/dev/bin:$PATH"
 export PATH="$HOME/dev/local/bin:$PATH"
+export PATH="$HOME/dotfiles/script:$PATH"
 
 # rbenv
 export PATH="$HOME/.rbenv/shims:$PATH"
@@ -74,9 +74,6 @@ zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
 # z
 . `brew --prefix`/etc/profile.d/z.sh
-function precmd () {
-  z --add "$(pwd -P)"
-}
 
 # git
 a() { git add $*; git status -s }
@@ -87,12 +84,6 @@ a() { git add $*; git status -s }
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats '(%b)'
 zstyle ':vcs_info:*' actionformats '(%b|%a)'
-precmd () {
-    psvar=()
-    LANG=en_US.UTF-8 vcs_info
-    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-}
-
 
 ########################################
 # オプション
@@ -197,7 +188,12 @@ esac
 # added by travis gem
 source /Users/asonas/.travis/travis.sh
 
-# !!! JOJO ABS TRAIN !!!
-precmd() {
-  JOJO_TRAIN_STATUS="$(curl -s 'http://jojoasbtrain.jp/api/getTrainInfo' | jq '.data.news' | sed -e 's/\"//g')"
+function precmd () {
+  # z
+  z --add "$(pwd -P)"
+
+  # VCS
+  psvar=()
+  LANG=en_US.UTF-8 vcs_info
+  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
