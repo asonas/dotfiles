@@ -43,9 +43,10 @@ class JojoAsbTrain
 
   def where_are_you?
     if running?
-      "現在%s付近を走行中ッ!!" % STATION_HASH[@data["data"]["station"].to_i]
+      "現在%s付近を走行中ッ!!次の駅は%sッ!!" % [current_station, next_station]
     else
-      @data["data"]["news"]
+      return "本日の追跡は終了ッ!!" if tracking?
+      @message
     end
   end
 
@@ -53,6 +54,23 @@ class JojoAsbTrain
 
   def running?
     @message =~ /運転しています/? true : false
+  end
+
+  def tracking?
+    @message =~ /追跡は終了/? true : false
+  end
+
+  def current_station
+    STATION_HASH[@data["data"]["station"].to_i]
+  end
+
+  def next_station
+    station_id = if @data["direction"] == "right"
+      @data["data"]["station"].to_i + 1
+    else
+      @data["data"]["station"].to_i - 1
+    end
+    STATION_HASH[station_id]
   end
 end
 
