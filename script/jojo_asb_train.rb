@@ -37,8 +37,8 @@ class JojoAsbTrain
   }
 
   def initialize
-    @data = JSON.parse open("http://jojoasbtrain.jp/api/getTrainInfo").read
-    @message = @data["data"]["news"]
+    @data = JSON.parse(open("http://jojoasbtrain.jp/api/getTrainInfo").read)["data"]
+    @message = @data["news"]
   end
 
   def where_are_you?
@@ -61,16 +61,13 @@ class JojoAsbTrain
   end
 
   def current_station
-    STATION_HASH[@data["data"]["station"].to_i]
+    STATION_HASH[@data["station"].to_i]
   end
 
   def next_station
-    station_id = if @data["direction"] == "right"
-      @data["data"]["station"].to_i + 1
-    else
-      @data["data"]["station"].to_i - 1
-    end
-    STATION_HASH[station_id]
+    station_id = @data["station"]
+    STATION_HASH[station_id + 1] if @data["direction"] == "right"
+    STATION_HASH[station_id - 1] if @data["direction"] == "left"
   end
 end
 
