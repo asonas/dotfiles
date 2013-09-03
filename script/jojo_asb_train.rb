@@ -52,7 +52,7 @@ class JojoAsbTrain
   private
 
   def running?
-    @message =~ /走行中/? true : false
+    @message =~ /運転しています/? true : false
   end
 end
 
