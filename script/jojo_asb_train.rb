@@ -53,11 +53,11 @@ class JojoAsbTrain
   private
 
   def running?
-    @message =~ /運転しています/? true : false
+    /運転しています/ === @message
   end
 
   def tracking?
-    @message =~ /追跡は終了/? true : false
+    /追跡は終了/ === @message
   end
 
   def current_station
