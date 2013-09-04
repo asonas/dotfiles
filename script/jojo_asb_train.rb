@@ -65,7 +65,7 @@ class JojoAsbTrain
   end
 
   def next_station
-    station_id = @data["station"]
+    station_id = @data["station"].to_i
     STATION_HASH[station_id + 1] if @data["direction"] == "right"
     STATION_HASH[station_id - 1] if @data["direction"] == "left"
   end
