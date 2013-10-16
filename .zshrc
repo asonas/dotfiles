@@ -76,9 +76,6 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 # ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
-# z
-. `brew --prefix`/etc/profile.d/z.sh
-
 # git
 a() { git add $*; git status -s }
 
@@ -177,14 +174,16 @@ fi
 ########################################
 # OS 別の設定
 case ${OSTYPE} in
-    darwin*)
-        #Mac用の設定
-        export CLICOLOR=1
-        alias ls='ls -G -F'
-        ;;
-    linux*)
-        #Linux用の設定
-        ;;
+  darwin*)
+    #Mac用の設定
+    export CLICOLOR=1
+    alias ls='ls -G -F'
+    # z
+    . `brew --prefix`/etc/profile.d/z.sh
+    ;;
+  linux*)
+    #Linux用の設定
+    ;;
 esac
 
 # vim:set ft=zsh:
