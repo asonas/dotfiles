@@ -44,6 +44,10 @@ export PATH="$HOME/.rbenv/shims:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# android sdk
+export ANDROID_SDK_HOME=/Users/fuji_seal/dev/local/android/sdk
+export PATH=$PATH:$ANDROID_SDK_HOME/tools
+export PATH=$PATH:$ANDROID_SDK_HOME/platform-tools
 
 # 単語の区切り文字を指定する
 autoload -Uz select-word-style
