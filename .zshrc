@@ -189,9 +189,6 @@ esac
 
 # vim:set ft=zsh:
 
-# added by travis gem
-source /Users/asonas/.travis/travis.sh
-
 function precmd () {
   # z
   z --add "$(pwd -P)"
