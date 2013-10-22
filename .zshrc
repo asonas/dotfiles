@@ -49,6 +49,9 @@ export ANDROID_SDK_HOME=/Users/fuji_seal/dev/local/android/sdk
 export PATH=$PATH:$ANDROID_SDK_HOME/tools
 export PATH=$PATH:$ANDROID_SDK_HOME/platform-tools
 
+# node
+export PATH=$PATH:/usr/local/share/npm/bin
+
 # 単語の区切り文字を指定する
 autoload -Uz select-word-style
 select-word-style default
