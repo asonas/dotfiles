@@ -10,6 +10,7 @@ alias r="rails"
 alias rmstore="rm .DS_Store; rm */.DS_Store"
 alias rmstorer="rm **/.DS_Store"
 alias pserver='python -m SimpleHTTPServer'
+alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 
 ########################################
 # 環境変数
