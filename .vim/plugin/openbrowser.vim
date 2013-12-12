@@ -43,20 +43,18 @@ if g:__openbrowser_platform.cygwin
     function! s:get_default_browser_commands()
         return [
         \   {'name': 'cygstart',
-        \    'args': '{browser} {shellescape(uri)}'}
+        \    'args': ['{browser}', '{uri}']}
         \]
     endfunction
 elseif g:__openbrowser_platform.macunix
     function! s:get_default_browser_commands()
         return [
         \   {'name': 'open',
-        \    'args': '{browser} {shellescape(uri)}'}
+        \    'args': ['{browser}', '{uri}']}
         \]
     endfunction
 elseif g:__openbrowser_platform.mswin
     function! s:get_default_browser_commands()
-        " NOTE: If &shellslash == 1,
-        " `shellescape(uri)` uses single quotes not double quote.
         return [
         \   {'name': 'rundll32',
         \    'args': 'rundll32 url.dll,FileProtocolHandler {uri}'}
@@ -66,13 +64,13 @@ elseif g:__openbrowser_platform.unix
     function! s:get_default_browser_commands()
         return [
         \   {'name': 'xdg-open',
-        \    'args': '{browser} {shellescape(uri)}'},
+        \    'args': ['{browser}', '{uri}']},
         \   {'name': 'x-www-browser',
-        \    'args': '{browser} {shellescape(uri)}'},
+        \    'args': ['{browser}', '{uri}']},
         \   {'name': 'firefox',
-        \    'args': '{browser} {shellescape(uri)}'},
+        \    'args': ['{browser}', '{uri}']},
         \   {'name': 'w3m',
-        \    'args': '{browser} {shellescape(uri)}'},
+        \    'args': ['{browser}', '{uri}']},
         \]
     endfunction
 endif
@@ -104,10 +102,10 @@ function! s:convert_commands_and_rules()
     let open_rules    = g:openbrowser_open_rules
     let browser_commands = []
     for cmd in open_commands
-        call add(browser_commands, [
-        \   {'name': cmd,
-        \    'args': open_rules[cmd]}
-        \])
+        call add(browser_commands,{
+        \ 'name': cmd,
+        \ 'args': open_rules[cmd]
+        \})
     endfor
     return browser_commands
 endfunction
@@ -169,6 +167,9 @@ endif
 if !exists('g:openbrowser_open_vim_command')
     let g:openbrowser_open_vim_command = 'vsplit'
 endif
+if !exists('g:openbrowser_short_message')
+    let g:openbrowser_short_message = 0
+endif
 " }}}
 
 
@@ -206,12 +207,12 @@ command!
 
 
 " Key-mapping
-nnoremap <Plug>(openbrowser-open) :<C-u>call openbrowser#_keymapping_open('n')<CR>
-vnoremap <Plug>(openbrowser-open) :<C-u>call openbrowser#_keymapping_open('v')<CR>
-nnoremap <Plug>(openbrowser-search) :<C-u>call openbrowser#_keymapping_search('n')<CR>
-vnoremap <Plug>(openbrowser-search) :<C-u>call openbrowser#_keymapping_search('v')<CR>
-nnoremap <Plug>(openbrowser-smart-search) :<C-u>call openbrowser#_keymapping_smart_search('n')<CR>
-vnoremap <Plug>(openbrowser-smart-search) :<C-u>call openbrowser#_keymapping_smart_search('v')<CR>
+nnoremap <silent> <Plug>(openbrowser-open) :<C-u>call openbrowser#_keymapping_open('n')<CR>
+vnoremap <silent> <Plug>(openbrowser-open) :<C-u>call openbrowser#_keymapping_open('v')<CR>
+nnoremap <silent> <Plug>(openbrowser-search) :<C-u>call openbrowser#_keymapping_search('n')<CR>
+vnoremap <silent> <Plug>(openbrowser-search) :<C-u>call openbrowser#_keymapping_search('v')<CR>
+nnoremap <silent> <Plug>(openbrowser-smart-search) :<C-u>call openbrowser#_keymapping_smart_search('n')<CR>
+vnoremap <silent> <Plug>(openbrowser-smart-search) :<C-u>call openbrowser#_keymapping_smart_search('v')<CR>
 
 " }}}
 
