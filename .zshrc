@@ -53,7 +53,13 @@ export PATH=$PATH:$ANDROID_SDK_HOME/platform-tools
 # node
 export PATH=$PATH:/usr/local/share/npm/bin
 
-# 単語の区切り文字を指定する
+# terminal-notifier
+autoload -U add-zsh-hook
+export SYS_NOTIFIER="/Users/asonas/.rbenv/shims/terminal-notifier"
+source ~/.zsh.d/zsh-notify/notify.plugin.zsh
+export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
+
+#単語の区切り文字を指定する
 autoload -Uz select-word-style
 select-word-style default
 # ここで指定した文字は単語区切りとみなされる
