@@ -18,30 +18,24 @@ NeoBundle 'Shougo/vimproc', {
       \     'mac' : 'make -f make_mac.mak',
       \    },
       \ }
+
 NeoBundle 'tpope/vim-endwise.git'
 NeoBundle 'ruby-matchit'
 NeoBundle 'vim-scripts/dbext.vim'
-NeoBundle 'http://github.com/nathanaelkane/vim-indent-guides.git'
-NeoBundle 'http://github.com/mattn/benchvimrc-vim.git'
-
-" 補完
+NeoBundle 'git@github.com:nathanaelkane/vim-indent-guides.git'
+NeoBundle 'git@github.com:mattn/benchvimrc-vim.git'
 NeoBundle 'Shougo/neocomplcache.git'
 NeoBundle 'Shougo/neosnippet.git'
-
-" コメント
 NeoBundle 'tomtom/tcomment_vim'
-NeoBundle 'taichouchou2/surround.vim'
-
-" railsサポート
-NeoBundle 'taichouchou2/vim-rails'
+NeoBundle 'tpope/vim-surround'
 NeoBundle 'romanvbabenko/rails.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'ujihisa/unite-rake'
 NeoBundle 'basyura/unite-rails'
-
-" reference環境
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'taichouchou2/vim-ref-ri'
+NeoBundle 'ujihisa/unite-gem'
+NeoBundle 'h1mesuke/unite-outline'
+NeoBundle 'taka84u9/unite-git'
+NeoBundle 'sgur/unite-git_grep'
 
 " syntax
 NeoBundle 'haml.zip'
@@ -49,7 +43,8 @@ NeoBundle 'JavaScript-syntax'
 NeoBundle 'jQuery'
 NeoBundle 'nginx.vim'
 NeoBundle 'scrooloose/syntastic'
-NeoBundle 'git://github.com/kchmck/vim-coffee-script.git'
-NeoBundle 'git://github.com/groenewege/vim-less.git'
+NeoBundle 'git@github.com:kchmck/vim-coffee-script.git'
+NeoBundle 'git@github.com:groenewege/vim-less.git'
 NeoBundle 'beyondwords/vim-twig'
-NeoBundle 'https://github.com/slim-template/vim-slim.git'
+NeoBundle 'git@github.com:slim-template/vim-slim.git'
+NeoBundle 'git@github.com:rodjek/vim-puppet.git'
