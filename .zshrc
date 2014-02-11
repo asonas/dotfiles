@@ -55,7 +55,7 @@ export PATH=$PATH:/usr/local/share/npm/bin
 
 # terminal-notifier
 autoload -U add-zsh-hook
-export SYS_NOTIFIER="/Users/asonas/.rbenv/shims/terminal-notifier"
+export SYS_NOTIFIER="/Users/`whoami`/.rbenv/shims/terminal-notifier"
 source ~/.zsh.d/zsh-notify/notify.plugin.zsh
 export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
 
