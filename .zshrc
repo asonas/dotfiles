@@ -9,7 +9,7 @@ alias g="git"
 alias r="rails"
 alias rmstore="rm .DS_Store; rm */.DS_Store"
 alias rmstorer="rm **/.DS_Store"
-alias pserver='python -m SimpleHTTPServer'
+alias pythonserver='python -m SimpleHTTPServer'
 alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 
 ########################################
