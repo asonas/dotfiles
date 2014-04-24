@@ -59,6 +59,10 @@ export SYS_NOTIFIER="/Users/`whoami`/.rbenv/shims/terminal-notifier"
 source ~/.zsh.d/zsh-notify/notify.plugin.zsh
 export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
 
+# go
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+
 #単語の区切り文字を指定する
 autoload -Uz select-word-style
 select-word-style default
