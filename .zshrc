@@ -63,6 +63,8 @@ export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$PATH"
 
+setopt nolistbeep
+
 #単語の区切り文字を指定する
 autoload -Uz select-word-style
 select-word-style default
