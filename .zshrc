@@ -32,8 +32,8 @@ SAVEHIST=1000000
 # 1行表示
 # PROMPT="%~ %# "
 # 2行表示
-PROMPT="%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
-%# "
+PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
+%{$fg[blue]%}\`-%{${reset_color}%}%# "
 
 # personal bin directory
 export PATH="$HOME/dev/bin:$PATH"
