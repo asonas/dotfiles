@@ -1,9 +1,14 @@
 "" 共通設定
-syntax enable
-let g:hybrid_use_Xresources = 1
 colorscheme pyte
+
+"------------------------------------
+" MacVim
+"------------------------------------
+if has('gui_macvim')
+  colorscheme pyte
+endif
+
 set nocompatible
-" Ctrl+cでエスケープ
 imap <C-g> <esc>
 
 "" file系
@@ -75,7 +80,6 @@ set clipboard=unnamed
 "noremap <Up> :<C-u>set transparency+=5<Cr>
 "noremap <Down> :<C-u>set transparency-=5<Cr>
 
-
 " memo
 set noruler
 set showmatch
@@ -89,8 +93,6 @@ set tw=0
 au FileType ruby setlocal nowrap tabstop=8 tw=0 sw=2 expandtab
 
 autocmd FileType coffee set tabstop=2 shiftwidth=2
-
-"nnoremap <Esc><Esc> :set nohlsearch<CR>
 
 "------------------------------------
 " indent guides
@@ -111,13 +113,6 @@ set fileformats=unix,dos,mac
 " □とか○の文字があってもカーソル位置がずれないようにする
 if exists('&ambiwidth')
   set ambiwidth=double
-endif
-
-"------------------------------------
-" MacVim
-"------------------------------------
-if has('gui_macvim')
-  colorscheme pyte
 endif
 
 "------------------------------------
