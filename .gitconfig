@@ -1,9 +1,9 @@
 [user]
-    name = asonas
-    email = hzw1258@gmail.com
+  name = asonas
+  email = hzw1258@gmail.com
 [core]
-    excludesfile = ~/.gitignore
-    editor = vim -c \"set fenc=utf-8\"
+  excludesfile = /Users/fuji_seal/.gitignore
+  editor = vim -c \"set fenc=utf-8\"
 
 [pager]
   log = diff-highlight | less
@@ -36,4 +36,8 @@
     diff = true
 
 [branch]
-	autosetuprebase = always
+  autosetuprebase = always
+[merge]
+  confilictstyle = diff3
+[rebase]
+  autosquash = true
