@@ -12,6 +12,8 @@ alias rmstorer="rm **/.DS_Store"
 alias pythonserver='python -m SimpleHTTPServer'
 alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
+alias o='git ls-files | peco | xargs open'
+alias e='cd $(ghq list -p | peco)'
 
 ########################################
 # 環境変数
