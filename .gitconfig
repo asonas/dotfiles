@@ -31,6 +31,7 @@
     cp = cherry-pick
     tag = tag -n
     pr = pull --rebase
+    zoi = commit --allow-empty --message '[WIP] 今日も1日がんばるぞい！'
 [color]
     ui = true
     diff = true
