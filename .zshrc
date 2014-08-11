@@ -15,6 +15,10 @@ alias mm="middleman"
 alias o='git ls-files | peco | xargs open'
 alias e='cd $(ghq list -p | peco)'
 
+function randomstr() {
+  cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
+}
+
 ########################################
 # 環境変数
 export LANG=ja_JP.UTF-8
