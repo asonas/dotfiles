@@ -16,7 +16,7 @@
     delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
     st = status -sb
     df = diff
-    dfc = diff --cached
+    dfs = diff --staged
     co = checkout
     last = show -1 HEAD --stat -p
     me = log --author=asonas
