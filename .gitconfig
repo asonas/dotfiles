@@ -42,3 +42,5 @@
   confilictstyle = diff3
 [rebase]
   autosquash = true
+[ghq]
+  root = ~/go/src
