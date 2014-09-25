@@ -14,6 +14,7 @@ alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
 alias o='git ls-files | peco | xargs open'
 alias e='cd $(ghq list -p | peco)'
+alias br='bin/rails'
 
 function randomstr() {
   cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
