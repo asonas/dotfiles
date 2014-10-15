@@ -36,6 +36,9 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
 
+# http://d.hatena.ne.jp/Yoshiori/20120814/1344913023
+REPORTTIME=3
+
 # プロンプト
 # 1行表示
 # PROMPT="%~ %# "
