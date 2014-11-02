@@ -50,6 +50,7 @@ PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %
 export PATH="$HOME/dev/bin:$PATH"
 export PATH="$HOME/dev/local/bin:$PATH"
 export PATH="$HOME/dotfiles/script:$PATH"
+export PATH="/usr/local/heroku/bin:$PATH"
 
 # rbenv
 export PATH="$HOME/.rbenv/shims:$PATH"
