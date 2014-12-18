@@ -44,3 +44,13 @@
   autosquash = true
 [ghq]
   root = ~/go/src
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[github]
+	user = asonas
+[ghi]
+	token = !security find-internet-password -a  -s github.com -l 'ghi token' -w
