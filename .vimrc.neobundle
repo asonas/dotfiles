@@ -1,23 +1,26 @@
 "------------------------------------
 " NeoBundle
 "------------------------------------
-set nocompatible               " Be iMproved
-filetype off                   " Required!
-filetype plugin indent off     " Required!
-
-
 if has('vim_starting')
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
+
+  " Required:
+  set runtimepath+=/Users/asonas/.vim/bundle/neobundle.vim/
 endif
 
-call neobundle#rc(expand('~/.vim/bundle/'))
+" Required:
+call neobundle#begin(expand('/Users/asonas/.vim/bundle'))
 
-" その他
-NeoBundle 'Shougo/vimproc', {
-      \ 'build' : {
-      \     'mac' : 'make -f make_mac.mak',
-      \    },
-      \ }
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" Add or remove your Bundles here:
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'flazz/vim-colorschemes'
 
 NeoBundle 'tpope/vim-endwise.git'
 NeoBundle 'ruby-matchit'
@@ -26,6 +29,7 @@ NeoBundle 'git@github.com:nathanaelkane/vim-indent-guides.git'
 NeoBundle 'git@github.com:mattn/benchvimrc-vim.git'
 NeoBundle 'Shougo/neocomplcache.git'
 NeoBundle 'Shougo/neosnippet.git'
+NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'romanvbabenko/rails.vim'
@@ -49,3 +53,28 @@ NeoBundle 'beyondwords/vim-twig'
 NeoBundle 'git@github.com:slim-template/vim-slim.git'
 NeoBundle 'git@github.com:rodjek/vim-puppet.git'
 NeoBundle 'git@github.com:todesking/ruby_hl_lvar.vim.git'
+
+" You can specify revision/branch/tag.
+NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
+" Required:
+call neobundle#end()
+
+" Required:
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+
+NeoBundle 'Shougo/vimproc.vim', {
+\ 'build' : {
+\     'windows' : 'tools\\update-dll-mingw',
+\     'cygwin' : 'make -f make_cygwin.mak',
+\     'mac' : 'make -f make_mac.mak',
+\     'linux' : 'make',
+\     'unix' : 'gmake',
+\    },
+\ }
+
+
