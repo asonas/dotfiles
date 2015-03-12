@@ -58,7 +58,7 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 # android sdk
-export ANDROID_SDK_HOME=/Users/fuji_seal/dev/local/android/sdk
+export ANDROID_SDK_HOME=/Users/asonas/dev/local/android/sdk
 export PATH=$PATH:$ANDROID_SDK_HOME/tools
 export PATH=$PATH:$ANDROID_SDK_HOME/platform-tools
 

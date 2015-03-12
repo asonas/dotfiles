@@ -2,7 +2,7 @@
   name = asonas
   email = hzw1258@gmail.com
 [core]
-  excludesfile = /Users/fuji_seal/.gitignore
+  excludesfile = /Users/asonas/.gitignore
   editor = vim -c \"set fenc=utf-8\"
 
 [pager]
@@ -46,7 +46,7 @@
   root = ~/go/src
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+	path =
 [mergetool "sourcetree"]
 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
