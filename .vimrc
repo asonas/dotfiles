@@ -51,7 +51,6 @@ set autoindent smarttab
 set expandtab
 
 "" 入力
-set whichwrap=b,s,h,l,<,>,[,]
 " バックスペースでインデントや改行を削除できるようにする
 set backspace=2
 
