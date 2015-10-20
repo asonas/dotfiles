@@ -53,4 +53,4 @@
 [github]
 	user = asonas
 [ghi]
-	token = !security find-internet-password -a  -s github.com -l 'ghi token' -w
+	token = !security find-internet-password -a asonas -s github.com -l 'ghi token' -w
