@@ -133,12 +133,12 @@ command! -nargs=* Dash call <SID>dash(<f-args>)
 " 外部ファイル
 "------------------------------------
 " 補完関連
-source ~/dotfiles/.vimrc.completion
+source ~/.vimrc.completion
 
 " unite.vim
-source ~/dotfiles/.vimrc.unite
+source ~/.vimrc.unite
 
 " neobundle
-source ~/dotfiles/.vimrc.neobundle
+source ~/.vimrc.neobundle
 
 syntax on

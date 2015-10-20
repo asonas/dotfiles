@@ -3,4 +3,4 @@
 "-------------------------------------------------------------------------------
 
 " 補完にneocomplcacheを使う
-source ~/dotfiles/.vimrc.completion.neocomplcache
+source ~/.vimrc.completion.neocomplcache
