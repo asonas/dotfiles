@@ -16,6 +16,7 @@ alias o='git ls-files | peco | xargs open'
 alias e='cd $(ghq list -p | peco)'
 alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
 alias br='bin/rails'
+alias t='ghi show -w $(ghi list --sort updated | grep -v "open issue" | grep -v "Not Found" | peco | awk "{ print $1 }")'
 
 function randomstr() {
   cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
@@ -48,6 +49,7 @@ PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %
 %{$fg[blue]%}\`-%{${reset_color}%}%# "
 
 # personal bin directory
+export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/dev/bin:$PATH"
 export PATH="$HOME/dev/local/bin:$PATH"
 export PATH="$HOME/dotfiles/script:$PATH"
