@@ -68,12 +68,6 @@ export PATH=$PATH:$ANDROID_SDK_HOME/platform-tools
 # node
 export PATH=$PATH:/usr/local/share/npm/bin
 
-# terminal-notifier
-autoload -U add-zsh-hook
-export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
-source ~/.zsh.d/zsh-notify/notify.plugin.zsh
-export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
-
 # go
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$PATH"
@@ -87,13 +81,6 @@ select-word-style default
 # / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
 zstyle ':zle:*' word-chars " /=;@:{},|"
 zstyle ':zle:*' word-style unspecified
-
-########################################
-# 補完
-# 補完機能を有効にする
-fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
-autoload -Uz compinit
-compinit
 
 # 補完で小文字でも大文字にマッチさせる
 #zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -212,6 +199,20 @@ case ${OSTYPE} in
     alias ls='ls -G -F'
     # z
     . `brew --prefix`/etc/profile.d/z.sh
+
+    ########################################
+    # 補完
+    # 補完機能を有効にする
+    fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
+    autoload -Uz compinit
+    compinit
+
+    # terminal-notifier
+    autoload -U add-zsh-hook
+    export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
+    source ~/.zsh.d/zsh-notify/notify.plugin.zsh
+    export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
+
     ;;
   linux*)
     #Linux用の設定
