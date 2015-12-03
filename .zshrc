@@ -45,7 +45,7 @@ REPORTTIME=3
 # 1行表示
 # PROMPT="%~ %# "
 # 2行表示
-PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
+PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n@%m%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
 %{$fg[blue]%}\`-%{${reset_color}%}%# "
 
 # personal bin directory
@@ -232,3 +232,4 @@ function precmd () {
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
