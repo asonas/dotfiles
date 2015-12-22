@@ -1,0 +1,8 @@
+#! /usr/bin/env ruby
+
+require 'pry'
+require 'streamio-ffmpeg'
+video = FFMPEG::Movie.new(ARGV[0])
+height, width = video.dar.split(":")
+puts "1x", "#{height}x#{width}"
+puts "2x", "#{height.to_i * 2}x#{width.to_i * 2}"
