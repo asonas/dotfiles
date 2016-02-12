@@ -9,3 +9,9 @@ miserarenaiyo/*
 
 .vim/.netrwhist
 
+.atom/.apm/
+.atom/.node-gyp/
+.atom/blob-store/
+.atom/packages/
+.atom/compile-cache/
+.atom/storage/

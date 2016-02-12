@@ -1,0 +1,31 @@
+.editor {
+  font-family: "SourceHanCodeJP-Light";
+  font-size: 10px;
+}
+.list-group li:not(.list-nested-item),
+.list-tree li:not(.list-nested-item),
+.list-group li.list-nested-item > .list-item,
+.list-tree li.list-nested-item > .list-item {
+  line-height: 21px; /* 同じ値 */
+}
+
+li.directory.entry.list-nested-item.project-root.selected::before {
+  height: 31px; /* ディレクトリのハイライトはそのまま */
+}
+
+.list-group .selected::before,
+.list-tree .selected::before {
+  height: 21px; /* 同じ値 */
+}
+
+/* 一部の icomoon アイコンに top が指定されていてズレるため調整 */
+.icon-file-text[data-name$=".scss"]:before,
+.icon-file-text[data-name$=".sass"]:before,
+.icon-file-text[data-name$=".npm"]:before,
+.icon-file-text[data-name$=".gulp"]:before {
+  font-family: "icomoon";
+  font-size: small;
+  text-align: center;
+  content: "\e603";
+  color: #825078;
+}

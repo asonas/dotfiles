@@ -1,0 +1,85 @@
+"*":
+  "atom-beautify":
+    _analyticsUserId: "73e6f173-9936-47fa-80f6-07808c530d32"
+  "atom-color-highlight": {}
+  "autoclose-html": {}
+  autocomplete:
+    includeCompletionsFromAllBuffers: true
+  "autocomplete-plus":
+    confirmCompletion: "enter"
+    navigateCompletions: "ctrl-p,ctrl-n"
+  "circle-ci":
+    apiToken: "2918d48a06884aa0da3c1fddf772eaefc12be37a"
+  core:
+    disabledPackages: [
+      "autocomplete-plus-async"
+      "autocomplete-paths"
+      "minimap"
+    ]
+    ignoredNames: [
+      ".git"
+      ".svn"
+      ".DS_Store"
+    ]
+    themes: [
+      "atom-light-ui"
+      "atom-light-syntax"
+    ]
+  editor:
+    backUpBeforeSaving: true
+    invisibles: {}
+    showIndentGuide: true
+    showInvisibles: true
+  "exception-reporting":
+    userId: "9ebdf3a9-333a-7b8b-8a59-ab554ea75b9c"
+  "gradle-ci": {}
+  linter:
+    ignoredLinterErrors: [
+      "puppet"
+    ]
+    subtleLinterErrors: [
+      "puppet-lint"
+    ]
+  metrics:
+    userId: "bc5b4df346cb2328f9710e748036ab990065df86"
+  minimap:
+    plugins:
+      "color-highlight": true
+      "git-diff": true
+      pigments: true
+  "release-notes":
+    viewedVersion: "0.94.0"
+  "tree-view": {}
+  "vim-mode":
+    useClipboardAsDefaultRegister: true
+  wakatime:
+    apikey: "2dbb76ad-2719-4319-a437-a4b8c45f002f"
+    ignore: [
+      "^/var/"
+      "^/tmp/"
+      "^/private/"
+      "COMMIT_EDITMSG$"
+      "PULLREQ_EDITMSG$"
+      "MERGE_MSG$"
+    ]
+  welcome:
+    showOnStartup: false
+  whitespace:
+    ignoreWhitespaceOnCurrentLine: false
+  "xml-formatter": {}
+".platform-darwin":
+  "cmd-k d down": "pane:split-down"
+  "cmd-k d left": "pane:split-left"
+  "cmd-k d right": "pane:split-right"
+  "cmd-k d up": "pane:split-up"
+  "cmd-k down": "pane:split-down-creating-empty-pane"
+  "cmd-k left": "pane:split-left-creating-empty-pane"
+  "cmd-k m down": "pane:split-down-moving-current-tab"
+  "cmd-k m left": "pane:split-left-moving-current-tab"
+  "cmd-k m right": "pane:split-right-moving-current-tab"
+  "cmd-k m up": "pane:split-up-moving-current-tab"
+  "cmd-k right": "pane:split-right-creating-empty-pane"
+  "cmd-k up": "pane:split-up-creating-empty-pane"
+".slim.text":
+  whitespace:
+    removeTrailingWhitespace: true
