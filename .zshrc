@@ -14,6 +14,7 @@ alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
 alias o='git ls-files | peco | xargs open'
 alias e='cd $(ghq list -p | peco)'
+alias n='atom $(find node_modules -maxdepth 1 -type d | peco)'
 alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
 alias br='bin/rails'
 alias t='ghi show -w $(ghi list --sort updated | grep -v "open issue" | grep -v "Not Found" | peco | awk "{ print $1 }")'
@@ -231,3 +232,6 @@ function precmd () {
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+
+export NVM_DIR="/Users/asonas/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
