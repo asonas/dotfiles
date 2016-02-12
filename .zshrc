@@ -120,11 +120,6 @@ setopt no_flow_control
 # '#' 以降をコメントとして扱う
 setopt interactive_comments
 
-# cd したら自動的にpushdする
-setopt auto_pushd
-# 重複したディレクトリを追加しない
-setopt pushd_ignore_dups
-
 # = の後はパス名として補完する
 setopt magic_equal_subst
 
