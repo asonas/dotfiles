@@ -27,6 +27,7 @@
     ]
   editor:
     backUpBeforeSaving: true
+    fontSize: 15
     invisibles: {}
     showIndentGuide: true
     showInvisibles: true

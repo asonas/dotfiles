@@ -25,4 +25,5 @@
 
 '.platform-darwin .tree-view':
   'i': 'tree-view:open-selected-entry-down'
+  's': 'tree-view:open-selected-entry-right'
   't': 'tree-view:open-selected-entry'
