@@ -19,6 +19,8 @@
 
 '.editor':
   'ctrl-g': 'core:escape'
+  'ctrl-j ctrl-v': 'pane:split-right'
+  'ctrl-j ctrl-s': 'pane:split-down'
 
 '.editor:not(.mini)':
   'alt-tab': 'editor:auto-indent'
