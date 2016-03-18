@@ -56,6 +56,10 @@ export PATH="$HOME/dev/local/bin:$PATH"
 export PATH="$HOME/dotfiles/script:$PATH"
 export PATH="/usr/local/heroku/bin:$PATH"
 
+# pyenv
+export PYENV_ROOT=/usr/local/var/pyenv
+eval "$(pyenv init -)"
+
 # rbenv
 export PATH="$HOME/.rbenv/shims:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
