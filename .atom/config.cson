@@ -14,7 +14,6 @@
     disabledPackages: [
       "autocomplete-plus-async"
       "autocomplete-paths"
-      "minimap"
     ]
     ignoredNames: [
       ".git"
@@ -46,6 +45,8 @@
   minimap:
     plugins:
       "color-highlight": true
+      cursorline: true
+      "find-and-replace": true
       "git-diff": true
       pigments: true
   "release-notes":
