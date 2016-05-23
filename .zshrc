@@ -231,3 +231,9 @@ export PATH="/usr/local/sbin:$PATH"
 
 export NVM_DIR="/Users/asonas/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/asonas/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+#source '/Users/asonas/google-cloud-sdk/completion.zsh.inc'
