@@ -93,6 +93,8 @@ au FileType ruby setlocal nowrap tabstop=8 tw=0 sw=2 expandtab
 
 autocmd FileType coffee set tabstop=2 shiftwidth=2
 
+let g:vim_json_syntax_conceal = 0
+
 "------------------------------------
 " indent guides
 "------------------------------------
