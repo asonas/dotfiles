@@ -208,6 +208,11 @@ case ${OSTYPE} in
     source ~/.zsh.d/zsh-notify/notify.plugin.zsh
     export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
 
+    # The next line updates PATH for the Google Cloud SDK.
+    source '/Users/asonas/google-cloud-sdk/path.zsh.inc'
+    # The next line enables shell command completion for gcloud.
+    #source '/Users/asonas/google-cloud-sdk/completion.zsh.inc'
+
     ;;
   linux*)
     #Linux用の設定
@@ -230,11 +235,9 @@ function precmd () {
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 
-export NVM_DIR="/Users/asonas/.nvm"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-# The next line updates PATH for the Google Cloud SDK.
-source '/Users/asonas/google-cloud-sdk/path.zsh.inc'
-
-# The next line enables shell command completion for gcloud.
-#source '/Users/asonas/google-cloud-sdk/completion.zsh.inc'
