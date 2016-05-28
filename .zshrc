@@ -55,6 +55,7 @@ export PATH="$HOME/dev/bin:$PATH"
 export PATH="$HOME/dev/local/bin:$PATH"
 export PATH="$HOME/dotfiles/script:$PATH"
 export PATH="/usr/local/heroku/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
 
 # pyenv
 export PYENV_ROOT=/usr/local/var/pyenv
