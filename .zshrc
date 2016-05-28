@@ -215,7 +215,7 @@ case ${OSTYPE} in
 esac
 
 # vim:set ft=zsh:
-
+source "$HOME/.zsh.d/z/z.sh"
 function precmd () {
   # z
   z --add "$(pwd -P)"
