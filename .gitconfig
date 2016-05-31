@@ -42,6 +42,7 @@
     amend = commit --amend
     nevermind = !git reset --hard HEAD && git clean -d -f
     remotes = remote -v
+    cleanup = remote prune origin
 [color]
     ui = true
     diff = true
