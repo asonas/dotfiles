@@ -58,7 +58,7 @@
   "vim-mode":
     useClipboardAsDefaultRegister: true
   wakatime:
-    apikey: "2dbb76ad-2719-4319-a437-a4b8c45f002f"
+    apikey: "Saved in your ~/.wakatime.cfg file"
     ignore: [
       "^/var/"
       "^/tmp/"
@@ -67,6 +67,8 @@
       "PULLREQ_EDITMSG$"
       "MERGE_MSG$"
     ]
+  "wakatime-hidden":
+    lastInit: 1465382273
   welcome:
     showOnStartup: false
   whitespace:
