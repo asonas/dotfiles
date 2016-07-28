@@ -140,7 +140,6 @@ source ~/.vimrc.completion
 " unite.vim
 source ~/.vimrc.unite
 
-" neobundle
-source ~/.vimrc.neobundle
+source ~/.vimrc.dein
 
 syntax on

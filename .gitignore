@@ -8,6 +8,7 @@ miserarenaiyo/*
 .bash_profile
 
 .vim/.netrwhist
+.vim/dein
 
 .atom/.apm/
 .atom/.node-gyp/
