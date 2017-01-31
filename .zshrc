@@ -58,7 +58,7 @@ export PATH="/usr/local/bin:$PATH"
 
 # pyenv
 export PYENV_ROOT=/usr/local/var/pyenv
-eval "$(pyenv init -)"
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # rbenv
 export PATH="$HOME/.rbenv/shims:$PATH"
@@ -233,10 +233,6 @@ function precmd () {
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
