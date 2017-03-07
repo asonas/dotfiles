@@ -213,6 +213,7 @@ case ${OSTYPE} in
     # The next line enables shell command completion for gcloud.
     #source '/Users/asonas/google-cloud-sdk/completion.zsh.inc'
 
+    test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
     ;;
   linux*)
     #Linux用の設定
