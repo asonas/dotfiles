@@ -16,6 +16,7 @@ alias o='git ls-files | peco | xargs open'
 alias e='cd $(ghq list -p | peco)'
 alias n='atom $(find node_modules -maxdepth 1 -type d | peco)'
 alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
+alias sd='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep deploy|peco|awk "{print \$2}")'
 alias br='bin/rails'
 alias t='ghi show -w $(ghi list --sort updated | grep -v "open issue" | grep -v "Not Found" | peco | awk "{ print $1 }")'
 
