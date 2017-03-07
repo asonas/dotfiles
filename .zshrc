@@ -1,3 +1,5 @@
+#zmodload zsh/zprof && zprof
+
 # see also
 # https://gist.github.com/mollifier/4979906
 
@@ -243,3 +245,7 @@ nvm() {
     source "${NVM_DIR:-$HOME/.nvm}/nvm.sh"
     nvm "$@"
 }
+
+#if (which zprof > /dev/null) ;then
+#  zprof | less
+#fi
