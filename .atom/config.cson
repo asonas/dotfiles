@@ -20,13 +20,16 @@
       ".svn"
       ".DS_Store"
     ]
+    telemetryConsent: "limited"
     themes: [
       "atom-light-ui"
       "atom-light-syntax"
     ]
   editor:
     backUpBeforeSaving: true
+    fontSize: 40
     invisibles: {}
+    preferredLineLength: 120
     showIndentGuide: true
     showInvisibles: true
   "exception-reporting":
@@ -68,7 +71,7 @@
       "MERGE_MSG$"
     ]
   "wakatime-hidden":
-    lastInit: 1465382273
+    lastInit: 1488873972
   welcome:
     showOnStartup: false
   whitespace:
