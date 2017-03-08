@@ -21,6 +21,7 @@ alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \
 alias sd='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep deploy|peco|awk "{print \$2}")'
 alias br='bin/rails'
 alias t='ghi show -w $(ghi list --sort updated | grep -v "open issue" | grep -v "Not Found" | peco | awk "{ print $1 }")'
+alias dc='docker-compose'
 
 function randomstr() {
   cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
