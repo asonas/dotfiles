@@ -10,6 +10,9 @@ miserarenaiyo/*
 .vim/.netrwhist
 .vim/dein
 
+dump.rdb
+npm-debug.log
+
 .atom/.apm/
 .atom/.node-gyp/
 .atom/blob-store/
