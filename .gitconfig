@@ -50,7 +50,7 @@
 [branch]
   autosetuprebase = always
 [merge]
-  confilictstyle = diff3
+  conflictstyle = merge
 [rebase]
   autosquash = true
 [ghq]
