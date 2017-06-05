@@ -14,6 +14,8 @@
     disabledPackages: [
       "autocomplete-plus-async"
       "autocomplete-paths"
+      "vim-mode"
+      "cute-cursor"
     ]
     ignoredNames: [
       ".git"
@@ -27,6 +29,8 @@
     ]
   editor:
     backUpBeforeSaving: true
+    fontFamily: "SourceCodePro-ExtraLight"
+    fontSize: 21
     invisibles: {}
     preferredLineLength: 120
     showIndentGuide: true
@@ -45,6 +49,8 @@
     disableWhenNoConfigFile: true
   "linter-slim": {}
   "linter-textlint": {}
+  "linter-ui-default":
+    panelHeight: 81
   metrics:
     userId: "bc5b4df346cb2328f9710e748036ab990065df86"
   minimap:
@@ -74,7 +80,7 @@
       "MERGE_MSG$"
     ]
   "wakatime-hidden":
-    lastInit: 1488892660
+    lastInit: 1494304274
   welcome:
     showOnStartup: false
   whitespace:
