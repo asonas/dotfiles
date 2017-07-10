@@ -29,7 +29,7 @@
     ]
   editor:
     backUpBeforeSaving: true
-    fontFamily: "SourceCodePro-ExtraLight"
+    fontFamily: "SourceHanCodeJP-ExtraLight"
     fontSize: 21
     invisibles: {}
     preferredLineLength: 120
