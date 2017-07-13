@@ -14,7 +14,6 @@
     disabledPackages: [
       "autocomplete-plus-async"
       "autocomplete-paths"
-      "vim-mode"
       "cute-cursor"
     ]
     ignoredNames: [
@@ -47,10 +46,14 @@
     ]
   "linter-rubocop":
     disableWhenNoConfigFile: true
+  "linter-scss-lint":
+    disableWhenNoConfigFileInPath: true
   "linter-slim": {}
   "linter-textlint": {}
   "linter-ui-default":
     panelHeight: 81
+  "markdown-preview":
+    useGitHubStyle: true
   metrics:
     userId: "bc5b4df346cb2328f9710e748036ab990065df86"
   minimap:
