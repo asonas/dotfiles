@@ -15,6 +15,7 @@
       "autocomplete-plus-async"
       "autocomplete-paths"
       "cute-cursor"
+      "vim-mode"
     ]
     ignoredNames: [
       ".git"
