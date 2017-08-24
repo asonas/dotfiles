@@ -48,11 +48,23 @@ SAVEHIST=1000000
 # http://d.hatena.ne.jp/Yoshiori/20120814/1344913023
 REPORTTIME=3
 
+function current_branch() {
+  git branch | grep \* | awk '{print $2}'
+}
+
+function git-diff-numstat-additions() {
+  git diff $(current_branch)..master --numstat | awk 'NF==3 {plus+=$2} END {printf("+%\047d", plus)}'
+}
+
+function git-diff-numstat-deletions() {
+  git diff $(current_branch)..master --numstat | awk 'NF==3 {minus+=$1} END {printf("+%\047d", minus)}'
+}
+
 # プロンプト
 # 1行表示
 # PROMPT="%~ %# "
 # 2行表示
-PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n@%m%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
+PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n@%m%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)[%F{green}$(git-diff-numstat-additions)%f %F{red}$(git-diff-numstat-deletions)%f]
 %{$fg[blue]%}\`-%{${reset_color}%}%# "
 
 # personal bin directory
