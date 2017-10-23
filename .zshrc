@@ -220,10 +220,10 @@ case ${OSTYPE} in
     compinit
 
     # terminal-notifier
-    autoload -U add-zsh-hook
-    export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
-    source ~/.zsh.d/zsh-notify/notify.plugin.zsh
-    export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
+    #autoload -U add-zsh-hook
+    #export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
+    #source ~/.zsh.d/zsh-notify/notify.plugin.zsh
+    #export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
 
     # The next line updates PATH for the Google Cloud SDK.
     source '/Users/asonas/google-cloud-sdk/path.zsh.inc'
