@@ -64,7 +64,7 @@ function git-diff-numstat-deletions() {
 # 1行表示
 # PROMPT="%~ %# "
 # 2行表示
-PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n@%m%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)[%F{green}$(git-diff-numstat-additions)%f %F{red}$(git-diff-numstat-deletions)%f]
+PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n@%m%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
 %{$fg[blue]%}\`-%{${reset_color}%}%# "
 
 # personal bin directory
