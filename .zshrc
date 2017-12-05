@@ -8,7 +8,6 @@
 
 alias be="bundle exec"
 alias g="git"
-alias r="rails"
 alias rmstore="rm .DS_Store; rm */.DS_Store"
 alias rmstorer="rm **/.DS_Store"
 alias pythonserver='python -m SimpleHTTPServer'
@@ -21,6 +20,7 @@ alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \
 alias sd='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep deploy|peco|awk "{print \$2}")'
 alias br='bin/rails'
 alias t='ghi show -w $(ghi list --sort updated | grep -v "open issue" | grep -v "Not Found" | peco | awk "{ print $1 }")'
+alias r="bin/rails routes | peco | sed 's/[ \t]*//' | awk -F ' ' '{ print \$1 }' | perl -pe 's/\n//g' | pbcopy"
 alias dc='docker-compose'
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 alias pwdc="ruby -rfileutils -e \"print FileUtils.pwd.gsub(' ', '\ ').gsub('(', '\(').gsub(')', '\)')\" | pbcopy"
