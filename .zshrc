@@ -29,6 +29,13 @@ function randomstr() {
   cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
 }
 
+function new() {
+  repo="$(ghq root)/github.com/asonas/$1"
+  mkdir -p $repo
+  cd $repo
+  git init
+}
+
 ########################################
 # 環境変数
 export LANG=ja_JP.UTF-8
