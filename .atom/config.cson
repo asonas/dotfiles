@@ -1,4 +1,9 @@
 "*":
+  "activate-power-mode":
+    playAudio: {}
+    plugins:
+      playAudio: false
+      screenShake: true
   "atom-beautify":
     _analyticsUserId: "73e6f173-9936-47fa-80f6-07808c530d32"
   "atom-color-highlight": {}
