@@ -12,6 +12,7 @@ miserarenaiyo/*
 
 dump.rdb
 npm-debug.log
+.zsh.d/personal
 
 .atom/.apm/
 .atom/.node-gyp/

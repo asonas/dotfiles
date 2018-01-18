@@ -258,6 +258,8 @@ function precmd () {
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+source ~/.zsh.d/personal
 # nvm() {
 #    unset -f nvm
 #    source "${NVM_DIR:-$HOME/.nvm}/nvm.sh"
