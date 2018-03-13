@@ -14,6 +14,7 @@ alias pythonserver='python -m SimpleHTTPServer'
 alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
 alias o='git ls-files | peco | xargs open'
+alias oa='git ls-files | peco | xargs atom'
 alias e='cd $(ghq list -p | peco)'
 alias n='atom $(find node_modules -maxdepth 1 -type d | peco)'
 alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
