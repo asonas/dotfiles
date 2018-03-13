@@ -6,6 +6,7 @@ miserarenaiyo/*
 *.swn
 .vim/bundle
 .bash_profile
+tmp
 
 .vim/.netrwhist
 .vim/dein
