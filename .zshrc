@@ -223,8 +223,6 @@ case ${OSTYPE} in
     #Mac用の設定
     export CLICOLOR=1
     alias ls='ls -G -F'
-    # z
-    . `brew --prefix`/etc/profile.d/z.sh
 
     ########################################
     # 補完
@@ -239,29 +237,12 @@ case ${OSTYPE} in
     #source ~/.zsh.d/zsh-notify/notify.plugin.zsh
     #export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
 
-    # The next line updates PATH for the Google Cloud SDK.
-    source '/Users/asonas/google-cloud-sdk/path.zsh.inc'
-    # The next line enables shell command completion for gcloud.
-    #source '/Users/asonas/google-cloud-sdk/completion.zsh.inc'
-
     test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
     ;;
   linux*)
     #Linux用の設定
     ;;
 esac
-
-# vim:set ft=zsh:
-source "$HOME/.zsh.d/z/z.sh"
-function precmd () {
-  # z
-  z --add "$(pwd -P)"
-
-  # VCS
-  psvar=()
-  LANG=en_US.UTF-8 vcs_info
-  [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-}
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
