@@ -37,6 +37,12 @@ function new() {
   git init
 }
 
+function rnew() {
+  root="$(ghq root)/github.com/asonas/"
+  cd $root
+  rails new $1
+}
+
 ########################################
 # 環境変数
 export LANG=ja_JP.UTF-8
