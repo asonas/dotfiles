@@ -78,8 +78,8 @@ function git-diff-numstat-deletions() {
 # 1行表示
 # PROMPT="%~ %# "
 # 2行表示
-PROMPT="%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n@%m%{${reset_color}%}:%~ %1(v|%F{magenta}%1v%f|)
-%{$fg[blue]%}\`-%{${reset_color}%}%# "
+PROMPT='%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n@%m%{${reset_color}%}:%~ ${vcs_info_msg_0_}
+%{$fg[blue]%}\`-%{${reset_color}%}%# '
 
 # personal bin directory
 export PATH="$HOME/bin:$PATH"
@@ -139,8 +139,10 @@ a() { git add $*; git status -s }
 # vcs_info
 
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats '(%b)'
+zstyle ':vcs_info:*' formats '%F{magenta}(%b)%f'
 zstyle ':vcs_info:*' actionformats '(%b|%a)'
+setopt prompt_subst
+precmd() { vcs_info }
 
 ########################################
 # オプション
