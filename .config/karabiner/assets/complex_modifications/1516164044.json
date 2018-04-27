@@ -19,6 +19,23 @@
             ]
         },
         {
+            "description": "ctrl-open_bracket to Enter",
+            "manipulators": [
+               {
+                    "from": {
+                        "key_code": "open_bracket",
+                        "modifiers": { "mandatory": "control" }
+                    },
+                    "to": [
+                        {
+                            "key_code": "return_or_enter"
+                        }
+                    ],
+                    "type": "basic"
+                }
+            ]
+        },
+        {
           "description": "right-cmd to swap ime",
           "manipulators": [
             {
