@@ -140,7 +140,7 @@ a() { git add $*; git status -s }
 
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats '%F{magenta}(%b)%f'
-zstyle ':vcs_info:*' actionformats '(%b|%a)'
+zstyle ':vcs_info:*' actionformats '%F{magenta}(%b|%a)%f'
 setopt prompt_subst
 precmd() { vcs_info }
 
