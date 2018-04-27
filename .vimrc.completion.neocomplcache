@@ -17,7 +17,6 @@ if !exists('g:neocomplcache_include_paths')
   let g:neocomplcache_include_paths = {}
 endif
 
-imap <C-F> <Plug>(neocomplcache_snippets_expand)
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
