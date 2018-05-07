@@ -1,5 +1,5 @@
 bind main o !hub browse -- commit/%(commit)
 bind diff o !hub browse -- commit/%(commit)
 bind log o !hub browse -- commit/%(commit)
-bind generic c !@sh -c "echo %(commit) | pbcopy
+bind generic c !@git pbcopy %(commit)
 bind main R !?git rebase -i %(commit)
