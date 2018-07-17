@@ -37,10 +37,10 @@ function new() {
   git init
 }
 
-function rnew() {
+function rails_new() {
   root="$(ghq root)/github.com/asonas/"
   cd $root
-  rails new $1
+  rails new --databse postgresql $1
 }
 
 ########################################
