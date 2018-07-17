@@ -21,3 +21,5 @@ npm-debug.log
 .atom/packages/
 .atom/compile-cache/
 .atom/storage/
+
+.gitconfig-private

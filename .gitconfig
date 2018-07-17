@@ -1,6 +1,6 @@
 [user]
-  name = asonas
-  email = hzw1258@gmail.com
+  name = Yuya Fujiwara
+  email = asonas@cookpad.com
 [core]
   excludesfile = /Users/asonas/.gitignore
   editor = vim -c \"set fenc=utf-8\"
@@ -66,3 +66,5 @@
 	user = asonas
 [ghi]
 	token = !security find-internet-password -a asonas -s github.com -l 'ghi token' -w
+[include]
+  path = ~/.gitconfig-private
