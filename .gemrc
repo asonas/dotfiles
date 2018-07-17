@@ -8,4 +8,3 @@
 install: --no-document
 update: --no-document
 gemsrc_use_ghq: true
-gemsrc_clone_root: ~/src
