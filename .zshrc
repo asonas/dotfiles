@@ -25,6 +25,7 @@ alias r="bin/rails routes | peco | sed 's/[ \t]*//' | awk -F ' ' '{ print \$1 }'
 alias dc='docker-compose'
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 alias pwdc="ruby -rfileutils -e \"print FileUtils.pwd.gsub(' ', '\ ').gsub('(', '\(').gsub(')', '\)')\" | pbcopy"
+alias nv="nvim"
 
 function randomstr() {
   cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo

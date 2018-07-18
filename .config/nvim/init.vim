@@ -1,5 +1,5 @@
 set number
-colorscheme pyte
+colorscheme monokai
 filetype on
   
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
@@ -14,6 +14,17 @@ nnoremap <silent> <Space>q :quit<CR>
 nnoremap <silent> <Space>Q :quit!<CR>
 nnoremap <silent> <Space>e :wq<CR>
 nnoremap <silent> <Space><Space> :w<CR>
+
+
+imap <C-p> <Up>
+imap <C-n> <Down>
+imap <C-b> <Left>
+imap <C-f> <Right>
+imap <C-a> <C-o>:call <SID>home()<CR>
+imap <C-e> <End>
+imap <C-d> <Del>
+imap <C-h> <BS>
+imap <C-k> <C-r>=<SID>kill()<CR>
 
 nmap <silent> <Space>p :NERDTreeToggle<CR>
 set guifont=SourceCodePro-Regular:h12
