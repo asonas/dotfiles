@@ -41,7 +41,7 @@ function new() {
 function rails_new() {
   root="$(ghq root)/github.com/asonas/"
   cd $root
-  rails new --databse postgresql $1
+  rails new --database postgresql $1
 }
 
 ########################################
