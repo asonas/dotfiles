@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+brew install tmux zsh go peco
+go get github.com/motemen/ghq
+sudo chsh zsh
