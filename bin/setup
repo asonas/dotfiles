@@ -4,5 +4,5 @@ set -e
 brew install tmux zsh go peco
 go get github.com/motemen/ghq
 
-sudo echo $(which zsh) >> /etc/shells
+sudo sh -c "echo $(which zsh) >> /etc/shells"
 sudo chsh -s $(which zsh)
