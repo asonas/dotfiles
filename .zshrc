@@ -261,3 +261,6 @@ source ~/.zsh.d/personal
 #if (which zprof > /dev/null) ;then
 #  zprof | less
 #fi
+
+# heroku autocomplete setup
+HEROKU_AC_ZSH_SETUP_PATH=/Users/asonas/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
