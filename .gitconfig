@@ -3,7 +3,7 @@
   email = asonas@cookpad.com
 [core]
   excludesfile = /Users/asonas/.gitignore
-  editor = vim -c \"set fenc=utf-8\"
+  editor = nvim -c \"set fenc=utf-8\"
 
 [pager]
   log = diff-highlight | less

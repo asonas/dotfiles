@@ -1,7 +1,7 @@
 set number
-colorscheme monokai
+colorscheme Molokai
 filetype on
-  
+
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
 match ZenkakuSpace /　/
 
@@ -15,7 +15,6 @@ nnoremap <silent> <Space>Q :quit!<CR>
 nnoremap <silent> <Space>e :wq<CR>
 nnoremap <silent> <Space><Space> :w<CR>
 
-
 imap <C-p> <Up>
 imap <C-n> <Down>
 imap <C-b> <Left>
@@ -28,9 +27,11 @@ imap <C-k> <C-r>=<SID>kill()<CR>
 
 nmap <silent> <Space>p :NERDTreeToggle<CR>
 set guifont=SourceCodePro-Regular:h12
- 
+
 let NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 40
+let g:python_host_prog = expand('/usr/bin/python')
+let g:python3_host_prog = expand('/opt/brew/bin/python3')
 
 if &compatible
   set nocompatible
@@ -60,6 +61,7 @@ call dein#add('tomtom/tcomment_vim')
 call dein#add('tpope/vim-surround')
 call dein#add('vim-ruby/vim-ruby')
 call dein#add('romanvbabenko/rails.vim')
+call dein#add('Shougo/denite.nvim')
 call dein#add('Shougo/unite.vim')
 call dein#add('ujihisa/unite-rake')
 call dein#add('sorah/unite-ghq')
@@ -69,6 +71,7 @@ call dein#add('taka84u9/unite-git')
 call dein#add('sgur/unite-git_grep')
 call dein#add('todesking/ruby_hl_lvar.vim')
 call dein#add('git@github.com:todesking/ruby_hl_lvar.vim.git')
+call dein#add('tomasr/molokai')
 
 call dein#add('vim-scripts/haml.zip')
 call dein#add('vim-scripts/JavaScript-syntax')
