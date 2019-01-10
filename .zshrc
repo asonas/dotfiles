@@ -89,6 +89,7 @@ export PATH="$HOME/dev/bin:$PATH"
 export PATH="$HOME/dev/local/bin:$PATH"
 export PATH="$HOME/dotfiles/script:$PATH"
 export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
 
 # pyenv
 export PYENV_ROOT=/usr/local/var/pyenv
@@ -261,6 +262,7 @@ source ~/.zsh.d/personal
 #if (which zprof > /dev/null) ;then
 #  zprof | less
 #fi
+export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
 
 # heroku autocomplete setup
 HEROKU_AC_ZSH_SETUP_PATH=/Users/asonas/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
