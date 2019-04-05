@@ -233,6 +233,8 @@ case ${OSTYPE} in
     # 補完
     # 補完機能を有効にする
     fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
+    fpath=(~/.zsh/completions $fpath)
+    alias git=hub
     autoload -Uz compinit
     compinit
 
