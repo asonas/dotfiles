@@ -23,3 +23,7 @@ npm-debug.log
 .atom/storage/
 
 .gitconfig-private
+
+.config/exercism/user.json
+.config/hub
+.config/configstore
