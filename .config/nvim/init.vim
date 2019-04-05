@@ -1,5 +1,4 @@
 set number
-colorscheme Molokai
 filetype on
 
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
