@@ -27,3 +27,6 @@ npm-debug.log
 .config/exercism/user.json
 .config/hub
 .config/configstore
+
+.idea/
+.generators
