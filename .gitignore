@@ -9,7 +9,10 @@ miserarenaiyo/*
 tmp
 
 .vim/.netrwhist
-.vim/dein
+.vim/dein/.cache
+.vim/dein/cache_nvim
+.vim/dein/state_nvim.vim
+.vim/dein/repos
 
 dump.rdb
 npm-debug.log

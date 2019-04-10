@@ -27,6 +27,8 @@ imap <C-k> <C-r>=<SID>kill()<CR>
 nmap <silent> <Space>p :NERDTreeToggle<CR>
 set guifont=SourceCodePro-Regular:h12
 
+autocmd BufWritePre * :%s/\s\+$//ge
+
 let NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 40
 let g:python_host_prog = expand('/usr/bin/python')
@@ -38,47 +40,14 @@ endif
 
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 
-call dein#begin(expand('~/dotfiles/.vim/dein'))
+let s:dein_dir = expand('~/.vim/dein')
 
-call dein#add('Shougo/dein.vim')
-call dein#add('Shougo/vimproc.vim', {'build': 'make'})
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
 
-call dein#add('Shougo/neocomplete.vim')
-call dein#add('Shougo/neomru.vim')
-call dein#add('scrooloose/nerdtree')
-call dein#add('Shougo/neosnippet')
-call dein#add('tpope/vim-fugitive')
-call dein#add('ctrlpvim/ctrlp.vim')
-call dein#add('flazz/vim-colorschemes')
-call dein#add('tpope/vim-endwise.git')
-call dein#add('vim-scripts/ruby-matchit')
-call dein#add('vim-scripts/dbext.vim')
-call dein#add('git@github.com:nathanaelkane/vim-indent-guides.git')
-call dein#add('git@github.com:mattn/benchvimrc-vim.git')
-call dein#add('Shougo/neocomplcache.git')
-call dein#add('tomtom/tcomment_vim')
-call dein#add('tpope/vim-surround')
-call dein#add('vim-ruby/vim-ruby')
-call dein#add('romanvbabenko/rails.vim')
-call dein#add('Shougo/denite.nvim')
-call dein#add('Shougo/unite.vim')
-call dein#add('ujihisa/unite-rake')
-call dein#add('sorah/unite-ghq')
-call dein#add('basyura/unite-rails')
-call dein#add('ujihisa/unite-gem')
-call dein#add('taka84u9/unite-git')
-call dein#add('sgur/unite-git_grep')
-call dein#add('todesking/ruby_hl_lvar.vim')
-call dein#add('git@github.com:todesking/ruby_hl_lvar.vim.git')
-call dein#add('tomasr/molokai')
+  call dein#load_toml(s:dein_dir . '/plugins.toml', {'lazy': 0})
+  call dein#load_toml(s:dein_dir . '/lazy_load_plugins.toml')
 
-call dein#add('vim-scripts/haml.zip')
-call dein#add('vim-scripts/JavaScript-syntax')
-call dein#add('scrooloose/syntastic')
-call dein#add('git@github.com:kchmck/vim-coffee-script.git')
-call dein#add('git@github.com:groenewege/vim-less.git')
-call dein#add('beyondwords/vim-twig')
-call dein#add('git@github.com:slim-template/vim-slim.git')
-call dein#add('git@github.com:rodjek/vim-puppet.git')
-
-call dein#end()
+  call dein#end()
+  call dein#save_state()
+endif
