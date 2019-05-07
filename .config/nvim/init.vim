@@ -34,6 +34,8 @@ let g:NERDTreeWinSize = 40
 let g:python_host_prog = expand('/usr/bin/python')
 let g:python3_host_prog = expand('/opt/brew/bin/python3')
 
+let g:ruby_host_prog = '/Users/asonas/.rbenv/versions/2.6.3/bin/neovim-ruby-host'
+
 if &compatible
   set nocompatible
 endif
