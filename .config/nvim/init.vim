@@ -8,6 +8,9 @@ set autoread
 set hidden
 set noswapfile
 set nobackup
+set laststatus=2
+set cursorline
+set clipboard=unnamed
 
 nnoremap <silent> <Space>q :quit<CR>
 nnoremap <silent> <Space>Q :quit!<CR>
@@ -50,11 +53,14 @@ if dein#load_state(s:dein_dir)
   call dein#load_toml(s:dein_dir . '/plugins.toml', {'lazy': 0})
   call dein#load_toml(s:dein_dir . '/lazy_load_plugins.toml', {'lazy': 1})
 
+  call dein#add('gosukiwi/vim-atom-dark', { 'script_type' : 'colors'})
+
   call dein#end()
   call dein#save_state()
 endif
 
 filetype plugin indent on
+colorscheme atom-dark
 syntax enable
 
 if dein#check_install()
