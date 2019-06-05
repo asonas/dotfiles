@@ -19,29 +19,32 @@
     disabledPackages: [
       "autocomplete-plus-async"
       "autocomplete-paths"
-      "cute-cursor"
       "vim-mode"
+      "cute-cursor"
+      "github"
+      "language-ruby-on-rails"
     ]
     ignoredNames: [
       ".git"
       ".svn"
       ".DS_Store"
     ]
+    packagesWithKeymapsDisabled: []
     telemetryConsent: "limited"
     themes: [
-      "atom-light-ui"
-      "atom-light-syntax"
+      "atom-dark-ui"
+      "atom-dark-syntax"
     ]
   editor:
     backUpBeforeSaving: true
-    fontFamily: "SourceHanCodeJP-ExtraLight"
-    fontSize: 13
+    fontFamily: "SourceHanCodeJP-Light"
     invisibles: {}
     preferredLineLength: 120
     showIndentGuide: true
     showInvisibles: true
   "exception-reporting":
     userId: "9ebdf3a9-333a-7b8b-8a59-ab554ea75b9c"
+  github: {}
   "gradle-ci": {}
   linter:
     ignoredLinterErrors: [
