@@ -10,7 +10,7 @@ repo = 'Shougo/neomru.vim'
 [[plugins]]
 repo = 'Shougo/neocomplcache'
 
-[[plugings]]
+[[plugins]]
 repo = 'Shougo/denite.nvim'
 
 [[plugins]]
