@@ -44,6 +44,8 @@
     remotes = remote -v
     cleanup = remote prune origin
     pbcopy = !printf "$1" | pbcopy
+    sw = switch
+
 [color]
     ui = true
     diff = true
