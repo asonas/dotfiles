@@ -12,6 +12,7 @@ repo = 'szw/vim-tags'
 
 [[plugins]]
 repo = 'tpope/vim-endwise'
+on_ft = ['ruby']
 
 [[plugins]]
 repo = 'vim-ruby/vim-ruby'
@@ -21,6 +22,7 @@ repo = 'todesking/ruby_hl_lvar.vim'
 
 [[plugins]]
 repo = 'slim-template/vim-slim'
+on_ft = ['slim']
 
 [[plugins]]
 repo = 'tpope/vim-haml'

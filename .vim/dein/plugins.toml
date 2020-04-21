@@ -2,6 +2,9 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
+repo = 'Shougo/denite.nvim'
+
+[[plugins]]
 repo = 'Shougo/vimproc.vim'
 
 [[plugins]]
@@ -31,3 +34,15 @@ repo = 'tomtom/tcomment_vim'
 [[plugins]]
 repo = 'othree/yajs.vim'
 
+[[plugins]]
+repo = 'gosukiwi/vim-atom-dark'
+script_type = 'colors'
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'tpope/vim-rhubarb'
+
+[[plugins]]
+repo = 'google/vim-jsonnet'

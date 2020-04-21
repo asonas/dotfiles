@@ -16,6 +16,7 @@ nnoremap <silent> <Space>q :quit<CR>
 nnoremap <silent> <Space>Q :quit!<CR>
 nnoremap <silent> <Space>e :wq<CR>
 nnoremap <silent> <Space><Space> :w<CR>
+nnoremap <silent> <Space>t :Denite file_rec<CR>
 
 imap <C-p> <Up>
 imap <C-n> <Down>
@@ -66,3 +67,8 @@ syntax enable
 if dein#check_install()
   call dein#install()
 endif
+
+autocmd FileType yml  setlocal sw=2 sts=2 et
+autocmd FileType yaml setlocal sw=2 sts=2 ts=2 et
+
+source ~/.config/nvim/private.vim
