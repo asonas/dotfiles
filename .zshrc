@@ -13,7 +13,7 @@ alias rmstorer="rm **/.DS_Store"
 alias pythonserver='python -m SimpleHTTPServer'
 alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
-alias o='git ls-files | peco | xargs open'
+alias o='git ls-files | peco | xargs code -n'
 alias oa='git ls-files | peco | xargs atom'
 alias e='cd $(ghq list -p | peco)'
 alias n='atom $(find node_modules -maxdepth 1 -type d | peco)'
@@ -27,6 +27,9 @@ alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 alias pwdc="ruby -rfileutils -e \"print FileUtils.pwd.gsub(' ', '\ ').gsub('(', '\(').gsub(')', '\)')\" | pbcopy"
 alias nv="nvim"
 alias vim="nvim"
+alias le="less"
+alias cip='ifconfig en0 | grep -Eo "inet \d+(\.\d+){3}" | sed -e "s/inet //g" | tr -d "\n" | pbcopy'
+alias p=peco-checkout-pull-request
 
 function randomstr() {
   cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
@@ -42,8 +45,18 @@ function new() {
 function rails_new() {
   root="$(ghq root)/github.com/asonas/"
   cd $root
-  rails new --database postgresql $1
+  rails _6.0.0_ new --database postgresql $1
 }
+
+function peco-checkout-pull-request () {
+    local selected_pr_id=$(gh pr list | peco | awk '{ print $1 }')
+    if [ -n "$selected_pr_id" ]; then
+        BUFFER="gh pr checkout ${selected_pr_id}"
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-checkout-pull-request
 
 ########################################
 # 環境変数
