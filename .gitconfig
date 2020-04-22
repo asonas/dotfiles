@@ -57,7 +57,6 @@
 [rebase]
   autosquash = true
 [ghq]
-  root = ~/go/src
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =
