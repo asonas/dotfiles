@@ -31,6 +31,12 @@ alias le="less"
 alias cip='ifconfig en0 | grep -Eo "inet \d+(\.\d+){3}" | sed -e "s/inet //g" | tr -d "\n" | pbcopy'
 alias p=peco-checkout-pull-request
 
+function p2 () {
+  local user="ec2-user"
+  local host=$(envchain asonas-aws aws ec2 describe-instances --region ap-northeast-1 --output json --filters "Name=instance-state-code,Values=16" | jq -r '.Reservations[].Instances[] | [.Tags[] | select(.Key == "Name").Value][] + "\t" +  .InstanceType + "\t" + .PublicIpAddress + "\t" + .Platform' | awk '{if ($4 != "windows") printf "%-45s %-15s %-10s\n",$1,$2,$3}' | sort | peco | awk '{print $3}')
+  ssh "$user@$host"
+}
+
 function randomstr() {
   cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
 }
