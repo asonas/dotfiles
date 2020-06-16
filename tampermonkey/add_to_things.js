@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ToDo to Things from GHE Issues
 // @namespace   https://ason.as/
-// @version      0.1
+// @version      1.0.0
 // @description  todo to thingsapp
 // @author       asonas
 // @match        https://ghe.ckpd.co/*
