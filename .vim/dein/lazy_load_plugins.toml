@@ -26,3 +26,43 @@ on_ft = ['slim']
 
 [[plugins]]
 repo = 'tpope/vim-haml'
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+hook_add = '''
+    let g:deoplete#enable_at_startup = 1
+'''
+on_i = 1
+
+[[plugins]]
+repo = 'fatih/vim-go'
+on_ft = 'go'
+
+[[plugins]]
+repo = 'deoplete-plugins/deoplete-go'
+on_ft = 'go'
+depends = ['deoplete.nvim']
+hook_source = '''
+    let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
+'''
+hook_post_update = '''
+  if dein#util#_is_windows()
+    let cmd = 'tools\\update-dll-mingw'
+  elseif dein#util#_is_cygwin()
+    let cmd = 'make -f make_cygwin.mak'
+  elseif executable('gmake')
+    let cmd = 'gmake'
+  else
+    let cmd = 'make'
+  endif
+  let g:dein#plugin.build = cmd
+'''
+
+[[plugins]]
+repo = 'gabrielelana/vim-markdown'
+on_ft = 'markdown'
+hook_source = '''
+let g:markdown_include_jekyll_support = 0
+let g:markdown_enable_conceal = 1
+let g:markdown_enable_spell_checking = 0
+'''

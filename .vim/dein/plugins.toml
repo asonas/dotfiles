@@ -23,9 +23,6 @@ repo = 'scrooloose/nerdtree'
 repo = 'othree/yajs.vim'
 
 [[plugins]]
-repo = 'Yggdroot/indentLine'
-
-[[plugins]]
 repo = 'rhysd/accelerated-jk'
 
 [[plugins]]
@@ -46,3 +43,5 @@ repo = 'tpope/vim-rhubarb'
 
 [[plugins]]
 repo = 'google/vim-jsonnet'
+
+
