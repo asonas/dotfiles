@@ -13,9 +13,10 @@ alias rmstorer="rm **/.DS_Store"
 alias pythonserver='python -m SimpleHTTPServer'
 alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
-alias o='git ls-files | peco | xargs code -n'
+alias o='git ls-files | peco | xargs vim '
 alias oa='git ls-files | peco | xargs atom'
 alias e='cd $(ghq list -p | peco)'
+alias q='cd $(GHQ_ROOT=~/go ghq list -p | peco)'
 alias n='atom $(find node_modules -maxdepth 1 -type d | peco)'
 alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
 alias sd='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep deploy|peco|awk "{print \$2}")'
@@ -36,6 +37,15 @@ function p2 () {
   local host=$(envchain asonas-aws aws ec2 describe-instances --region ap-northeast-1 --output json --filters "Name=instance-state-code,Values=16" | jq -r '.Reservations[].Instances[] | [.Tags[] | select(.Key == "Name").Value][] + "\t" +  .InstanceType + "\t" + .PublicIpAddress + "\t" + .Platform' | awk '{if ($4 != "windows") printf "%-45s %-15s %-10s\n",$1,$2,$3}' | sort | peco | awk '{print $3}')
   ssh "$user@$host"
 }
+
+function peco-history-selection() {
+    BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
+    CURSOR=$#BUFFER
+    zle reset-prompt
+}
+
+zle -N peco-history-selection
+bindkey '^E' peco-history-selection
 
 function randomstr() {
   cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
