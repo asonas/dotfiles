@@ -45,7 +45,7 @@ function peco-history-selection() {
 }
 
 zle -N peco-history-selection
-bindkey '^E' peco-history-selection
+bindkey '^Q' peco-history-selection
 
 function randomstr() {
   cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
