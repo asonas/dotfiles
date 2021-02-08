@@ -69,3 +69,6 @@
 	token = !security find-internet-password -a asonas -s github.com -l 'ghi token' -w
 [include]
   path = ~/.gitconfig-private
+[fetch]
+    parallel = 8
+
