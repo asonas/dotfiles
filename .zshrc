@@ -61,7 +61,7 @@ function new() {
 function rails_new() {
   root="$(ghq root)/github.com/asonas/"
   cd $root
-  rails _6.0.0_ new --database postgresql $1
+  rails _6.0.3.1_ new --database postgresql $1
 }
 
 function peco-checkout-pull-request () {
