@@ -2,14 +2,14 @@
 # モニター操作
 #------------------------------------------------------------
 # モニターを選択する
-ctrl + cmd - j  : yabai -m display --focus 1
-ctrl + cmd - k  : yabai -m display --focus 2
-ctrl + cmd - l  : yabai -m display --focus 3
+alt - j  : yabai -m display --focus 1
+alt - k  : yabai -m display --focus 2
+alt - l  : yabai -m display --focus 3
 
 # ウィンドウをモニターに移動する
-ctrl + cmd + shift - 1  : yabai -m window --display 1; yabai -m display --focus 1
-ctrl + cmd + shift - 2  : yabai -m window --display 2; yabai -m display --focus 2
-ctrl + cmd + shift - 3  : yabai -m window --display 2; yabai -m display --focus 3
+ctrl + alt - 1  : yabai -m window --display 1; yabai -m display --focus 1
+ctrl + alt - 2  : yabai -m window --display 2; yabai -m display --focus 2
+ctrl + alt - 3  : yabai -m window --display 2; yabai -m display --focus 3
 
 #------------------------------------------------------------
 # ウィンドウの選択・操作
@@ -19,10 +19,10 @@ ctrl + shift - j : yabai -m window --focus prev
 ctrl + shift - k : yabai -m window --focus next
 
 # ウィンドウを入れ替える
-ctrl + cmd - b : yabai -m window --swap west
-ctrl + cmd - n : yabai -m window --swap south
-ctrl + cmd - p : yabai -m window --swap north
-ctrl + cmd - f : yabai -m window --swap east
+ctrl + alt - b : yabai -m window --swap west
+ctrl + alt - n : yabai -m window --swap south
+ctrl + alt - p : yabai -m window --swap north
+ctrl + alt - f : yabai -m window --swap east
 
 # オフセット有無
 alt - a : yabai -m space --toggle padding; yabai -m space --toggle gap
@@ -31,7 +31,19 @@ alt - a : yabai -m space --toggle padding; yabai -m space --toggle gap
 # ウィンドウのサイズ調整
 #------------------------------------------------------------
 # ウィンドウサイズを全て等しくする
-shift + cmd - 0 : yabai -m space --balance
+ctrl + alt + shift - 0 : yabai -m space --balance
+
+# 左半分にする
+ctrl + alt - left : yabai -m window --grid 1:2:0:0:1:1
+
+# 右半分にする
+ctrl + alt - right : yabai -m window --grid 1:2:1:0:1:1
+
+ctrl + alt - up   : yabai -m window --grid 2:1:0:0:1:1
+ctrl + alt - down : yabai -m window --grid 2:1:0:1:1:1
+
+
+ctrl + alt + shift - right : yabai -m window --space code --grid 1:2:1:0:1:1
 
 # ウィンドウを移動する
 shift + ctrl - a : yabai -m window --move rel:-20:0
@@ -50,13 +62,6 @@ ctrl + alt - h : yabai -m window --insert west
 ctrl + alt - j : yabai -m window --insert south
 ctrl + alt - k : yabai -m window --insert north
 ctrl + alt - l : yabai -m window --insert east
-
-#------------------------------------------------------------
-# レイアウトの設定
-#------------------------------------------------------------
-# レイアウト変更
-ctrl + alt - b : yabai -m space --layout bsp
-ctrl + alt - f : yabai -m space --layout float
 
 #------------------------------------------------------------
 #   bsp 時のレイアウト操作
