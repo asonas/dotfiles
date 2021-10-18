@@ -24,13 +24,36 @@ alias br='bin/rails'
 alias t='ghi show -w $(ghi list --sort updated | grep -v "open issue" | grep -v "Not Found" | peco | awk "{ print $1 }")'
 alias r="bin/rails routes | peco | sed 's/[ \t]*//' | awk -F ' ' '{ print \$1 }' | perl -pe 's/\n//g' | pbcopy"
 alias dc='docker-compose'
-alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 alias pwdc="ruby -rfileutils -e \"print FileUtils.pwd.gsub(' ', '\ ').gsub('(', '\(').gsub(')', '\)')\" | pbcopy"
 alias nv="nvim"
 alias vim="nvim"
 alias le="less"
 alias cip='ifconfig en0 | grep -Eo "inet \d+(\.\d+){3}" | sed -e "s/inet //g" | tr -d "\n" | pbcopy'
 alias p=peco-checkout-pull-request
+alias cdg='cd $(git rev-parse --show-toplevel)'
+
+function pr() {
+  git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e 'r=STDIN.read;b=r.split("/")[1..];system("git", "switch", "-c", b.join("/").strip, r.strip)'
+}
+
+function refresh-remotes {
+  all-remotes-cleanup
+  all-remotes-fetch
+}
+
+function all-remotes-fetch() {
+  for i in $(git remotes | awk '{print $1}' | uniq)
+  do
+    git fetch $i
+  done
+}
+
+function all-remotes-cleanup() {
+  for i in $(git remotes | awk '{print $1}' | uniq)
+  do
+    git cleanup $i
+  done
+}
 
 function p2 () {
   local user="ec2-user"
