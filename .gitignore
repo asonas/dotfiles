@@ -30,6 +30,7 @@ npm-debug.log
 .config/exercism/user.json
 .config/hub
 .config/configstore
+.config/karabiner/automatic_backups
 
 .idea/
 .generators
