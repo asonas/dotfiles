@@ -32,8 +32,8 @@
     packagesWithKeymapsDisabled: []
     telemetryConsent: "limited"
     themes: [
-      "atom-dark-ui"
-      "atom-dark-syntax"
+      "one-dark-ui"
+      "atom-monokai-php"
     ]
   editor:
     backUpBeforeSaving: true
