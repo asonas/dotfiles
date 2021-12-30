@@ -42,7 +42,7 @@
     amend = commit --amend
     nevermind = !git reset --hard HEAD && git clean -d -f
     remotes = remote -v
-    cleanup = remote prune origin
+    cleanup = remote prune
     pbcopy = !printf "$1" | pbcopy
     sw = switch
 
