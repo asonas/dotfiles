@@ -88,3 +88,7 @@ alt - e : yabai -m window --toggle split
 alt - t : yabai -m window --toggle float;\
           yabai -m window --grid 12:12:1:1:10:10
 
+# 画面中央に表示する
+alt - h : yabai -m window --toggle float;\
+          yabai -m window --resize abs:1620:1080
+

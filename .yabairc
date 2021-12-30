@@ -35,23 +35,23 @@ yabai -m space 6 --label media
 yabai -m space 7 --label social
 
 # specific space settings
-yabai -m config --space web layout float
-yabai -m config --space productivity layout float
-yabai -m config --space code layout float
+#yabai -m config --space web layout float
+#yabai -m config --space productivity layout float
+#yabai -m config --space code layout float
 
 # window rules
 #yabai -m rule --add app="^Alacritty$"          space=code
 #yabai -m rule --add app="^Visual Code Studio$" space=code grid=1:2:1:0:1:1
-yabai -m rule --add app="^Safari$"        space=web
-yabai -m rule --add app="^Google Chrome$" space=web
-yabai -m rule --add app="^Slack$" space=productivity
-yabai -m rule --add app="^Things$" space=productivity
-yabai -m rule --add app="^Obsidian$" space=productivity
+#yabai -m rule --add app="^Safari$"        space=web
+#yabai -m rule --add app="^Google Chrome$" space=web
+#yabai -m rule --add app="^Slack$" space=productivity
+#yabai -m rule --add app="^Things$" space=productivity
+#yabai -m rule --add app="^Obsidian$" space=productivity
 
-yabai -m rule --add app="^Spotify$" space=media
+#yabai -m rule --add app="^Spotify$" space=media
 
-yabai -m rule --add app="^Discord$" space=social grid=1:1:0:0:1:1 manage=off
+#yabai -m rule --add app="^Discord$" space=social grid=1:1:0:0:1:1 manage=off
 
-yabai -m rule --add app="^System Preferences$" manage=off
+#yabai -m rule --add app="^System Preferences$" manage=off
 
 echo "yabai configuration loaded.."
