@@ -16,7 +16,8 @@ nnoremap <silent> <Space>q :quit<CR>
 nnoremap <silent> <Space>Q :quit!<CR>
 nnoremap <silent> <Space>e :wq<CR>
 nnoremap <silent> <Space><Space> :w<CR>
-nnoremap <silent> <Space>t :Denite file_rec<CR>
+"nnoremap <silent> <Space>t :Denite file/rec/git<CR>
+nnoremap <silent> <Space>t :<C-u>Denite `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`<CR>
 
 imap <C-p> <Up>
 imap <C-n> <Down>
@@ -31,14 +32,15 @@ imap <C-k> <C-r>=<SID>kill()<CR>
 nmap <silent> <Space>p :NERDTreeToggle<CR>
 set guifont=SourceCodePro-Regular:h12
 
+
 autocmd BufWritePre * :%s/\s\+$//ge
 
 let NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 40
 let g:python_host_prog = expand('/usr/bin/python')
-let g:python3_host_prog = expand('/opt/brew/bin/python3')
+let g:python3_host_prog = expand('/usr/bin/python3')
 
-let g:ruby_host_prog = '/Users/asonas/.rbenv/versions/2.6.3/bin/neovim-ruby-host'
+let g:ruby_host_prog = '/Users/asonas/.rbenv/versions/2.6/bin/neovim-ruby-host'
 
 if &compatible
   set nocompatible
@@ -68,7 +70,40 @@ if dein#check_install()
   call dein#install()
 endif
 
+autocmd FileType js setlocal sw=2 sts=2 et
 autocmd FileType yml  setlocal sw=2 sts=2 et
 autocmd FileType yaml setlocal sw=2 sts=2 ts=2 et
+autocmd BufNewFile,BufRead *.schema set filetype=ruby
+autocmd BufNewFile,BufRead Schemafile set filetype=ruby
+autocmd BufNewFile,BufRead *.iam set filetype=ruby
+
+" Define mappings
+autocmd FileType denite call s:denite_my_settings()
+function! s:denite_my_settings() abort
+  nnoremap <silent><buffer><expr> <CR>
+  \ denite#do_map('do_action')
+  nnoremap <silent><buffer><expr> d
+  \ denite#do_map('do_action', 'delete')
+  nnoremap <silent><buffer><expr> p
+  \ denite#do_map('do_action', 'preview')
+  nnoremap <silent><buffer><expr> q
+  \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> i
+  \ denite#do_map('open_filter_buffer')
+  nnoremap <silent><buffer><expr> <Space>
+  \ denite#do_map('toggle_select').'j'
+endfunction
+
+call denite#custom#option('default', 'prompt', '>')
+call denite#custom#kind('file', 'default_action', 'split')
+call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+call denite#custom#var('file/rec/git', 'command', ['git', 'ls-files', '-co', '--exclude-standard'])
+
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#min_keyword_length = 3
+let g:neocomplete#enable_auto_delimiter = 1
+let g:neocomplete#auto_completion_start_length = 1
+inoremap <expr><BS> neocomplete#smart_close_popup()."<C-h>"
 
 source ~/.config/nvim/private.vim

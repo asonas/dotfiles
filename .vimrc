@@ -173,8 +173,8 @@ command! -nargs=* Dash call <SID>dash(<f-args>)
 " 補完関連
 source ~/.vimrc.completion
 
-" unite.vim
-source ~/.vimrc.unite
+" denite.vim
+source ~/.vimrc.denite
 
 source ~/.vimrc.dein
 
