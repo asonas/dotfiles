@@ -14,9 +14,6 @@ repo = 'Shougo/neomru.vim'
 repo = 'Shougo/neocomplcache'
 
 [[plugins]]
-repo = 'Shougo/denite.nvim'
-
-[[plugins]]
 repo = 'scrooloose/nerdtree'
 
 [[plugins]]
@@ -27,9 +24,6 @@ repo = 'rhysd/accelerated-jk'
 
 [[plugins]]
 repo = 'tomtom/tcomment_vim'
-
-[[plugins]]
-repo = 'othree/yajs.vim'
 
 [[plugins]]
 repo = 'gosukiwi/vim-atom-dark'
@@ -44,4 +38,5 @@ repo = 'tpope/vim-rhubarb'
 [[plugins]]
 repo = 'google/vim-jsonnet'
 
-
+[[plugins]]
+repo = 'rust-lang/rust.vim'

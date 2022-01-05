@@ -16,8 +16,7 @@ nnoremap <silent> <Space>q :quit<CR>
 nnoremap <silent> <Space>Q :quit!<CR>
 nnoremap <silent> <Space>e :wq<CR>
 nnoremap <silent> <Space><Space> :w<CR>
-"nnoremap <silent> <Space>t :Denite file/rec/git<CR>
-nnoremap <silent> <Space>t :<C-u>Denite `finddir('.git', ';') != '' ? 'file/rec/git' : 'file/rec'`<CR>
+nnoremap <silent> <Space>r :Denite file/rec<CR>
 
 imap <C-p> <Up>
 imap <C-n> <Down>
@@ -56,8 +55,6 @@ if dein#load_state(s:dein_dir)
   call dein#load_toml(s:dein_dir . '/plugins.toml', {'lazy': 0})
   call dein#load_toml(s:dein_dir . '/lazy_load_plugins.toml', {'lazy': 1})
 
-  call dein#add('gosukiwi/vim-atom-dark', { 'script_type' : 'colors'})
-
   call dein#end()
   call dein#save_state()
 endif
@@ -88,6 +85,8 @@ function! s:denite_my_settings() abort
   \ denite#do_map('do_action', 'preview')
   nnoremap <silent><buffer><expr> q
   \ denite#do_map('quit')
+  nnoremap <silent><buffer><expr> <Esc><Esc>
+  \ denite#do_map('quit')
   nnoremap <silent><buffer><expr> i
   \ denite#do_map('open_filter_buffer')
   nnoremap <silent><buffer><expr> <Space>
@@ -96,8 +95,33 @@ endfunction
 
 call denite#custom#option('default', 'prompt', '>')
 call denite#custom#kind('file', 'default_action', 'split')
-call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+"call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+call denite#custom#alias('source', 'file/rec/git', 'file/rec')
 call denite#custom#var('file/rec/git', 'command', ['git', 'ls-files', '-co', '--exclude-standard'])
+
+if executable("rg")
+    call denite#custom#var('file/rec', 'command',
+   \ ['rg', '--files', '--glob', '!.git', '--color', 'never'])
+    call denite#custom#var('grep', {
+   \ 'command': ['rg'],
+   \ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
+   \ 'recursive_opts': [],
+   \ 'pattern_opt': ['--regexp'],
+   \ 'separator': ['--'],
+   \ 'final_opts': [],
+   \ })
+endif
+
+let s:denite_default_options = {}
+call extend(s:denite_default_options, {
+\   'highlight_matched_char': 'None',
+\   'highlight_matched_range': 'Search',
+\   'match_highlight': v:true,
+\})
+call denite#custom#option('default', s:denite_default_options)
+
+nnoremap <silent> <Space>t :<C-u>DeniteProjectDir file/rec/git<CR>
 
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
