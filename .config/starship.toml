@@ -1,6 +1,31 @@
 # Inserts ablank line between shell prompts
 add_newline = false
 
+#format = """
+#[┌───────────────────>](bold green)
+#[│](bold green)$directory$rust$package
+#[└─>](bold green) """
+
+format = '''
+.-$time $username$directory $git_branch($git_state):$git_status$fill$memory_usage
+`-> '''
+
+scan_timeout = 10
+[directory]
+truncation_length = 100
+truncate_to_repo = false
+format = "[$path]($style)[$read_only]($read_only_style)"
+
+[time]
+disabled = false
+format = '[\[$time\]]($style)'
+time_format = "%R"
+style = "bold gray"
+
+[git_branch]
+format = "[$symbol$branch]($style)"
+symbol = ""
+
 # Replace the "❯" symbol in the prompt with "➜"
 [character] # The name of the module we are configuring is "character"
 success_symbol = "[➜](bold green)" # The "success_symbol" segment is being set to "➜" with the color "bold green"
@@ -11,3 +36,17 @@ disabled = true
 
 [line_break]
 disabled = false
+
+[username]
+show_always = true
+format = "[$user]($style):"
+style_user = "blue bold"
+style_root = "black bold"
+
+[fill]
+symbol = " "
+
+[memory_usage]
+disabled = false
+threshold = 0
+format = "[via]($style) $symbol[$ram]($style)"
