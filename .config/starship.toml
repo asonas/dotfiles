@@ -7,7 +7,7 @@ add_newline = false
 #[└─>](bold green) """
 
 format = '''
-.-$time $username$directory $git_branch($git_state):$git_status$fill$memory_usage
+.-$time $username$directory $git_branch($git_state)$git_status$fill$memory_usage
 `-> '''
 
 scan_timeout = 10
