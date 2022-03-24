@@ -1,14 +1,9 @@
 # Inserts ablank line between shell prompts
 add_newline = false
 
-#format = """
-#[┌───────────────────>](bold green)
-#[│](bold green)$directory$rust$package
-#[└─>](bold green) """
-
-format = '''
+format = """
 .-$time $username$directory $git_branch($git_state)$git_status$fill$memory_usage
-`-> '''
+`-\\$ """
 
 scan_timeout = 10
 [directory]
@@ -20,7 +15,7 @@ format = "[$path]($style)[$read_only]($read_only_style)"
 disabled = false
 format = '[\[$time\]]($style)'
 time_format = "%R"
-style = "bold gray"
+style = "bold bright-red dimmed"
 
 [git_branch]
 format = "[$symbol$branch]($style)"
