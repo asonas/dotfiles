@@ -2,8 +2,8 @@
 add_newline = false
 
 format = """
-.-$time $username$directory $git_branch($git_state)$git_status$fill$memory_usage
-`-\\$ """
+.-$time$username$directory $git_branch($git_state)$git_status$fill$docker_context$memory_usage
+`-%% """
 
 scan_timeout = 10
 [directory]
