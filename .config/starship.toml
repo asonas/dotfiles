@@ -2,12 +2,13 @@
 add_newline = false
 
 format = """
-.-$time$username$directory $git_branch($git_state)$git_status$fill$docker_context$memory_usage
+.-$time$username$hostname$directory $git_branch($git_state)$git_status$fill$docker_context$memory_usage
 `-%% """
 
 scan_timeout = 10
 [directory]
 truncation_length = 100
+fish_style_pwd_dir_length = 1
 truncate_to_repo = false
 format = "[$path]($style)[$read_only]($read_only_style)"
 
@@ -45,3 +46,7 @@ symbol = " "
 disabled = false
 threshold = 0
 format = "[via]($style) $symbol[$ram]($style)"
+
+[hostname]
+format = "[$hostname]($style)"
+style = "bold dimmed green"
