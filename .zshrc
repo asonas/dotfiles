@@ -308,6 +308,7 @@ esac
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
+source $HOME/.cargo/env
 source ~/.zsh.d/personal
 # nvm() {
 #    unset -f nvm

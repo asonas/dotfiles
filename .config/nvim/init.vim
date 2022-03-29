@@ -128,4 +128,6 @@ let g:neocomplete#enable_auto_delimiter = 1
 let g:neocomplete#auto_completion_start_length = 1
 inoremap <expr><BS> neocomplete#smart_close_popup()."<C-h>"
 
+let g:rustfmt_autosave = 1
+
 source ~/.config/nvim/private.vim

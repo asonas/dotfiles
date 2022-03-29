@@ -40,3 +40,10 @@ repo = 'google/vim-jsonnet'
 
 [[plugins]]
 repo = 'rust-lang/rust.vim'
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+merge = 0
+rev = "release"
+hook_add = """
+"""
