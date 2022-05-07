@@ -17,8 +17,7 @@ tmp
 dump.rdb
 npm-debug.log
 .zsh.d/personal
-.zsh.d/completions/_cargo
-.zsh.d/completions/_rustup
+.zsh.d/completions/
 
 .atom/.apm/
 .atom/.node-gyp/

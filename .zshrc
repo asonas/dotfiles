@@ -302,6 +302,9 @@ case ${OSTYPE} in
     ;;
   linux*)
     #Linux用の設定
+    zstyle ':completion:*:*:git:*' script ~/.zsh/completions/git-completion.zsh
+    autoload -Uz compinit
+    compinit
     ;;
 esac
 
