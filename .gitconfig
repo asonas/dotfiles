@@ -2,7 +2,7 @@
   name = Yuya Fujiwara
   email = asonas@cookpad.com
 [core]
-  excludesfile = /Users/asonas/.gitignore
+  excludesfile = ~/.gitignore
   editor = nvim -c \"set fenc=utf-8\"
 
 [pager]

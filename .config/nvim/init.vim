@@ -37,7 +37,7 @@ autocmd BufWritePre * :%s/\s\+$//ge
 let NERDTreeShowHidden = 1
 let g:NERDTreeWinSize = 40
 
-let g:ruby_host_prog = '/Users/asonas/.rbenv/versions/2.6/bin/neovim-ruby-host'
+let g:ruby_host_prog = '~/.rbenv/versions/3.1/bin/neovim-ruby-host'
 
 if &compatible
   set nocompatible
