@@ -11,7 +11,10 @@ repo = 'Shougo/vimproc.vim'
 repo = 'Shougo/neomru.vim'
 
 [[plugins]]
-repo = 'Shougo/neocomplcache'
+repo = 'Shougo/ddc.vim'
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
 
 [[plugins]]
 repo = 'scrooloose/nerdtree'
