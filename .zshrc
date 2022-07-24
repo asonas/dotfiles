@@ -147,6 +147,7 @@ export PATH="$HOME/dev/local/bin:$PATH"
 export PATH="$HOME/dotfiles/script:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/go/bin:$PATH"
 
 # rbenv
 export PATH="$HOME/.rbenv/shims:$PATH"
@@ -305,6 +306,7 @@ case ${OSTYPE} in
     zstyle ':completion:*:*:git:*' script ~/.zsh/completions/git-completion.zsh
     autoload -Uz compinit
     compinit
+    source /usr/share/mitamae/profile
     ;;
 esac
 
