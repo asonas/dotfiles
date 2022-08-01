@@ -2,7 +2,7 @@
 add_newline = false
 
 format = """
-.-$time$username$hostname$directory $git_branch($git_state)$git_status$fill$docker_context$memory_usage
+.-$time$username$hostname$directory $git_branch($git_state)$git_status$fill$docker_context | $memory_usage
 `-%% """
 
 scan_timeout = 10
@@ -39,13 +39,16 @@ format = "[$user]($style):"
 style_user = "blue bold"
 style_root = "black bold"
 
+[docker_context]
+format = "[$symbol$context]($style)"
+
 [fill]
 symbol = " "
 
 [memory_usage]
 disabled = false
 threshold = 0
-format = "[via]($style) $symbol[$ram]($style)"
+format = "($style)$symbol[$ram]($style)"
 
 [hostname]
 format = "[$hostname]($style)"
