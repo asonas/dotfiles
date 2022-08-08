@@ -20,7 +20,7 @@ alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
 alias o='git ls-files | peco | xargs vim '
 alias oa='git ls-files | peco | xargs atom'
-alias e='cd $(ghq list -p | peco)'
+alias e='cd $GHQ_ROOT/$(ghq list | peco )'
 alias q='cd $(GHQ_ROOT=~/go ghq list -p | peco)'
 alias n='atom $(find node_modules -maxdepth 1 -type d | peco)'
 alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
@@ -165,6 +165,8 @@ export PATH=$PATH:/usr/local/share/npm/bin
 # go
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:$PATH"
+
+export GHQ_ROOT="$HOME/ghq"
 
 setopt nolistbeep
 
