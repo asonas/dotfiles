@@ -35,12 +35,14 @@ ctrl + alt + shift - 0 : yabai -m space --balance
 
 # 左半分にする
 ctrl + alt - left : yabai -m window --grid 1:2:0:0:1:1
+ctrl + alt + shift - left : yabai -m window --grid 12:12:0:0:9:12
 
 # 右半分にする
 ctrl + alt - right : yabai -m window --grid 1:2:1:0:1:1
+ctrl + alt + shift - right : yabai -m window --grid 12:12:3:0:9:12
 
 ctrl + alt - up   : yabai -m window --grid 2:1:0:0:1:1
-ctrl + alt - down : yabai -m window --grid 2:1:0:1:1:1
+ctrl + alt - down : yabai -m window --grid 12:12:0:0:12:10
 
 
 ctrl + alt + shift - right : yabai -m window --space code --grid 1:2:1:0:1:1
@@ -86,9 +88,10 @@ alt - e : yabai -m window --toggle split
 
 # 画面中央に表示する
 alt - t : yabai -m window --toggle float;\
-          yabai -m window --grid 12:12:1:1:10:10
+          yabai -m window --grid 12:12:1:0:10:12
 
 # 画面中央に表示する
 alt - h : yabai -m window --toggle float;\
-          yabai -m window --resize abs:1620:1080
+          yabai -m window --resize abs:1620:1280
+
 
