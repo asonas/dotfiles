@@ -72,6 +72,16 @@ function peco-history-selection() {
     zle reset-prompt
 }
 
+function mkdirt() {
+  prefix=$1
+  date=`date '+%F'`
+  if [ -n "$prefix" ]; then
+    mkdir -p "$prefix-$date"
+  else
+    mkdir -p "$date"
+  fi
+}
+
 zle -N peco-history-selection
 bindkey '^Q' peco-history-selection
 
