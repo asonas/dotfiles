@@ -7,9 +7,9 @@ alt - k  : yabai -m display --focus 2
 alt - l  : yabai -m display --focus 3
 
 # ウィンドウをモニターに移動する
-ctrl + alt - 1  : yabai -m window --display 1; yabai -m display --focus 1
-ctrl + alt - 2  : yabai -m window --display 2; yabai -m display --focus 2
-ctrl + alt - 3  : yabai -m window --display 2; yabai -m display --focus 3
+ctrl + shift - 2  : yabai -m window --display 1; yabai -m display --focus 1
+ctrl + shift - 2  : yabai -m window --display 2; yabai -m display --focus 2
+ctrl + shift - 3  : yabai -m window --display 3; yabai -m display --focus 3
 
 #------------------------------------------------------------
 # ウィンドウの選択・操作
@@ -93,5 +93,4 @@ alt - t : yabai -m window --toggle float;\
 # 画面中央に表示する
 alt - h : yabai -m window --toggle float;\
           yabai -m window --resize abs:1620:1280
-
 
