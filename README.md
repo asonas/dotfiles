@@ -3,7 +3,7 @@
 ## install
 ```
 sh install.sh
+sh setup_starship.sh
+sh setup_vim.sh
+sh setup_rust.sh
 ```
-
-シンボリックリンクを貼るので、ありがちな「ホームディレクトリに蒔いて終わり！」って感じではなく、
-継続的にdotfilesを育てましょうねーみたいな方針
