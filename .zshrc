@@ -15,7 +15,7 @@ alias be="bundle exec"
 alias g="git"
 alias rmstore="rm .DS_Store; rm */.DS_Store"
 alias rmstorer="rm **/.DS_Store"
-alias pythonserver='python -m SimpleHTTPServer'
+alias pythonserver='python -m http.server'
 alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
 alias o='git ls-files | peco | xargs vim '
