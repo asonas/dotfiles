@@ -1,0 +1,28 @@
+[[plugins]]
+repo = 'szw/vim-tags'
+
+[[plugins]]
+repo = 'tpope/vim-endwise'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'vim-ruby/vim-ruby'
+
+[[plugins]]
+repo = 'todesking/ruby_hl_lvar.vim'
+
+[[plugins]]
+repo = 'tpope/vim-haml'
+
+[[plugins]]
+repo = 'fatih/vim-go'
+on_ft = 'go'
+
+[[plugins]]
+repo = 'gabrielelana/vim-markdown'
+on_ft = 'markdown'
+hook_source = '''
+let g:markdown_include_jekyll_support = 0
+let g:markdown_enable_conceal = 1
+let g:markdown_enable_spell_checking = 0
+'''
