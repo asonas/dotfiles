@@ -32,6 +32,7 @@ npm-debug.log
 .config/hub
 .config/configstore
 .config/karabiner/automatic_backups
+.config/google-chrome
 
 .idea/
 .generators
