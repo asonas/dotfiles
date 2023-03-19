@@ -1,9 +1,9 @@
 # Inserts ablank line between shell prompts
 add_newline = false
 
-format = """
+format = '''
 .-$time$username$hostname$directory $git_branch($git_state)$git_status$fill$docker_context | $memory_usage
-`-%% """
+`-\$ '''
 
 scan_timeout = 10
 [directory]
@@ -21,6 +21,9 @@ style = "bold bright-red dimmed"
 [git_branch]
 format = "[$symbol$branch]($style)"
 symbol = ""
+
+[conda]
+disabled = true
 
 # Replace the "❯" symbol in the prompt with "➜"
 [character] # The name of the module we are configuring is "character"
