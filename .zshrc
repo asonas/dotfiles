@@ -76,10 +76,12 @@ function mkdirt() {
   prefix=$1
   date=`date '+%F'`
   if [ -n "$prefix" ]; then
-    mkdir -p "$prefix-$date"
+    dirname="./$prefix-$date"
   else
-    mkdir -p "$date"
+    dirname="$date"
   fi
+  mkdir -p $dirname
+  cd $dirname
 }
 
 zle -N peco-history-selection
@@ -158,6 +160,10 @@ export PATH="$HOME/dotfiles/script:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
+export PATH="/usr/local/cuda-11.7/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+export DENO_INSTALL="/home/asonas/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
 
 # rbenv
 export PATH="$HOME/.rbenv/shims:$PATH"
@@ -343,8 +349,4 @@ HEROKU_AC_ZSH_SETUP_PATH=/Users/asonas/Library/Caches/heroku/autocomplete/zsh_se
 export PATH="/opt/brew/opt/awscli@1/bin:$PATH"
 export PATH="/opt/brew/opt/avr-gcc@8/bin:$PATH"
 
-#### FIG ENV VARIABLES ####
-# Please make sure this block is at the end of this file.
-# [ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh
-#### END FIG ENV VARIABLES ####
 eval "$(starship init zsh)"
