@@ -44,10 +44,10 @@ let g:ruby_host_prog = '~/.rbenv/versions/3.1/bin/neovim-ruby-host'
 set nocompatible
 
 " Set Dein base path (required)
-let s:dein_base = '/home/asonas/.local/share/dein'
+let s:dein_base = '~/.local/share/dein'
 
 " Set Dein source path (required)
-let s:dein_src = '/home/asonas/.local/share/dein/repos/github.com/Shougo/dein.vim'
+let s:dein_src = '~/.local/share/dein/repos/github.com/Shougo/dein.vim'
 
 " Set Dein runtime path (required)
 execute 'set runtimepath+=' . s:dein_src
