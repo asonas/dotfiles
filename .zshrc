@@ -350,3 +350,10 @@ export PATH="/opt/brew/opt/awscli@1/bin:$PATH"
 export PATH="/opt/brew/opt/avr-gcc@8/bin:$PATH"
 
 eval "$(starship init zsh)"
+export WASMTIME_HOME="$HOME/.wasmtime"
+
+export PATH="$WASMTIME_HOME/bin:$PATH"
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/asonas@cookpad.com/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
