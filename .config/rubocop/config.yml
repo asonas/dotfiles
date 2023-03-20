@@ -1,0 +1,14 @@
+inherit_from: "https://raw.githubusercontent.com/cookpad/styleguide/master/.rubocop.yml"
+
+Style/NegatedIf:
+  Enabled: false
+Style/NegatedWhile:
+  Enabled: false
+Style/NumericLiterals:
+  Enabled: false
+Layout/EmptyLines:
+  Enabled: true
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either
+Layout/CaseIndentation:
+  Enabled: true
