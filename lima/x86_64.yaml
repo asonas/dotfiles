@@ -25,6 +25,8 @@ arch: "x86_64"
 cpus: 4
 memory: "8GiB"
 disk: "10GiB"
+ssh:
+  loadDotSSHPubKeys: false
 mounts:
 - location: "~"
 - location: "/tmp/lima"
