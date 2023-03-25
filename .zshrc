@@ -1,8 +1,3 @@
-
-#### FIG ENV VARIABLES ####
-# Please make sure this block is at the start of this file.
-[ -s ~/.fig/shell/pre.sh ] && source ~/.fig/shell/pre.sh
-#### END FIG ENV VARIABLES ####
 #zmodload zsh/zprof && zprof
 
 # see also
@@ -36,6 +31,16 @@ alias le="less"
 alias cip='ifconfig en0 | grep -Eo "inet \d+(\.\d+){3}" | sed -e "s/inet //g" | tr -d "\n" | pbcopy'
 alias p=peco-checkout-pull-request
 alias cdg='cd $(git rev-parse --show-toplevel)'
+
+alias la='ls -a'
+alias ll='ls -l'
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias mkdir='mkdir -p'
+alias -g L='| less'
+alias -g G='| grep'
+
 
 function pr() {
   git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e 'r=STDIN.read;b=r.split("/")[1..];system("git", "switch", "-c", b.join("/").strip, r.strip)'
@@ -98,12 +103,6 @@ function new() {
   git init
 }
 
-function rails_new() {
-  root="$(ghq root)/github.com/asonas/"
-  cd $root
-  rails _6.0.3.1_ new --database postgresql $1
-}
-
 function peco-checkout-pull-request () {
     local selected_pr_id=$(gh pr list | peco | awk '{ print $1 }')
     if [ -n "$selected_pr_id" ]; then
@@ -118,17 +117,13 @@ zle -N peco-checkout-pull-request
 # 環境変数
 export LANG=ja_JP.UTF-8
 
-# 色を使用出来るようにする
-autoload -Uz colors
-colors
-
 # emacs 風キーバインドにする
 bindkey -e
 
 # ヒストリの設定
 HISTFILE=~/.zsh_history
-HISTSIZE=1000000
-SAVEHIST=1000000
+HISTSIZE=100000000
+SAVEHIST=100000000
 
 # http://d.hatena.ne.jp/Yoshiori/20120814/1344913023
 REPORTTIME=3
@@ -257,27 +252,8 @@ setopt auto_menu
 # 高機能なワイルドカード展開を使用する
 setopt extended_glob
 
-########################################
-# キーバインド
-
 # ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
 bindkey '^R' history-incremental-pattern-search-backward
-
-########################################
-# エイリアス
-
-alias la='ls -a'
-alias ll='ls -l'
-
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-
-alias mkdir='mkdir -p'
-
-# グローバルエイリアス
-alias -g L='| less'
-alias -g G='| grep'
 
 # C で標準出力をクリップボードにコピーする
 # mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
@@ -328,20 +304,9 @@ case ${OSTYPE} in
     ;;
 esac
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
 source $HOME/.cargo/env
 source ~/.zsh.d/personal
-# nvm() {
-#    unset -f nvm
-#    source "${NVM_DIR:-$HOME/.nvm}/nvm.sh"
-#    nvm "$@"
-#}
 
-#if (which zprof > /dev/null) ;then
-#  zprof | less
-#fi
 export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
 
 # heroku autocomplete setup
@@ -357,3 +322,5 @@ export PATH="$WASMTIME_HOME/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/asonas@cookpad.com/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+#zprof
