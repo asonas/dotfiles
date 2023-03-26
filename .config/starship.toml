@@ -12,6 +12,13 @@ fish_style_pwd_dir_length = 1
 truncate_to_repo = false
 format = "[$path]($style)[$read_only]($read_only_style)"
 
+[conda]
+disabled = true
+format = ""
+
+[python]
+disabled = true
+
 [time]
 disabled = false
 format = '[\[$time\]]($style)'
