@@ -1,11 +1,11 @@
 local wezterm = require 'wezterm'
+local config = {}
 
-return {
-  keys = {
+config.keys = {
     {
       key = 'C',
       mods = 'CTRL',
-      action = wezterm.action.CopyTo 'ClipboardAndPrimarySlection',
+      action = wezterm.action.CopyTo 'ClipboardAndPrimarySelection',
     },
     {
       key = 'V',
@@ -22,5 +22,10 @@ return {
       mods = 'CTRL|SHIFT',
       action = wezterm.action.ReloadConfiguration,
     },
-  },
 }
+
+config.font = wezterm.font 'SauceCodePro Nerd Font'
+
+config.color_scheme = 'Solarized Darcula'
+
+return config
