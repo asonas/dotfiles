@@ -5,7 +5,6 @@
 
 #######################################
 # Alias
-
 alias be="bundle exec"
 alias g="git"
 alias rmstore="rm .DS_Store; rm */.DS_Store"
@@ -41,34 +40,8 @@ alias mkdir='mkdir -p'
 alias -g L='| less'
 alias -g G='| grep'
 
-
 function pr() {
   git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e 'r=STDIN.read;b=r.split("/")[1..];system("git", "switch", "-c", b.join("/").strip, r.strip)'
-}
-
-function refresh-remotes {
-  all-remotes-cleanup
-  all-remotes-fetch
-}
-
-function all-remotes-fetch() {
-  for i in $(git remotes | awk '{print $1}' | uniq)
-  do
-    git fetch $i
-  done
-}
-
-function all-remotes-cleanup() {
-  for i in $(git remotes | awk '{print $1}' | uniq)
-  do
-    git cleanup $i
-  done
-}
-
-function p2 () {
-  local user="ec2-user"
-  local host=$(envchain asonas-aws aws ec2 describe-instances --region ap-northeast-1 --output json --filters "Name=instance-state-code,Values=16" | jq -r '.Reservations[].Instances[] | [.Tags[] | select(.Key == "Name").Value][] + "\t" +  .InstanceType + "\t" + .PublicIpAddress + "\t" + .Platform' | awk '{if ($4 != "windows") printf "%-45s %-15s %-10s\n",$1,$2,$3}' | sort | peco | awk '{print $3}')
-  ssh "$user@$host"
 }
 
 function peco-history-selection() {
@@ -92,26 +65,12 @@ function mkdirt() {
 zle -N peco-history-selection
 bindkey '^Q' peco-history-selection
 
-function randomstr() {
-  cat /dev/urandom | LC_CTYPE=C tr -dc '[:alnum:]' | head -c $1 | xargs echo
-}
-
 function new() {
   repo="$(ghq root)/github.com/asonas/$1"
   mkdir -p $repo
   cd $repo
   git init
 }
-
-function peco-checkout-pull-request () {
-    local selected_pr_id=$(gh pr list | peco | awk '{ print $1 }')
-    if [ -n "$selected_pr_id" ]; then
-        BUFFER="gh pr checkout ${selected_pr_id}"
-        zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N peco-checkout-pull-request
 
 ########################################
 # 環境変数
@@ -122,8 +81,8 @@ bindkey -e
 
 # ヒストリの設定
 HISTFILE=~/.zsh_history
-HISTSIZE=100000000
-SAVEHIST=100000000
+HISTSIZE=1000000
+SAVEHIST=1000000
 
 # http://d.hatena.ne.jp/Yoshiori/20120814/1344913023
 REPORTTIME=3
@@ -149,9 +108,6 @@ PROMPT='%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %
 
 # personal bin directory
 export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/dev/bin:$PATH"
-export PATH="$HOME/dev/local/bin:$PATH"
-export PATH="$HOME/dotfiles/script:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
@@ -159,11 +115,6 @@ export PATH="/usr/local/cuda-11.7/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
 export DENO_INSTALL="/home/asonas/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
-
-# rbenv
-export PATH="$HOME/.rbenv/shims:$PATH"
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
 
 # android sdk
 export ANDROID_SDK_HOME=/Users/asonas/dev/local/android/sdk
@@ -204,15 +155,6 @@ zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
 # git
 a() { git add $*; git status -s }
-
-########################################
-# vcs_info
-
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats '%F{magenta}(%b)%f'
-zstyle ':vcs_info:*' actionformats '%F{magenta}(%b|%a)%f'
-setopt prompt_subst
-precmd() { vcs_info }
 
 ########################################
 # オプション
@@ -284,16 +226,20 @@ case ${OSTYPE} in
     fpath=(~/.zsh/completions $fpath)
     fpath=(~/.zsh.d/completions $fpath)
     alias git=hub
-    autoload -Uz compinit
-    compinit
+    ZSH_COMPDUMP="${ZDOTDIR}/.zcompdump"
+    autoload -Uz compinit zcompile
+    if [[ -n $ZSH_COMPDUMP(#qN.mh+24) ]]; then
+    	compinit -i  $ZSH_COMPDUMP
+    	zcompile $ZSH_COMPDUMP
+    else
+    	compinit -i -C
+    fi
 
     # terminal-notifier
     #autoload -U add-zsh-hook
     #export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
     #source ~/.zsh.d/zsh-notify/notify.plugin.zsh
     #export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
-
-    test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
     ;;
   linux*)
     #Linux用の設定
@@ -301,10 +247,15 @@ case ${OSTYPE} in
     autoload -Uz compinit
     compinit
     source /usr/share/mitamae/profile
+    # rbenv
+    export PATH="$HOME/.rbenv/shims:$PATH"
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
     ;;
 esac
 
 source $HOME/.cargo/env
+source ~/.zsh.d/00-lazyenv.bash
 source ~/.zsh.d/personal
 
 export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
