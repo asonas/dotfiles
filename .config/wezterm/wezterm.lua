@@ -3,19 +3,24 @@ local config = {}
 
 config.keys = {
     {
-      key = 'C',
+      key = 'c',
       mods = 'CTRL',
       action = wezterm.action.CopyTo 'ClipboardAndPrimarySelection',
     },
     {
-      key = 'V',
+      key = 'v',
       mods = 'CTRL',
       action = wezterm.action.PasteFrom 'Clipboard',
     },
     {
-      key = 'V',
+      key = 'v',
       mods = 'CTRL',
       action = wezterm.action.PasteFrom 'PrimarySelection',
+    },
+    {
+      key = 'g',
+      mods = 'CTRL',
+      action = wezterm.action.SendKey { key = 'Escape' },
     },
     {
       key = 'R',
@@ -24,7 +29,10 @@ config.keys = {
     },
 }
 
-config.font = wezterm.font 'SauceCodePro Nerd Font'
+config.font = wezterm.font_with_fallback {
+  'SauceCodePro NF',
+  'SauceCodePro Nerd Font',
+}
 
 config.color_scheme = 'Solarized Darcula'
 
