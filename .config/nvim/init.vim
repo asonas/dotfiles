@@ -95,6 +95,7 @@ syntax enable
 autocmd FileType js setlocal sw=2 sts=2 et
 autocmd FileType yml  setlocal sw=2 sts=2 et
 autocmd FileType yaml setlocal sw=2 sts=2 ts=2 et
+autocmd FileType lua setlocal sw=2 sts=2 et
 autocmd BufNewFile,BufRead *.schema set filetype=ruby
 autocmd BufNewFile,BufRead Schemafile set filetype=ruby
 autocmd BufNewFile,BufRead *.iam set filetype=ruby
