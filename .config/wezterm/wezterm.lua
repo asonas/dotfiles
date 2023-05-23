@@ -7,7 +7,7 @@ config.keys = {
 		key = "v",
 		mods = "LEADER|CTRL",
 		action = wezterm.action.SplitPane {
-			direction = "Left",
+			direction = "Right",
 			size = { Percent = 50 }
 		}
 	},
