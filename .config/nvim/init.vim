@@ -111,6 +111,15 @@ autocmd BufNewFile,BufRead *.html setlocal tabstop=2 shiftwidth=2
 
 let g:rustfmt_autosave = 1
 
+function! s:AfterSaveRspec()
+  let filename = expand('%')
+  let line = line('.')
+  let filename_with_line = filename . ':' . line
+  call system('echo "' . filename_with_line . '" | nc -v 0.0.0.0 3002')
+endfunction
+
+exe 'autocmd BufWritePost *_spec.rb call s:AfterSaveRspec()'
+
 source ~/.config/nvim/coc.vim
 " source ~/.config/nvim/ddu.vim
 source ~/.config/nvim/ddc.vim
