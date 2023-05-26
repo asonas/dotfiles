@@ -43,6 +43,23 @@ let g:ruby_host_prog = '~/.rbenv/versions/3.1/bin/neovim-ruby-host'
 " well as sanely reset options when re-sourcing .vimrc
 set nocompatible
 
+" install dein
+let $CACHE = expand('~/.cache')
+if !isdirectory($CACHE)
+  call mkdir($CACHE, 'p')
+endif
+if &runtimepath !~# '/dein.vim'
+  let s:dein_dir = fnamemodify('dein.vim', ':p')
+  if !isdirectory(s:dein_dir)
+    let s:dein_dir = $CACHE .. '/dein/repos/github.com/Shougo/dein.vim'
+    if !isdirectory(s:dein_dir)
+      execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
+    endif
+  endif
+  execute 'set runtimepath^=' .. substitute(
+        \ fnamemodify(s:dein_dir, ':p') , '[/\\]$', '', '')
+endif
+
 " Set Dein base path (required)
 let s:dein_base = '~/.local/share/dein'
 
@@ -63,6 +80,8 @@ call dein#add('Shougo/ddu.vim')
 call dein#add('Shougo/ddu-ui-ff')
 call dein#add('Shougo/ddu-kind-file')
 call dein#add('Shougo/ddu-filter-matcher_substring')
+call dein#add('Shougo/ddc.vim')
+call dein#add('vim-denops/denops.vim')
 call dein#add('Shougo/ddc-source-around')
 call dein#add('Shougo/ddc-ui-native')
 call dein#add('Shougo/ddc-matcher_head')

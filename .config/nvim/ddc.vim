@@ -26,12 +26,6 @@ call ddc#custom#patch_global('sourceParams', #{
       \   around: #{ maxSize: 500 },
       \ })
 
-" Customize settings on a filetype
-call ddc#custom#patch_filetype(['c', 'cpp'], 'sources',
-      \ ['around', 'clangd'])
-call ddc#custom#patch_filetype(['c', 'cpp'], 'sourceOptions', #{
-      \   clangd: #{ mark: 'C' },
-      \ })
 "call ddc#custom#patch_filetype('markdown', 'sourceParams', {
 "      \   around: #{ maxSize: 100 },
 "      \ })
