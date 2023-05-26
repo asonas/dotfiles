@@ -4,11 +4,12 @@
 [core]
   excludesfile = ~/.gitignore
   editor = nvim -c \"set fenc=utf-8\"
+  pager = less --tabs=1,3,5,7,9,13
 
 [pager]
-  log = diff-highlight | less
-  show = diff-highlight | less
-  diff = diff-highlight | less
+  log = diff-highlight | less --tabs=1,3,5,7,9,13
+  show = diff-highlight | less --tabs=1,3,5,7,9,13
+  diff = diff-highlight | less --tabs=1,3,5,7,9,13
 
 [alias]
     graph = log --graph --date-order -C -M --pretty=format:\"%C(cyan)%h%Creset %C(red)%ad%Creset [%an] %Cgreen%d%Creset %s\" --all --date=short --decorate

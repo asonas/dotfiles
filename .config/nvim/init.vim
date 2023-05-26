@@ -95,11 +95,12 @@ syntax enable
 autocmd FileType js setlocal sw=2 sts=2 et
 autocmd FileType yml  setlocal sw=2 sts=2 et
 autocmd FileType yaml setlocal sw=2 sts=2 ts=2 et
-autocmd FileType lua setlocal sw=2 sts=2 et
+autocmd FileType lua setlocal tabstop=2
 autocmd BufNewFile,BufRead *.schema set filetype=ruby
 autocmd BufNewFile,BufRead Schemafile set filetype=ruby
 autocmd BufNewFile,BufRead *.iam set filetype=ruby
 autocmd BufNewFile,BufRead *.html setlocal tabstop=2 shiftwidth=2
+autocmd BufNewFile,BufRead *.lua setlocal tabstop=2 shiftwidth=2
 
 " let g:neocomplcache_enable_auto_select = 0
 " let g:neocomplete#enable_at_startup = 1
