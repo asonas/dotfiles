@@ -12,3 +12,7 @@ Style/HashSyntax:
   EnforcedShorthandSyntax: either
 Layout/CaseIndentation:
   Enabled: true
+Metrics/BlockLength:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
