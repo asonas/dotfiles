@@ -1,0 +1,5 @@
+{
+  "coc.nvim": { "branch": "master", "commit": "2c7e7156f739e61b99c53662a968bb9213badbc4" },
+  "lazy.nvim": { "branch": "main", "commit": "e44636a43376e8a1e851958f7e9cbe996751d59f" },
+  "nerdtree": { "branch": "master", "commit": "fbb71fcd90602e3ec77f40b864b5f9b437c496c5" }
+}
