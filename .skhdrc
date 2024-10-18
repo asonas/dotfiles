@@ -65,6 +65,9 @@ ctrl + alt - j : yabai -m window --insert south
 ctrl + alt - k : yabai -m window --insert north
 ctrl + alt - l : yabai -m window --insert east
 
+ctrl + shift - 4 : yabai -m window --resize abs:1440:810 --display 2 --grid 18:1:0:10:1:6
+ctrl + shift - 8 : yabai -m window --display 2 --grid 18:1:0:10:1:9
+
 #------------------------------------------------------------
 #   bsp 時のレイアウト操作
 #------------------------------------------------------------

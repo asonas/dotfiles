@@ -157,8 +157,11 @@ end
 config.window_background_gradient = { colors = { "#14191e" } }
 config.bold_brightens_ansi_colors = "BrightAndBold"
 
-config.colors = { foreground = "white" }
-config.window_background_opacity = 0.92
+config.colors = {
+	foreground = "white",
+	split = "#00ffaa"
+}
+config.window_background_opacity = 0.8
 
 config.initial_rows = 60
 config.initial_cols = 200

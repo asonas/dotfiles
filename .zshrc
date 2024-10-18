@@ -44,6 +44,54 @@ function pr() {
   git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e 'r=STDIN.read;b=r.split("/")[1..];system("git", "switch", "-c", b.join("/").strip, r.strip)'
 }
 
+
+function display_branches_with_pr() {
+  git branch | while read branch; do
+    clean_branch=$(echo $branch | sed 's/^[ *]*//')
+    pr_info=$(gh pr list --head $clean_branch --json number,title,url -q ".[] | [.title, .url] | @tsv" 2>/dev/null)
+
+    if [[ -n "$pr_info" ]]; then
+      pr_title=$(echo $pr_info | cut -f1)
+      pr_url=$(echo $pr_info | cut -f2)
+      printf "  %s: %s (%s)\n" "$clean_branch" "$pr_title" "$pr_url"
+    else
+      if [[ "$branch" == \** ]]; then
+      	echo "$branch"
+      else
+      	echo "  $branch"
+      fi
+
+    fi
+  done
+}
+
+function gcloud_ssh() {
+  selected_project=$(gcloud projects list --format="value(projectId)" | peco)
+  if [ -z "$selected_project" ]; then
+    return 1
+  fi
+
+  selected_service=$(gcloud app services list --project="$selected_project" --format="value(id)" | peco)
+  if [ -z "$selected_service" ]; then
+    return 1
+  fi
+
+  selected_instance=$(gcloud app instances list --service="$selected_service" --project="$selected_project" --format="value(id)" | peco)
+  if [ -z "$selected_instance" ]; then
+    return 1
+  fi
+
+  latest_version=$(gcloud app versions list --service="$selected_service" --project="$selected_project" --sort-by="~version" --limit=1 --format="value(id)")
+  if [ -z "$latest_version" ]; then
+    return 1
+  fi
+  echo "running version: $latest_version"
+
+  gcloud app instances ssh "$selected_instance" --service "$selected_service" --version "$latest_version" --project "$selected_project"
+}
+
+autoload -Uz gcloud_ssh
+
 function peco-history-selection() {
     BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
     CURSOR=$#BUFFER
@@ -71,6 +119,8 @@ function new() {
   cd $repo
   git init
 }
+
+export DISABLE_SPRING=1
 
 ########################################
 # 環境変数
@@ -219,27 +269,22 @@ case ${OSTYPE} in
     export CLICOLOR=1
     alias ls='ls -G -F'
 
+    eval "$(/opt/homebrew/bin/brew shellenv)"
     ########################################
     # 補完
     # 補完機能を有効にする
-    fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
-    fpath=(~/.zsh/completions $fpath)
-    fpath=(~/.zsh.d/completions $fpath)
     alias git=hub
-    ZSH_COMPDUMP="${ZDOTDIR}/.zcompdump"
-    autoload -Uz compinit zcompile
-    if [[ -n $ZSH_COMPDUMP(#qN.mh+24) ]]; then
-    	compinit -i  $ZSH_COMPDUMP
-    	zcompile $ZSH_COMPDUMP
-    else
-    	compinit -i -C
+    if type brew &>/dev/null; then
+      FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+      FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
     fi
+    fpath=(~/.zsh.d/completions $fpath)
+    ZSH_COMPDUMP=".zsh.d/.zcompdump"
+    autoload -Uz compinit
+    compinit -u
 
-    # terminal-notifier
-    #autoload -U add-zsh-hook
-    #export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
-    #source ~/.zsh.d/zsh-notify/notify.plugin.zsh
-    #export NOTIFY_COMMAND_COMPLETE_TIMEOUT=10
+    eval "$(nodenv init -)"
+    export PATH="$HOME/.nodenv/bin:$PATH"
     ;;
   linux*)
     #Linux用の設定
@@ -250,7 +295,7 @@ case ${OSTYPE} in
     # rbenv
     export PATH="$HOME/.rbenv/shims:$PATH"
     export PATH="$HOME/.rbenv/bin:$PATH"
-    eval "$(rbenv init -)"
+    eval "$(~/.rbenv/bin/rbenv init - zsh)"
     ;;
 esac
 
@@ -269,9 +314,5 @@ eval "$(starship init zsh)"
 export WASMTIME_HOME="$HOME/.wasmtime"
 
 export PATH="$WASMTIME_HOME/bin:$PATH"
-
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/asonas@cookpad.com/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 #zprof
