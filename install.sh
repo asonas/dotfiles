@@ -1,18 +1,32 @@
 #!/bin/sh
-cd $(dirname $0)
-for dotfile in .?*
+set -e
+
+cd "$(dirname "$0")"
+
+required_dirs="
+  .config/nvim
+  .config/karabiner
+  .config/starship.toml
+  .config/wezterm
+  .config/rubocop
+  .config/peco
+  .config/htop
+"
+
+for dir in $required_dirs
 do
-    if [ $dotfile != '..' ] && [ $dotfile != '.git' ]
-    then
-        ln -Fis "$PWD/$dotfile" $HOME
+    target="$PWD/$dir"
+    link="$HOME/$dir"
+
+    if [ -L "$link" ] || [ -e "$link" ]; then
+	rm -rf "$link"
     fi
+
+    mkdir -p "$(dirname "$link")"
+
+    ln -Fis "$target" "$link"
 done
 
-mkdir $HOME/bin
-ln -Fis "$PWD/bin/video_rahmen" $HOME/bin
-ln -Fis "$PWD/bin/loadavg.sh" $HOME/bin
-ln -Fis $PWD/.config/nvim $HOME/.config/nvim
-ln -Fis $PWD/.config/karabiner $HOME/.config/karabiner
-ln -Fis $PWD/.config/starship.toml $HOME/.config/starship.toml
-ln -Fis $PWD/.config/wezterm $HOME/.config/wezterm
-ln -Fis $PWD/.config/rubocop $HOME/.config/rubocop
+[ ! -d "$HOME/bin" ] && mkdir "$HOME/bin"
+ln -Fis "$PWD/bin/video_rahmen" "$HOME/bin/video_rahmen"
+ln -Fis "$PWD/bin/loadavg.sh" "$HOME/bin/loadavg.sh"
