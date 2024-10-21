@@ -34,6 +34,7 @@ npm-debug.log
 .config/karabiner/automatic_backups
 .config/google-chrome
 .config/gcloud
+.config/nvim/plugin/packer_compiled.lua
 
 .idea/
 .generators
