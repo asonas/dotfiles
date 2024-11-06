@@ -5,6 +5,8 @@ cd "$(dirname "$0")"
 
 required_dirs="
   .zshrc
+  .skhdrc
+  .yabairc
   .gitignore
   .gitconfig
   .config/nvim
