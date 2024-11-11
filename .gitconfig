@@ -1,6 +1,6 @@
 [user]
   name = Yuya Fujiwara
-  email = asonas@cookpad.com
+  email = hzw1258@gmail.com
 [core]
   excludesfile = ~/.gitignore
   editor = nvim -c \"set fenc=utf-8\"
