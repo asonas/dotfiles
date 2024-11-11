@@ -9,6 +9,11 @@ required_dirs="
   .yabairc
   .gitignore
   .gitconfig
+  .tigrc
+  .gemrc
+  .irbrc
+  .psqlrc
+  .tmux.conf
   .config/nvim
   .config/karabiner
   .config/starship.toml
