@@ -67,6 +67,12 @@ ctrl + alt - l : yabai -m window --insert east
 
 ctrl + shift - 4 : yabai -m window --resize abs:1440:810 --display 2 --grid 18:1:0:10:1:6
 ctrl + shift - 8 : yabai -m window --display 2 --grid 18:1:0:10:1:9
+ctrl + shift - 9 : yabai -m window --move abs:$(yabai -m query --windows --window | jq -r '.frame.x'):0; yabai -m window --resize abs:$(yabai -m query --windows --window | jq -r '.frame.w'):$(yabai -m query --displays --display | jq -r '.frame.h')
+
+# 左右に移動させる
+ctrl + shift + alt - right : yabai -m window --move abs:$(($(yabai -m query --displays --display | jq -r '.frame.w') - $(yabai -m query --windows --window | jq -r '.frame.w'))):$(yabai -m query --windows --window | jq -r '.frame.y')
+ctrl + shift + alt - left : yabai -m window --move abs:0:$(yabai -m query --windows --window | jq -r '.frame.y')
+
 
 #------------------------------------------------------------
 #   bsp 時のレイアウト操作
