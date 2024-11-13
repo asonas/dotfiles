@@ -31,7 +31,7 @@
                         ]
                     },
                     {
-                        "description": "Slack Ctrl-n and Ctrl-p Navigation",
+                        "description": "Slack and Chrome Ctrl-n and Ctrl-p Navigation",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -47,7 +47,8 @@
                                     {
                                         "type": "frontmost_application_if",
                                         "bundle_identifiers": [
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^com\\.tinyspeck\\.slackmacgap$",
+                                            "^com\\.google\\.Chrome$"
                                         ]
                                     }
                                 ]
@@ -66,7 +67,8 @@
                                     {
                                         "type": "frontmost_application_if",
                                         "bundle_identifiers": [
-                                            "^com\\.tinyspeck\\.slackmacgap$"
+                                            "^com\\.tinyspeck\\.slackmacgap$",
+                                            "^com\\.google\\.Chrome$"
                                         ]
                                     }
                                 ]
