@@ -16,6 +16,7 @@
     graph1 = log --graph -10 --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
     gr = log --graph --pretty='format:%C(yellow)%h%Cblue%d%Creset %s %C(black bold)%an, %ar%Creset'
     delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
+    delete-gone-branches = !git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D %
     st = status -sb
     df = diff
     dfs = diff --staged
@@ -73,3 +74,7 @@
 [fetch]
     parallel = 8
 
+[init]
+	defaultBranch = main
+[push]
+	autoSetupRemote = true
