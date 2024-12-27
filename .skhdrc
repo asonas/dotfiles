@@ -65,7 +65,32 @@ ctrl + alt - j : yabai -m window --insert south
 ctrl + alt - k : yabai -m window --insert north
 ctrl + alt - l : yabai -m window --insert east
 
-ctrl + shift - 4 : yabai -m window --resize abs:1440:810 --display 2 --grid 18:1:0:10:1:6
+ctrl + shift - 4 : \
+  title_bar=17; \
+  window_id=$(yabai -m query --windows --window | jq '.id'); \
+  display_frame=$(yabai -m query --displays --display 2 | jq '.frame'); \
+  display_x=$(echo "$display_frame" | jq '.x'); \
+  display_y=$(echo "$display_frame" | jq '.y'); \
+  display_width=$(echo "$display_frame" | jq '.w'); \
+  display_height=$(echo "$display_frame" | jq '.h'); \
+  window_info=$(yabai -m query --windows --window); \
+  current_width=$(echo "$window_info" | jq '.frame.w'); \
+  current_height=$(echo "$window_info" | jq '.frame.h'); \
+  ratio=$(echo "scale=6; $current_height / $current_width" | bc); \
+  content_height=$(echo "scale=6; $display_width * $ratio" | bc); \
+  new_height=$(echo "scale=6; $content_height - $title_bar" | bc); \
+  y_offset=$(echo "scale=6; ($display_height - $new_height) / 2" | bc); \
+  new_y=$(echo "scale=6; $display_y + $y_offset" | bc); \
+  new_x=$display_x; \
+  new_height_int=$(printf "%.0f" "$new_height"); \
+  new_x_int=$(printf "%.0f" "$new_x"); \
+  new_y_int=$(printf "%.0f" "$new_y"); \
+  yabai -m window "$window_id" --toggle float; \
+  yabai -m window "$window_id" --display 2; \
+  yabai -m window "$window_id" --resize abs:"$display_width":"$new_height_int"; \
+  yabai -m window "$window_id" --move abs:"$new_x_int":"$new_y_int"; \
+  yabai -m display --focus 2;
+
 ctrl + shift - 8 : yabai -m window --display 2 --grid 18:1:0:10:1:9
 ctrl + shift - 9 : yabai -m window --move abs:$(yabai -m query --windows --window | jq -r '.frame.x'):0; yabai -m window --resize abs:$(yabai -m query --windows --window | jq -r '.frame.w'):$(yabai -m query --displays --display | jq -r '.frame.h')
 
