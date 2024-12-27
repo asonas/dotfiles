@@ -16,7 +16,7 @@
     graph1 = log --graph -10 --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
     gr = log --graph --pretty='format:%C(yellow)%h%Cblue%d%Creset %s %C(black bold)%an, %ar%Creset'
     delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
-    delete-gone-branches = !git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D %
+    delete-gone-branches = !git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
     st = status -sb
     df = diff
     dfs = diff --staged
@@ -47,6 +47,7 @@
     cleanup = remote prune
     pbcopy = !printf "$1" | pbcopy
     sw = switch
+    delete-squashed = "!f() { local targetBranch=${1:-master} && git checkout -q $targetBranch && git branch --merged | grep -v \"\\*\" | xargs -n 1 git branch -d && git for-each-ref refs/heads/ \"--format=%(refname:short)\" | while read branch; do mergeBase=$(git merge-base $targetBranch $branch) && [[ $(git cherry $targetBranch $(git commit-tree $(git rev-parse $branch^{tree}) -p $mergeBase -m _)) == \"-\"* ]] && git branch -D $branch; done; }; f"
 
 [color]
     ui = true
@@ -59,12 +60,6 @@
 [rebase]
   autosquash = true
 [ghq]
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path =
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
 [github]
 	user = asonas
 [ghi]
@@ -73,6 +68,7 @@
   path = ~/.gitconfig-private
 [fetch]
     parallel = 8
+    prune = true
 
 [init]
 	defaultBranch = main
