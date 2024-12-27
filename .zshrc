@@ -38,6 +38,7 @@ alias mv='mv -i'
 alias mkdir='mkdir -p'
 alias -g L='| less'
 alias -g G='| grep'
+alias pn='pnpm'
 
 function pr() {
   git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e 'r=STDIN.read;b=r.split("/")[1..];system("git", "switch", "-c", b.join("/").strip, r.strip)'
