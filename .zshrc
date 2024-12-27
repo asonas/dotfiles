@@ -335,4 +335,16 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+function switch-aws-profile() {
+    local profiles=$(aws configure list-profiles)
+    local profile=$(echo "$profiles" | fzf --prompt="Select AWS Profile: ")
+
+    if [ -n "$profile" ]; then
+        export AWS_PROFILE="$profile"
+        echo "Switched to AWS profile: $AWS_PROFILE"
+    else
+        echo "No profile selected."
+    fi
+}
+
 #zprof
