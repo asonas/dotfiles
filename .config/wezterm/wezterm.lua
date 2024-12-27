@@ -156,15 +156,16 @@ else
 end
 config.window_background_gradient = { colors = { "#14191e" } }
 config.bold_brightens_ansi_colors = "BrightAndBold"
+config.color_scheme = 'Oceanic Next (Gogh)'
 
 config.colors = {
 	foreground = "white",
 	split = "#00ffaa"
 }
-config.window_background_opacity = 0.8
+config.window_background_opacity = 0.9
 
 config.initial_rows = 60
-config.initial_cols = 200
+config.initial_cols = 199
 config.adjust_window_size_when_changing_font_size = false
 config.window_decorations = "RESIZE"
 wezterm.on('gui-startup', function(cmd)
