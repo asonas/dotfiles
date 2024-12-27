@@ -287,14 +287,13 @@ case ${OSTYPE} in
     # 補完
     # 補完機能を有効にする
     alias git=hub
+
     if type brew &>/dev/null; then
       FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-      FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+      autoload -Uz compinit
+      compinit -u
     fi
-    fpath=(~/.zsh.d/completions $fpath)
-    ZSH_COMPDUMP=".zsh.d/.zcompdump"
-    autoload -Uz compinit
-    compinit -u
 
     eval "$(nodenv init -)"
     export PATH="$HOME/.nodenv/bin:$PATH"
