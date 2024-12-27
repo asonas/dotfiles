@@ -23,7 +23,6 @@ alias br='bin/rails'
 alias t='ghi show -w $(ghi list --sort updated | grep -v "open issue" | grep -v "Not Found" | peco | awk "{ print $1 }")'
 alias r="bin/rails routes | peco | sed 's/[ \t]*//' | awk -F ' ' '{ print \$1 }' | perl -pe 's/\n//g' | pbcopy"
 alias dc='docker-compose'
-alias pwdc="ruby -rfileutils -e \"print FileUtils.pwd.gsub(' ', '\ ').gsub('(', '\(').gsub(')', '\)')\" | pbcopy"
 alias nv="nvim"
 alias vim="nvim"
 alias le="less"
@@ -44,6 +43,13 @@ function pr() {
   git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e 'r=STDIN.read;b=r.split("/")[1..];system("git", "switch", "-c", b.join("/").strip, r.strip)'
 }
 
+function pwdc() {
+  if [ -n "$1" ]; then
+    ruby -rfileutils -e "print FileUtils.pwd.gsub(' ', '\\ ').gsub('(', '\\(').gsub(')', '\\)') + '/' + ARGV[0]" -- "$1" | pbcopy
+  else
+    ruby -rfileutils -e "print FileUtils.pwd.gsub(' ', '\\ ').gsub('(', '\\(').gsub(')', '\\)')" | pbcopy
+  fi
+}
 
 function display_branches_with_pr() {
   git branch | while read branch; do
