@@ -166,20 +166,6 @@ PROMPT='%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %
 # personal bin directory
 export PATH="$HOME/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/go/bin:$PATH"
-export PATH="/usr/local/cuda-11.7/bin:$PATH"
-export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
-export DENO_INSTALL="/home/asonas/.deno"
-export PATH="$DENO_INSTALL/bin:$PATH"
-
-# android sdk
-export ANDROID_SDK_HOME=/Users/asonas/dev/local/android/sdk
-export PATH=$PATH:$ANDROID_SDK_HOME/tools
-export PATH=$PATH:$ANDROID_SDK_HOME/platform-tools
-
-# node
-export PATH=$PATH:/usr/local/share/npm/bin
 
 # go
 export GOPATH="$HOME/go"
