@@ -129,6 +129,26 @@ function new() {
 
 export DISABLE_SPRING=1
 
+export FZF_DEFAULT_OPTS="--reverse --no-sort --no-hscroll --preview-window=down"
+user_name=$(git config user.name)
+fmt="\
+%(if:equals=$user_name)%(authorname)%(then)%(color:default)%(else)%(color:brightred)%(end)%(refname:short)|\
+%(committerdate:relative)|\
+%(subject)"
+function select-git-branch-friendly() {
+  selected_branch=$(
+    git branch --sort=-committerdate --format=$fmt --color=always \
+    | column -ts'|' \
+    | fzf --ansi --exact --preview='git log --oneline --graph --decorate --color=always -50 {+1}' \
+    | awk '{print $1}' \
+  )
+  BUFFER="${LBUFFER}${selected_branch}${RBUFFER}"
+  CURSOR=$#LBUFFER+$#selected_branch
+  zle redisplay
+}
+zle -N select-git-branch-friendly
+bindkey '^x' select-git-branch-friendly
+
 ########################################
 # 環境変数
 export LANG=ja_JP.UTF-8
