@@ -70,6 +70,3 @@ symbol = '🅰 '
 ap-southeast-2 = 'au'
 us-east-1 = 'va'
 ap-northeast-1 = 'apn-1'
-[aws.profile_aliases]
-CompanyGroupFrobozzOnCallAccess = 'Frobozz'
-905418355005_AdministratorAccess = 'IVRy-dev'
