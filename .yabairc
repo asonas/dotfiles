@@ -57,4 +57,10 @@ yabai -m space 7 --label social
 #
 yabai -m rule --add app="^Dock" manage=off
 
+# Things.appをサブディスプレイの右下端に移動する
+# yabai -m rule --add app="^Things$" action="yabai -m window --move abs:$(($(yabai -m query --displays --display 2 | jq -r '.frame.w') - $(yabai -m query --windows --window | jq -r '.frame.w'))):$(($(yabai -m query --displays --display 2 | jq -r '.frame.h') - $(yabai -m query --windows --window | jq -r '.frame.h')))"
+
+# Things.appのウィンドウが作成されたときに移動する
+#$yabai -m signal --add event=window_created app="^Things$" action="yabai -m window --move abs:$(echo "$(yabai -m query --displays --display 2 | jq -r '.frame.w') - $(yabai -m query --windows --window | jq -r '.frame.w')" | bc -l):$(echo "$(yabai -m query --displays --display 2 | jq -r '.frame.h') - $(yabai -m query --windows --window | jq -r '.frame.h')" | bc -l)"
+
 echo "yabai configuration loaded.."
