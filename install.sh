@@ -21,6 +21,7 @@ required_dirs="
   .config/rubocop
   .config/peco
   .config/htop
+  .config/ghostty
 "
 
 for dir in $required_dirs

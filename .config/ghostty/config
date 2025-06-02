@@ -1,0 +1,37 @@
+keybind = ctrl+j>ctrl+c=new_tab
+
+keybind = ctrl+j>ctrl+p=previous_tab
+
+keybind = ctrl+j>ctrl+space=next_tab
+
+keybind = ctrl+j>ctrl+v=new_split:right
+
+keybind = ctrl+j>ctrl+s=new_split:down
+
+keybind = ctrl+j>ctrl+i=goto_split:next
+
+font-family = "SauceCodePro Nerd Font"
+font-family = "源ノ角ゴシック Code JP"
+
+font-feature = -calt
+font-feature = -dlig
+
+window-save-state = always
+
+maximize = true
+# window-padding-x = 5
+# window-padding-y = 5
+# window-padding-balance = true
+# window-theme = ghostty
+# background-opacity = 0.95
+# background-blur-radius = 20
+
+##custom-shader = "/Users/asonas/ghq/github.com/hackr-sh/ghostty-shaders/cyber-fuji-2020.glsl"
+# custom-shader-animation = always
+
+# ウィンドウの余白設定（お好みで）
+window-padding-x = 5
+window-padding-y = 5
+window-padding-balance = true
+
+scrollback-limit = "500000000"
