@@ -44,6 +44,16 @@ function pr() {
   git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e 'r=STDIN.read;b=r.split("/")[1..];system("git", "switch", "-c", b.join("/").strip, r.strip)'
 }
 
+function pskill() {
+  local pid
+  pid=$(ps -ef | sed 1d | peco --query "$LBUFFER" | awk '{print $2}')
+
+  if [ -n "$pid" ]; then
+    ps -p $pid -o pid,ppid,user,%cpu,%mem,command
+    kill -9 $pid
+  fi
+}
+
 function pwdc() {
   if [ -n "$1" ]; then
     ruby -rfileutils -e "print FileUtils.pwd.gsub(' ', '\\ ').gsub('(', '\\(').gsub(')', '\\)') + '/' + ARGV[0]" -- "$1" | pbcopy
