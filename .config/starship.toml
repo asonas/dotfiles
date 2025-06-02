@@ -64,7 +64,7 @@ style = "bold dimmed green"
 
 [aws]
 format = 'on [ $symbol($profile)(\($region\) )]($style)'
-style = 'bg:#F19E38 fg:black bold'
+style = 'fg:black bold'
 symbol = '🅰 '
 [aws.region_aliases]
 ap-southeast-2 = 'au'
