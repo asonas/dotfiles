@@ -22,6 +22,9 @@ required_dirs="
   .config/peco
   .config/htop
   .config/ghostty
+  .claude/commands/gemini-search.md
+  .claude/settings.json
+  .claude/CLAUDE.md
 "
 
 for dir in $required_dirs
@@ -41,6 +44,7 @@ done
 [ ! -d "$HOME/bin" ] && mkdir "$HOME/bin"
 ln -Fis "$PWD/bin/video_rahmen" "$HOME/bin/video_rahmen"
 ln -Fis "$PWD/bin/loadavg.sh" "$HOME/bin/loadavg.sh"
+ln -Fis "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
 
 case "$OSTYPE" in
   darwin*)
