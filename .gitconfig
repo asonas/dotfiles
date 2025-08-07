@@ -1,6 +1,7 @@
 [user]
   name = Yuya Fujiwara
   email = hzw1258@gmail.com
+	signingkey = 691E4DC10F04CE59
 [core]
   excludesfile = ~/.gitignore
   editor = nvim -c \"set fenc=utf-8\"
@@ -15,7 +16,6 @@
     graph = log --graph --date-order -C -M --pretty=format:\"%C(cyan)%h%Creset %C(red)%ad%Creset [%an] %Cgreen%d%Creset %s\" --all --date=short --decorate
     graph1 = log --graph -10 --branches --remotes --tags  --format=format:'%Cgreen%h %Creset• %<(75,trunc)%s (%cN, %cr) %Cred%d' --date-order
     gr = log --graph --pretty='format:%C(yellow)%h%Cblue%d%Creset %s %C(black bold)%an, %ar%Creset'
-    delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
     delete-gone-branches = !git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -D
     st = status -sb
     df = diff
@@ -74,3 +74,8 @@
 	defaultBranch = main
 [push]
 	autoSetupRemote = true
+	default = current
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
