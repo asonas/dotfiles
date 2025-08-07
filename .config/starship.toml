@@ -2,7 +2,7 @@
 add_newline = false
 
 format = '''
-.-$time$username$hostname$directory $git_branch($git_state)$git_status $memory_usage $aws
+.-$time$username$hostname$directory $git_branch($git_state)$git_status $memory_usage $aws${custom.sip}
 `-\$ '''
 
 scan_timeout = 10
@@ -70,3 +70,9 @@ symbol = '🅰 '
 ap-southeast-2 = 'au'
 us-east-1 = 'va'
 ap-northeast-1 = 'apn-1'
+
+[custom.sip]
+command = "$HOME/bin/check_sip.sh"
+when = true
+format = "[$output]($style)"
+style = "bold red"
