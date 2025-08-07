@@ -1,4 +1,4 @@
-#zmodload zsh/zprof && zprof
+# zmodload zsh/zprof && zprof
 
 # see also
 # https://gist.github.com/mollifier/4979906
@@ -41,7 +41,22 @@ alias -g G='| grep'
 alias pn='pnpm'
 
 function pr() {
-  git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e 'r=STDIN.read;b=r.split("/")[1..];system("git", "switch", "-c", b.join("/").strip, r.strip)'
+  git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e '
+    r = STDIN.read.strip
+    exit if r.empty?
+
+    branch_name = r.split("/")[1..-1].join("/")
+
+    local_branches = `git branch --format="%(refname:short)"`.split("\n").map(&:strip)
+
+    if local_branches.include?(branch_name)
+      puts "Local branch \"#{branch_name}\" exists. Switching to it..."
+      system("git", "switch", branch_name)
+    else
+      puts "Creating new local branch \"#{branch_name}\" from \"#{r}\"..."
+      system("git", "switch", "-c", branch_name, r)
+    end
+  '
 }
 
 function pskill() {
@@ -145,17 +160,26 @@ fmt="\
 %(if:equals=$user_name)%(authorname)%(then)%(color:default)%(else)%(color:brightred)%(end)%(refname:short)|\
 %(committerdate:relative)|\
 %(subject)"
+
 function select-git-branch-friendly() {
   selected_branch=$(
     git branch --sort=-committerdate --format=$fmt --color=always \
     | column -ts'|' \
     | fzf --ansi --exact --preview='git log --oneline --graph --decorate --color=always -50 {+1}' \
     | awk '{print $1}' \
+    | sed 's/^\* //'
   )
-  BUFFER="${LBUFFER}${selected_branch}${RBUFFER}"
+
+  if [[ -n $selected_branch ]]; then
+    git switch "$selected_branch"
+  else
+    echo "No branch selected."
+  fi
+  #BUFFER="${LBUFFER}${selected_branch}${RBUFFER}"
   CURSOR=$#LBUFFER+$#selected_branch
   zle redisplay
 }
+
 zle -N select-git-branch-friendly
 bindkey '^x' select-git-branch-friendly
 
@@ -205,13 +229,26 @@ export GHQ_ROOT="$HOME/ghq"
 
 setopt nolistbeep
 
-#単語の区切り文字を指定する
-autoload -Uz select-word-style
-select-word-style default
-# ここで指定した文字は単語区切りとみなされる
-# / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
-zstyle ':zle:*' word-chars " /=;@:{},|"
-zstyle ':zle:*' word-style unspecified
+#単語の区切り文字を指定する（遅延読み込み）
+_setup_word_style() {
+  if [[ -z "$_WORD_STYLE_SETUP" ]]; then
+    autoload -Uz select-word-style
+    select-word-style default
+    # ここで指定した文字は単語区切りとみなされる
+    # / も区切りと扱うので、^W でディレクトリ１つ分を削除できる
+    zstyle ':zle:*' word-chars " /=;@:{},|"
+    zstyle ':zle:*' word-style unspecified
+    export _WORD_STYLE_SETUP=1
+  fi
+}
+
+# 必要な時だけセットアップする関数をバインド
+_lazy_word_setup() {
+  _setup_word_style
+  zle backward-kill-word
+}
+zle -N _lazy_word_setup
+bindkey '^W' _lazy_word_setup
 
 # 補完で小文字でも大文字にマッチさせる
 #zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -293,26 +330,47 @@ case ${OSTYPE} in
     alias ls='ls -G -F'
 
     eval "$(/opt/homebrew/bin/brew shellenv)"
-    ########################################
-    # 補完
-    # 補完機能を有効にする
-    alias git=hub
 
-    if type brew &>/dev/null; then
+        if type brew &>/dev/null; then
       FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 
+      # 補完初期化の最適化
       autoload -Uz compinit
-      compinit -u
+
+      # 補完の高速化 - セキュリティチェックを無効化
+      # -u フラグで insecure directories の警告を無効にする
+      if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+        compinit -u -d ~/.zcompdump
+      else
+        compinit -u -C -d ~/.zcompdump
+      fi
+
+      # 補完のリビルドを抑制
+      _compinit_loaded=1
     fi
 
-    eval "$(nodenv init -)"
-    export PATH="$HOME/.nodenv/bin:$PATH"
+    # 遅延読み込みでnodenvを最適化
+    if [[ -d "$HOME/.nodenv" ]]; then
+      export PATH="$HOME/.nodenv/bin:$PATH"
+      eval "$(nodenv init - --no-rehash zsh)"
+    fi
+
+    # 遅延読み込みでrbenvを最適化
+    if [[ -d "$HOME/.rbenv" ]]; then
+      export PATH="$HOME/.rbenv/shims:$PATH"
+      export PATH="$HOME/.rbenv/bin:$PATH"
+      eval "$(~/.rbenv/bin/rbenv init - --no-rehash zsh)"
+    fi
+
     ;;
   linux*)
-    #Linux用の設定
-    zstyle ':completion:*:*:git:*' script ~/.zsh/completions/git-completion.zsh
-    autoload -Uz compinit
-    compinit
+    # Linux用の設定 - macOSで既にcompinit済みの場合はスキップ
+    if [[ -z "$_COMPINIT_DONE" ]]; then
+      zstyle ':completion:*:*:git:*' script ~/.zsh/completions/git-completion.zsh
+      autoload -Uz compinit
+      compinit -u
+      export _COMPINIT_DONE=1
+    fi
     source /usr/share/mitamae/profile
     # rbenv
     export PATH="$HOME/.rbenv/shims:$PATH"
@@ -322,27 +380,45 @@ case ${OSTYPE} in
 esac
 
 source $HOME/.cargo/env
-source ~/.zsh.d/00-lazyenv.bash
+#source ~/.zsh.d/00-lazyenv.bash
 source ~/.zsh.d/personal
+source ~/.zsh.d/git-completion-optimization.zsh
+source ~/.zsh.d/startup-optimization.zsh
 
 export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
 
-# heroku autocomplete setup
-HEROKU_AC_ZSH_SETUP_PATH=/Users/asonas/Library/Caches/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
+# heroku autocomplete setup - 遅延読み込み
+_setup_heroku() {
+  if [[ -z "$_HEROKU_SETUP" ]] && [[ -f /Users/asonas/Library/Caches/heroku/autocomplete/zsh_setup ]]; then
+    source /Users/asonas/Library/Caches/heroku/autocomplete/zsh_setup
+    export _HEROKU_SETUP=1
+  fi
+}
+
+# herokuコマンドが実行される時に初期化
+heroku() {
+  _setup_heroku
+  command heroku "$@"
+}
+
 export PATH="/opt/brew/opt/awscli@1/bin:$PATH"
 export PATH="/opt/brew/opt/avr-gcc@8/bin:$PATH"
 
-eval "$(starship init zsh)"
+# starshipの初期化（プロンプトなので即座に必要）
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
 export WASMTIME_HOME="$HOME/.wasmtime"
 
 export PATH="$WASMTIME_HOME/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/asonas/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
+#export PNPM_HOME="/Users/asonas/Library/pnpm"
+#case ":$PATH:" in
+#  *":$PNPM_HOME:"*) ;;
+#  *) export PATH="$PNPM_HOME:$PATH" ;;
+#esac
 # pnpm end
 
 function switch-aws-profile() {
@@ -359,6 +435,41 @@ function switch-aws-profile() {
 
 # Created by `pipx` on 2024-11-14 08:10:36
 export PATH="$PATH:/Users/asonas/.local/bin"
-eval "$(/Users/asonas/.local/bin/mise activate zsh)"
 
-#zprof
+# miseの初期化 - 遅延読み込み
+_setup_mise() {
+  if [[ -z "$_MISE_SETUP" ]] && [[ -f /Users/asonas/.local/bin/mise ]]; then
+    eval "$(/Users/asonas/.local/bin/mise activate zsh)"
+    export _MISE_SETUP=1
+  fi
+}
+
+# mise管理のツールを使用する時に初期化
+if [[ -f /Users/asonas/.local/bin/mise ]]; then
+  mise() {
+    _setup_mise
+    command mise "$@"
+  }
+fi
+
+# Dart補完の遅延読み込み
+_setup_dart_completion() {
+  if [[ -z "$_DART_COMPLETION_SETUP" ]] && [[ -f /Users/asonas/.dart-cli-completion/zsh-config.zsh ]]; then
+    source /Users/asonas/.dart-cli-completion/zsh-config.zsh
+    export _DART_COMPLETION_SETUP=1
+  fi
+}
+
+# dartコマンドが実行される時に初期化
+dart() {
+  _setup_dart_completion
+  command dart "$@"
+}
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/asonas/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+# zprof
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"

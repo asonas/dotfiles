@@ -22,6 +22,9 @@ required_dirs="
   .config/peco
   .config/htop
   .config/ghostty
+  .zsh.d/git-completion-debug.zsh
+  .zsh.d/git-completion-optimization.zsh
+  .zsh.d/git-pull-fast-completion.zsh
   .claude/commands/gemini-search.md
   .claude/settings.json
   .claude/CLAUDE.md
