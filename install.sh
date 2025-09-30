@@ -22,9 +22,11 @@ required_dirs="
   .config/peco
   .config/htop
   .config/ghostty
+  .config/mise/config.toml
   .zsh.d/git-completion-debug.zsh
   .zsh.d/git-completion-optimization.zsh
   .zsh.d/git-pull-fast-completion.zsh
+  .zsh.d/pnpm-completion.zsh
   .claude/commands/gemini-search.md
   .claude/settings.json
   .claude/CLAUDE.md
@@ -45,20 +47,18 @@ do
 done
 
 [ ! -d "$HOME/bin" ] && mkdir "$HOME/bin"
-ln -Fis "$PWD/bin/video_rahmen" "$HOME/bin/video_rahmen"
-ln -Fis "$PWD/bin/loadavg.sh" "$HOME/bin/loadavg.sh"
-ln -Fis "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
+ln -Ffs "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
 
 case "$OSTYPE" in
   darwin*)
     # macOS
     GIT_PATH=$(brew --prefix git)
-    ln -Fis "$GIT_PATH/share/git-core/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
+    ln -Ffs "$GIT_PATH/share/git-core/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
     ;;
   linux*)
     # Linux
     GIT_PATH=$(dirname "$(which git)")
-    ln -Fis "$GIT_PATH/../share/git/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
+    ln -Ffs "$GIT_PATH/../share/git/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
     ;;
   *)
     echo "Unsupported OS: $OSTYPE"
