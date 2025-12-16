@@ -13,14 +13,11 @@ alias pythonserver='python -m http.server'
 alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
 alias o='git ls-files | peco | xargs vim '
-alias oa='git ls-files | peco | xargs atom'
 alias e='cd $GHQ_ROOT/$(ghq list | peco )'
 alias q='cd $(GHQ_ROOT=~/go ghq list -p | peco)'
-alias n='atom $(find node_modules -maxdepth 1 -type d | peco)'
 alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
 alias sd='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep deploy|peco|awk "{print \$2}")'
 alias br='bin/rails'
-alias t='ghi show -w $(ghi list --sort updated | grep -v "open issue" | grep -v "Not Found" | peco | awk "{ print $1 }")'
 alias r="bin/rails routes | peco | sed 's/[ \t]*//' | awk -F ' ' '{ print \$1 }' | perl -pe 's/\n//g' | pbcopy"
 alias dc='docker-compose'
 alias nv="nvim"
@@ -122,7 +119,6 @@ function gcloud_ssh() {
   gcloud app instances ssh "$selected_instance" --service "$selected_service" --version "$latest_version" --project "$selected_project"
 }
 
-autoload -Uz gcloud_ssh
 
 function peco-history-selection() {
     BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
@@ -146,7 +142,14 @@ zle -N peco-history-selection
 bindkey '^Q' peco-history-selection
 
 function new() {
-  repo="$(ghq root)/github.com/asonas/$1"
+  if [ $# -eq 1 ]; then
+    repo="$(ghq root)/github.com/asonas/$1"
+  elif [ $# -eq 2 ]; then
+    repo="$(ghq root)/github.com/$1/$2"
+  else
+    echo "Usage: new <repo_name> or new <org> <repo_name>"
+    return 1
+  fi
   mkdir -p $repo
   cd $repo
   git init
@@ -210,12 +213,6 @@ function git-diff-numstat-deletions() {
   git diff $(current_branch)..master --numstat | awk 'NF==3 {minus+=$1} END {printf("+%\047d", minus)}'
 }
 
-# プロンプト
-# 1行表示
-# PROMPT="%~ %# "
-# 2行表示
-PROMPT='%{$fg[blue]%}.-%{${reset_color}%}%{${fg[cyan]}%}[%T]%{${reset_color}%} %{$fg[blue]%}%n@%m%{${reset_color}%}:%~ ${vcs_info_msg_0_}
-%{$fg[blue]%}\`-%{${reset_color}%}%# '
 
 # personal bin directory
 export PATH="$HOME/bin:$PATH"
@@ -333,6 +330,7 @@ case ${OSTYPE} in
 
         if type brew &>/dev/null; then
       FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+      FPATH=$HOME/.zsh.d/completions:$FPATH
 
       # 補完初期化の最適化
       autoload -Uz compinit
@@ -398,10 +396,7 @@ esac
 source $HOME/.cargo/env
 #source ~/.zsh.d/00-lazyenv.bash
 source ~/.zsh.d/personal
-source ~/.zsh.d/git-completion-optimization.zsh
-source ~/.zsh.d/startup-optimization.zsh
 
-export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
 
 # heroku autocomplete setup - 遅延読み込み
 _setup_heroku() {
@@ -417,8 +412,6 @@ heroku() {
   command heroku "$@"
 }
 
-export PATH="/opt/brew/opt/awscli@1/bin:$PATH"
-export PATH="/opt/brew/opt/avr-gcc@8/bin:$PATH"
 
 # starshipの初期化（プロンプトなので即座に必要）
 if command -v starship >/dev/null 2>&1; then
@@ -444,21 +437,8 @@ function switch-aws-profile() {
 # Created by `pipx` on 2024-11-14 08:10:36
 export PATH="$PATH:/Users/asonas/.local/bin"
 
-# miseの初期化 - 遅延読み込み
-_setup_mise() {
-  if [[ -z "$_MISE_SETUP" ]] && [[ -f /Users/asonas/.local/bin/mise ]]; then
-    eval "$(/Users/asonas/.local/bin/mise activate zsh)"
-    export _MISE_SETUP=1
-  fi
-}
+eval "$(mise activate zsh)"
 
-# mise管理のツールを使用する時に初期化
-if [[ -f /Users/asonas/.local/bin/mise ]]; then
-  mise() {
-    _setup_mise
-    command mise "$@"
-  }
-fi
 
 # Dart補完の遅延読み込み
 _setup_dart_completion() {
@@ -483,3 +463,13 @@ export PATH="$HOME/.nodenv/bin:$PATH"
 #zprof
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+# bun completions
+[ -s "/Users/asonas/.bun/_bun" ] && source "/Users/asonas/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/asonas/.antigravity/antigravity/bin:$PATH"
