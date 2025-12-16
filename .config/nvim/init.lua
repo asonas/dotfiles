@@ -17,8 +17,6 @@ vim.api.nvim_set_keymap('n', '<Space>e', ':wq<CR>', { noremap = true, silent = t
 vim.api.nvim_set_keymap('n', '<Space><Space>', ':w<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<Space>r', ':Denite file/rec<CR>', { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap('i', '<C-p>', '<Up>', { noremap = true })
-vim.api.nvim_set_keymap('i', '<C-n>', '<Down>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-b>', '<Left>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-f>', '<Right>', { noremap = true })
 vim.api.nvim_set_keymap('i', '<C-e>', '<End>', { noremap = true })
@@ -29,6 +27,19 @@ vim.api.nvim_set_keymap('i', '<C-k>', '<C-o>"_d$', { noremap = true })
 
 vim.api.nvim_set_keymap('n', '<Space>p', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
 vim.opt.guifont = 'SourceCodePro-Regular:h12'
+
+-- coc.nvim completion settings
+-- Tab: 補完候補があれば次の候補、なければTabを挿入
+vim.api.nvim_set_keymap('i', '<TAB>', [[coc#pum#visible() ? coc#pum#next(1) : "\<Tab>"]], { expr = true, silent = true })
+-- Shift-Tab: 前の候補
+vim.api.nvim_set_keymap('i', '<S-TAB>', [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]],
+  { expr = true, silent = true })
+-- Enter: 補完を確定
+vim.api.nvim_set_keymap('i', '<CR>', [[coc#pum#visible() ? coc#pum#confirm() : "\<CR>"]], { expr = true, silent = true })
+-- Ctrl-n: 補完メニューが表示されていれば次の候補、なければ下に移動
+vim.api.nvim_set_keymap('i', '<C-n>', [[coc#pum#visible() ? coc#pum#next(1) : "\<Down>"]], { expr = true, silent = true })
+-- Ctrl-p: 補完メニューが表示されていれば前の候補、なければ上に移動
+vim.api.nvim_set_keymap('i', '<C-p>', [[coc#pum#visible() ? coc#pum#prev(1) : "\<Up>"]], { expr = true, silent = true })
 
 vim.cmd([[
 autocmd BufWritePre * :%s/\s\+$//ge
@@ -75,42 +86,10 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
-end
+-- lazy.nvimでプラグインを読み込み
+require("lazy").setup("plugins")
 
-local packer_bootstrap = ensure_packer()
-
-require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
-  require('plugins').setup(use)
-
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end)
-
-local function packer_sync_and_compile()
-  vim.cmd [[autocmd User PackerComplete ++once lua require('packer').compile()]]
-  require('packer').install()
-end
-
-if packer_bootstrap then
-  vim.api.nvim_create_autocmd("VimEnter", {
-    callback = function()
-      packer_sync_and_compile()
-    end,
-  })
-end
-
-require('telescope').setup{
+require('telescope').setup {
   defaults = {
     file_ignore_patterns = { "node_modules" }
   },
@@ -125,18 +104,18 @@ require('telescope').setup{
 }
 
 require('gitsigns').setup {
-  signs_staged_enable = true,
-  signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
-  numhl      = true, -- Toggle with `:Gitsigns toggle_numhl`
-  linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-  word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
-  watch_gitdir = {
+  signs_staged_enable          = true,
+  signcolumn                   = true,  -- Toggle with `:Gitsigns toggle_signs`
+  numhl                        = false, -- Toggle with `:Gitsigns toggle_numhl`
+  linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff                    = false, -- Toggle with `:Gitsigns toggle_word_diff`
+  watch_gitdir                 = {
     follow_files = true
   },
-  auto_attach = true,
-  attach_to_untracked = false,
-  current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-  current_line_blame_opts = {
+  auto_attach                  = true,
+  attach_to_untracked          = false,
+  current_line_blame           = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts      = {
     virt_text = true,
     virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
     delay = 0,
@@ -144,11 +123,13 @@ require('gitsigns').setup {
     virt_text_priority = 50,
   },
   current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
-  sign_priority = 6,
-  update_debounce = 100,
-  status_formatter = nil, -- Use default
-  max_file_length = 4000, -- Disable if file is longer than this (in lines)
+  sign_priority                = 6,
+  update_debounce              = 100,
+  status_formatter             = nil,  -- Use default
+  max_file_length              = 4000, -- Disable if file is longer than this (in lines)
 }
 
 require('telescope').load_extension('fzf')
 vim.api.nvim_set_keymap('n', '<Space>t', ':Telescope find_files hidden=true<CR>', { noremap = true, silent = true })
+
+vim.g.python3_host_prog = vim.fn.trim(vim.fn.system('mise which python'))
