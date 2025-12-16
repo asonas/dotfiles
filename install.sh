@@ -23,9 +23,6 @@ required_dirs="
   .config/htop
   .config/ghostty
   .config/mise/config.toml
-  .zsh.d/git-completion-debug.zsh
-  .zsh.d/git-completion-optimization.zsh
-  .zsh.d/git-pull-fast-completion.zsh
   .zsh.d/pnpm-completion.zsh
   .claude/commands/gemini-search.md
   .claude/settings.json
@@ -48,6 +45,7 @@ done
 
 [ ! -d "$HOME/bin" ] && mkdir "$HOME/bin"
 ln -Ffs "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
+ln -Ffs "$PWD/bin/setup_workspace" "$HOME/bin/setup_workspace"
 
 case "$OSTYPE" in
   darwin*)
@@ -64,3 +62,7 @@ case "$OSTYPE" in
     echo "Unsupported OS: $OSTYPE"
     ;;
 esac
+
+# Setup zsh completions
+mkdir -p "$HOME/.zsh.d/completions"
+curl -fsSL "https://gist.githubusercontent.com/takai/d42693fbd01e8957ca52fa08c8ae660a/raw/_mairu" -o "$HOME/.zsh.d/completions/_mairu"
