@@ -8,7 +8,8 @@ yabai -m config external_bar                 off:45:0
 yabai -m config mouse_follows_focus          off
 yabai -m config focus_follows_mouse          autoraise
 yabai -m config window_placement             second_child
-yabai -m config window_topmost               on
+# yabai -m config window_topmost               on  # この設定は古いバージョン用のため無効化
+yabai -m config window_opacity               on
 yabai -m config active_window_opacity        1.0
 yabai -m config normal_window_opacity        0.85
 yabai -m config split_ratio                  0.50
@@ -16,7 +17,7 @@ yabai -m config auto_balance                 on
 yabai -m config mouse_modifier               fn
 yabai -m config mouse_action1                move
 yabai -m config mouse_action2                resize
-yabai -m config focus_follows_mouse off
+yabai -m config focus_follows_mouse          off
 
 # general space settings
 yabai -m config layout         float
@@ -27,13 +28,14 @@ yabai -m config right_padding  0
 yabai -m config window_gap     0
 
 # mission-control desktop labels
-yabai -m space 1 --label code
-yabai -m space 2 --label mail
-yabai -m space 3 --label web
-yabai -m space 4 --label productivity
-yabai -m space 5 --label re
-yabai -m space 6 --label media
-yabai -m space 7 --label social
+# 存在するスペースのみラベルを設定（エラーを無視）
+yabai -m space 1 --label code 2>/dev/null || true
+yabai -m space 2 --label mail 2>/dev/null || true
+yabai -m space 3 --label web 2>/dev/null || true
+yabai -m space 4 --label productivity 2>/dev/null || true
+yabai -m space 5 --label re 2>/dev/null || true
+yabai -m space 6 --label media 2>/dev/null || true
+yabai -m space 7 --label social 2>/dev/null || true
 
 # specific space settings
 #yabai -m config --space web layout float
@@ -62,5 +64,83 @@ yabai -m rule --add app="^Dock" manage=off
 
 # Things.appのウィンドウが作成されたときに移動する
 #$yabai -m signal --add event=window_created app="^Things$" action="yabai -m window --move abs:$(echo "$(yabai -m query --displays --display 2 | jq -r '.frame.w') - $(yabai -m query --windows --window | jq -r '.frame.w')" | bc -l):$(echo "$(yabai -m query --displays --display 2 | jq -r '.frame.h') - $(yabai -m query --windows --window | jq -r '.frame.h')" | bc -l)"
+
+# Slackスレッドウィンドウを自動配置（660x1169px、マルチ:左下、シングル:右下）
+# メインウィンドウ（タイトルに「[メイン]」を含む）は除外
+yabai -m signal --add event=window_created app="^Slack$" action="bash -c ' \
+  window_info=\$(yabai -m query --windows --window \$YABAI_WINDOW_ID); \
+  window_title=\$(echo \"\$window_info\" | jq -r \".title\"); \
+  if [[ ! \"\$window_title\" =~ \"[メイン]\" ]] && [[ ! \"\$window_title\" =~ \"\\[メイン\\]\" ]]; then \
+    slack_window_count=\$(yabai -m query --windows | jq \"[.[] | select(.app == \\\"Slack\\\")] | length\"); \
+    if [ \$slack_window_count -gt 1 ]; then \
+      display_count=\$(yabai -m query --displays | jq \"length\"); \
+      if [ \$display_count -gt 1 ]; then \
+        target_display=2; \
+      else \
+        target_display=1; \
+      fi; \
+      display_info=\$(yabai -m query --displays --display \$target_display); \
+      display_x=\$(echo \"\$display_info\" | jq \".frame.x\"); \
+      display_y=\$(echo \"\$display_info\" | jq \".frame.y\"); \
+      display_w=\$(echo \"\$display_info\" | jq \".frame.w\"); \
+      display_h=\$(echo \"\$display_info\" | jq \".frame.h\"); \
+      window_w=660; \
+      window_h=1130; \
+      if [ \$display_count -gt 1 ]; then \
+        new_x=\$display_x; \
+      else \
+        new_x=\$(echo \"\$display_x + \$display_w - \$window_w\" | bc); \
+      fi; \
+      new_y=\$(echo \"\$display_y + \$display_h - \$window_h\" | bc); \
+      yabai -m window \$YABAI_WINDOW_ID --toggle float; \
+      yabai -m window \$YABAI_WINDOW_ID --display \$target_display; \
+      yabai -m window \$YABAI_WINDOW_ID --resize abs:\$window_w:\$window_h; \
+      yabai -m window \$YABAI_WINDOW_ID --move abs:\$new_x:\$new_y; \
+    fi; \
+  fi \
+'"
+
+# Cursorウィンドウを自動配置（メインディスプレイの左2/3、マルチディスプレイ時は200px余白）
+yabai -m signal --add event=window_created app="^Cursor$" action="bash -c ' \
+  display_count=\$(yabai -m query --displays | jq \"length\"); \
+  main_display_info=\$(yabai -m query --displays --display 1); \
+  main_display_x=\$(echo \"\$main_display_info\" | jq \".frame.x\"); \
+  main_display_y=\$(echo \"\$main_display_info\" | jq \".frame.y\"); \
+  main_display_w=\$(echo \"\$main_display_info\" | jq \".frame.w\"); \
+  main_display_h=\$(echo \"\$main_display_info\" | jq \".frame.h\"); \
+  two_thirds_width=\$(echo \"\$main_display_w * 2 / 3\" | bc); \
+  if [ \$display_count -gt 1 ]; then \
+    new_x=\$(echo \"\$main_display_x + 200\" | bc); \
+  else \
+    new_x=\$main_display_x; \
+  fi; \
+  yabai -m window \$YABAI_WINDOW_ID --toggle float; \
+  yabai -m window \$YABAI_WINDOW_ID --display 1; \
+  yabai -m window \$YABAI_WINDOW_ID --resize abs:\$two_thirds_width:\$main_display_h; \
+  yabai -m window \$YABAI_WINDOW_ID --move abs:\$new_x:\$main_display_y; \
+'"
+
+# Discordウィンドウを自動配置（1140x720px、右上）
+yabai -m signal --add event=window_created app="^Discord$" action="bash -c ' \
+  display_count=\$(yabai -m query --displays | jq \"length\"); \
+  if [ \$display_count -gt 1 ]; then \
+    target_display=2; \
+  else \
+    target_display=1; \
+  fi; \
+  display_info=\$(yabai -m query --displays --display \$target_display); \
+  display_x=\$(echo \"\$display_info\" | jq \".frame.x\"); \
+  display_y=\$(echo \"\$display_info\" | jq \".frame.y\"); \
+  display_w=\$(echo \"\$display_info\" | jq \".frame.w\"); \
+  display_h=\$(echo \"\$display_info\" | jq \".frame.h\"); \
+  window_w=1140; \
+  window_h=720; \
+  new_x=\$(echo \"\$display_x + \$display_w - \$window_w\" | bc); \
+  new_y=\$display_y; \
+  yabai -m window \$YABAI_WINDOW_ID --toggle float; \
+  yabai -m window \$YABAI_WINDOW_ID --display \$target_display; \
+  yabai -m window \$YABAI_WINDOW_ID --resize abs:\$window_w:\$window_h; \
+  yabai -m window \$YABAI_WINDOW_ID --move abs:\$new_x:\$new_y; \
+'"
 
 echo "yabai configuration loaded.."
