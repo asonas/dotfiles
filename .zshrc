@@ -362,6 +362,11 @@ case ${OSTYPE} in
       eval "$(~/.rbenv/bin/rbenv init - --no-rehash zsh)"
     fi
 
+    eval "$(nodenv init -)"
+    export PATH="$HOME/.nodenv/bin:$PATH"
+    # Created by `pipx` on 2024-11-14 08:10:36
+    export PATH="$PATH:/Users/asonas/.local/bin"
+    eval "$(/Users/asonas/.local/bin/mise activate zsh)"
     ;;
   linux*)
     # Linux用の設定 - macOSで既にcompinit済みの場合はスキップ
@@ -373,9 +378,8 @@ case ${OSTYPE} in
     fi
     source /usr/share/mitamae/profile
     # rbenv
-    export PATH="$HOME/.rbenv/shims:$PATH"
-    export PATH="$HOME/.rbenv/bin:$PATH"
-    eval "$(~/.rbenv/bin/rbenv init - zsh)"
+    eval "$(rbenv init - zsh)"
+    eval "$(nodenv init - zsh)"
     ;;
 esac
 
