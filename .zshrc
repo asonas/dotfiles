@@ -367,6 +367,12 @@ case ${OSTYPE} in
     # Created by `pipx` on 2024-11-14 08:10:36
     export PATH="$PATH:/Users/asonas/.local/bin"
     eval "$(/Users/asonas/.local/bin/mise activate zsh)"
+    # pnpm
+    export PNPM_HOME="/Users/asonas/Library/pnpm"
+    case ":$PATH:" in
+      *":$PNPM_HOME:"*) ;;
+      *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
     ;;
   linux*)
     # Linux用の設定 - macOSで既にcompinit済みの場合はスキップ
@@ -380,6 +386,12 @@ case ${OSTYPE} in
     # rbenv
     eval "$(rbenv init - zsh)"
     eval "$(nodenv init - zsh)"
+    # pnpm
+    export PNPM_HOME="$HOME/.local/share/pnpm"
+    case ":$PATH:" in
+      *":$PNPM_HOME:"*) ;;
+      *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
     ;;
 esac
 
@@ -416,14 +428,6 @@ fi
 export WASMTIME_HOME="$HOME/.wasmtime"
 
 export PATH="$WASMTIME_HOME/bin:$PATH"
-
-# pnpm
-#export PNPM_HOME="/Users/asonas/Library/pnpm"
-#case ":$PATH:" in
-#  *":$PNPM_HOME:"*) ;;
-#  *) export PATH="$PNPM_HOME:$PATH" ;;
-#esac
-# pnpm end
 
 function switch-aws-profile() {
     local profiles=$(aws configure list-profiles)
@@ -474,6 +478,8 @@ dart() {
 export PATH="/Users/asonas/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
-# zprof
+export PATH="$HOME/.nodenv/bin:$PATH"
+
+#zprof
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
