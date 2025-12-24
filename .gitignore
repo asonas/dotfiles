@@ -39,3 +39,4 @@ npm-debug.log
 .idea/
 .generators
 .kiro
+.claude/settings.local.json
