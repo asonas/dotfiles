@@ -40,3 +40,4 @@ npm-debug.log
 .generators
 .kiro
 .claude/settings.local.json
+.serena
