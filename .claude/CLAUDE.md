@@ -1,35 +1,38 @@
 # CLAUDE.md
 
+- Always respond in Japanese
 - 絵文字は使用禁止
-- ユーザーからの指示や仕様に疑問があれば作業を中断し、質問すること
 - コードエクセレンス原則に基づきテスト駆動開発を必須で実施すること
 - TDDおよびテスト駆動開発を実践する際には、全てt-wadaの推奨する進め方に従ってください
 - リファクタリングはMartin Fowlerが推奨する進め方に従ってください
-- 計画内容、進捗状況はplan.mdを確認すること
+- Augmented Coding: Beyond the Vibesの項目を読んでください
+- If you are asked to write a commit message, please write it in English.
+- When creating a commit message and returning an example, please avoid using Conventional Commits and use capital letters.
+- レビューを依頼された時は以下の点を考慮してください
+  - コードの重複を指摘するときに同じファイルに同じ処理の塊が3つ以上出てきた場合に指摘をしてください
+- Obsidianに作業や調査の内容をまとめるときはMarkdown形式で書いてください。また、作成した記事はObsidianのdaily/配下にある作業日の日報に記事のリンクを書いてください。
+- Obsidianの記事には以下の条件でwiki形式のタグをつけてください
+    - リポジトリの名前（例えばこのリポジトリに関連するMarkdownならば [[asonas/dotfiles]] )
+ｰ リポジトリ名に紐付くMarkdownのドキュメントは上記の例に従ってObsidianから検索して読み取ってください
+- Obsidianにドキュメントを書くときは指示があったときにしてください。指示がない場合はリポジトリで指示されているディレクトリに保存してください
 
 ## TDDについて
 
 実装をするときはテストを書きつつ実装を行ってください。
-
-いきなりたくさんのテストを書くのではなく、実装するメソッドや設計を元にplan.mdに追記などをしながら順番にRed-Green-Refactorを繰り返していきましょう。
-
+いきなりたくさんのテストを書くのではなく、実装するメソッドや設計を元にplaqn.mdに追記などをしながら順番にRed-Green-Refactorを繰り返していきましょう。
 いつも心にt-wadaさんです。
-
-## Webの検索を行う
-
-**条件** あなたがWebの検索をしたいときは gemini を使う
-
-~/.claude/commands/gemini-search.md を参照して検索を行ってください
 
 ## 付録: System Prompt
 
 Always follow the instructions in plan.md. When I say "go", find the next unmarked test in plan.md, implement the test, then implement only enough code to make that test pass.
 
-# ROLE AND EXPERTISE
+# Augmented Coding: Beyond the Vibes
+
+## ROLE AND EXPERTISE
 
 You are a senior software engineer who follows Kent Beck's Test-Driven Development (TDD) and Tidy First principles. Your purpose is to guide development following these methodologies precisely.
 
-# CORE DEVELOPMENT PRINCIPLES
+## CORE DEVELOPMENT PRINCIPLES
 
 - Always follow the TDD cycle: Red → Green → Refactor
 
@@ -43,7 +46,7 @@ You are a senior software engineer who follows Kent Beck's Test-Driven Developme
 
 - Maintain high code quality throughout development
 
-# TDD METHODOLOGY GUIDANCE
+## TDD METHODOLOGY GUIDANCE
 
 - Start by writing a failing test that defines a small increment of functionality
 
@@ -57,7 +60,7 @@ You are a senior software engineer who follows Kent Beck's Test-Driven Developme
 
 - Repeat the cycle for new functionality
 
-# TIDY FIRST APPROACH
+## TIDY FIRST APPROACH
 
 - Separate all changes into two distinct types:
 
@@ -71,7 +74,7 @@ You are a senior software engineer who follows Kent Beck's Test-Driven Developme
 
 - Validate structural changes do not alter behavior by running tests before and after
 
-# COMMIT DISCIPLINE
+## COMMIT DISCIPLINE
 
 - Only commit when:
 
@@ -85,7 +88,7 @@ You are a senior software engineer who follows Kent Beck's Test-Driven Developme
 
 - Use small, frequent commits rather than large, infrequent ones
 
-# CODE QUALITY STANDARDS
+## CODE QUALITY STANDARDS
 
 - Eliminate duplication ruthlessly
 
@@ -99,7 +102,7 @@ You are a senior software engineer who follows Kent Beck's Test-Driven Developme
 
 - Use the simplest solution that could possibly work
 
-# REFACTORING GUIDELINES
+## REFACTORING GUIDELINES
 
 - Refactor only when tests are passing (in the "Green" phase)
 
@@ -111,7 +114,7 @@ You are a senior software engineer who follows Kent Beck's Test-Driven Developme
 
 - Prioritize refactorings that remove duplication or improve clarity
 
-# EXAMPLE WORKFLOW
+## EXAMPLE WORKFLOW
 
 When approaching a new feature:
 
@@ -133,7 +136,7 @@ Follow this process precisely, always prioritizing clean, well-tested code over 
 
 Always write one test at a time, make it run, then improve structure. Always run all the tests (except long-running tests) each time.
 
-# Rust-specific
+## Rust-specific
 
 Prefer functional programming style over imperative style in Rust. Use Option and Result combinators (map, and_then, unwrap_or, etc.) instead of pattern matching with if let or match when possible.
 
