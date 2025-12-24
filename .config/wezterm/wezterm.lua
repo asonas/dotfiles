@@ -1,5 +1,19 @@
 local wezterm = require("wezterm")
+local act = wezterm.action
 local config = {}
+
+local function basename(path)
+	if not path then return "" end
+	local str = tostring(path)
+	return str:match("([^/\\]+)$") or str
+end
+
+local function convert_home_dir(url)
+	if not url then return "" end
+	local path = url.file_path and url:file_path() or tostring(url)
+	local home = os.getenv("HOME") or ""
+	return path:gsub("^" .. home, "~")
+end
 
 config.mouse_bindings = {
 	{
@@ -11,7 +25,7 @@ config.mouse_bindings = {
 				window:perform_action(act.CopyTo("ClipboardAndPrimarySelection"), pane)
 				window:perform_action(act.ClearSelection, pane)
 			else
-				window:perform_action(act({ PasteFrom = "Clipboard" }), pane)
+				window:perform_action(act.PasteFrom("Clipboard"), pane)
 			end
 		end),
 	},
@@ -86,45 +100,6 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 			action = wezterm.action.ReloadConfiguration,
 		},
 	}
-else
-	config.leader = { key = "j", mods = "CTRL", timeout_milliseconds = 1000 }
-	config.keys = {
-		{
-			key = "v",
-			mods = "LEADER|CTRL",
-			action = wezterm.action.SplitPane({
-				direction = "Right",
-				size = { Percent = 50 },
-			}),
-		},
-		{ key = "s", mods = "LEADER|CTRL", action = wezterm.action.SplitVertical },
-		{
-			key = "c",
-			mods = "LEADER|CTRL",
-			action = wezterm.action.SpawnTab("CurrentPaneDomain"),
-		},
-		{
-			key = "p",
-			mods = "LEADER|CTRL",
-			action = wezterm.action.MoveTabRelative(-1),
-		},
-		{
-			key = "n",
-			mods = "LEADER|CTRL",
-			action = wezterm.action.MoveTabRelative(1),
-		},
-		{
-			key = "o",
-			mods = "LEADER|CTRL",
-			action = wezterm.action.RotatePanes("Clockwise"),
-		},
-		{ key = "w", mods = "LEADER|CTRL", action = wezterm.action.PaneSelect },
-		{
-			key = "i",
-			mods = "LEADER|CTRL",
-			action = wezterm.action.ActivatePaneDirection("Next"),
-		},
-	}
 end
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
@@ -175,10 +150,10 @@ end)
 
 if wezterm.target_triple == "aarch64-apple-darwin" then
 	wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-		local title = wezterm.truncate_right(utils.basename(tab.active_pane.foreground_process_name), max_width)
+		local title = wezterm.truncate_right(basename(tab.active_pane.foreground_process_name), max_width)
 		if title == "" then
 			title = wezterm.truncate_right(
-				utils.basename(utils.convert_home_dir(tab.active_pane.current_working_dir)),
+				basename(convert_home_dir(tab.active_pane.current_working_dir)),
 				max_width
 			)
 		end
