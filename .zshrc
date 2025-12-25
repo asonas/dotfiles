@@ -435,7 +435,7 @@ function switch-aws-profile() {
 }
 
 # Created by `pipx` on 2024-11-14 08:10:36
-export PATH="$PATH:/Users/asonas/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 eval "$(mise activate zsh)"
 
