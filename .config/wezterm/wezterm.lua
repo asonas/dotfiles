@@ -105,16 +105,16 @@ end
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.font = wezterm.font_with_fallback({ "SauceCodePro NF" })
 	config.unix_domains = {
-  {
-    name = 'wsl',
-    -- Override the default path to match the default on the host win32
-    -- filesystem.  This will allow the host to connect into the WSL
-    -- container.
-    socket_path = '/mnt/c/Users/asonas/.local/share/wezterm/sock',
-    -- NTFS permissions will always be "wrong", so skip that check
-    skip_permissions_check = true,
-  },
-}
+		{
+			name = 'wsl',
+			-- Override the default path to match the default on the host win32
+			-- filesystem.  This will allow the host to connect into the WSL
+			-- container.
+			socket_path = '/mnt/c/Users/asonas/.local/share/wezterm/sock',
+			-- NTFS permissions will always be "wrong", so skip that check
+			skip_permissions_check = true,
+		},
+	}
 else
 	config.font = wezterm.font({
 		family = "源ノ角ゴシック Code JP",
@@ -139,13 +139,19 @@ config.colors = {
 }
 config.window_background_opacity = 0.9
 
+-- Cursor blink settings
+config.default_cursor_style = "BlinkingBlock"
+config.cursor_blink_rate = 500
+config.cursor_blink_ease_in = "Constant"
+config.cursor_blink_ease_out = "Constant"
+
 config.initial_rows = 60
 config.initial_cols = 199
 config.adjust_window_size_when_changing_font_size = false
 config.window_decorations = "RESIZE"
 wezterm.on('gui-startup', function(cmd)
-  local _, _, window = wezterm.mux.spawn_window(cmd or {})
-  window:gui_window():set_position(0, 0) -- 起動時にウィンドウを指定した位置に移動
+	local _, _, window = wezterm.mux.spawn_window(cmd or {})
+	window:gui_window():set_position(0, 0) -- 起動時にウィンドウを指定した位置に移動
 end)
 
 if wezterm.target_triple == "aarch64-apple-darwin" then
