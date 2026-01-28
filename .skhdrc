@@ -47,6 +47,24 @@ ctrl + alt - down : yabai -m window --grid 12:12:0:0:12:10
 
 ctrl + alt + shift - right : yabai -m window --space code --grid 1:2:1:0:1:1
 
+# サブディスプレイの上中央に配置（Discordと同じ 1140x720px）
+ctrl + shift - 7 : \
+  window_id=$(yabai -m query --windows --window | jq '.id'); \
+  display_count=$(yabai -m query --displays | jq "length"); \
+  if [ $display_count -gt 1 ]; then target_display=2; else target_display=1; fi; \
+  display_frame=$(yabai -m query --displays --display $target_display | jq '.frame'); \
+  display_x=$(echo "$display_frame" | jq '.x'); \
+  display_y=$(echo "$display_frame" | jq '.y'); \
+  display_w=$(echo "$display_frame" | jq '.w'); \
+  window_w=1140; \
+  window_h=720; \
+  new_x=$(echo "$display_x + ($display_w - $window_w) / 2" | bc); \
+  new_y=$display_y; \
+  yabai -m window "$window_id" --toggle float; \
+  yabai -m window "$window_id" --display $target_display; \
+  yabai -m window "$window_id" --resize abs:"$window_w":"$window_h"; \
+  yabai -m window "$window_id" --move abs:"$new_x":"$new_y";
+
 # ウィンドウを移動する
 shift + ctrl - a : yabai -m window --move rel:-20:0
 shift + ctrl - s : yabai -m window --move rel:0:20
@@ -66,29 +84,18 @@ ctrl + alt - k : yabai -m window --insert north
 ctrl + alt - l : yabai -m window --insert east
 
 ctrl + shift - 4 : \
-  title_bar=17; \
+  title_bar=28; \
+  content_width=1920; \
+  content_height=1080; \
+  window_height=$((content_height + title_bar)); \
   window_id=$(yabai -m query --windows --window | jq '.id'); \
   display_frame=$(yabai -m query --displays --display 2 | jq '.frame'); \
   display_x=$(echo "$display_frame" | jq '.x'); \
   display_y=$(echo "$display_frame" | jq '.y'); \
-  display_width=$(echo "$display_frame" | jq '.w'); \
-  display_height=$(echo "$display_frame" | jq '.h'); \
-  window_info=$(yabai -m query --windows --window); \
-  current_width=$(echo "$window_info" | jq '.frame.w'); \
-  current_height=$(echo "$window_info" | jq '.frame.h'); \
-  ratio=$(echo "scale=6; $current_height / $current_width" | bc); \
-  content_height=$(echo "scale=6; $display_width * $ratio" | bc); \
-  new_height=$(echo "scale=6; $content_height - $title_bar" | bc); \
-  y_offset=$(echo "scale=6; ($display_height - $new_height) / 2" | bc); \
-  new_y=$(echo "scale=6; $display_y + $y_offset" | bc); \
-  new_x=$display_x; \
-  new_height_int=$(printf "%.0f" "$new_height"); \
-  new_x_int=$(printf "%.0f" "$new_x"); \
-  new_y_int=$(printf "%.0f" "$new_y"); \
   yabai -m window "$window_id" --toggle float; \
   yabai -m window "$window_id" --display 2; \
-  yabai -m window "$window_id" --resize abs:"$display_width":"$new_height_int"; \
-  yabai -m window "$window_id" --move abs:"$new_x_int":"$new_y_int"; \
+  yabai -m window "$window_id" --resize abs:"$content_width":"$window_height"; \
+  yabai -m window "$window_id" --move abs:"$display_x":"$display_y"; \
   yabai -m display --focus 2;
 
 ctrl + shift - 8 : yabai -m window --display 2 --grid 18:1:0:10:1:9

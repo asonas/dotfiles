@@ -120,7 +120,7 @@ yabai -m signal --add event=window_created app="^Cursor$" action="bash -c ' \
   yabai -m window \$YABAI_WINDOW_ID --move abs:\$new_x:\$main_display_y; \
 '"
 
-# Discordウィンドウを自動配置（1140x720px、右上）
+# Discordウィンドウを自動配置（1140x720px、上中央）
 yabai -m signal --add event=window_created app="^Discord$" action="bash -c ' \
   display_count=\$(yabai -m query --displays | jq \"length\"); \
   if [ \$display_count -gt 1 ]; then \
@@ -135,7 +135,7 @@ yabai -m signal --add event=window_created app="^Discord$" action="bash -c ' \
   display_h=\$(echo \"\$display_info\" | jq \".frame.h\"); \
   window_w=1140; \
   window_h=720; \
-  new_x=\$(echo \"\$display_x + \$display_w - \$window_w\" | bc); \
+  new_x=\$(echo \"\$display_x + (\$display_w - \$window_w) / 2\" | bc); \
   new_y=\$display_y; \
   yabai -m window \$YABAI_WINDOW_ID --toggle float; \
   yabai -m window \$YABAI_WINDOW_ID --display \$target_display; \
