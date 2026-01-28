@@ -366,8 +366,7 @@ case ${OSTYPE} in
     eval "$(nodenv init -)"
     export PATH="$HOME/.nodenv/bin:$PATH"
     # Created by `pipx` on 2024-11-14 08:10:36
-    export PATH="$PATH:/Users/asonas/.local/bin"
-    eval "$(/Users/asonas/.local/bin/mise activate zsh)"
+    eval "$($HOME/.local/bin/mise activate zsh)"
     # pnpm
     export PNPM_HOME="/Users/asonas/Library/pnpm"
     case ":$PATH:" in
@@ -393,6 +392,8 @@ case ${OSTYPE} in
       *":$PNPM_HOME:"*) ;;
       *) export PATH="$PNPM_HOME:$PATH" ;;
     esac
+    # GPG signing
+    export GPG_TTY=$(tty)
     ;;
 esac
 
@@ -437,11 +438,7 @@ function switch-aws-profile() {
     fi
 }
 
-# Created by `pipx` on 2024-11-14 08:10:36
-export PATH="$PATH:$HOME/.local/bin"
-
 eval "$(mise activate zsh)"
-
 
 # Dart補完の遅延読み込み
 _setup_dart_completion() {
