@@ -27,6 +27,7 @@ required_dirs="
   .claude/commands/gemini-search.md
   .claude/settings.json
   .claude/CLAUDE.md
+  .claude/skills
 "
 
 for dir in $required_dirs
