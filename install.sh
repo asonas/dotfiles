@@ -48,6 +48,13 @@ done
 ln -Ffs "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
 ln -Ffs "$PWD/bin/setup_workspace" "$HOME/bin/setup_workspace"
 
+# Install git ai-commit from upstream gist (easy to follow updates)
+GIT_AI_COMMIT_URL="https://gist.githubusercontent.com/takai/39c2ef7ce9696e538811f7fe847bf003/raw/git-ai-commit"
+tmp_git_ai_commit="$HOME/bin/git-ai-commit.tmp"
+curl -fsSL "$GIT_AI_COMMIT_URL" -o "$tmp_git_ai_commit"
+chmod +x "$tmp_git_ai_commit"
+mv -f "$tmp_git_ai_commit" "$HOME/bin/git-ai-commit"
+
 case "$OSTYPE" in
   darwin*)
     # macOS
