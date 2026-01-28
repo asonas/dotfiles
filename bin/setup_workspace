@@ -1,0 +1,241 @@
+#!/bin/bash
+
+# ウィンドウ配置スクリプト
+# - Slackのスレッド/チャンネルウィンドウ: サブディスプレイの左下（マルチ）または右下（シングル）
+#   ※ Slackウィンドウが1つのみの場合は移動しない
+#
+# マルチディスプレイ時:
+#   - Cursor: 左から200px余白を開けて2/3のサイズ
+#   - Chrome/Firefox: メインディスプレイの1/2のサイズ
+#
+# シングルディスプレイ時:
+#   - Cursor: 左詰めで2/3のサイズ
+#   - 仕事用Chrome (Yuya): 左詰めで2/3のサイズ（Cursorと重なる）
+#   - 個人用Chrome (aso): 右詰めで2/3のサイズ
+#   - Firefox: 右詰めで2/3のサイズ
+
+#------------------------------------------------------------
+# ディスプレイ数を取得
+#------------------------------------------------------------
+get_display_count() {
+  yabai -m query --displays | jq "length"
+}
+
+#------------------------------------------------------------
+# メインディスプレイ情報を取得
+#------------------------------------------------------------
+get_main_display_info() {
+  yabai -m query --displays --display 1
+}
+
+#------------------------------------------------------------
+# Slackウィンドウを配置
+#------------------------------------------------------------
+setup_slack_windows() {
+  local display_count=$1
+
+  # Slackウィンドウの総数をカウント（スレッドが別ウィンドウで開かれていない場合は移動しない）
+  local slack_window_count=$(yabai -m query --windows | jq '[.[] | select(.app == "Slack")] | length')
+  if [ "$slack_window_count" -le 1 ]; then
+    return
+  fi
+
+  local slack_windows=$(yabai -m query --windows | jq -r '.[] | select(.app == "Slack") | select(.title | test("\\[メイン\\]") | not) | .id')
+
+  if [ -z "$slack_windows" ]; then
+    return
+  fi
+
+  # サブディスプレイまたはメインディスプレイを決定
+  local slack_target_display
+  if [ $display_count -gt 1 ]; then
+    slack_target_display=2
+  else
+    slack_target_display=1
+  fi
+
+  # ターゲットディスプレイの情報を取得
+  local slack_display_info=$(yabai -m query --displays --display $slack_target_display)
+  local slack_display_x=$(echo "$slack_display_info" | jq ".frame.x")
+  local slack_display_y=$(echo "$slack_display_info" | jq ".frame.y")
+  local slack_display_w=$(echo "$slack_display_info" | jq ".frame.w")
+  local slack_display_h=$(echo "$slack_display_info" | jq ".frame.h")
+
+  # Slackウィンドウのサイズ
+  local slack_window_w=660
+  local slack_window_h=1130
+
+  # X座標を計算（マルチディスプレイなら左下、シングルなら右下）
+  local slack_x
+  if [ $display_count -gt 1 ]; then
+    slack_x=$slack_display_x
+  else
+    slack_x=$(echo "$slack_display_x + $slack_display_w - $slack_window_w" | bc)
+  fi
+
+  # Y座標を計算（下端）
+  local slack_y=$(echo "$slack_display_y + $slack_display_h - $slack_window_h" | bc)
+
+  # 各Slackウィンドウを移動
+  while IFS= read -r window_id; do
+    if [ -n "$window_id" ]; then
+      yabai -m window $window_id --toggle float
+      yabai -m window $window_id --display $slack_target_display
+      yabai -m window $window_id --resize abs:$slack_window_w:$slack_window_h
+      yabai -m window $window_id --move abs:$slack_x:$slack_y
+    fi
+  done <<< "$slack_windows"
+}
+
+#------------------------------------------------------------
+# マルチディスプレイ時のウィンドウ配置
+#------------------------------------------------------------
+setup_multi_display() {
+  local main_display_info=$(get_main_display_info)
+  local main_display_x=$(echo "$main_display_info" | jq ".frame.x")
+  local main_display_y=$(echo "$main_display_info" | jq ".frame.y")
+  local main_display_w=$(echo "$main_display_info" | jq ".frame.w")
+  local main_display_h=$(echo "$main_display_info" | jq ".frame.h")
+
+  local half_width=$(echo "$main_display_w / 2" | bc)
+  local two_thirds_width=$(echo "$main_display_w * 2 / 3" | bc)
+  local right_half_x=$(echo "$main_display_x + $half_width" | bc)
+
+  # Cursorを配置（左2/3、200px余白）
+  local cursor_windows=$(yabai -m query --windows | jq -r '.[] | select(.app == "Cursor") | .id')
+  if [ -n "$cursor_windows" ]; then
+    local cursor_x=$(echo "$main_display_x + 200" | bc)
+    while IFS= read -r window_id; do
+      if [ -n "$window_id" ]; then
+        yabai -m window $window_id --toggle float
+        yabai -m window $window_id --display 1
+        yabai -m window $window_id --resize abs:$two_thirds_width:$main_display_h
+        yabai -m window $window_id --move abs:$cursor_x:$main_display_y
+      fi
+    done <<< "$cursor_windows"
+  fi
+
+  # 仕事用Chrome（左半分）
+  local work_chrome_windows=$(yabai -m query --windows | jq -r '.[] | select(.app == "Google Chrome" and (.title | endswith("Yuya"))) | .id')
+  if [ -n "$work_chrome_windows" ]; then
+    while IFS= read -r window_id; do
+      if [ -n "$window_id" ]; then
+        yabai -m window $window_id --display 1
+        yabai -m window $window_id --grid 1:2:0:0:1:1
+      fi
+    done <<< "$work_chrome_windows"
+  fi
+
+  # 個人用Chrome（右半分）
+  local personal_chrome_windows=$(yabai -m query --windows | jq -r '.[] | select(.app == "Google Chrome" and (.title | endswith("aso"))) | .id')
+  if [ -n "$personal_chrome_windows" ]; then
+    while IFS= read -r window_id; do
+      if [ -n "$window_id" ]; then
+        yabai -m window $window_id --display 1
+        yabai -m window $window_id --grid 1:2:1:0:1:1
+      fi
+    done <<< "$personal_chrome_windows"
+  fi
+
+  # Firefox（右半分）
+  local firefox_windows=$(yabai -m query --windows | jq -r '.[] | select(.app == "Firefox") | .id')
+  if [ -n "$firefox_windows" ]; then
+    while IFS= read -r window_id; do
+      if [ -n "$window_id" ]; then
+        yabai -m window $window_id --toggle float
+        yabai -m window $window_id --display 1
+        yabai -m window $window_id --resize abs:$half_width:$main_display_h
+        yabai -m window $window_id --move abs:$right_half_x:$main_display_y
+      fi
+    done <<< "$firefox_windows"
+  fi
+}
+
+#------------------------------------------------------------
+# シングルディスプレイ時のウィンドウ配置
+# - Cursor/Chrome/Firefox: すべて画面幅の2/3のサイズ（左詰めまたは右詰め）
+#------------------------------------------------------------
+setup_single_display() {
+  local main_display_info=$(get_main_display_info)
+  local main_display_x=$(echo "$main_display_info" | jq ".frame.x")
+  local main_display_y=$(echo "$main_display_info" | jq ".frame.y")
+  local main_display_w=$(echo "$main_display_info" | jq ".frame.w")
+  local main_display_h=$(echo "$main_display_info" | jq ".frame.h")
+
+  local left_width=$(echo "$main_display_w * 2 / 3" | bc)
+
+  # Cursorを配置（左2/3）
+  local cursor_windows=$(yabai -m query --windows | jq -r '.[] | select(.app == "Cursor") | .id')
+  if [ -n "$cursor_windows" ]; then
+    while IFS= read -r window_id; do
+      if [ -n "$window_id" ]; then
+        yabai -m window $window_id --toggle float
+        yabai -m window $window_id --display 1
+        yabai -m window $window_id --resize abs:$left_width:$main_display_h
+        yabai -m window $window_id --move abs:$main_display_x:$main_display_y
+      fi
+    done <<< "$cursor_windows"
+  fi
+
+  # 仕事用Chrome（左詰めで2/3）
+  local work_chrome_windows=$(yabai -m query --windows | jq -r '.[] | select(.app == "Google Chrome" and (.title | endswith("Yuya"))) | .id')
+  if [ -n "$work_chrome_windows" ]; then
+    while IFS= read -r window_id; do
+      if [ -n "$window_id" ]; then
+        yabai -m window $window_id --toggle float
+        yabai -m window $window_id --display 1
+        yabai -m window $window_id --resize abs:$left_width:$main_display_h
+        yabai -m window $window_id --move abs:$main_display_x:$main_display_y
+      fi
+    done <<< "$work_chrome_windows"
+  fi
+
+  # 個人用Chrome（右詰めで2/3）
+  local personal_chrome_windows=$(yabai -m query --windows | jq -r '.[] | select(.app == "Google Chrome" and (.title | endswith("aso"))) | .id')
+  if [ -n "$personal_chrome_windows" ]; then
+    local personal_chrome_x=$(echo "$main_display_x + $main_display_w - $left_width" | bc)
+    while IFS= read -r window_id; do
+      if [ -n "$window_id" ]; then
+        yabai -m window $window_id --toggle float
+        yabai -m window $window_id --display 1
+        yabai -m window $window_id --resize abs:$left_width:$main_display_h
+        yabai -m window $window_id --move abs:$personal_chrome_x:$main_display_y
+      fi
+    done <<< "$personal_chrome_windows"
+  fi
+
+  # Firefox（右詰めで2/3）
+  local firefox_windows=$(yabai -m query --windows | jq -r '.[] | select(.app == "Firefox") | .id')
+  if [ -n "$firefox_windows" ]; then
+    local firefox_x=$(echo "$main_display_x + $main_display_w - $left_width" | bc)
+    while IFS= read -r window_id; do
+      if [ -n "$window_id" ]; then
+        yabai -m window $window_id --toggle float
+        yabai -m window $window_id --display 1
+        yabai -m window $window_id --resize abs:$left_width:$main_display_h
+        yabai -m window $window_id --move abs:$firefox_x:$main_display_y
+      fi
+    done <<< "$firefox_windows"
+  fi
+}
+
+#------------------------------------------------------------
+# メイン処理
+#------------------------------------------------------------
+main() {
+  local display_count=$(get_display_count)
+
+  # Slackウィンドウを配置
+  setup_slack_windows $display_count
+
+  # ディスプレイ数に応じて配置を変更
+  if [ $display_count -gt 1 ]; then
+    setup_multi_display
+  else
+    setup_single_display
+  fi
+}
+
+# スクリプト実行
+main
+
