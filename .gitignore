@@ -43,3 +43,4 @@ npm-debug.log
 .kiro
 .claude/settings.local.json
 .serena
+.venv/
