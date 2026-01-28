@@ -1,4 +1,5 @@
 [tools]
+"github:takai/git-ai-commit" = "latest"
 node = "lts"
 
 [settings]
