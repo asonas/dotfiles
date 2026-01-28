@@ -260,6 +260,9 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 # ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
+# gitサブコマンド補完 (git ai-commit)
+zstyle ':completion:*:*:git:*' user-commands ai-commit:'generate commit message using AI'
+
 # git
 a() { git add $*; git status -s }
 
@@ -470,6 +473,11 @@ export PATH="$HOME/.nodenv/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+eval "$(git wt --init zsh)"
+wt() {
+  git wt "$(git wt | tail -n +2 | peco | awk '{print $(NF-1)}')"
+}
 
 # Added by Antigravity
 export PATH="/Users/asonas/.antigravity/antigravity/bin:$PATH"

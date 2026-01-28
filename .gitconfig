@@ -79,3 +79,5 @@
 	gpgsign = true
 [tag]
 	gpgSign = true
+[wt]
+	basedir = .worktrees
