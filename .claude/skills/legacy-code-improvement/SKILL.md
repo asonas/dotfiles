@@ -1,6 +1,7 @@
 ---
 name: legacy-code-improvement
 description: レガシーコードを段階的に改善する。テスト自動化、モデルの分離、アーキテクチャの整理を通じて、保守性と拡張性の高いコードベースへ変換する。
+context: fork
 ---
 
 # レガシーコード改善スキル

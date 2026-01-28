@@ -1,6 +1,7 @@
 ---
 name: git-worktree-workflow
 description: Use git-wt to manage Git Worktrees for efficient parallel development. Handle feature branches, bug fixes, and experimental work in isolated worktrees for faster context switching.
+context: fork
 ---
 
 # Git Worktree Workflow

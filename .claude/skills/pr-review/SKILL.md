@@ -3,6 +3,7 @@ name: pr-review
 description: Review GitHub Pull Requests. When given a PR URL, fetches diff and comments using gh command, then performs objective and critical code review.
 allowed-tools: Bash(gh:*), WebFetch, WebSearch
 user-invocable: true
+context: fork
 ---
 
 # PR Review Skill
