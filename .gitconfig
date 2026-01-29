@@ -48,6 +48,7 @@
     pbcopy = !printf "$1" | pbcopy
     sw = switch
     new-worktree = "!f() { git worktree add -b \"$1\" \"../$(basename $(pwd))-$1\"; }; f"
+    aci = ai-commit
 
 [color]
     ui = true
