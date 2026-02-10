@@ -41,16 +41,32 @@ mcp__mcp-obsidian__obsidian_get_file_contents with filepath: "daily/YYYY-MM-DD.m
 
 If it doesn't exist, inform the user and offer to create it.
 
-### Step 3: Gather Work Summary
+### Step 3: Read Completed Tasks from Things3
+
+Read tasks completed today from Things3:
+```
+Bash: ~/.claude/scripts/things-completed-today.sh
+```
+
+Also read current open tasks in "今日" to report remaining items:
+```
+Bash: ~/.claude/scripts/things-today.sh
+```
+
+### Step 4: Gather Work Summary
 
 Collect information about what was done:
 
-1. **From the current conversation**
+1. **From Things3 (Step 3)**
+   - Completed tasks are the primary source for "やったこと"
+   - Open tasks become carry-over items
+
+2. **From the current conversation**
    - Extract completed tasks, investigations, fixes, implementations
    - Note any decisions made
    - List files modified or created
 
-2. **From second-brain（必須）**
+3. **From second-brain（必須）**
    - 必ずsecond-brainを検索して、今日の作業内容を収集する
    - 複数のクエリで検索を行い、漏れがないようにする:
    ```
@@ -68,11 +84,11 @@ Collect information about what was done:
    - `source` フィールドにリポジトリ名が含まれている記録を優先する
    - 検索結果から重複を除いて、今日実施した作業を抽出する
 
-3. **情報の統合**
-   - 現在のセッションの内容とsecond-brainの内容を統合
+4. **情報の統合**
+   - Things3の完了タスク、現在のセッションの内容、second-brainの内容を統合
    - 重複を除去し、時系列または論理的にグループ化する
 
-### Step 4: Present Summary for Review
+### Step 5: Present Summary for Review
 
 Show the user what will be added:
 ```
@@ -82,12 +98,17 @@ Show the user what will be added:
 - [Item 2]
 - ...
 
+## 未完了タスク（Things3に残っているタスク）
+
+- [Open task 1]
+- [Open task 2]
+
 この内容でよろしいですか？
 ```
 
 Wait for user confirmation or edits.
 
-### Step 5: Append to Daily Note
+### Step 6: Append to Daily Note
 
 After confirmation, append to the "やったこと" section:
 ```
@@ -99,11 +120,14 @@ mcp__mcp-obsidian__obsidian_patch_content with:
   content: [the summary]
 ```
 
-### Step 6: Confirm Completion
+### Step 7: Confirm Completion
 
 Report to the user:
 ```
 daily/YYYY-MM-DD.md の「やったこと」セクションに追記しました。
+
+Things3の未完了タスク:
+- [remaining tasks]
 ```
 
 ## Output Format
@@ -115,3 +139,5 @@ Always respond in Japanese.
 - If the "やったこと" section doesn't exist, append to the end of the file
 - Keep the summary concise but informative
 - Use bullet points for readability
+- **Things3の完了タスクを主な情報源として使う**
+- Things3の未完了タスクは翌日への引き継ぎとして報告する

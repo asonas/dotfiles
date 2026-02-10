@@ -28,6 +28,7 @@ required_dirs="
   .claude/settings.json
   .claude/CLAUDE.md
   .claude/skills
+  .claude/scripts
 "
 
 for dir in $required_dirs

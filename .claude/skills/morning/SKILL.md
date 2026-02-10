@@ -39,7 +39,26 @@ Search second-brain for items mentioned as future tasks:
 mcp__second-brain__search_memory with query: "明日やる 次回 tomorrow next time TODO"
 ```
 
-### Step 5: Create Today's Daily Note in Obsidian
+### Step 5: Read Current Things3 Tasks
+Read existing tasks in Things3 "今日" list to avoid duplicates:
+```
+Bash: ~/.claude/scripts/things-today.sh
+```
+
+### Step 6: Add TODO Items to Things3
+Add today's TODO items to Things3 using the helper script.
+Each task is added to the "今日" list.
+
+For each TODO item (calendar events, carryover tasks, etc.):
+```
+Bash: ~/.claude/scripts/things-add.sh "タスク名" "メモ（任意）"
+```
+
+- Skip tasks that already exist in Things3 (Step 5で確認済み)
+- Calendar events: "イベント名 (HH:MM)" の形式で追加
+- 前日の未完了タスク: そのまま追加
+
+### Step 7: Create Today's Daily Note in Obsidian
 **IMPORTANT: Always create today's daily note.**
 
 Use Obsidian MCP to create today's daily note:
@@ -47,7 +66,7 @@ Use Obsidian MCP to create today's daily note:
 mcp__mcp-obsidian__obsidian_append_content with filepath: "daily/YYYY-MM-DD.md" (today's date)
 ```
 
-Daily note format:
+Daily note format (TODOセクションは不要、Thingsで管理するため):
 ```markdown
 [[IVRy]]
 
@@ -65,17 +84,13 @@ Daily note format:
 ### 未完了タスク
 - [ ] [昨日の未完了タスク]
 
-## 今日のTODO
-
-- [ ] [今日やるべきタスク]
-
 ## やったこと
 
 
 
 ```
 
-### Step 6: Present Summary
+### Step 8: Present Summary
 Present to the user:
 
 ```
@@ -87,15 +102,16 @@ Present to the user:
 ### 前日からの引き継ぎ
 [Uncompleted tasks from yesterday's daily note]
 
-### 今日のTODO
-[ ] [Generated TODO items based on above]
+### Things3に追加したタスク
+- [追加したタスク一覧]
 
 ---
 Obsidianのdaily noteを作成しました: daily/YYYY-MM-DD.md
 ```
 
-### Step 7: Ask for Additional Tasks
+### Step 9: Ask for Additional Tasks
 Ask the user if they want to add any additional tasks for today.
+If yes, add them to Things3 using the helper script.
 
 ## Output Format
 
@@ -106,3 +122,4 @@ Always respond in Japanese. Present information in a clear, organized format tha
 - If yesterday's daily note doesn't exist, skip that section
 - If no calendar events, mention "今日の予定はありません"
 - **Daily noteの作成は必須** - 必ずObsidianに書き出すこと
+- **タスク管理はThings3で行う** - Obsidianのdaily noteにはTODOセクションを書かない
