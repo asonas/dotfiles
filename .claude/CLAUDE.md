@@ -16,6 +16,24 @@
 ｰ リポジトリ名に紐付くMarkdownのドキュメントは上記の例に従ってObsidianから検索して読み取ってください
 - Obsidianにドキュメントを書くときは指示があったときにしてください。指示がない場合はリポジトリで指示されているディレクトリに保存してください
 
+## メモリ管理（second-brain / graphiti）
+
+「記録しておいて」「覚えておいて」などの指示があった場合、内容に応じて保存先を振り分ける:
+
+| 内容 | 保存先 | ツール |
+|------|--------|--------|
+| 用語の定義、技術的な仕様、概念間の関係性（「AはBに依存している」「XはYの一種」など） | graphiti | `graphiti_add_episode` |
+| 調査結果、バグ修正内容、設計メモ、作業ログ | second-brain | `store_memory` |
+| 両方の要素を含む場合 | 両方に保存 | 両方 |
+
+### 検索について
+- context-injectorが自動でsecond-brainとgraphiti両方を検索して関連情報を注入する
+- 明示的に検索する場合: `search_memory`（second-brain）、`graphiti_search`（graphiti）
+
+### Obsidianについて
+- Obsidianへの保存はユーザーが明示的に指示した場合のみ行う
+- `/morning` でdaily noteを作成、`/wrapup` で追記
+
 ## TDDについて
 
 実装をするときはテストを書きつつ実装を行ってください。

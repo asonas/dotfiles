@@ -19,9 +19,45 @@
       "Bash(bundle exec rubocop:*)",
       "Bash(gemini:*)"
     ],
-    "deny": []
+    "deny": [
+      "Bash(gh pr create*)"
+    ]
   },
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/scripts/context-injector.js"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/scripts/session-end-hook.js"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/pushover-notify.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit|MultiEdit",
@@ -48,10 +84,6 @@
             "command": "jq -r 'if .tool_input.command | test(\"rm -rf|dd if=|:(){ :|:& };:\") then {\"decision\": \"block\", \"reason\": \"危険なコマンドは実行できません。別の方法を検討してください。\"} else empty end'"
           }
         ]
-      },
-      {
-        "matcher": "Write|Edit|MultiEdit",
-        "hooks": []
       }
     ]
   },
@@ -63,6 +95,17 @@
     "example-skills@anthropic-agent-skills": true
   },
   "alwaysThinkingEnabled": true,
+  "mcpServers": {
+    "second-brain": {
+      "command": "node",
+      "args": [
+        "/Users/asonas/workspace/second-brain-server/dist/index.js"
+      ]
+    },
+    "graphiti": {
+      "command": "/Users/asonas/workspace/graphiti-mcp-server/.venv/bin/graphiti-mcp-server"
+    }
+  },
   "feedbackSurveyState": {
     "lastShownTime": 1754045182761
   }
