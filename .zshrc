@@ -363,10 +363,11 @@ case ${OSTYPE} in
       eval "$(~/.rbenv/bin/rbenv init - --no-rehash zsh)"
     fi
 
-    eval "$(nodenv init -)"
-    export PATH="$HOME/.nodenv/bin:$PATH"
     # Created by `pipx` on 2024-11-14 08:10:36
-    eval "$($HOME/.local/bin/mise activate zsh)"
+    export PATH="$PATH:/Users/asonas/.local/bin"
+    if command -v mise &> /dev/null; then
+      eval "$(mise activate zsh)"
+    fi
     # pnpm
     export PNPM_HOME="/Users/asonas/Library/pnpm"
     case ":$PATH:" in
