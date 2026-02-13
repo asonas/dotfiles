@@ -16,9 +16,10 @@ for arg in "$@"; do
   esac
 done
 
+STATE_FILE="/tmp/healthcheck-last-failure"
 FAILURES=()
 
-# Check Docker containers
+# Check Docker container
 check_container() {
   local name="$1"
   local health
@@ -46,6 +47,19 @@ check_http() {
   return 0
 }
 
+# Check HTTP endpoint with Cloudflare Access headers (via envchain)
+check_http_cf() {
+  local name="$1"
+  local url="$2"
+  local status
+  status=$(envchain ollama-api bash -c 'curl -s -o /dev/null -w "%{http_code}" --connect-timeout 5 -H "CF-Access-Client-Id: $ACCESS_CLIENT_ID" -H "CF-Access-Client-Secret: $ACCESS_CLIENT_SECRET" "'"$url"'"' 2>/dev/null)
+  if [ "$status" -lt 200 ] || [ "$status" -ge 500 ] 2>/dev/null; then
+    FAILURES+=("$name: HTTP $status")
+    return 1
+  fi
+  return 0
+}
+
 # Check TCP port
 check_port() {
   local name="$1"
@@ -63,8 +77,18 @@ check_container "memory-falkordb"
 check_port "PostgreSQL" 15432
 check_port "FalkorDB" 16379
 check_http "Graphiti API" "http://localhost:8003/"
+check_http "Ollama (local)" "http://localhost:11434/"
+
+# Check remote Ollama via Cloudflare Access (if envchain is available)
+REMOTE_OLLAMA_URL=$(envchain ollama-api bash -c 'echo $OLLAMA_API_ENDPOINT' 2>/dev/null)
+if [ -n "$REMOTE_OLLAMA_URL" ]; then
+  check_http_cf "Ollama (remote)" "$REMOTE_OLLAMA_URL/"
+fi
 
 if [ ${#FAILURES[@]} -eq 0 ]; then
+  # All healthy - clear state file if it exists
+  [ -f "$STATE_FILE" ] && rm -f "$STATE_FILE"
+
   if [ "$JSON" = true ]; then
     echo '{"healthy":true,"failures":[]}'
   else
@@ -73,10 +97,9 @@ if [ ${#FAILURES[@]} -eq 0 ]; then
   exit 0
 else
   FAIL_MSG=$(printf '%s\n' "${FAILURES[@]}")
+  FAIL_HASH=$(echo "$FAIL_MSG" | shasum | cut -c1-8)
 
   if [ "$JSON" = true ]; then
-    # Escape for JSON
-    FAIL_JSON=$(printf '%s\\n' "${FAILURES[@]}" | sed 's/"/\\"/g')
     echo "{\"healthy\":false,\"failures\":[$(printf '\"%s\",' "${FAILURES[@]}" | sed 's/,$//')]}"
   else
     echo "Services DOWN:"
@@ -84,9 +107,16 @@ else
   fi
 
   if [ "$NOTIFY" = true ]; then
-    ~/.claude/scripts/pushover-notify.sh <<EOF
+    LAST_HASH=""
+    [ -f "$STATE_FILE" ] && LAST_HASH=$(cat "$STATE_FILE")
+
+    # Only notify if failure state changed (avoid repeated notifications)
+    if [ "$FAIL_HASH" != "$LAST_HASH" ]; then
+      echo "$FAIL_HASH" > "$STATE_FILE"
+      ~/.claude/scripts/pushover-notify.sh <<EOF
 {"message":"Memory services DOWN:\n${FAIL_MSG}","cwd":""}
 EOF
+    fi
   fi
 
   exit 1

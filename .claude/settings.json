@@ -31,6 +31,11 @@
           {
             "type": "command",
             "command": "node ~/.claude/scripts/context-injector.js"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/healthcheck-hook.sh",
+            "timeout": 10
           }
         ]
       }
@@ -97,8 +102,10 @@
   "alwaysThinkingEnabled": true,
   "mcpServers": {
     "second-brain": {
-      "command": "node",
+      "command": "envchain",
       "args": [
+        "ollama-api",
+        "node",
         "/Users/asonas/workspace/second-brain-server/dist/index.js"
       ]
     },
