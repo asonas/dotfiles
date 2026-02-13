@@ -101,7 +101,7 @@
   },
   "alwaysThinkingEnabled": true,
   "mcpServers": {
-    "second-brain": {
+    "memory-vector": {
       "command": "envchain",
       "args": [
         "ollama-api",
@@ -109,7 +109,7 @@
         "/Users/asonas/workspace/second-brain-server/dist/index.js"
       ]
     },
-    "graphiti": {
+    "memory-graph": {
       "command": "/Users/asonas/workspace/graphiti-mcp-server/.venv/bin/graphiti-mcp-server"
     }
   },

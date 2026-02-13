@@ -4,8 +4,8 @@
  * Context Injector for Claude Code
  *
  * This hook script automatically injects relevant context from:
- * - second-brain (PostgreSQL + pgvector): セマンティック検索
- * - graphiti (Neo4j): ファクト/関係性の検索
+ * - memory-vector (PostgreSQL + pgvector): セマンティック検索
+ * - memory-graph (Neo4j): ファクト/関係性の検索
  */
 
 const { spawn } = require("child_process");
@@ -63,7 +63,7 @@ const INTENT_KEYWORDS = {
   ],
 };
 
-// Minimum similarity threshold for injecting context (second-brain)
+// Minimum similarity threshold for injecting context (memory-vector)
 const SIMILARITY_THRESHOLD = 0.35;
 
 // Maximum contexts to inject from each source
@@ -298,9 +298,9 @@ function formatContextInjection(secondBrainResults, graphitiResults, intents, re
 
   let message = `\n---\n**[Memory: ${headerLabel}]**\n\n`;
 
-  // Second Brain results
+  // memory-vector results
   if (secondBrainResults.length > 0) {
-    message += "**Second Brain (コンテキスト)**\n";
+    message += "**memory-vector**\n";
     for (const ctx of secondBrainResults) {
       const source = ctx.source ? ` (${ctx.source})` : "";
       const similarity = Math.round(ctx.similarity * 100);
@@ -311,9 +311,9 @@ function formatContextInjection(secondBrainResults, graphitiResults, intents, re
     message += "\n";
   }
 
-  // Graphiti results
+  // memory-graph results
   if (graphitiResults.length > 0) {
-    message += "**Graphiti (ファクト)**\n";
+    message += "**memory-graph**\n";
     for (const fact of graphitiResults) {
       if (typeof fact === "string") {
         message += `- ${fact}\n`;
