@@ -106,11 +106,11 @@
       "args": [
         "ollama-api",
         "node",
-        "/Users/asonas/workspace/second-brain-server/dist/index.js"
+        "/Users/asonas/workspace/memory-vector-server/dist/index.js"
       ]
     },
     "memory-graph": {
-      "command": "/Users/asonas/workspace/graphiti-mcp-server/.venv/bin/graphiti-mcp-server"
+      "command": "/Users/asonas/workspace/memory-graph-server/.venv/bin/memory-graph-server"
     }
   },
   "feedbackSurveyState": {

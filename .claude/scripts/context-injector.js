@@ -173,7 +173,7 @@ function detectIntent(prompt) {
 async function searchSecondBrain(query) {
   return new Promise((resolve) => {
     const scriptPath = path.join(
-      "/Users/asonas/workspace/second-brain-server",
+      "/Users/asonas/workspace/memory-vector-server",
       "dist",
       "tools",
       "search-memory.js"
@@ -194,7 +194,7 @@ async function searchSecondBrain(query) {
     `;
 
     const child = spawn("node", ["-e", searchScript], {
-      cwd: "/Users/asonas/workspace/second-brain-server",
+      cwd: "/Users/asonas/workspace/memory-vector-server",
       timeout: 5000,
     });
 

@@ -3,7 +3,7 @@
 /**
  * Session Summarizer
  *
- * Processes Claude Code session logs and creates summaries for second-brain.
+ * Processes Claude Code session logs and creates summaries for memory-vector.
  * Designed to run asynchronously via queue.
  */
 
@@ -14,7 +14,7 @@ const { spawn } = require("child_process");
 
 const QUEUE_DIR = path.join(process.env.HOME, ".claude", "queue");
 const LOGS_DIR = path.join(process.env.HOME, ".claude", "logs");
-const SECOND_BRAIN_PATH = "/Users/asonas/workspace/second-brain-server";
+const SECOND_BRAIN_PATH = "/Users/asonas/workspace/memory-vector-server";
 
 async function main() {
   // Read session data from stdin or queue file
@@ -49,7 +49,7 @@ async function main() {
   // Generate summary using Ollama
   const summary = await generateSummary(transcript);
 
-  // Store in both second-brain and graphiti (parallel)
+  // Store in both memory-vector and graphiti (parallel)
   await Promise.all([
     storeInSecondBrain({
       sessionId,
@@ -65,7 +65,7 @@ async function main() {
     }),
   ]);
 
-  console.log(`Session ${sessionId} summarized and stored (second-brain + graphiti)`);
+  console.log(`Session ${sessionId} summarized and stored (memory-vector + graphiti)`);
 }
 
 async function generateSummary(transcript) {
@@ -153,7 +153,7 @@ ${summary}
     ? `${repoName}/session-${sessionId}`
     : `session:${sessionId}`;
 
-  // Store via second-brain MCP server
+  // Store via memory-vector MCP server
   const storeScript = `
     const { storeMemory } = require('${SECOND_BRAIN_PATH}/dist/tools/store-memory.js');
     storeMemory({
