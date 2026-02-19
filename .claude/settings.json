@@ -69,11 +69,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path | select(endswith(\".js\") or endswith(\".ts\"))' | xargs -r prettier --write"
-          },
-          {
-            "type": "command",
-            "command": "jq -r '.tool_input.file_path | select(endswith(\".rs\"))' | xargs -r bundle exec rubocop -a --"
+            "command": "~/.claude/scripts/lint-on-edit.sh"
           }
         ]
       },
@@ -115,5 +111,6 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754045182761
-  }
+  },
+  "model": "opus[1m]"
 }

@@ -1,6 +1,7 @@
 [tools]
 "github:takai/git-ai-commit" = "latest"
 node = "lts"
+yarn = "1.22.19"
 
 [settings]
 idiomatic_version_file_enable_tools = ["node", "ruby"]
