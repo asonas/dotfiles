@@ -16,7 +16,7 @@ Load previously saved context to resume work or apply knowledge from past invest
 
 Examples:
 ```
-/context-load                    # Uses current directory name (e.g., ivry_web_backend)
+/context-load                    # Uses current directory name (e.g., dotfiles)
 /context-load auth-refactoring   # Loads specific context by name
 ```
 
@@ -27,7 +27,7 @@ When this skill is invoked:
 1. **Determine the context name**
    - If an argument is provided, use it as the name
    - If no argument is provided, extract the directory name from the current working directory
-     - Example: `/Users/asonas/ghq/github.com/ivry-inc/ivry_web_backend` → `ivry_web_backend`
+     - Example: `~/ghq/github.com/asonas/dotfiles` → `dotfiles`
    - The current working directory is available in the environment information provided at the start of the conversation
 
 2. **Search second-brain for context**
@@ -35,7 +35,7 @@ When this skill is invoked:
    - Also try `mcp__second-brain__get_context` with the topic
    - Look for entries with tags containing "context" and the name
    - **リポジトリ名での検索を優先**: sourceフィールドにリポジトリ名が含まれているため、リポジトリ名をクエリに含めると関連度が上がる
-     - 例: `ivry_web_backend OpensearchIndexerWorker` のようにリポジトリ名+キーワードで検索
+     - 例: `dotfiles zsh設定` のようにリポジトリ名+キーワードで検索
 
 3. **Present the context to the user**
    - Display the loaded context clearly

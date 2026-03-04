@@ -16,7 +16,7 @@ Save the current conversation's plan, investigation results, or notes for later 
 
 Examples:
 ```
-/context-save                    # Uses current directory name (e.g., ivry_web_backend)
+/context-save                    # Uses current directory name (e.g., dotfiles)
 /context-save auth-refactoring   # Uses specified name
 ```
 
@@ -27,7 +27,7 @@ When this skill is invoked:
 1. **Determine the context name**
    - If an argument is provided, use it as the name
    - If no argument is provided, extract the directory name from the current working directory
-     - Example: `/Users/asonas/ghq/github.com/ivry-inc/ivry_web_backend` → `ivry_web_backend`
+     - Example: `~/ghq/github.com/asonas/dotfiles` → `dotfiles`
    - The current working directory is available in the environment information provided at the start of the conversation
 
 2. **Summarize the current conversation**
@@ -46,8 +46,8 @@ When this skill is invoked:
    - Add tags: `["context", "<name>", "<relevant-tags>"]`
    - **source**: リポジトリ名を必ず含める
      - 形式: `<リポジトリ名>/<補足情報>`
-     - 例: `ivry_web_backend/OpensearchIndexerWorker調査`
-     - 例: `ivry_web_frontend/コンタクトセンター改修`
+     - 例: `dotfiles/zsh設定の整理`
+     - 例: `my-app/認証フロー改修`
    - Add metadata: `{ "type": "context", "created": "YYYY-MM-DD", "project": "<リポジトリ名>" }`
 
 4. **Confirm to user**
