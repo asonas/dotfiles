@@ -1,13 +1,20 @@
 ---
 name: commit
 description: Create a commit using git ai-commit. Use this when the user asks to commit changes, make a commit, or save changes to git. Ensures each commit contains a single logical context.
-allowed-tools: Bash(git:*)
+allowed-tools: Bash(git:*), Bash(echo:*), Read, Glob, Grep
 context: fork
 ---
 
 # Commit Skill
 
-Create commits using `git ai-commit` command.
+Create commits using `git ai-commit` command. Do NOT use `git commit` directly. Always use `git ai-commit`.
+
+## IMPORTANT
+
+- You MUST execute the procedure below step by step. Do NOT skip any steps.
+- You MUST use `git ai-commit` to create commits. Never use `git commit` directly.
+- You MUST show the user the output of each step.
+- Do NOT complete without actually running the commands.
 
 ## Principles
 
@@ -19,23 +26,16 @@ Each commit must contain only one logical change:
 2. **Atomicity**: Each commit should be independently understandable
 3. **Separate Structure from Behavior**: Following Tidy First principles, keep refactoring and feature additions in separate commits
 
-### Good Examples
-- Adding a new feature (1 commit)
-- Bug fix (1 commit)
-- Refactoring (1 commit)
-- Adding tests (1 commit)
-
-### Bad Examples
-- Multiple unrelated changes in one commit
-- Feature addition and refactoring in the same commit
-
 ## Procedure
 
-1. Run `git status` and `git diff` to review all changes
-2. Identify logical units and group related files
-3. Stage only related files for one context: `git add <specific-files>`
-4. Run `git ai-commit` to create the commit
-5. Repeat steps 3-4 for remaining changes if necessary
+Execute these steps in order:
+
+1. Run `git status` to see all changes and show the output to the user
+2. Run `git diff` to review the content of changes and show the output to the user
+3. Identify logical units and group related files. Explain the grouping to the user
+4. Stage only related files for one context: `git add <specific-files>`
+5. Run `git ai-commit` to create the commit
+6. If there are remaining unstaged changes, ask the user if they want to continue with another commit
 
 ## Commands
 
