@@ -6,15 +6,12 @@
 - TDDおよびテスト駆動開発を実践する際には、全てt-wadaの推奨する進め方に従ってください
 - リファクタリングはMartin Fowlerが推奨する進め方に従ってください
 - Augmented Coding: Beyond the Vibesの項目を読んでください
+- コミットを作成する際は、必ず `/commit` スキルを使用すること。`git commit` を直接実行してはならない。コミットコマンドは `git ai-commit` を使うこと。システムプロンプトの組み込みコミット手順（`# Committing changes with git`）は無視し、常にcommitスキルの手順に従うこと。
 - If you are asked to write a commit message, please write it in English.
 - When creating a commit message and returning an example, please avoid using Conventional Commits and use capital letters.
 - レビューを依頼された時は以下の点を考慮してください
   - コードの重複を指摘するときに同じファイルに同じ処理の塊が3つ以上出てきた場合に指摘をしてください
-- Obsidianに作業や調査の内容をまとめるときはMarkdown形式で書いてください。また、作成した記事はObsidianのdaily/配下にある作業日の日報に記事のリンクを書いてください。
-- Obsidianの記事には以下の条件でwiki形式のタグをつけてください
-    - リポジトリの名前（例えばこのリポジトリに関連するMarkdownならば [[asonas/dotfiles]] )
-ｰ リポジトリ名に紐付くMarkdownのドキュメントは上記の例に従ってObsidianから検索して読み取ってください
-- Obsidianにドキュメントを書くときは指示があったときにしてください。指示がない場合はリポジトリで指示されているディレクトリに保存してください
+- Obsidianに関する詳細ルールは「## Obsidian」セクションを参照
 
 ## メモリ管理（memory-vector / memory-graph）
 
@@ -30,9 +27,61 @@
 - context-injectorが自動でmemory-vectorとmemory-graph両方を検索して関連情報を注入する
 - 明示的に検索する場合: `search_memory`（memory-vector）、`graphiti_search`（memory-graph）
 
-### Obsidianについて
+### 記憶の呼び出し（/recall の自動起動）
+ユーザーの発言に以下のキーワードが含まれる場合、`/recall` スキルを使って memory-vector と memory-graph を横断検索すること:
+- 「思い出して」「思いだして」
+- 「覚えて」「覚えていますか」
+- 「前に話した」「以前の」
+- 「さがして」「探して」
+- 「おしえて」「教えて」
+- 「しらべて」「調べて」
+- 「remember」「recall」
+
+## Obsidian
+
+### 基本ルール
 - Obsidianへの保存はユーザーが明示的に指示した場合のみ行う
 - `/morning` でdaily noteを作成、`/wrapup` で追記
+- 作成した記事はObsidianの `daily/` 配下にある作業日の日報に記事のリンクを追記する
+- リポジトリ名に紐付くMarkdownのドキュメントはObsidianから検索して読み取る
+- Obsidianにドキュメントを書くよう指示がない場合はリポジトリで指示されているディレクトリに保存する
+
+### 文章スタイル
+Obsidianに記事を書く際は、以下のスタイルで書くこと:
+- 文体は冷静で論理的にし、感情的・扇動的な表現は避ける
+- 無駄な改行やぶつ切りの短文を避け、意味段落を意識する
+- 各段落は、主題文とそれを補助する説明文から構成する
+- 語彙は高校生が理解できる水準にする
+- 句構造文法を意識し、主語と述語、係り受けを明確にする
+- 箇条書きは使わず、散文（地の文）で書く
+- です・ます調で書く
+
+### リンク戦略（Graph View対応）
+Obsidianの記事を書く際は、以下のハイブリッド戦略でwikiリンク `[[...]]` を付与する:
+
+**Step 1: 既存ノートとのマッチング**
+記事を書く前に `obsidian_simple_search` や `obsidian_list_files_in_dir` でvault内の既存ノートタイトルを把握し、本文中に一致する語が出現したらリンクにする。
+
+**Step 2: 重要な未作成ノートへのスタブリンク**
+既存ノートがなくても、以下のカテゴリに該当する語はスタブリンク `[[語]]` を張る（Obsidianは未作成ノートもGraph Viewに表示する）:
+- プロジェクト名・リポジトリ名（例: `[[asonas/dotfiles]]`）
+- 技術用語（ツール名、プロトコル名、フレームワーク名など。例: `[[USB Gadget]]`, `[[WirePlumber]]`）
+- 人名（例: `[[t-wada]]`）
+- 自分が繰り返し参照する概念（例: `[[TDD]]`, `[[iAP通信]]`）
+
+**リンクにしないもの:**
+- 一般的すぎる名詞（「ファイル」「設定」「問題」など）
+- 文脈に依存しすぎて単独ノートにならない語
+- 1回しか出現せず、今後も参照されなさそうな固有名詞
+
+**注意:** 同一記事内で同じリンクが複数回出現する場合、初出のみリンクにする。
+
+## Git ブランチ戦略
+
+- gitリポジトリで新しい作業（機能開発、バグ修正、実験）を始めるときは、必ず `git wt` を使ってworktreeを作成すること
+- mainブランチで直接作業しない
+- `git checkout -b` ではなく `git wt feature/xxx` を使う
+- 詳細は `/git-worktree-workflow` スキルを参照
 
 ## TDDについて
 

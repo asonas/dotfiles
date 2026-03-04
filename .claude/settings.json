@@ -28,7 +28,6 @@
       "Bash(gh pr create*)"
     ]
   },
-  "model": "opus[1m]",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -109,11 +108,11 @@
       "args": [
         "ollama-api",
         "node",
-        "/Users/asonas/workspace/memory-vector-server/dist/index.js"
+        "~/workspace/memory-vector-server/dist/index.js"
       ]
     },
     "memory-graph": {
-      "command": "/Users/asonas/workspace/memory-graph-server/.venv/bin/memory-graph-server"
+      "command": "~/workspace/memory-graph-server/.venv/bin/memory-graph-server"
     }
   },
   "feedbackSurveyState": {
