@@ -71,6 +71,33 @@ Read existing tasks in Things3 "今日" list to avoid duplicates:
 Bash: ~/.claude/scripts/things-today.sh
 ```
 
+### Step 8b: Clean Up Completed External Tasks
+
+Things3の既存タスクのうち、外部ソース（GitHub PR / Linear Issue）のステータスが完了済みのものを自動的にDoneにする。
+
+Step 8 で取得した Things3 タスク一覧を走査し、以下のルールでチェックする:
+
+#### GitHub PR タスク（タグ: "Review required" / "My PR"）
+- タスク名からリポジトリ名とPR番号を抽出する（例: `[Needs Your Review] ivry_web_backend#7671: ...` → `ivry-inc/ivry_web_backend` PR `7671`）
+- `gh pr view <number> --repo <owner/repo> --json state --jq '.state'` でPRの状態を確認
+- state が `MERGED` または `CLOSED` であれば Things3 で完了にする:
+  ```
+  Bash: ~/.claude/scripts/things-complete.sh "タスク名"
+  ```
+
+#### Linear タスク（タグ: "Linear"）
+- タスク名から識別子を抽出する（例: `CPE-18: Design Doc [Dev Quickstart]` → `CPE-18`）
+- `mcp__linear-server__get_issue` で Issue のステータスを確認
+- status が `Done`, `Canceled`, または `Duplicate` であれば Things3 で完了にする:
+  ```
+  Bash: ~/.claude/scripts/things-complete.sh "タスク名"
+  ```
+
+#### 注意事項
+- リポジトリ名の解決: Things3のタスク名に含まれるリポジトリ名（例: `ivry_web_backend`）は、Step 4/4b で取得した GitHub PR の情報と照合して `owner/repo` 形式を特定する
+- GitHub API エラー時はスキップして次のタスクに進む
+- 完了したタスクは Step 11 のサマリーで報告する
+
 ### Step 9: Add TODO Items to Things3
 
 #### 9a: カレンダーの予定 → 個別タスク（タグ: "Calendar"）
@@ -202,6 +229,10 @@ Present to the user:
 
 ### 前日からの引き継ぎ
 [Uncompleted tasks from yesterday's daily note]
+
+### Things3の自動クリーンアップ
+- [完了にしたタスク一覧（マージ済みPR、Done済みLinear Issue）]
+- （なければ「自動完了したタスクはありません」）
 
 ### Things3に追加したタスク
 - Calendar: [count]件の個別タスクを追加（タグ: Calendar）
