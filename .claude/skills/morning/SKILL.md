@@ -83,9 +83,11 @@ Bash: ~/.claude/scripts/things-add.sh "10:00-10:30 朝会" "" "Calendar"
 - タイトルの形式: "HH:MM-HH:MM イベント名"（終了時刻がない場合は "HH:MM イベント名"）
 - 終日イベントは "終日: イベント名" とする
 - Things3に既に同名のタスクが存在する場合はスキップ
-- 以下のイベントはブロッカー（個人的な移動・送迎）のためThings3に追加しない:
-  - 「子の送迎や会社移動の時間（予定をいれたい場合はご一報ください）」
-  - 「送迎で不在」
+- 以下のイベントはThings3に追加しない:
+  - 「子の送迎や会社移動の時間（予定をいれたい場合はご一報ください）」（ブロッカー）
+  - 「送迎で不在」（ブロッカー）
+  - 自分（asonas@ivry.jp）の `responseStatus` が `"declined"` のイベント（不参加を明示済み）
+- `responseStatus` が `"accepted"`, `"needsAction"`, `"tentative"` のイベント、または attendees がないイベントは追加する
 
 #### 9b: GitHub Issues → 個別タスク（タグ: "GitHub Issue"）
 
@@ -102,9 +104,10 @@ Bash: ~/.claude/scripts/things-add.sh "repo#123: Issue title" "https://github.co
 
 レビュー依頼されたPRがある場合、各PRを個別タスクとして追加する。notesにURLを、タグに"Review required"を設定する:
 ```
-Bash: ~/.claude/scripts/things-add.sh "repo#789: PR title" "https://github.com/org/repo/pull/789" "Review required"
+Bash: ~/.claude/scripts/things-add.sh "[Needs Your Review] repo#789: PR title" "https://github.com/org/repo/pull/789" "Review required"
 ```
 
+- タイトルの形式: "[Needs Your Review] リポジトリ名#番号: PR名"
 - 各PRごとに1つのタスクとして追加
 - Things3に既に同名のタスクが存在する場合はスキップ
 - PRがない場合はタスクを作成しない
@@ -113,9 +116,10 @@ Bash: ~/.claude/scripts/things-add.sh "repo#789: PR title" "https://github.com/o
 
 自分がauthorのPRがある場合、各PRを個別タスクとして追加する。notesにURLを、タグに"My PR"を設定する:
 ```
-Bash: ~/.claude/scripts/things-add.sh "repo#456: PR title" "https://github.com/org/repo/pull/456" "My PR"
+Bash: ~/.claude/scripts/things-add.sh "[Author] repo#456: PR title" "https://github.com/org/repo/pull/456" "My PR"
 ```
 
+- タイトルの形式: "[Author] リポジトリ名#番号: PR名"
 - 各PRごとに1つのタスクとして追加
 - Step 4（レビュー依頼）と重複するPRは除外する（同じPRが両方に該当する場合はレビュー依頼側を優先）
 - Things3に既に同名のタスクが存在する場合はスキップ
@@ -125,9 +129,11 @@ Bash: ~/.claude/scripts/things-add.sh "repo#456: PR title" "https://github.com/o
 
 Linearのアクティブなタスクがある場合、各Issueを個別タスクとして追加する。notesにURLを、タグに"Linear"を設定する:
 ```
-Bash: ~/.claude/scripts/things-add.sh "CPE-13: Issue title" "https://linear.app/team/issue/CPE-13" "Linear"
+Bash: ~/.claude/scripts/things-add.sh "CPE-13: Issue title [Project Name]" "https://linear.app/team/issue/CPE-13" "Linear"
 ```
 
+- タイトルの形式: "識別子: Issue名 [Project名]"（例: "CPE-18: Design Doc [Dev Quickstart]"）
+- Projectが未設定のIssueはProject名を省略する
 - 各Issueごとに1つのタスクとして追加
 - Things3に既に同名のタスクが存在する場合はスキップ
 - Issueがない場合はタスクを作成しない
