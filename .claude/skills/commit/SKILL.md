@@ -9,6 +9,13 @@ context: fork
 
 Create commits using `git ai-commit` command. Do NOT use `git commit` directly. Always use `git ai-commit`.
 
+## Usage
+
+```
+/commit                          # CWDで実行
+/commit .worktrees/feature/xxx   # 指定パスで実行
+```
+
 ## IMPORTANT
 
 - You MUST execute the procedure below step by step. Do NOT skip any steps.
@@ -30,12 +37,30 @@ Each commit must contain only one logical change:
 
 Execute these steps in order:
 
-1. Run `git status` to see all changes and show the output to the user
-2. Run `git diff` to review the content of changes and show the output to the user
-3. Identify logical units and group related files. Explain the grouping to the user
-4. Stage only related files for one context: `git add <specific-files>`
-5. Run `git ai-commit` to create the commit
-6. If there are remaining unstaged changes, ask the user if they want to continue with another commit
+### Step 0: Determine working directory
+
+- If a path argument is provided (e.g., `/commit .worktrees/feature/xxx`), use that as the target directory. All subsequent git commands MUST use `git -C <path>`.
+- If no argument is provided, use the current working directory (no `-C` flag needed).
+
+### Step 1: Check for changes
+
+1. Run `git status` (or `git -C <path> status`) to see all changes and show the output to the user
+2. **If there are no changes (clean working tree)**:
+   - Do NOT auto-detect or search other worktrees
+   - Display: "ワーキングディレクトリに差分がありません。worktreeで作業している場合はパスを指定してください: `/commit .worktrees/feature/xxx`"
+   - Run `git worktree list` to show available worktrees as a reference
+   - Stop here
+3. Run `git diff` (or `git -C <path> diff`) to review the content of changes and show the output to the user
+
+### Step 2: Group and stage changes
+
+1. Identify logical units and group related files. Explain the grouping to the user
+2. Stage only related files for one context: `git add <specific-files>` (or `git -C <path> add <specific-files>`)
+
+### Step 3: Commit
+
+1. Run `git ai-commit` (or `cd <path> && git ai-commit`) to create the commit
+2. If there are remaining unstaged changes, ask the user if they want to continue with another commit
 
 ## Commands
 
