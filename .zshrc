@@ -350,24 +350,8 @@ case ${OSTYPE} in
       _compinit_loaded=1
     fi
 
-    # 遅延読み込みでnodenvを最適化
-    if [[ -d "$HOME/.nodenv" ]]; then
-      export PATH="$HOME/.nodenv/bin:$PATH"
-      eval "$(nodenv init - --no-rehash zsh)"
-    fi
-
-    # 遅延読み込みでrbenvを最適化
-    if [[ -d "$HOME/.rbenv" ]]; then
-      export PATH="$HOME/.rbenv/shims:$PATH"
-      export PATH="$HOME/.rbenv/bin:$PATH"
-      eval "$(~/.rbenv/bin/rbenv init - --no-rehash zsh)"
-    fi
-
     # Created by `pipx` on 2024-11-14 08:10:36
     export PATH="$PATH:/Users/asonas/.local/bin"
-    if command -v mise &> /dev/null; then
-      eval "$(mise activate zsh)"
-    fi
     # pnpm
     export PNPM_HOME="/Users/asonas/Library/pnpm"
     case ":$PATH:" in
@@ -384,9 +368,6 @@ case ${OSTYPE} in
       export _COMPINIT_DONE=1
     fi
     source /usr/share/mitamae/profile
-    # rbenv
-    eval "$(rbenv init - zsh)"
-    eval "$(nodenv init - zsh)"
     # pnpm
     export PNPM_HOME="$HOME/.local/share/pnpm"
     case ":$PATH:" in
@@ -458,8 +439,6 @@ dart() {
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/asonas/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
-export PATH="$HOME/.nodenv/bin:$PATH"
 
 #zprof
 

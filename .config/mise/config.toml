@@ -2,6 +2,7 @@
 "github:takai/git-ai-commit" = "latest"
 "github:k1LoW/git-wt" = "latest"
 node = "lts"
+ruby = "latest"
 yarn = "1.22.19"
 
 [settings]
