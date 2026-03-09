@@ -86,7 +86,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/scripts/pushover-notify.sh",
+            "command": "~/.claude/scripts/ghostty-attention.sh",
             "timeout": 10
           }
         ]
