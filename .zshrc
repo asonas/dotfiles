@@ -364,13 +364,10 @@ case ${OSTYPE} in
     esac
     ;;
   linux*)
-    # Linux用の設定 - macOSで既にcompinit済みの場合はスキップ
-    if [[ -z "$_COMPINIT_DONE" ]]; then
-      zstyle ':completion:*:*:git:*' script ~/.zsh/completions/git-completion.zsh
-      autoload -Uz compinit
-      compinit -u
-      export _COMPINIT_DONE=1
-    fi
+    # Linux用の設定
+    zstyle ':completion:*:*:git:*' script ~/.zsh/completions/git-completion.zsh
+    autoload -Uz compinit
+    compinit -u
     source /usr/share/mitamae/profile
     # pnpm
     export PNPM_HOME="$HOME/.local/share/pnpm"
