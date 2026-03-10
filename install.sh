@@ -48,6 +48,7 @@ done
 [ ! -d "$HOME/bin" ] && mkdir "$HOME/bin"
 ln -Ffs "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
 ln -Ffs "$PWD/bin/setup_workspace" "$HOME/bin/setup_workspace"
+ln -Ffs "$PWD/bin/ghro" "$HOME/bin/ghro"
 
 case "$OSTYPE" in
   darwin*)
