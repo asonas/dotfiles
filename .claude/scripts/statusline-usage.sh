@@ -4,10 +4,15 @@
 
 CACHE_FILE="/tmp/claude-usage-cache.json"
 CACHE_TTL=360
+OS_TYPE=$(uname -s)
 
 fetch_usage() {
   local credentials
-  credentials=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null)
+  if [ "$OS_TYPE" = "Darwin" ]; then
+    credentials=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null)
+  else
+    credentials=$(cat ~/.claude/.credentials.json 2>/dev/null)
+  fi
   if [ -z "$credentials" ]; then
     return 1
   fi
@@ -35,7 +40,11 @@ fetch_usage() {
 get_cached_or_fetch() {
   if [ -f "$CACHE_FILE" ]; then
     local mtime now age
-    mtime=$(stat -f %m "$CACHE_FILE" 2>/dev/null)
+    if [ "$OS_TYPE" = "Darwin" ]; then
+      mtime=$(stat -f %m "$CACHE_FILE" 2>/dev/null)
+    else
+      mtime=$(stat -c %Y "$CACHE_FILE" 2>/dev/null)
+    fi
     now=$(date +%s)
     age=$((now - mtime))
     if [ "$age" -lt "$CACHE_TTL" ]; then
@@ -72,12 +81,17 @@ color_for_util() {
 format_reset_time() {
   local resets_at=$1
 
-  # Convert ISO8601 to epoch using BSD date (macOS)
+  # Convert ISO8601 to epoch
   local epoch
-  # Strip fractional seconds and timezone offset, normalize for BSD date
-  local normalized
-  normalized=$(echo "$resets_at" | sed 's/\.[0-9]*//; s/Z$/+0000/; s/+\([0-9][0-9]\):\([0-9][0-9]\)$/+\1\2/; s/T/ /')
-  epoch=$(TZ=UTC date -j -f "%Y-%m-%d %H:%M:%S%z" "$normalized" +%s 2>/dev/null)
+  if [ "$OS_TYPE" = "Darwin" ]; then
+    # BSD date: strip fractional seconds and normalize timezone for parsing
+    local normalized
+    normalized=$(echo "$resets_at" | sed 's/\.[0-9]*//; s/Z$/+0000/; s/+\([0-9][0-9]\):\([0-9][0-9]\)$/+\1\2/; s/T/ /')
+    epoch=$(TZ=UTC date -j -f "%Y-%m-%d %H:%M:%S%z" "$normalized" +%s 2>/dev/null)
+  else
+    # GNU date: parse ISO8601 directly
+    epoch=$(date -d "$resets_at" +%s 2>/dev/null)
+  fi
   if [ -z "$epoch" ]; then
     echo "$resets_at"
     return
@@ -88,7 +102,11 @@ format_reset_time() {
 
   # Format in Asia/Tokyo
   local tz_date
-  tz_date=$(TZ=Asia/Tokyo date -j -f %s "$epoch" "+%m/%d %H:%M" 2>/dev/null)
+  if [ "$OS_TYPE" = "Darwin" ]; then
+    tz_date=$(TZ=Asia/Tokyo date -j -f %s "$epoch" "+%m/%d %H:%M" 2>/dev/null)
+  else
+    tz_date=$(TZ=Asia/Tokyo date -d "@$epoch" "+%m/%d %H:%M" 2>/dev/null)
+  fi
 
   local today_date
   today_date=$(TZ=Asia/Tokyo date "+%m/%d")
