@@ -1,6 +1,7 @@
 [tools]
 "github:takai/git-ai-commit" = "latest"
 "github:k1LoW/git-wt" = "latest"
+gh = "latest"
 node = "lts"
 ruby = "latest"
 yarn = "1.22.19"
