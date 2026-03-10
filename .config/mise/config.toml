@@ -1,11 +1,12 @@
 [tools]
 "github:takai/git-ai-commit" = "latest"
 "github:k1LoW/git-wt" = "latest"
-gh = "latest"
+"github:cli/cli" = "latest"
 node = "lts"
 ruby = "latest"
 yarn = "1.22.19"
 
 [settings]
+github_attestations = false
 idiomatic_version_file_enable_tools = ["node", "ruby"]
 trusted_config_paths = ["~/ghq/github.com/ivry-inc/"]
