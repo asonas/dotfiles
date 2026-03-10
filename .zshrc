@@ -460,4 +460,4 @@ wt() {
 export PATH="/Users/asonas/.antigravity/antigravity/bin:$PATH"
 
 # Entire CLI shell completion
-autoload -Uz compinit && compinit && source <(entire completion zsh)
+source <(entire completion zsh)
