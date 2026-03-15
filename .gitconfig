@@ -82,3 +82,9 @@
 	gpgSign = true
 [wt]
 	basedir = .worktrees
+[credential "https://github.com"]
+	helper = 
+	helper = !/home/asonas/.local/share/mise/installs/github-cli-cli/2.87.3/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/home/asonas/.local/share/mise/installs/github-cli-cli/2.87.3/bin/gh auth git-credential
