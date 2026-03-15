@@ -23,7 +23,7 @@ required_dirs="
   .config/htop
   .config/ghostty
   .config/mise/config.toml
-  .zsh.d/pnpm-completion.zsh
+
   .claude/commands/gemini-search.md
   .claude/commands/talk-review
   .claude/settings.json
