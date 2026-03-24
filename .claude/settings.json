@@ -117,13 +117,22 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/scripts/statusline-usage.py"
+  },
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "sorah-spec@sorah-marketplace": true
+    "clangd-lsp@claude-plugins-official": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "sorah-spec@sorah-marketplace": true,
+    "sorah-guides@sorah-marketplace": true
   },
   "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
   "mcpServers": {
     "memory-vector": {
       "command": "envchain",
@@ -139,9 +148,5 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754045182761
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/scripts/statusline-usage.sh"
   }
 }
