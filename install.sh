@@ -67,6 +67,22 @@ case "$OSTYPE" in
     ;;
 esac
 
+# Setup external Claude skills via ghq
+ghq_skills="
+  git@github.com:blader/humanizer.git
+"
+for repo in $ghq_skills
+do
+    ghq get "$repo"
+    repo_path=$(ghq list -p "$repo")
+    skill_name=$(basename "$repo_path")
+    link="$PWD/.claude/skills/$skill_name"
+    if [ -L "$link" ] || [ -e "$link" ]; then
+        rm -rf "$link"
+    fi
+    ln -Fis "$repo_path" "$link"
+done
+
 # Setup zsh completions
 mkdir -p "$HOME/.zsh.d/completions"
 curl -fsSL "https://gist.githubusercontent.com/takai/d42693fbd01e8957ca52fa08c8ae660a/raw/_mairu" -o "$HOME/.zsh.d/completions/_mairu"
