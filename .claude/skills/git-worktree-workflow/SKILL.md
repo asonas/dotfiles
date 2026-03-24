@@ -57,7 +57,12 @@ git wt [branch-name-or-worktree-name]
 
 ### 4. Cleanup After Work
 
+If `docker compose up` was run inside the worktree, stop the containers first. Docker Compose uses the worktree directory name as the project name, so containers keep running and occupy ports even after you leave the worktree.
+
 ```bash
+# Stop Docker Compose services started in the worktree
+docker compose -p [worktree-dir-name] down
+
 # Safely delete worktree and branch (only if merged)
 git wt -d [branch-name]
 
@@ -92,6 +97,9 @@ git wt -D [branch-name]
 
 5. **Cleanup Worktree**
    ```bash
+   # Stop Docker Compose services if started in the worktree
+   docker compose -p [worktree-dir-name] down
+
    git wt -d feature/new-component
    ```
 
@@ -111,7 +119,8 @@ git push -u origin hotfix/critical-security-fix
 # 3. Return to original work
 git wt feature/payment-integration
 
-# 4. Delete worktree after fix is complete
+# 4. Stop any Docker Compose services, then delete worktree
+docker compose -p critical-security-fix down
 git wt -d hotfix/critical-security-fix
 ```
 
@@ -162,6 +171,21 @@ git wt -D [branch-name]
 # Manual deletion if needed
 rm -rf ../[worktree-dir]
 git worktree prune
+```
+
+### Port Conflict from Orphaned Containers
+
+If `docker compose up` fails with "port is already allocated", another worktree's containers may still be running:
+
+```bash
+# Find which compose project holds the port
+docker ps --filter "publish=<port>" --format "table {{.Names}}\t{{.Ports}}"
+
+# List all running compose projects
+docker compose ls
+
+# Stop the orphaned project
+docker compose -p <project-name> down
 ```
 
 ### Lost Worktree Location
