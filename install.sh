@@ -25,6 +25,7 @@ required_dirs="
   .config/mise/config.toml
   .zsh.d/pnpm-completion.zsh
   .claude/commands/gemini-search.md
+  .claude/commands/talk-review
   .claude/settings.json
   .claude/CLAUDE.md
   .claude/skills
