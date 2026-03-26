@@ -30,6 +30,7 @@ required_dirs="
   .claude/CLAUDE.md
   .claude/skills
   .claude/scripts
+  .claude/rules
 "
 
 for dir in $required_dirs
