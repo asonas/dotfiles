@@ -42,5 +42,6 @@ npm-debug.log
 .generators
 .kiro
 .claude/settings.local.json
+.claude/skills/humanizer/
 .serena
 .venv/
