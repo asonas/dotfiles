@@ -105,8 +105,26 @@ def fmt(label, pct):
     return f'{label} {gradient(pct)}{bar(pct)} {p}%{R}'
 
 
+def get_dir_and_branch(cwd):
+    home = os.path.expanduser('~')
+    display = cwd.replace(home, '~', 1) if cwd.startswith(home) else cwd
+    try:
+        branch = subprocess.run(
+            ['git', '-C', cwd, 'rev-parse', '--abbrev-ref', 'HEAD'],
+            capture_output=True, text=True, timeout=3
+        ).stdout.strip()
+    except Exception:
+        branch = ''
+    return f'{display} [{branch}]' if branch else display
+
+
+cwd = data.get('cwd', '')
+parts = []
+if cwd:
+    parts.append(get_dir_and_branch(cwd))
+
 model = data.get('model', {}).get('display_name', 'Claude')
-parts = [model]
+parts.append(model)
 
 ctx = data.get('context_window', {}).get('used_percentage')
 if ctx is not None:
