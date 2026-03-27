@@ -129,7 +129,16 @@
     "ruby-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "sorah-spec@sorah-marketplace": true,
-    "sorah-guides@sorah-marketplace": true
+    "sorah-guides@sorah-marketplace": true,
+    "cman@cman": true
+  },
+  "extraKnownMarketplaces": {
+    "cman": {
+      "source": {
+        "source": "github",
+        "repo": "laiso/cman"
+      }
+    }
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
