@@ -335,6 +335,9 @@ case ${OSTYPE} in
       FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
       FPATH=$HOME/.zsh.d/completions:$FPATH
 
+      # git補完でpkg-configの呼び出し(約2秒)をスキップする
+      zstyle ':completion:*:*:git:*' script /opt/homebrew/share/zsh/site-functions/git-completion.bash
+
       # 補完初期化の最適化
       autoload -Uz compinit
 
