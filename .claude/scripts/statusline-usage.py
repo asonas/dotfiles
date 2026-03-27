@@ -119,16 +119,21 @@ def get_dir_and_branch(cwd):
 
 
 cwd = data.get('cwd', '')
-parts = []
+
+# Line 1: directory and branch
+line1_parts = []
 if cwd:
-    parts.append(get_dir_and_branch(cwd))
+    line1_parts.append(get_dir_and_branch(cwd))
+
+# Line 2: model, context, rate limits
+line2_parts = []
 
 model = data.get('model', {}).get('display_name', 'Claude')
-parts.append(model)
+line2_parts.append(model)
 
 ctx = data.get('context_window', {}).get('used_percentage')
 if ctx is not None:
-    parts.append(fmt('ctx', ctx))
+    line2_parts.append(fmt('ctx', ctx))
 
 # rate_limits: use stdin data if available, otherwise fetch from OAuth API
 rate_limits = data.get('rate_limits')
@@ -138,15 +143,21 @@ if rate_limits is None:
         five_util = usage.get('five_hour', {}).get('utilization')
         seven_util = usage.get('seven_day', {}).get('utilization')
         if five_util is not None:
-            parts.append(fmt('5h', five_util))
+            line2_parts.append(fmt('5h', five_util))
         if seven_util is not None:
-            parts.append(fmt('7d', seven_util))
+            line2_parts.append(fmt('7d', seven_util))
 else:
     five = rate_limits.get('five_hour', {}).get('used_percentage')
     if five is not None:
-        parts.append(fmt('5h', five))
+        line2_parts.append(fmt('5h', five))
     week = rate_limits.get('seven_day', {}).get('used_percentage')
     if week is not None:
-        parts.append(fmt('7d', week))
+        line2_parts.append(fmt('7d', week))
 
-print(f'{DIM}|{R}'.join(f' {p} ' for p in parts), end='')
+lines = []
+if line1_parts:
+    lines.append(f'{DIM}|{R}'.join(f' {p} ' for p in line1_parts))
+if line2_parts:
+    lines.append(f'{DIM}|{R}'.join(f' {p} ' for p in line2_parts))
+
+print('\n'.join(lines), end='')
