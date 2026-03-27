@@ -28,6 +28,7 @@
       "Bash(gh pr create*)"
     ]
   },
+  "model": "sonnet",
   "hooks": {
     "SessionStart": [
       {
@@ -55,17 +56,6 @@
           {
             "type": "command",
             "command": "PROMPT=$(cat | jq -r '.prompt // empty' | head -c 60 | tr '\\n' ' '); printf '\\033]0;Claude: %s\\007' \"${PROMPT:-$(basename \"$PWD\")}\" > /dev/tty"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node ~/.claude/scripts/session-end-hook.js"
           }
         ]
       }
