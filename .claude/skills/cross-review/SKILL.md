@@ -10,6 +10,8 @@ context: fork
 
 Claude Code and Cursor review a PR alternately on a shared Obsidian document. Each reviewer appends findings independently. Disagreements are documented with Pros/Cons for human decision — neither model wins by attrition.
 
+**Language**: All content written to the Obsidian document MUST be in English. This applies to PR descriptions, findings, discussion entries, and the final summary.
+
 ## Usage
 
 ```
@@ -92,7 +94,7 @@ Read the current document from Obsidian. Review the diff using the pr-review ski
 
 Also read previous round findings (if any) and respond to Cursor's points in the Discussion section.
 
-Append to the document:
+Use `obsidian_patch_content` with `target: "Review Findings"` to add your findings under that section. Do NOT create a new `## Review Findings` header — patch the existing one.
 
 ```markdown
 ### Round {N} - Claude Code
@@ -100,17 +102,23 @@ Append to the document:
 - [{severity}] {finding} ({file}:{line})
 ```
 
-Update Current Status.
+**Bullet point guidelines**:
+- Keep each bullet to 1-2 sentences maximum
+- State the problem and affected location concisely
+- If detailed reasoning is needed, add it to the Discussion section instead
+
+Use `obsidian_patch_content` with `target: "Current Status"` to replace the status values. Do NOT create a new `## Current Status` header.
 
 ### Step 4: Cursor Review (Round N)
 
 Pass the full review document content to `cursor_review` MCP:
 
 - **content**: The full review document text
+- **model**: `composer-2`
 - **focus**: "Review the PR diff and previous findings. Add your own findings under 'Round {N} - Cursor'. For existing findings from Claude Code, state whether you agree or disagree in the Discussion section. If you disagree, explain why. Use severity levels: critical, major, minor, nit."
 - **context**: "This is a cross-model PR review. You are reviewing independently. Do not defer to Claude Code's findings — if you disagree, document your position clearly. Democratic review: neither side wins by attrition."
 
-Read the response and append Cursor's findings to the Obsidian document under `### Round {N} - Cursor`.
+Read the response and use `obsidian_patch_content` with `target: "Review Findings"` to add Cursor's findings under that section as `### Round {N} - Cursor`. Do NOT create a new `## Review Findings` header.
 
 If Cursor's response needs follow-up, use `cursor_continue` to ask for clarification.
 
@@ -153,7 +161,7 @@ After reconciliation, check if the review should continue:
 
 ### Step 7: Final Summary
 
-Write the Final Summary section:
+Use `obsidian_patch_content` with `target: "Final Summary"` to write the final summary into the existing section. Do NOT create a new `## Final Summary` header.
 
 ```markdown
 ## Final Summary
