@@ -10,6 +10,9 @@
   - コードの重複を指摘するときに同じファイルに同じ処理の塊が3つ以上出てきた場合に指摘をしてください
 - Obsidianに関する詳細ルールは「## Obsidian」セクションを参照
 
+- When fetching URLs, use `claude-code/1.0` as User-Agent. If WebFetch returns 403, fall back to curl.
+
+
 ## メモリ管理（memory-vector / memory-graph）
 
 「記録しておいて」「覚えておいて」などの指示があった場合、内容に応じて保存先を振り分ける:

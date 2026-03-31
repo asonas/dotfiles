@@ -22,13 +22,13 @@
       "Bash(bundle exec rake:*)",
       "Bash(bundle exec rspec:*)",
       "Bash(bundle exec rubocop:*)",
-      "Bash(gemini:*)"
+      "Bash(gemini:*)",
+      "Bash(mdv:*)"
     ],
     "deny": [
       "Bash(gh pr create*)"
     ]
   },
-  "model": "sonnet",
   "hooks": {
     "SessionStart": [
       {
