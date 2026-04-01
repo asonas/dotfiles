@@ -23,11 +23,14 @@
       "Bash(bundle exec rspec:*)",
       "Bash(bundle exec rubocop:*)",
       "Bash(gemini:*)",
-      "Bash(mdv:*)"
+      "Bash(mdv:*)",
+      "Bash(twiggy:*)",
+      "Bash(wasm-snip:*)"
     ],
     "deny": [
       "Bash(gh pr create*)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "hooks": {
     "SessionStart": [
@@ -147,5 +150,6 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754045182761
-  }
+  },
+  "skipAutoPermissionPrompt": true
 }

@@ -36,6 +36,7 @@ alias mkdir='mkdir -p'
 alias -g L='| less'
 alias -g G='| grep'
 alias pn='pnpm'
+alias claude='claude --permission-mode auto'
 
 function pr() {
   git branch -a --sort=authordate | grep -e 'remotes' | grep -v -e '->' -e '*' -e 'asonas' -e 'master' | perl -pe 's/^\h+//g' | perl -pe 's#^remotes/##' | perl -nle 'print if !$c{$_}++' | peco | ruby -e '
