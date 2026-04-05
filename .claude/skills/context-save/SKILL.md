@@ -1,6 +1,7 @@
 ---
 name: context-save
 description: Save the current conversation's plan, investigation results, or notes for later retrieval.
+argument-hint: "[name]"
 disable-model-invocation: true
 ---
 
@@ -40,8 +41,8 @@ When this skill is invoked:
      - Related files or code locations (with line numbers)
      - Any blockers or open questions
 
-3. **Save to second-brain (PostgreSQL)**
-   - Use the `mcp__second-brain__store_memory` tool
+3. **Save to memory-vector**
+   - Use the `mcp__memory-vector__store_memory` tool
    - Store the summarized content
    - Add tags: `["context", "<name>", "<relevant-tags>"]`
    - **source**: リポジトリ名を必ず含める
@@ -81,4 +82,4 @@ Structure the content clearly:
 ## Notes
 
 - Obsidian への保存が必要な場合は、ユーザーが別途指示する
-- second-brain のセマンティック検索で後から検索可能
+- memory-vector のセマンティック検索で後から検索可能

@@ -1,6 +1,7 @@
 ---
 name: recall
 description: "memory-vector と memory-graph を横断検索して過去の記憶を呼び出す。「思い出して」「覚えていますか」「前に話した」等の記憶呼び出し時に使う。"
+argument-hint: "<query>"
 context: fork
 ---
 

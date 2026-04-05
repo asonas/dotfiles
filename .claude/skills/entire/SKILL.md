@@ -1,6 +1,7 @@
 ---
 name: entire
 description: "Entire CLIを使ってAIコーディングセッションの履歴を検索・確認する。コミットハッシュやチェックポイントを指定してセッションの説明や復元ができる。"
+argument-hint: "<subcommand> [args]"
 context: fork
 ---
 

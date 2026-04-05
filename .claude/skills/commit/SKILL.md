@@ -1,6 +1,7 @@
 ---
 name: commit
 description: Create a commit using git ai-commit. Use this when the user asks to commit changes, make a commit, or save changes to git. Ensures each commit contains a single logical context.
+argument-hint: "[path]"
 allowed-tools: Bash(git:*), Bash(echo:*), Read, Glob, Grep
 context: fork
 ---

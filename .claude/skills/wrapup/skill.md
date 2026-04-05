@@ -1,6 +1,7 @@
 ---
 name: wrapup
 description: Summarize the day's work and append to the daily note in Obsidian.
+argument-hint: "[date]"
 disable-model-invocation: true
 ---
 

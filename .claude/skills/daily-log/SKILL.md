@@ -72,7 +72,7 @@ Update the daily note with:
 
 ### Step 5: Save to Second Brain
 
-Store the day's summary in second-brain for future reference:
+Store the day's summary in memory-vector for future reference:
 
 ```javascript
 store_memory({
@@ -97,4 +97,4 @@ Keep the interaction conversational and low-friction. Use numbered options where
 
 - This skill works in tandem with `/morning`
 - The "明日やること" section feeds into the next day's `/morning`
-- Reflections are stored in second-brain for long-term learning
+- Reflections are stored in memory-vector for long-term learning

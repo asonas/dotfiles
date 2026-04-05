@@ -1,7 +1,8 @@
 ---
 name: linear-issue
 description: Create Linear issues following the Linear Method principles. Use when the user wants to create an issue, task, or ticket in Linear. Enforces clear task descriptions instead of user stories.
-allowed-tools: mcp__linear-server__list_teams, mcp__linear-server__list_issues, mcp__linear-server__create_issue, mcp__linear-server__list_issue_labels, mcp__linear-server__list_issue_statuses, mcp__linear-server__list_projects, mcp__linear-server__list_cycles
+argument-hint: "[description]"
+allowed-tools: mcp__claude_ai_Linear__list_teams, mcp__claude_ai_Linear__list_issues, mcp__claude_ai_Linear__save_issue, mcp__claude_ai_Linear__list_issue_labels, mcp__claude_ai_Linear__list_issue_statuses, mcp__claude_ai_Linear__list_projects, mcp__claude_ai_Linear__list_cycles
 user-invocable: true
 context: fork
 ---

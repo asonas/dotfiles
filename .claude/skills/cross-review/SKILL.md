@@ -1,7 +1,8 @@
 ---
 name: cross-review
 description: Cross-model PR review. Claude Code and Cursor review a PR alternately on a shared Obsidian document, rallying until issues converge or disagreements are documented for human decision.
-allowed-tools: Bash(gh:*), Bash(ghro:*), mcp__cursor-agent__cursor_review, mcp__cursor-agent__cursor_continue, mcp__mcp-obsidian__obsidian_get_file_contents, mcp__mcp-obsidian__obsidian_patch_content, mcp__mcp-obsidian__obsidian_append_content, mcp__mcp-obsidian__obsidian_simple_search, mcp__mcp-obsidian__obsidian_get_periodic_note
+argument-hint: "<PR_URL>"
+allowed-tools: Bash(ghro:*), mcp__cursor-agent__cursor_review, mcp__cursor-agent__cursor_continue, mcp__mcp-obsidian__obsidian_get_file_contents, mcp__mcp-obsidian__obsidian_patch_content, mcp__mcp-obsidian__obsidian_append_content, mcp__mcp-obsidian__obsidian_simple_search, mcp__mcp-obsidian__obsidian_get_periodic_note
 user-invocable: true
 context: fork
 ---
