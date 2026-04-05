@@ -5,6 +5,7 @@
 node = "lts"
 ruby = "latest"
 yarn = "1.22.19"
+colima = "latest"
 
 [settings]
 github_attestations = false
