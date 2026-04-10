@@ -22,6 +22,9 @@ Fetch today's calendar events:
 mcp__google-calendar__list-events with calendarId: "primary", timeMin: today 00:00, timeMax: today 23:59
 ```
 
+### Step 2.5: Gmail Triage
+`/gmail-triage` スキルを実行してInboxを整理する。結果は Step 8 のサマリーに含める。
+
 ### Step 3: Read Previous Daily Note(s)
 直前の営業日（または直近でdaily noteが存在する日）のノートを読む。
 
@@ -115,9 +118,35 @@ Daily note format (TODOセクションは不要、Thingsで管理するため):
 
 
 
+## 昨日やったこと
+
+[前日のdaily noteの「やったこと」セクションからサマリー。なければ「特になし」]
+
+## 今日やること
+
+[前日からの引き継ぎや今日の予定を踏まえて、ユーザーにヒアリングして記載する]
+
+## 困りごと・雑談・相談
+
+[ユーザーにヒアリングして記載。なければ「特になし」]
+
 ```
 
-### Step 8: Present Summary
+### Step 7.5: Gmail Digest
+`/gmail-digest` スキルを実行してLinear通知とDatadog Daily Digestをdaily noteに追記する。
+
+### Step 8: Standup Hearing
+daily noteの作成後、ユーザーに以下をヒアリングしてdaily noteの該当セクションに記入する:
+
+1. **昨日やったこと** - 前日のdaily noteの「やったこと」セクションがあればそれをベースに提示し、追加・修正がないか確認する。前日のnoteがなければユーザーに聞く
+2. **今日やること** - 前日からの引き継ぎや今日の予定を踏まえて、ユーザーに確認する
+3. **困りごと・雑談・相談** - 何かあれば自由に記入。なければ「特になし」
+
+**注意:**
+- ユーザーが会話の中で既に回答している場合（例:「昨日は休みだった」「今日はXXXをやる」）は、改めて聞かずにそのまま記入する
+- ヒアリングが必要な場合は、サマリー表示の前にまとめて聞く
+
+### Step 9: Present Summary
 Present to the user:
 
 ```
@@ -132,6 +161,10 @@ Present to the user:
 ### Things3に追加したタスク
 - Calendar: [count]件の個別タスクを追加（タグ: Calendar）
 - [その他個別タスク]
+
+### メール通知サマリー
+- Linear: [要約]
+- Datadog: [要約]
 
 ---
 Obsidianのdaily noteを作成しました: daily/YYYY-MM-DD.md
