@@ -17,7 +17,8 @@
       "Bash(gemini:*)",
       "Bash(mdv:*)",
       "Bash(twiggy:*)",
-      "Bash(wasm-snip:*)"
+      "Bash(wasm-snip:*)",
+      "Bash(iris:*)"
     ],
     "deny": [
       "Bash(gh pr create*)"
