@@ -46,6 +46,14 @@
 - リポジトリ名に紐付くMarkdownのドキュメントはObsidianから検索して読み取る
 - Obsidianにドキュメントを書くよう指示がない場合はリポジトリで指示されているディレクトリに保存する
 
+### ツール選択方針（2026-04-15 移行済み）
+- **Obsidian公式CLI (`obsidian` コマンド) を第一選択とする**。旧 `mcp-obsidian` (REST API依存) は廃止済み
+- vault path: `/Users/asonas/Documents/asonas/`
+- 主要コマンド: `obsidian read path=...`, `obsidian append path=... content=...`, `obsidian create path=... content=...`, `obsidian search query=...`, `obsidian files folder=...`, `obsidian daily:read|append|path`
+- stderr の "installer out of date" 警告は `2>/dev/null` で抑制してよい（stdoutは正常）
+- **heading指定のinsertは公式CLI非対応**。特定セクション下への追記が必要な場合は Read + Edit ツールで `/Users/asonas/Documents/asonas/<path>` を直接編集する（Obsidianはファイルシステムの変更を自動検知する）
+- daily note に `# YYYY-MM-DD` 等の h1 ヘッディングを追加しない（ファイル名がタイトルになるため重複する）
+
 ### 文章スタイル
 Obsidianに記事を書く際は、以下のスタイルで書くこと:
 - 文体は冷静で論理的にし、感情的・扇動的な表現は避ける
@@ -60,7 +68,7 @@ Obsidianに記事を書く際は、以下のスタイルで書くこと:
 Obsidianの記事を書く際は、以下のハイブリッド戦略でwikiリンク `[[...]]` を付与する:
 
 **Step 1: 既存ノートとのマッチング**
-記事を書く前に `obsidian_simple_search` や `obsidian_list_files_in_dir` でvault内の既存ノートタイトルを把握し、本文中に一致する語が出現したらリンクにする。
+記事を書く前に Obsidian 公式CLI (`obsidian search query="..."` / `obsidian files folder="..."`) でvault内の既存ノートタイトルを把握し、本文中に一致する語が出現したらリンクにする。
 
 **Step 2: 重要な未作成ノートへのスタブリンク**
 既存ノートがなくても、以下のカテゴリに該当する語はスタブリンク `[[語]]` を張る（Obsidianは未作成ノートもGraph Viewに表示する）:

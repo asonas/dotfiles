@@ -46,11 +46,21 @@ mcp__claude_ai_Gmail__search_threads with query: "in:inbox from:no-reply@dtdg.co
 
 ### Step 4: Write to Obsidian daily note
 
-今日のdaily noteに以下のセクションを追記する:
+今日のdaily noteに以下のセクションを追記する。Obsidian公式CLIを使う:
 
+```bash
+obsidian append path="daily/YYYY-MM-DD.md" content="<セクション本文>" 2>/dev/null
 ```
-mcp__mcp-obsidian__obsidian_append_content with filepath: "daily/YYYY-MM-DD.md"
-```
+
+- 改行は `\n` でエスケープする
+
+**追記位置について:**
+
+Obsidian公式CLIの `append` は **ファイル末尾への追記のみ** 対応する（heading指定の挿入不可）。このスキルは末尾への追記を前提に設計している。
+
+- daily note は /morning のテンプレで「予定 → 引き継ぎ → やったこと → 昨日やったこと → 今日やること → 困りごと」のセクション順になっており、末尾にLinear通知/Datadog Digestが追加される配置で問題ない
+- スタンドアップ3項目（やったこと/今日やること/困りごと）をLinear/Datadogより上に表示したい場合、`/morning` の実行順序は **Step 7 (daily note作成) → Step 7.5 (gmail-digest) → Step 8 (Standup Hearing)** を守ること。Step 8 のRead+Editでスタンドアップ項目を埋めた後にgmail-digestを実行すると順序が崩れる
+- 特定セクションの下に挿入したい場合は、`obsidian append` ではなく `/Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md` を Read + Edit ツールで直接編集する（`wrapup` や `daily-log` と同じパターン）
 
 **Linear通知セクションのフォーマット:**
 ```markdown
@@ -87,7 +97,7 @@ mcp__mcp-obsidian__obsidian_append_content with filepath: "daily/YYYY-MM-DD.md"
 ## /morning への組み込み
 
 `/morning` から呼び出す場合は、daily note作成（Step 7）の後に実行する。
-daily noteが既に存在する前提で `obsidian_append_content` で追記する。
+daily noteが既に存在する前提で `obsidian append` で追記する。
 
 ## Notes
 

@@ -123,7 +123,8 @@
     "superpowers@claude-plugins-official": true,
     "sorah-spec@sorah-marketplace": true,
     "sorah-guides@sorah-marketplace": true,
-    "cman@cman": true
+    "cman@cman": true,
+    "obsidian@obsidian-skills": true
   },
   "extraKnownMarketplaces": {
     "cman": {
@@ -131,10 +132,17 @@
         "source": "github",
         "repo": "laiso/cman"
       }
+    },
+    "obsidian-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kepano/obsidian-skills"
+      }
     }
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
+  "skipAutoPermissionPrompt": true,
   "mcpServers": {
     "memory-vector": {
       "command": "envchain",
@@ -150,6 +158,5 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754045182761
-  },
-  "skipAutoPermissionPrompt": true
+  }
 }

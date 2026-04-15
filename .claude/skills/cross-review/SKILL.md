@@ -2,7 +2,7 @@
 name: cross-review
 description: Cross-model PR review. Claude Code and Cursor review a PR alternately on a shared Obsidian document, rallying until issues converge or disagreements are documented for human decision.
 argument-hint: "<PR_URL>"
-allowed-tools: Bash(ghro:*), mcp__cursor-agent__cursor_review, mcp__cursor-agent__cursor_continue, mcp__mcp-obsidian__obsidian_get_file_contents, mcp__mcp-obsidian__obsidian_patch_content, mcp__mcp-obsidian__obsidian_append_content, mcp__mcp-obsidian__obsidian_simple_search, mcp__mcp-obsidian__obsidian_get_periodic_note
+allowed-tools: Bash(ghro:*), Bash(obsidian:*), Read, Edit, Write, mcp__cursor-agent__cursor_review, mcp__cursor-agent__cursor_continue
 user-invocable: true
 context: fork
 ---
@@ -48,9 +48,13 @@ Extract repo name and PR number from the URL for the document filename.
 
 ### Step 2: Create Obsidian Review Document
 
-Create `reviews/PR-{repo}-{number}.md` in Obsidian using `obsidian_append_content`.
+Create `reviews/PR-{repo}-{number}.md` in Obsidian using the official CLI:
 
-Use this template — fill in the PR Info, Description, External Comments, and Diff sections. Leave the rest empty for now:
+```bash
+obsidian create path="reviews/PR-{repo}-{number}.md" content="<template below>" 2>/dev/null
+```
+
+If an existing file must be overwritten, pass the `overwrite` flag. Use this template — fill in the PR Info, Description, External Comments, and Diff sections. Leave the rest empty for now:
 
 ```markdown
 ## PR Info
@@ -84,7 +88,7 @@ Use this template — fill in the PR Info, Description, External Comments, and D
 
 ### Step 3: Claude Code Review (Round N)
 
-Read the current document from Obsidian. Review the diff using the pr-review skill perspectives:
+Read the current document from Obsidian (`obsidian read path="reviews/PR-{repo}-{number}.md" 2>/dev/null` または Readツールで `/Users/asonas/Documents/asonas/reviews/PR-{repo}-{number}.md`). Review the diff using the pr-review skill perspectives:
 
 1. **Correctness**: Bugs, logic errors, unhandled edge cases
 2. **Design**: Abstraction, separation of concerns, dependencies
@@ -95,7 +99,7 @@ Read the current document from Obsidian. Review the diff using the pr-review ski
 
 Also read previous round findings (if any) and respond to Cursor's points in the Discussion section.
 
-Use `obsidian_patch_content` with `target: "Review Findings"` to add your findings under that section. Do NOT create a new `## Review Findings` header — patch the existing one.
+heading指定の挿入はReadツールでファイルを読み、Editツールで `## Review Findings` 直下に追加する。Do NOT create a new `## Review Findings` header — edit the existing section.
 
 ```markdown
 ### Round {N} - Claude Code
@@ -108,7 +112,7 @@ Use `obsidian_patch_content` with `target: "Review Findings"` to add your findin
 - State the problem and affected location concisely
 - If detailed reasoning is needed, add it to the Discussion section instead
 
-Use `obsidian_patch_content` with `target: "Current Status"` to replace the status values. Do NOT create a new `## Current Status` header.
+同様に `## Current Status` セクションのステータス値を更新する場合も Read + Edit で既存値を置換する。Do NOT create a new `## Current Status` header.
 
 ### Step 4: Cursor Review (Round N)
 
@@ -119,7 +123,7 @@ Pass the full review document content to `cursor_review` MCP:
 - **focus**: "Review the PR diff and previous findings. Add your own findings under 'Round {N} - Cursor'. For existing findings from Claude Code, state whether you agree or disagree in the Discussion section. If you disagree, explain why. Use severity levels: critical, major, minor, nit."
 - **context**: "This is a cross-model PR review. You are reviewing independently. Do not defer to Claude Code's findings — if you disagree, document your position clearly. Democratic review: neither side wins by attrition."
 
-Read the response and use `obsidian_patch_content` with `target: "Review Findings"` to add Cursor's findings under that section as `### Round {N} - Cursor`. Do NOT create a new `## Review Findings` header.
+Read the response and use Read + Edit tools on `/Users/asonas/Documents/asonas/reviews/PR-{repo}-{number}.md` to add Cursor's findings under the existing `## Review Findings` section as `### Round {N} - Cursor`. Do NOT create a new `## Review Findings` header.
 
 If Cursor's response needs follow-up, use `cursor_continue` to ask for clarification.
 
@@ -162,7 +166,7 @@ After reconciliation, check if the review should continue:
 
 ### Step 7: Final Summary
 
-Use `obsidian_patch_content` with `target: "Final Summary"` to write the final summary into the existing section. Do NOT create a new `## Final Summary` header.
+Read + Edit ツールで既存の `## Final Summary` セクションの直後に本文を挿入する。Do NOT create a new `## Final Summary` header.
 
 ```markdown
 ## Final Summary
@@ -186,10 +190,10 @@ Use `obsidian_patch_content` with `target: "Final Summary"` to write the final s
 
 ### Step 8: Link to Daily Note
 
-Use `obsidian_get_periodic_note` to find today's daily note, then append a link:
+公式CLIで今日のdaily noteに追記する:
 
-```markdown
-- Reviewed [[PR-{repo}-{number}]] ({critical} critical, {major} major, {disagreements} disagreements)
+```bash
+obsidian daily:append content="- Reviewed [[PR-{repo}-{number}]] ({critical} critical, {major} major, {disagreements} disagreements)" 2>/dev/null
 ```
 
 ## Democratic Principles

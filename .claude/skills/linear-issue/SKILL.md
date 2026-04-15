@@ -2,7 +2,7 @@
 name: linear-issue
 description: Create Linear issues following the Linear Method principles. Use when the user wants to create an issue, task, or ticket in Linear. Enforces clear task descriptions instead of user stories.
 argument-hint: "[description]"
-allowed-tools: mcp__claude_ai_Linear__list_teams, mcp__claude_ai_Linear__list_issues, mcp__claude_ai_Linear__save_issue, mcp__claude_ai_Linear__list_issue_labels, mcp__claude_ai_Linear__list_issue_statuses, mcp__claude_ai_Linear__list_projects, mcp__claude_ai_Linear__list_cycles
+allowed-tools: mcp__linear-server__*
 user-invocable: true
 context: fork
 ---
@@ -120,7 +120,20 @@ Label: [ラベルの提案]
 
 ### 5. Linear MCPでイシューを作成する
 
-ユーザーの承認後、Linear MCPツールを使ってイシューを作成する。
+ユーザーの承認後、Linear MCPツール (`mcp__linear-server__*`) を使ってイシューを作成する。
+
+**MCPサーバー情報:**
+- サーバー名: `linear-server`（`https://mcp.linear.app/mcp` のHTTPリモートMCP）
+- 認証が必要。認証前は一部のツールが利用できない。その場合は `/mcp` コマンドからLinearにログインするようユーザーに案内する
+- 主要ツール (`mcp__linear-server__` prefix を付けて呼び出す):
+  - `list_teams`, `list_projects`, `list_cycles`, `list_issue_labels`, `list_issue_statuses`, `list_issues`, `list_milestones`, `list_users`
+  - `get_team`, `get_project`, `get_issue`, `get_issue_status`, `get_user`, `get_milestone`
+  - **`save_issue`**: issueの作成・更新を兼ねる（`id` 省略で作成、`id` 指定で更新）
+  - `save_project`, `save_milestone`, `save_comment`
+  - `search_documentation`
+
+**認証エラーが出た場合:**
+ユーザーに「Linear MCPが未認証です。`/mcp` でLinearにログインしてください」と通知してスキルを中断する。
 
 ### 6. 作成結果を報告する
 

@@ -36,8 +36,13 @@ Use `mcp__google-calendar__get-current-time` to get the current date for referen
 ### Step 2: Verify Daily Note Exists
 
 Check if the target daily note exists:
+```bash
+obsidian read path="daily/YYYY-MM-DD.md" 2>/dev/null
 ```
-mcp__mcp-obsidian__obsidian_get_file_contents with filepath: "daily/YYYY-MM-DD.md"
+
+または、Readツールで直接:
+```
+Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 ```
 
 If it doesn't exist, inform the user and offer to create it.
@@ -77,6 +82,7 @@ Collect information about what was done from the following sources. Each source 
 
 4. **From memory-vector / memory-graph**
    - 必ず両方を検索して、今日の作業内容を収集する
+   - **サービスが停止している場合:** 検索呼び出しがエラーになるため、このソースはスキップして他の3ソース（Things3、セッションコンテキスト、auto memory）から情報を集める。ユーザーには「memory-vector/graphが停止しているためスキップしました」と一言添える
    - 複数のクエリで検索を行い、漏れがないようにする:
    ```
    # memory-vector: 日付ベースの検索
@@ -124,15 +130,21 @@ Wait for user confirmation or edits.
 
 ### Step 6: Append to Daily Note
 
-After confirmation, append to the "やったこと" section:
+After confirmation, append under the "## やったこと" heading. 公式CLIはheading指定のinsertに対応していないため、Vaultの実ファイルをReadツールで読んでEditツールで挿入する。
+
 ```
-mcp__mcp-obsidian__obsidian_patch_content with:
-  filepath: "daily/YYYY-MM-DD.md"
-  operation: "append"
-  target_type: "heading"
-  target: "やったこと"
-  content: [the summary]
+# Read tool:
+Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+
+# Edit tool: "## やったこと" 直下に追記
+# old_string: "## やったこと\n\n" (または既存の内容の末尾を含む一意なスニペット)
+# new_string: "## やったこと\n\n- [Item 1]\n- [Item 2]\n...\n"
 ```
+
+**注意:**
+- `## やったこと` セクションに既存のエントリがある場合は、その末尾に追記する。Editツールで old_string を末尾行にし、new_string にサマリーを加えて書き戻す
+- Obsidianはファイルシステムの変更を自動で検知するので、Edit後に特別な再読み込み操作は不要
+- **daily note に `# YYYY-MM-DD` 等のh1ヘッディングを絶対に追加しないこと**。ファイル名がObsidian上のタイトルになるため重複する。既存ノートにh1を混入させないためEdit時は慎重に
 
 ### Step 7: Confirm Completion
 

@@ -1,8 +1,8 @@
 ---
 name: pr-review
-description: Review GitHub Pull Requests. When given a PR URL, fetches diff and comments using gh command, then performs objective and critical code review.
+description: Review GitHub Pull Requests. When given a PR URL, fetches diff and comments using ghro command, then performs objective and critical code review.
 argument-hint: "<PR_URL>"
-allowed-tools: Bash(ghro:*), WebFetch, WebSearch
+allowed-tools: Bash(ghro:*), Bash(gh:*), WebFetch, WebSearch
 user-invocable: true
 context: fork
 ---
@@ -32,18 +32,20 @@ Perform objective code reviews for GitHub Pull Requests.
 
 ### 1. Fetch PR Information
 
+読み取り操作にはreadonlyラッパーの `ghro` を使う（CLAUDE.mdのGitHub CLIルール準拠）。
+
 ```bash
 # Get PR overview
-gh pr view <PR_URL> --json title,body,author,baseRefName,headRefName,additions,deletions,changedFiles
+ghro pr view <PR_URL> --json title,body,author,baseRefName,headRefName,additions,deletions,changedFiles
 
 # Get diff
-gh pr diff <PR_URL>
+ghro pr diff <PR_URL>
 
 # Get existing comments
-gh pr view <PR_URL> --comments
+ghro pr view <PR_URL> --comments
 
 # Get review comments (inline comments on files)
-gh api repos/{owner}/{repo}/pulls/{pr_number}/comments
+ghro api repos/{owner}/{repo}/pulls/{pr_number}/comments
 ```
 
 ### 2. Analyze Changes
@@ -92,16 +94,18 @@ gh api repos/{owner}/{repo}/pulls/{pr_number}/comments
 
 ## Command Examples
 
+読み取りは `ghro`、書き込みは `gh` を使う。
+
 ```bash
-# Get full PR information
-gh pr view https://github.com/owner/repo/pull/123
+# Get full PR information (読み取り)
+ghro pr view https://github.com/owner/repo/pull/123
 
-# Get diff for specific file only
-gh pr diff https://github.com/owner/repo/pull/123 -- path/to/file.ts
+# Get diff for specific file only (読み取り)
+ghro pr diff https://github.com/owner/repo/pull/123 -- path/to/file.ts
 
-# Post comment on PR
+# Post comment on PR (書き込み)
 gh pr comment https://github.com/owner/repo/pull/123 --body "Review comment"
 
-# Submit PR review
+# Submit PR review (書き込み)
 gh pr review https://github.com/owner/repo/pull/123 --comment --body "Review content"
 ```

@@ -60,7 +60,8 @@ Execute these steps in order:
 
 ### Step 3: Commit
 
-1. Run `git ai-commit` (or `cd <path> && git ai-commit`) to create the commit
+1. Run `git ai-commit` (or `git -C <path> ai-commit`) to create the commit
+   - **CLAUDE.mdルール準拠**: `cd <path> && git ...` は禁止。パス指定が必要な場合は必ず `git -C <path>` を使う
 2. If there are remaining unstaged changes, ask the user if they want to continue with another commit
 
 ## Commands

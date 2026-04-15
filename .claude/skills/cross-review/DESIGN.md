@@ -1,143 +1,60 @@
 # Cross-Model PR Review Skill - Design
 
-## Context
+このドキュメントは `cross-review` スキルの **設計意図** を記録する。実行手順は `SKILL.md` を正として参照すること。DESIGN.md には「なぜそうしたか」だけを書き、具体的なコマンドや出力フォーマットは重複させない。
 
-PR review by a single AI model has blind spots. By having Claude Code and Cursor (via cursor-agent MCP) review the same PR independently and then rally back and forth on a shared document, we get broader coverage and democratic conflict resolution. The key insight is using a file as shared state rather than ephemeral message passing, so context accumulates across rounds.
+## 問題意識
 
-## Overview
+単一AIモデルによるPRレビューには盲点がある。見逃しやすい論点、モデル固有のバイアス（Claudeが保守的に指摘しすぎる／Cursorが楽観的に見過ぎる等）が存在するため、独立した2つのモデルで同一PRをレビューして比較すると、カバレッジが広がり判断の偏りが薄まる。
 
-`/cross-review <PR_URL>` creates a review document in Obsidian, fetches PR info and diff, then orchestrates alternating review rounds between Claude Code and Cursor. Each round appends findings to the document. The process continues until no new critical/major issues are found, or disagreements are documented with Pros/Cons for human decision.
+## 設計の核となるアイデア
 
-## Invocation
+**共有ドキュメントをステートとする。** メッセージパッシングで受け渡すのではなく、Obsidianのファイルを単一の正本として両モデルに追記させる。理由は以下:
 
-```
-/cross-review https://github.com/owner/repo/pull/123
-```
+1. **文脈の累積**: 会話履歴とは独立に、過去ラウンドの指摘が物理的に残る
+2. **人間への可視性**: ラウンド毎の追記差分が見える。どちらのモデルが何を言ったか追跡可能
+3. **再開可能性**: 途中で中断しても同じファイルから再開できる
 
-## Workflow
+## 民主的レビューの原則
 
-```
-1. Initialize
-   - Fetch PR title, description, diff via `gh pr view` / `gh pr diff`
-   - Fetch existing review comments (greptile, humans) via `gh api`
-   - Create review document in Obsidian at `reviews/PR-{repo}-{number}.md`
+この設計は「どちらかのモデルが勝つ」形を避ける。具体的には:
 
-2. Round N - Claude Code
-   - Read current document state
-   - Review using pr-review skill perspectives (Correctness, Design, Security, Performance, Readability, Testing)
-   - Append findings to "Review Findings" section
-   - Update "Current Status"
+1. **No deference**: どちらも相手の指摘に自動的に同意しない
+2. **Reasoned position changes**: 立場を変える場合は理由をドキュメントに残す
+3. **Escalation over capitulation**: 2ラウンドで収束しなければ人間に判断を委ねる
+4. **Equal presentation**: 最終サマリーに両者の視点を対等に残す
+5. **Human as arbiter**: 未決定項目の最終判断は人間が下す
 
-3. Round N - Cursor
-   - Pass document to cursor_review MCP
-   - Cursor reviews diff and previous findings
-   - Append findings to "Review Findings" section
-   - Update "Current Status" via cursor_continue if needed
+これらは `SKILL.md` の Reconciliation/Final Summary で具体化されている。
 
-4. Reconciliation (after each pair of rounds)
-   - Compare findings from both reviewers
-   - Agreements: mark as Resolved in Discussion
-   - New points: add to Discussion for next round
-   - Disagreements: document Pros/Cons, mark as "Human Decision Needed"
+## Severityの4段階
 
-5. Termination
-   - No new critical/major findings in latest round → proceed to summary
-   - All items Resolved or marked Human Decision Needed → proceed to summary
-   - Max 3 rounds reached → proceed to summary with note
+`critical / major / minor / nit` の4段階は、**レビュー継続の閾値** を明確にするための設計。critical/major が残っている限り次ラウンドへ進み、minor/nit しかない状態は収束として扱う。段階がもっと細かいと収束判定が曖昧になり、粗いと「致命的ではないが見過ごせない」の扱いが難しくなる。
 
-6. Final Summary
-   - Write summary of all findings, resolved items, and items needing human input
-   - Link to review document from daily note
-```
+## 依存スキル
 
-## Review Document Template
+- `pr-review`: Claude Code側のレビュー観点（Correctness/Design/Security/Performance/Readability/Testing）を流用
+- `cursor_review` MCP: Cursor側のレビュー実行
+- `cursor_continue` MCP: Cursorとのフォロー対話
+- Obsidian公式CLI + Read/Editツール: レビュー文書の読み書き。heading指定挿入が必要な場合は Read + Edit で vault ファイルを直接編集する（`/Users/asonas/Documents/asonas/reviews/...`）
 
-```markdown
-# PR Review: {title}
+## Obsidian統合の設計決定
 
-## PR Info
-- URL: {url}
-- Author: {author}
-- Branch: {head} -> {base}
-- Created: {date}
+**なぜObsidianを選んだか:**
+- レビュー文書が後から検索可能な資産になる（`obsidian search` でPR横断検索）
+- daily noteに自動リンクできるため、いつ何をレビューしたかが日報から辿れる
+- Graph Viewで関連PRの可視化が可能
 
-## Description
-{PR description}
+**なぜファイル名を `reviews/PR-{repo}-{number}.md` としたか:**
+- Obsidian の wikilink で `[[PR-{repo}-{number}]]` と書きやすい
+- ソートでプロジェクト毎にまとまる
+- 将来のOKR/レポートで参照しやすい
 
-## External Comments
-### Greptile
-{greptile comments if any}
+## 制約と既知の限界
 
-### Human
-{human comments if any}
+- Cursor側のモデル選択はスキルでは固定せず、Cursor MCPのデフォルトに従う（`composer-2` を基本とする）
+- PR差分が非常に大きい場合（500行超）はファイル単位に分割して複数ラウンドに分ける必要がある
+- cursor-agent サーバーが停止しているとCursor側のラウンドが実行できない。その場合はClaude Code単独レビューに縮退する選択肢もある（ただし本スキルの趣旨からは外れるため、基本はサーバー復旧を待つ）
 
-## Diff
-{diff or reference to diff file}
+## 具体的な手順
 
-## Review Findings
-
-### Round {N} - Claude Code
-- [{severity}] {finding} ({file}:{line})
-
-### Round {N} - Cursor
-- [{severity}] {finding} ({file}:{line})
-
-## Discussion
-
-### {Topic}
-- **Claude Code**: {position}
-- **Cursor**: {position}
-- **Status**: {Resolved | In Discussion | Human Decision Needed}
-
-#### Pros/Cons (when disagreement)
-| | Pros | Cons |
-|---|------|------|
-| Option A | ... | ... |
-| Option B | ... | ... |
-
-## Current Status
-- Round: {N}
-- Unresolved: {count}
-- Resolved: {count}
-- Human Decision Needed: {count}
-- Next action: {description}
-
-## Final Summary
-{written after termination}
-```
-
-## Severity Levels
-
-- **critical**: Security vulnerabilities, data loss risks, crash bugs
-- **major**: Logic errors, performance issues, missing error handling
-- **minor**: Code style, naming, minor improvements
-- **nit**: Formatting, typos, cosmetic suggestions
-
-Only critical and major drive continuation of review rounds. Minor and nit are recorded but don't prevent termination.
-
-## Democratic Principles
-
-1. Neither model "wins" by default - disagreements are documented, not resolved by attrition
-2. When a reviewer changes position, the reason must be stated in the document
-3. If discussion on a topic exceeds 2 rounds without convergence, it becomes "Human Decision Needed" with Pros/Cons
-4. Both reviewers' perspectives are presented equally in the final summary
-
-## Existing Skills Used
-
-- `pr-review`: Review perspectives and methodology for Claude Code's review rounds
-- `cursor_review` MCP: Delegates review to Cursor
-- `cursor_continue` MCP: Continues Cursor conversation for follow-up rounds
-- `obsidian_get_file_contents` / `obsidian_patch_content`: Read/write review document
-- `obsidian_simple_search`: Check for existing review documents
-
-## Obsidian Integration
-
-- Document saved at: `reviews/PR-{repo}-{number}.md`
-- After completion, link added to daily note under the work log section
-- Follows existing Obsidian writing rules from CLAUDE.md (no emojis, wikilinks for technical terms)
-
-## Limitations
-
-- Cursor model is not specified by the skill (uses Cursor's default)
-- Diff size may exceed context limits for very large PRs - in that case, review file-by-file
-- cursor_review MCP availability depends on cursor-agent server running
+実行手順・コマンド・テンプレート・Severity定義・Reconciliation ルールはすべて `SKILL.md` に記載する。このファイルとの重複を避けるため、詳細はそちらを参照すること。
