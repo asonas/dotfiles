@@ -3,6 +3,7 @@
 Combines Claude Code stdin JSON (model, context_window) with OAuth API (rate limits).
 """
 import json, os, platform, subprocess, sys, time
+from datetime import datetime
 
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8')
@@ -105,6 +106,21 @@ def fmt(label, pct):
     return f'{label} {gradient(pct)}{bar(pct)} {p}%{R}'
 
 
+def fmt_reset(iso_str):
+    if not iso_str:
+        return ''
+    try:
+        dt = datetime.fromisoformat(iso_str).astimezone()
+        now = datetime.now().astimezone()
+        if dt.date() == now.date():
+            label = dt.strftime('%H:%M')
+        else:
+            label = dt.strftime('%m/%d %H:%M')
+        return f' {DIM}\u21bb{label}{R}'
+    except Exception:
+        return ''
+
+
 def get_dir_and_branch(cwd):
     home = os.path.expanduser('~')
     display = cwd.replace(home, '~', 1) if cwd.startswith(home) else cwd
@@ -140,19 +156,19 @@ rate_limits = data.get('rate_limits')
 if rate_limits is None:
     usage = fetch_rate_limits()
     if usage is not None:
-        five_util = usage.get('five_hour', {}).get('utilization')
-        seven_util = usage.get('seven_day', {}).get('utilization')
-        if five_util is not None:
-            line2_parts.append(fmt('5h', five_util))
-        if seven_util is not None:
-            line2_parts.append(fmt('7d', seven_util))
+        five = usage.get('five_hour') or {}
+        seven = usage.get('seven_day') or {}
+        if five.get('utilization') is not None:
+            line2_parts.append(fmt('5h', five['utilization']) + fmt_reset(five.get('resets_at')))
+        if seven.get('utilization') is not None:
+            line2_parts.append(fmt('7d', seven['utilization']) + fmt_reset(seven.get('resets_at')))
 else:
-    five = rate_limits.get('five_hour', {}).get('used_percentage')
-    if five is not None:
-        line2_parts.append(fmt('5h', five))
-    week = rate_limits.get('seven_day', {}).get('used_percentage')
-    if week is not None:
-        line2_parts.append(fmt('7d', week))
+    five = rate_limits.get('five_hour') or {}
+    if five.get('used_percentage') is not None:
+        line2_parts.append(fmt('5h', five['used_percentage']) + fmt_reset(five.get('resets_at')))
+    week = rate_limits.get('seven_day') or {}
+    if week.get('used_percentage') is not None:
+        line2_parts.append(fmt('7d', week['used_percentage']) + fmt_reset(week.get('resets_at')))
 
 lines = []
 if line1_parts:
