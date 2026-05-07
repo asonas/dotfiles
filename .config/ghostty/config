@@ -36,3 +36,8 @@ window-padding-balance = true
 
 scrollback-limit = "500000000"
 keybind = shift+enter=text:\n
+
+#background-image = "/Users/asonas/.config/ghostty/ivry-logo.png"
+#background-image-opacity = 0.2
+#background-image-position = center
+#background-image-fit = contain
