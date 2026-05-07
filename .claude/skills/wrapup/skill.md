@@ -80,32 +80,10 @@ Collect information about what was done from the following sources. Each source 
    - 今日の日付や作業内容に関連するエントリがないか確認する
    - 今日のセッションで更新されたメモリファイルがあれば、その内容も作業実績として含める
 
-4. **From memory-vector / memory-graph**
-   - 必ず両方を検索して、今日の作業内容を収集する
-   - **サービスが停止している場合:** 検索呼び出しがエラーになるため、このソースはスキップして他の3ソース（Things3、セッションコンテキスト、auto memory）から情報を集める。ユーザーには「memory-vector/graphが停止しているためスキップしました」と一言添える
-   - 複数のクエリで検索を行い、漏れがないようにする:
-   ```
-   # memory-vector: 日付ベースの検索
-   mcp__memory-vector__search_memory with query: "2026-02-05" (対象日付)
-
-   # memory-vector: 作業内容ベースの検索
-   mcp__memory-vector__search_memory with query: "today work investigation implementation fix"
-
-   # memory-vector: リポジトリ名での検索
-   mcp__memory-vector__search_memory with query: "dotfiles" など
-   # カレントディレクトリからリポジトリ名を取得して検索に使用する
-
-   # memory-graph: 関連エンティティの検索
-   mcp__memory-graph__graphiti_search with query: 対象日付や作業キーワード
-   ```
-   - `createdAt` フィールドを確認し、対象日に作成された記録を優先する
-   - `source` フィールドにリポジトリ名が含まれている記録を優先する
-   - 検索結果から重複を除いて、今日実施した作業を抽出する
-
-5. **情報の統合**
-   - 上記4つのソースを統合する
-   - 優先順位: セッションコンテキスト >= Things3完了タスク > auto memory > memory-vector/memory-graph
-   - セッションコンテキストにはmemory-*に保存されていない情報が含まれるため、特に重視する
+4. **情報の統合**
+   - 上記3つのソースを統合する
+   - 優先順位: セッションコンテキスト >= Things3完了タスク > auto memory
+   - セッションコンテキストには他のソースに保存されていない情報が含まれるため、特に重視する
    - 重複を除去し、時系列または論理的にグループ化する
 
 ### Step 5: Present Summary for Review

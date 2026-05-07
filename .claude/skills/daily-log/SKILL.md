@@ -91,20 +91,6 @@ Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 - 既に「振り返り」「明日やること」セクションが存在する場合は上書きではなく、既存項目の末尾に追記するか、ユーザーに確認してから上書きする
 - Obsidianはファイルシステムの変更を自動で検知するため、Edit後に再読み込み操作は不要
 
-### Step 5: Save Summary to memory-vector
-
-その日の振り返りサマリーを memory-vector に保存し、後日 `/recall` や `context-injector` で参照できるようにする。
-
-```
-mcp__memory-vector__store_memory with:
-  content: "YYYY-MM-DD の振り返り: [Good/Could be better/繰越タスクを含む要約]"
-  tags: ["daily-log", "reflection", "YYYY-MM-DD"]
-  source: "daily/YYYY-MM-DD.md"
-  metadata: { "type": "reflection", "date": "YYYY-MM-DD" }
-```
-
-**memory-vector が停止している場合:** エラーを無視してスキップし、ユーザーに「memory-vector が停止しているためサマリー保存はスキップしました」と通知する。daily noteへの書き込みは既に完了しているため、振り返り自体の記録は失われない。
-
 ### Step 6: Confirm Completion
 
 ユーザーに以下を報告する:
@@ -121,4 +107,3 @@ mcp__memory-vector__store_memory with:
 
 - `/morning` と対になる運用: `/morning` が「今日やること」を作り、`/daily-log` がその結果をレビューする
 - 「明日やること」セクションは翌日の `/morning` が Step 3 の「前日からの引き継ぎ」として参照する
-- 振り返りの内容は memory-vector に保存することで、週次・月次のレビューで `/recall` 経由で引き出せる

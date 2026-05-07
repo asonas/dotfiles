@@ -111,7 +111,6 @@ entire doctor
 
 - コマンドの出力をそのまま表示する
 - explainの場合、セッションで何が行われたかを要約する
-- 関連する記憶がmemory-vector/memory-graphにありそうな場合は `/recall` での追加検索を提案する
 
 ### 4. エラーハンドリング
 

@@ -13,30 +13,6 @@
 - When fetching URLs, use `claude-code/1.0` as User-Agent. If WebFetch returns 403, fall back to curl.
 
 
-## メモリ管理（memory-vector / memory-graph）
-
-「記録しておいて」「覚えておいて」などの指示があった場合、内容に応じて保存先を振り分ける:
-
-| 内容 | 保存先 | ツール |
-|------|--------|--------|
-| 用語の定義、技術的な仕様、概念間の関係性（「AはBに依存している」「XはYの一種」など） | memory-graph | `graphiti_add_episode` |
-| 調査結果、バグ修正内容、設計メモ、作業ログ | memory-vector | `store_memory` |
-| 両方の要素を含む場合 | 両方に保存 | 両方 |
-
-### 検索について
-- context-injectorが自動でmemory-vectorとmemory-graph両方を検索して関連情報を注入する
-- 明示的に検索する場合: `search_memory`（memory-vector）、`graphiti_search`（memory-graph）
-
-### 記憶の呼び出し（/recall の自動起動）
-ユーザーの発言に以下のキーワードが含まれる場合、`/recall` スキルを使って memory-vector と memory-graph を横断検索すること:
-- 「思い出して」「思いだして」
-- 「覚えて」「覚えていますか」
-- 「前に話した」「以前の」
-- 「さがして」「探して」
-- 「おしえて」「教えて」
-- 「しらべて」「調べて」
-- 「remember」「recall」
-
 ## Obsidian
 
 ### 基本ルール
