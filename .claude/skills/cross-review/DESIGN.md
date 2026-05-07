@@ -35,7 +35,7 @@
 - `pr-review`: Claude Code側のレビュー観点（Correctness/Design/Security/Performance/Readability/Testing）を流用
 - `cursor_review` MCP: Cursor側のレビュー実行
 - `cursor_continue` MCP: Cursorとのフォロー対話
-- Obsidian公式CLI + Read/Editツール: レビュー文書の読み書き。heading指定挿入が必要な場合は Read + Edit で vault ファイルを直接編集する（`/Users/asonas/Documents/asonas/reviews/...`）
+- Obsidian公式CLI + Read/Editツール: レビュー文書の読み書き。heading指定挿入が必要な場合は Read + Edit で vault ファイルを直接編集する（`/Users/asonas/Documents/asonas/pr-reviews/...`）
 
 ## Obsidian統合の設計決定
 
@@ -44,7 +44,7 @@
 - daily noteに自動リンクできるため、いつ何をレビューしたかが日報から辿れる
 - Graph Viewで関連PRの可視化が可能
 
-**なぜファイル名を `reviews/PR-{repo}-{number}.md` としたか:**
+**なぜファイル名を `pr-reviews/PR-{repo}-{number}.md` としたか:**
 - Obsidian の wikilink で `[[PR-{repo}-{number}]]` と書きやすい
 - ソートでプロジェクト毎にまとまる
 - 将来のOKR/レポートで参照しやすい

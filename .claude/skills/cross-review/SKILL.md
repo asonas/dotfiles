@@ -48,10 +48,10 @@ Extract repo name and PR number from the URL for the document filename.
 
 ### Step 2: Create Obsidian Review Document
 
-Create `reviews/PR-{repo}-{number}.md` in Obsidian using the official CLI:
+Create `pr-reviews/PR-{repo}-{number}.md` in Obsidian using the official CLI:
 
 ```bash
-obsidian create path="reviews/PR-{repo}-{number}.md" content="<template below>" 2>/dev/null
+obsidian create path="pr-reviews/PR-{repo}-{number}.md" content="<template below>" 2>/dev/null
 ```
 
 If an existing file must be overwritten, pass the `overwrite` flag. Use this template — fill in the PR Info, Description, External Comments, and Diff sections. Leave the rest empty for now:
@@ -88,7 +88,7 @@ If an existing file must be overwritten, pass the `overwrite` flag. Use this tem
 
 ### Step 3: Claude Code Review (Round N)
 
-Read the current document from Obsidian (`obsidian read path="reviews/PR-{repo}-{number}.md" 2>/dev/null` または Readツールで `/Users/asonas/Documents/asonas/reviews/PR-{repo}-{number}.md`). Review the diff using the pr-review skill perspectives:
+Read the current document from Obsidian (`obsidian read path="pr-reviews/PR-{repo}-{number}.md" 2>/dev/null` または Readツールで `/Users/asonas/Documents/asonas/pr-reviews/PR-{repo}-{number}.md`). Review the diff using the pr-review skill perspectives:
 
 1. **Correctness**: Bugs, logic errors, unhandled edge cases
 2. **Design**: Abstraction, separation of concerns, dependencies
@@ -123,7 +123,7 @@ Pass the full review document content to `cursor_review` MCP:
 - **focus**: "Review the PR diff and previous findings. Add your own findings under 'Round {N} - Cursor'. For existing findings from Claude Code, state whether you agree or disagree in the Discussion section. If you disagree, explain why. Use severity levels: critical, major, minor, nit."
 - **context**: "This is a cross-model PR review. You are reviewing independently. Do not defer to Claude Code's findings — if you disagree, document your position clearly. Democratic review: neither side wins by attrition."
 
-Read the response and use Read + Edit tools on `/Users/asonas/Documents/asonas/reviews/PR-{repo}-{number}.md` to add Cursor's findings under the existing `## Review Findings` section as `### Round {N} - Cursor`. Do NOT create a new `## Review Findings` header.
+Read the response and use Read + Edit tools on `/Users/asonas/Documents/asonas/pr-reviews/PR-{repo}-{number}.md` to add Cursor's findings under the existing `## Review Findings` section as `### Round {N} - Cursor`. Do NOT create a new `## Review Findings` header.
 
 If Cursor's response needs follow-up, use `cursor_continue` to ask for clarification.
 
