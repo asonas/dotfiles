@@ -105,6 +105,9 @@ ctrl + shift - 9 : yabai -m window --move abs:$(yabai -m query --windows --windo
 ctrl + shift + alt - right : yabai -m window --move abs:$(($(yabai -m query --displays --display | jq -r '.frame.w') - $(yabai -m query --windows --window | jq -r '.frame.w'))):$(yabai -m query --windows --window | jq -r '.frame.y')
 ctrl + shift + alt - left : yabai -m window --move abs:0:$(yabai -m query --windows --window | jq -r '.frame.y')
 
+# cmux の高さをディスプレイいっぱいに復元する（スリープ復帰時の縮小対応）
+ctrl + shift - c : yabai-fix-cmux-height
+
 
 #------------------------------------------------------------
 #   bsp 時のレイアウト操作

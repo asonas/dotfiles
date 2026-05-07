@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# cmux の全ウィンドウをディスプレイ縦いっぱいに復元する。
+# スリープ復帰時に cmux の高さが縮む問題への暫定対応。
+# 横位置・横幅は維持し、高さと上端のみをディスプレイに合わせる。
+
+set -euo pipefail
+
+# system_woke から呼ばれる際は macOS の状態復元待ちで少し遅らせる
+if [[ "${1:-}" == "--wait" ]]; then
+  sleep 3
+fi
+
+yabai -m query --windows \
+  | jq -r '.[] | select(.app == "cmux") | .id' \
+  | while read -r wid; do
+      info=$(yabai -m query --windows --window "$wid")
+      display_id=$(echo "$info" | jq -r '.display')
+      win_x=$(echo "$info" | jq -r '.frame.x')
+      win_w=$(echo "$info" | jq -r '.frame.w')
+
+      display_frame=$(yabai -m query --displays --display "$display_id" | jq '.frame')
+      display_y=$(echo "$display_frame" | jq -r '.y')
+      display_h=$(echo "$display_frame" | jq -r '.h')
+
+      yabai -m window "$wid" --move abs:"$win_x":"$display_y" 2>/dev/null || true
+      yabai -m window "$wid" --resize abs:"$win_w":"$display_h" 2>/dev/null || true
+    done

@@ -143,4 +143,8 @@ yabai -m signal --add event=window_created app="^Discord$" action="bash -c ' \
   yabai -m window \$YABAI_WINDOW_ID --move abs:\$new_x:\$new_y; \
 '"
 
+# cmux: スリープ復帰時に高さが縮む問題の暫定対応
+# 復帰後に cmux の全ウィンドウをディスプレイ縦いっぱいに戻す
+yabai -m signal --add event=system_woke action="/Users/asonas/bin/yabai-fix-cmux-height --wait"
+
 echo "yabai configuration loaded.."
