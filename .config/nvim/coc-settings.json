@@ -47,6 +47,41 @@
   "suggest.maxCompleteItemCount": 12,
   "suggest.autoTrigger": "always",
   "suggest.keepCompleteitems": true,
+  "languageserver": {
+    "ruby-lsp": {
+      "command": "ruby-lsp",
+      "filetypes": ["ruby"],
+      "rootPatterns": ["Gemfile", ".git"],
+      "initializationOptions": {
+        "enabledFeatures": {
+          "codeActions": true,
+          "diagnostics": true,
+          "documentHighlights": true,
+          "documentLink": true,
+          "documentSymbols": true,
+          "foldingRanges": true,
+          "formatting": true,
+          "hover": true,
+          "inlayHint": true,
+          "onTypeFormatting": true,
+          "selectionRanges": true,
+          "semanticHighlighting": true,
+          "completion": true,
+          "codeLens": true,
+          "definition": true,
+          "workspaceSymbol": true,
+          "signatureHelp": true,
+          "typeHierarchy": true
+        },
+        "featuresConfiguration": {
+          "inlayHint": {
+            "implicitRescue": false,
+            "implicitHashValue": false
+          }
+        }
+      }
+    }
+  },
   "suggest.completionItemKindLabels": {
     "text": "Text",
     "method": "Method",
