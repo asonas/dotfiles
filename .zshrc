@@ -13,7 +13,11 @@ alias pythonserver='python -m http.server'
 alias chhash="perl -pi -e 's/:([\w\d_]+)(\s*)=>/\1:/g'"
 alias mm="middleman"
 alias o='git ls-files | peco | xargs vim '
-alias e='cd $GHQ_ROOT/$(ghq list | peco )'
+e() {
+  local selected
+  selected=$({ ghq list -p; find ~/Documents/asonas/projects -maxdepth 1 -mindepth 1 -type d 2>/dev/null; } | peco)
+  [[ -n "$selected" ]] && cd "$selected"
+}
 alias q='cd $(GHQ_ROOT=~/go ghq list -p | peco)'
 alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
 alias sd='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep deploy|peco|awk "{print \$2}")'
