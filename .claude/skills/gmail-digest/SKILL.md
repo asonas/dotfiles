@@ -49,7 +49,7 @@ mcp__claude_ai_Gmail__search_threads with query: "in:inbox from:no-reply@dtdg.co
 今日のdaily noteに以下のセクションを追記する。Obsidian公式CLIを使う:
 
 ```bash
-obsidian append path="daily/YYYY-MM-DD.md" content="<セクション本文>" 2>/dev/null
+obsidian append vault=asonas path="daily/YYYY-MM-DD.md" content="<セクション本文>" 2>/dev/null
 ```
 
 - 改行は `\n` でエスケープする

@@ -37,7 +37,7 @@ Use `mcp__google-calendar__get-current-time` to get the current date for referen
 
 Check if the target daily note exists:
 ```bash
-obsidian read path="daily/YYYY-MM-DD.md" 2>/dev/null
+obsidian read vault=asonas path="daily/YYYY-MM-DD.md" 2>/dev/null
 ```
 
 または、Readツールで直接:

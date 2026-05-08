@@ -40,10 +40,10 @@ mcp__google-calendar__list-events with calendarId: "primary", timeMin: today 00:
 # → 2026-04-13  のように日付が1行ずつ出力される
 ```
 
-取得した各日付について daily note を読む:
+取得した各日付について daily note を読む（**`vault=asonas` を必ず指定**。省略するとブログ用の `ason.as` vault が使われる事故が起きる）:
 
 ```bash
-obsidian read path="daily/YYYY-MM-DD.md" 2>/dev/null
+obsidian read vault=asonas path="daily/YYYY-MM-DD.md" 2>/dev/null
 ```
 
 スクリプトが非0終了（7日遡っても見つからない）の場合はこのステップをスキップする。
@@ -70,7 +70,7 @@ Step 1で取得した現在日付から以下のルールで `YYYY-qN` を導出
 
 ```bash
 # 例（2026-q2の場合）
-obsidian read path="goals/2026-q2.md" 2>/dev/null
+obsidian read vault=asonas path="goals/2026-q2.md" 2>/dev/null
 ```
 
 ファイルが存在しない場合（未作成の四半期）はスキップしてユーザーに通知する。
@@ -118,15 +118,15 @@ Bash: ~/.claude/scripts/things-add.sh "タスク名" "メモ（任意）"
 ### Step 7: Create Today's Daily Note in Obsidian
 **IMPORTANT: Always create today's daily note.**
 
-公式CLIで今日のdaily noteを作成する。既に存在する場合は上書きしない。
+公式CLIで今日のdaily noteを作成する。既に存在する場合は上書きしない。**`vault=asonas` を必ず指定**（省略するとブログ用 `ason.as` vault に作成される事故が起きる）:
 ```bash
 # 存在チェック（exit code 0 かつ非空なら存在）
-obsidian read path="daily/YYYY-MM-DD.md" 2>/dev/null
+obsidian read vault=asonas path="daily/YYYY-MM-DD.md" 2>/dev/null
 ```
 
 存在しなければ作成する:
 ```bash
-obsidian create path="daily/YYYY-MM-DD.md" content="<daily note本文>" 2>/dev/null
+obsidian create vault=asonas path="daily/YYYY-MM-DD.md" content="<daily note本文>" 2>/dev/null
 ```
 
 Daily note format (TODOセクションは不要、Thingsで管理するため):

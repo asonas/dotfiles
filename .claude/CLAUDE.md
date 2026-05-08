@@ -24,8 +24,10 @@
 
 ### ツール選択方針（2026-04-15 移行済み）
 - **Obsidian公式CLI (`obsidian` コマンド) を第一選択とする**。旧 `mcp-obsidian` (REST API依存) は廃止済み
-- vault path: `/Users/asonas/Documents/asonas/`
-- 主要コマンド: `obsidian read path=...`, `obsidian append path=... content=...`, `obsidian create path=... content=...`, `obsidian search query=...`, `obsidian files folder=...`, `obsidian daily:read|append|path`
+- Vault は2つある: `asonas`（個人ノート / daily / 仕事メモ。path: `/Users/asonas/Documents/asonas/`）と `ason.as`（公開ブログ用。path: `/Users/asonas/ghq/github.com/asonas/ason.as/`）
+- **すべての obsidian コマンドで `vault=<name>` を必ず明示すること**。省略するとアクティブな vault が使われ、daily note などが意図せず `ason.as` 側に作られる事故が起きる
+- daily note / 個人ノート / 仕事関連は `vault=asonas`、ブログ記事は `vault=ason.as` を指定する
+- 主要コマンド: `obsidian read vault=asonas path=...`, `obsidian append vault=asonas path=... content=...`, `obsidian create vault=asonas path=... content=...`, `obsidian search vault=asonas query=...`, `obsidian files vault=asonas folder=...`, `obsidian daily:read vault=asonas`
 - stderr の "installer out of date" 警告は `2>/dev/null` で抑制してよい（stdoutは正常）
 - **heading指定のinsertは公式CLI非対応**。特定セクション下への追記が必要な場合は Read + Edit ツールで `/Users/asonas/Documents/asonas/<path>` を直接編集する（Obsidianはファイルシステムの変更を自動検知する）
 - daily note に `# YYYY-MM-DD` 等の h1 ヘッディングを追加しない（ファイル名がタイトルになるため重複する）
@@ -44,7 +46,7 @@ Obsidianに記事を書く際は、以下のスタイルで書くこと:
 Obsidianの記事を書く際は、以下のハイブリッド戦略でwikiリンク `[[...]]` を付与する:
 
 **Step 1: 既存ノートとのマッチング**
-記事を書く前に Obsidian 公式CLI (`obsidian search query="..."` / `obsidian files folder="..."`) でvault内の既存ノートタイトルを把握し、本文中に一致する語が出現したらリンクにする。
+記事を書く前に Obsidian 公式CLI (`obsidian search vault=asonas query="..."` / `obsidian files vault=asonas folder="..."`) でvault内の既存ノートタイトルを把握し、本文中に一致する語が出現したらリンクにする。
 
 **Step 2: 重要な未作成ノートへのスタブリンク**
 既存ノートがなくても、以下のカテゴリに該当する語はスタブリンク `[[語]]` を張る（Obsidianは未作成ノートもGraph Viewに表示する）:

@@ -23,7 +23,7 @@ disable-model-invocation: true
 今日のdaily noteを読み込む。公式CLIまたはReadツールを使う。
 
 ```bash
-obsidian read path="daily/YYYY-MM-DD.md" 2>/dev/null
+obsidian read vault=asonas path="daily/YYYY-MM-DD.md" 2>/dev/null
 ```
 
 または:

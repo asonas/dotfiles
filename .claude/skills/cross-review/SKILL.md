@@ -51,7 +51,7 @@ Extract repo name and PR number from the URL for the document filename.
 Create `pr-reviews/PR-{repo}-{number}.md` in Obsidian using the official CLI:
 
 ```bash
-obsidian create path="pr-reviews/PR-{repo}-{number}.md" content="<template below>" 2>/dev/null
+obsidian create vault=asonas path="pr-reviews/PR-{repo}-{number}.md" content="<template below>" 2>/dev/null
 ```
 
 If an existing file must be overwritten, pass the `overwrite` flag. Use this template — fill in the PR Info, Description, External Comments, and Diff sections. Leave the rest empty for now:
@@ -88,7 +88,7 @@ If an existing file must be overwritten, pass the `overwrite` flag. Use this tem
 
 ### Step 3: Claude Code Review (Round N)
 
-Read the current document from Obsidian (`obsidian read path="pr-reviews/PR-{repo}-{number}.md" 2>/dev/null` または Readツールで `/Users/asonas/Documents/asonas/pr-reviews/PR-{repo}-{number}.md`). Review the diff using the pr-review skill perspectives:
+Read the current document from Obsidian (`obsidian read vault=asonas path="pr-reviews/PR-{repo}-{number}.md" 2>/dev/null` または Readツールで `/Users/asonas/Documents/asonas/pr-reviews/PR-{repo}-{number}.md`). Review the diff using the pr-review skill perspectives:
 
 1. **Correctness**: Bugs, logic errors, unhandled edge cases
 2. **Design**: Abstraction, separation of concerns, dependencies
@@ -193,7 +193,7 @@ Read + Edit ツールで既存の `## Final Summary` セクションの直後に
 公式CLIで今日のdaily noteに追記する:
 
 ```bash
-obsidian daily:append content="- Reviewed [[PR-{repo}-{number}]] ({critical} critical, {major} major, {disagreements} disagreements)" 2>/dev/null
+obsidian daily:append vault=asonas content="- Reviewed [[PR-{repo}-{number}]] ({critical} critical, {major} major, {disagreements} disagreements)" 2>/dev/null
 ```
 
 ## Democratic Principles
