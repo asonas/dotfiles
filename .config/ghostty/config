@@ -16,6 +16,9 @@ font-family = "源ノ角ゴシック Code JP"
 font-feature = -calt
 font-feature = -dlig
 
+font-thicken = true
+font-thicken-strength = 155
+
 window-save-state = always
 
 maximize = true
