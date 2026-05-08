@@ -57,6 +57,11 @@ Execute these steps in order:
 
 1. Identify logical units and group related files. Explain the grouping to the user
 2. Stage only related files for one context: `git add <specific-files>` (or `git -C <path> add <specific-files>`)
+3. **Commit ordering**: When you have both structural (refactor/rename/format) and behavioral (feature/bugfix) groups, commit **structural first, then behavioral** (Tidy First). For groups that are all structural or all behavioral, any order is fine — pick one and proceed without asking the user.
+4. **Sub-file splits (intermingled hunks in a single file)**: When a single file's diff mixes contexts that must be split, use one of these **non-interactive** techniques (do NOT use `git add -p` or `git restore -p` — they block on TTY input):
+   - **Rewrite-to-intermediate**: temporarily edit the file to contain only the first context's changes, `git add <file>`, `git ai-commit`, then restore the full edited content and `git add <file>` + `git ai-commit` again.
+   - **Stash + partial apply**: `git stash`, edit the file to add back only the first context, commit, `git stash pop`, commit the rest.
+   Pick whichever is simpler for the case at hand. Both avoid interactive prompts.
 
 ### Step 3: Commit
 
