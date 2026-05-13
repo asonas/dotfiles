@@ -44,7 +44,7 @@ ghro api repos/{owner}/{repo}/pulls/{number}/comments
 ghro pr diff <PR_URL>
 ```
 
-Extract repo name and PR number from the URL for the document filename.
+Extract repo name and PR number from the URL for the document filename. `{repo}` is the bare repository name (owner excluded) — e.g. URL `https://github.com/acme-corp/widget-api/pull/427` → `widget-api`, `427`. If you anticipate cross-org collision on the same bare repo name (rare), prefix the filename with the owner: `PR-{owner}-{repo}-{number}.md`. Otherwise use `PR-{repo}-{number}.md`.
 
 ### Step 2: Create Obsidian Review Document
 
@@ -112,7 +112,7 @@ heading指定の挿入はReadツールでファイルを読み、Editツール�
 - State the problem and affected location concisely
 - If detailed reasoning is needed, add it to the Discussion section instead
 
-同様に `## Current Status` セクションのステータス値を更新する場合も Read + Edit で既存値を置換する。Do NOT create a new `## Current Status` header.
+In Step 3, update `## Current Status` only to bump `Round` to the in-progress number and set `Next action` to "Cursor Round {N}". Do NOT recompute Unresolved/Resolved/Human Decision Needed counts here — those are reconciled in Step 5 after the pair. Read + Edit existing values; do NOT create a new `## Current Status` header.
 
 ### Step 4: Cursor Review (Round N)
 
@@ -129,11 +129,26 @@ If Cursor's response needs follow-up, use `cursor_continue` to ask for clarifica
 
 ### Step 5: Reconciliation
 
-After each pair of rounds (Claude Code + Cursor), reconcile:
+A "Round N" consists of one Claude Code review followed by one Cursor review, then this reconciliation pass. After each Round, classify each finding into exactly one bucket:
 
-1. **Agreements**: Both found the same issue → mark as Resolved in Discussion
-2. **New points**: One found something the other didn't → add to Discussion, ask the other's view in the next round
-3. **Disagreements**: Conflicting positions → document both sides
+1. **Agreements**: Both found the same issue → mark as `Resolved` in Discussion. If the two reviewers assigned different severities to the same issue, this is still an Agreement (not a Disagreement). Record both severities in the Discussion entry (not in the original Findings bullets), and use the higher severity for termination logic in Step 6.
+
+   Worked example of a different-severity agreement:
+   ```markdown
+   ### has_next detection after removing `+1`
+   - **Claude Code**: [major] Risk of next-page detection breaking if derived from row count.
+   - **Cursor**: [nit] `has_next` uses a separate count query; cosmetic only.
+   - **Status**: Resolved (Agreement; severity recorded as [major] per the higher-of-two rule)
+   ```
+2. **New points**: One found something the other didn't → add to Discussion as `In Discussion`, ask the other's view in the next round.
+3. **Disagreements**: Conflicting positions on whether/how to fix (not severity-only differences) → document both sides as `In Discussion`.
+
+**Status counts scope**: `## Current Status` counts cover ALL findings regardless of severity:
+- `Unresolved`: items in Discussion currently marked `In Discussion`
+- `Resolved`: items both reviewers agreed on (including different-severity agreements)
+- `Human Decision Needed`: escalated disagreements (see below)
+
+Termination logic in Step 6 considers only critical/major findings within `Unresolved`. minor/nit findings count toward `Unresolved` but do not by themselves continue the rally.
 
 For disagreements, write in the Discussion section:
 
@@ -144,7 +159,7 @@ For disagreements, write in the Discussion section:
 - **Status**: In Discussion
 ```
 
-If a disagreement persists for 2 rounds, escalate:
+**Escalation timing**: If the same critical/major disagreement appears in two consecutive Reconciliation passes (i.e., it was `In Discussion` after Round N's Reconciliation and remains `In Discussion` after Round N+1's Reconciliation with no position change supported by new reasoning), escalate at the end of Round N+1's Reconciliation — do not run another round to "re-confirm". For typical use this means: surfaced in Round 1, still disputed in Round 2 → escalate after Round 2. Escalation applies only to critical/major; minor/nit disagreements are never escalated — they are normalized by Step 6's cleanup pass instead.
 
 ```markdown
 - **Status**: Human Decision Needed
@@ -159,17 +174,23 @@ IMPORTANT: If a reviewer changes position, the reason MUST be stated. No silent 
 
 ### Step 6: Termination Check
 
-After reconciliation, check if the review should continue:
+Execute the following in order — do not skip or reorder:
 
-- **Continue** if: new critical/major findings in the latest round, OR unresolved discussion items that haven't reached 2 rounds yet
-- **Stop** if: no new critical/major findings, AND all items are Resolved or Human Decision Needed, OR max 3 rounds reached
+1. **Continue check**: continue to the next round if EITHER (a) new critical/major findings appeared in the latest round, OR (b) unresolved critical/major discussion items have not yet reached 2 rounds (Step 5's escalation threshold).
+2. **Stop check**: stop if neither (a) nor (b) above holds, OR if Round count has reached 3 (hard cap).
+3. **If continuing**: skip the cleanup pass below and return to Step 3 for the next round.
+4. **If stopping — cleanup pass on remaining `In Discussion` items** (run before Step 7):
+   - If the item is critical/major → it must already have been escalated to `Human Decision Needed` per Step 5 (re-check; if not, escalate now with a Pros/Cons table).
+   - If the item is minor/nit → mark it `Resolved (defer to author)` in Discussion with a one-line rationale. Do NOT leave any item as `In Discussion` past this point.
+5. **Recompute Current Status counts** to reflect the sweep, then proceed to Step 7.
 
 ### Step 7: Final Summary
 
-Read + Edit ツールで既存の `## Final Summary` セクションの直後に本文を挿入する。Do NOT create a new `## Final Summary` header.
+Read + Edit ツールで既存の `## Final Summary` セクションの直後に本文を挿入する。Do NOT create a new `## Final Summary` header. The snippet below shows the body content; the leading `## Final Summary` line is the EXISTING header in the document — match against it as Edit's `old_string`, do not duplicate it.
 
 ```markdown
 ## Final Summary
+<!-- everything below is inserted under the existing header above; do not duplicate the header -->
 
 ### Resolved Issues
 {List of issues both reviewers agreed on, with recommended fixes}
