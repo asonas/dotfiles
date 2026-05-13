@@ -1,9 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "attribution": {
-    "commit": "",
-    "pr": ""
-  },
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
@@ -18,10 +14,6 @@
       "Bash(mv:*)",
       "Bash(grep:*)",
       "Bash(bundle:*)",
-      "Bash(bundle exec:*)",
-      "Bash(bundle exec rake:*)",
-      "Bash(bundle exec rspec:*)",
-      "Bash(bundle exec rubocop:*)",
       "Bash(gemini:*)",
       "Bash(mdv:*)",
       "Bash(twiggy:*)",
@@ -33,37 +25,6 @@
     "defaultMode": "auto"
   },
   "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "printf '\\033]0;Claude Code: %s\\007' \"$(basename \"$PWD\")\" > /dev/tty"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "PROMPT=$(cat | jq -r '.prompt // empty' | head -c 60 | tr '\\n' ' '); printf '\\033]0;Claude: %s\\007' \"${PROMPT:-$(basename \"$PWD\")}\" > /dev/tty"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "printf '\\033]0;\\007' > /dev/tty"
-          }
-        ]
-      }
-    ],
     "Notification": [
       {
         "matcher": "",
@@ -146,8 +107,5 @@
     "memory-graph": {
       "command": "~/workspace/memory-graph-server/.venv/bin/memory-graph-server"
     }
-  },
-  "feedbackSurveyState": {
-    "lastShownTime": 1754045182761
   }
 }
