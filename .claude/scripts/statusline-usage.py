@@ -28,10 +28,17 @@ def fetch_rate_limits():
 
     fresh = _fetch_from_api()
     if fresh is not None:
-        with open(CACHE_FILE, 'w') as f:
-            json.dump(fresh, f)
+        _write_cache(fresh)
         return fresh
     return None
+
+
+def _write_cache(payload):
+    try:
+        with open(CACHE_FILE, 'w') as f:
+            json.dump(payload, f)
+    except OSError:
+        pass
 
 
 def _read_cache():
@@ -163,6 +170,7 @@ if rate_limits is None:
         if seven.get('utilization') is not None:
             line2_parts.append(fmt('7d', seven['utilization']) + fmt_reset(seven.get('resets_at')))
 else:
+    _write_cache(rate_limits)
     five = rate_limits.get('five_hour') or {}
     if five.get('used_percentage') is not None:
         line2_parts.append(fmt('5h', five['used_percentage']) + fmt_reset(five.get('resets_at')))
