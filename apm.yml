@@ -1,0 +1,34 @@
+name: asonas-dotfiles
+version: 1.0.0
+description: Personal global agent rules and skills, shared across Claude Code and cursor-agent
+author: Yuya Fujiwara
+# Resolution order: --target flag > this field > auto-detect from filesystem.
+# Accepted values: copilot, claude, cursor, opencode, codex, gemini, windsurf, all
+targets:
+  - claude
+  - cursor
+dependencies:
+  apm:
+    # Carried over from the prior ~/.apm/apm.yml (deployed to ~/.cursor/skills/ and ~/.claude/skills/).
+    - mizchi/skills/empirical-prompt-tuning
+    - mizchi/skills/retrospective-codify
+    - mizchi/skills/tech-article-reproducibility
+    - mizchi/skills/review-image
+    # Plugins migrated from Claude Code marketplaces (single-repo form).
+    - obra/superpowers
+    - laiso/cman
+    - kepano/obsidian-skills
+    - st0012/cctop
+    # sorah/config is a monorepo-style marketplace; pin the specific plugin paths.
+    - sorah/config/claude/marketplace/plugins/sorah-spec
+    - sorah/config/claude/marketplace/plugins/sorah-guides
+    # Self-authored skills published from asonas/skills.
+    - asonas/skills/commit
+    - asonas/skills/entire
+    - asonas/skills/git-worktree-workflow
+    - asonas/skills/legacy-code-improvement
+    - asonas/skills/pr-review
+    - asonas/skills/usb-debug
+  mcp: []
+includes: auto
+scripts: {}

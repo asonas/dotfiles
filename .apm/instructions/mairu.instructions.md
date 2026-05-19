@@ -1,0 +1,13 @@
+---
+description: mairu CLI usage rule (always pass --no-login to avoid interactive login prompts).
+---
+
+# mairu
+
+mairu CLI を実行する際は、必ず `--no-login` オプションを付けること。
+
+```
+mairu exec --no-login -- <command>
+```
+
+このオプションにより、ログインが必要な場面で対話的プロンプトが表示されず即座にエラー終了する。エージェントがログインプロンプトでブロックされるのを防ぐため。
