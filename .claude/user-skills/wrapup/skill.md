@@ -124,11 +124,22 @@ Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 - Obsidianはファイルシステムの変更を自動で検知するので、Edit後に特別な再読み込み操作は不要
 - **daily note に `# YYYY-MM-DD` 等のh1ヘッディングを絶対に追加しないこと**。ファイル名がObsidian上のタイトルになるため重複する。既存ノートにh1を混入させないためEdit時は慎重に
 
-### Step 7: Confirm Completion
+### Step 7: Update Obsidian Wiki
+
+daily note への追記が完了したら、`/wiki-update` スキルを `ingest <target-date>` モードで呼び出し、当日の daily note から固有名詞・概念を抽出して `wiki/` 配下のページに統合する。ユーザへの確認は不要。
+
+```
+Skill(wiki-update, args: "ingest <YYYY-MM-DD>")
+```
+
+`<YYYY-MM-DD>` は Step 1 で確定した対象日。`today` 引数で wrapup を起動した場合は `ingest today` でもよい。
+
+### Step 8: Confirm Completion
 
 Report to the user:
 ```
 daily/YYYY-MM-DD.md の「やったこと」セクションに追記しました。
+wiki/ を更新しました（更新 N ページ、新規 M ページ）。
 
 Things3の未完了タスク:
 - [remaining tasks]

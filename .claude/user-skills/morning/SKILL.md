@@ -268,3 +268,14 @@ Always respond in Japanese. Present information in a clear, organized format tha
 - **Daily noteの作成は必須** - 必ずObsidianに書き出すこと
 - **タスク管理はThings3で行う** - Obsidianのdaily noteにはTODOセクションを書かない
 - Things3への追加時、既に同名のタスクが存在する場合は重複追加しない
+
+### Step 10: Sync Raindrop Bookmarks and Update Obsidian Wiki
+
+Daily note の生成・サマリー表示が完了したら、Raw Sources を最新化したうえで wiki を再ingestする。順番が重要（bookmarks が先、wiki ingest が後）:
+
+```
+Skill(raindrop-sync)                          # 増分同期。token 未設定ならスキップして警告のみ
+Skill(wiki-update, args: "ingest yesterday")  # 前日 daily + 新着 bookmarks を ingest
+```
+
+ユーザへの確認は不要で、黙々と実行して結果を 1〜2 行で報告する。前日の daily note が存在しない場合は wiki-update をスキップする（raindrop-sync は実行してよい）。
