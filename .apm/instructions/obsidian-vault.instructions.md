@@ -12,7 +12,9 @@ Rules for organizing the Obsidian vault. Covers directory layout, naming convent
 
 | Path | What goes here | What does NOT go here |
 |---|---|---|
-| Top level (`*.md`) | Wiki-like concept nodes: frequently linked proper-noun hubs (`IVRy.md`, `RubyKaigi.md`, `TDD.md`) | One-off work logs, ephemeral drafts, dated notes |
+| Top level (`*.md`) | No standalone notes. Only specialized directories live at the top level | Any individual `.md` — Wiki hubs now live under `wiki/`, dated notes under their dated directories |
+| `wiki/` | LLM-maintained Wiki hub. Frequently linked proper-noun and concept pages (`RubyKaigi.md`, `TDD.md`, `IVRy.md`). Flat structure; classification is via frontmatter `type`. Managed by `/wiki-update` | Daily notes, work logs, drafts, anything ephemeral |
+| `bookmarks/` | Raindrop.io から自動同期されたブックマーク。1 ファイル 1 ブックマーク（`{raindrop_id}.md`）。frontmatter にメタデータ、本文に defuddle で抽出した記事本文。`/raindrop-sync` で管理 | 手書きノート（同期で上書きされる） |
 | `daily/` | Daily notes (`YYYY-MM-DD.md`) | Weekly reviews, evergreen notes |
 | `weekly/` | Weekly retros (`YYYY-Wnn.md`) | Daily notes, evaluations |
 | `blog/` | Blog post drafts intended for public publication | Unpublished essays, work logs |
@@ -43,7 +45,7 @@ Apply in order; stop at the first match.
 4. Is this a single-shot investigation or work log? → `notes/`
 5. Is this info about an external company, product, or service? → `external/`
 6. Is this an employer-specific note that is not tied to a specific project? → `companies/<name>/`
-7. Is this a Wiki-style concept hub that will attract inbound links? → top level
+7. Is this a Wiki-style concept hub that will attract inbound links? → `wiki/` (created or updated by `/wiki-update`, not by hand in most cases)
 
 If none of these apply, the note probably should not be saved yet. Clarify intent before creating it.
 
@@ -57,17 +59,25 @@ If none of these apply, the note probably should not be saved yet. Clarify inten
 
 ## Top-Level Criteria
 
-The top level is reserved for Wiki-style concept nodes:
+The top level holds no standalone `.md` files. All notes belong in a specialized directory:
 
-- Proper-noun hubs linked from multiple notes (`IVRy.md`, `RubyKaigi.md`, `SmartHR.md`, `TDD.md`)
-- Ongoing evergreen concepts that accrue links over time
+- Wiki-style hubs and concept nodes → `wiki/` (managed by `/wiki-update`)
+- Dated notes (daily, weekly, evaluations) → their dated directories
+- One-off work logs, investigations, or drafts → `notes/` or a project
+- Image assets → `images/`
+- Stubs and untitled scratch (`Untitled.md`, `新しいフォルダ.md`) → delete or rename before committing
 
-Do not place at the top level:
+Historical context: top-level `.md` files were previously used as Wiki hubs (`IVRy.md`, `RubyKaigi.md` etc.). On 2026-05-20 these were migrated into `wiki/` and the top level was emptied of standalone notes.
 
-- Dated notes (daily, weekly, evaluations) — they belong in their dated directories
-- One-off work logs, investigations, or drafts — they belong in `notes/` or a project
-- Image assets — they belong in `images/`
-- Stubs and untitled scratch (`Untitled.md`, `新しいフォルダ.md`) — delete or rename before committing
+## Wiki Directory
+
+`wiki/` is an LLM-maintained knowledge base inspired by karpathy's "LLM Wiki" pattern. Conventions:
+
+- **Flat structure.** No subdirectories under `wiki/`. Pages are classified via frontmatter `type` (entity / concept / event / org / comparison / summary), not by directory.
+- **Two special files.** `wiki/index.md` is the auto-regenerated catalog (rebuilt by `/wiki-update rebuild-index`); `wiki/log.md` is an append-only operation log.
+- **Citations are mandatory.** Every wiki page has a `sources:` frontmatter array of wikilinks to the originating notes (`[[daily/2026-05-19]]`, `[[notes/foo]]`). Body paragraphs reference their sources inline as well.
+- **Wiki is a derived layer.** Source notes (`daily/`, `notes/`, `essays/`, etc.) remain the ground truth. The wiki summarizes and integrates; it does not invent facts.
+- **Editing convention.** Wiki pages are created and updated by the `/wiki-update` skill (ingest / lint / rebuild-index modes), driven by `/morning`, `/wrapup`, or manual invocation. Manual hand-editing is allowed but should be infrequent.
 
 ## Employer-Affiliated Notes
 
@@ -76,7 +86,7 @@ Two buckets depending on continuity:
 - `companies/<name>/` for ADRs, onboarding docs, offboarding notes, policy memos, and other employer-specific content without a dedicated project
 - `projects/<name>/` for explicit projects with continuous work. Keep flat (e.g. `projects/ai-cost-management/`, not `projects/ivry-ai-cost-management/`)
 
-The employer Wiki hub (`IVRy.md`, `SmartHR.md`) stays at the top level so the Graph View connects employer → projects and employer → company notes via wikilinks.
+The employer Wiki hub (`wiki/IVRy.md`, `wiki/SmartHR.md`) lives under `wiki/` and is managed by `/wiki-update`. Since Obsidian resolves `[[bare-name]]` vault-wide, the Graph View connects employer → projects and employer → company notes via wikilinks regardless of directory.
 
 When you leave an employer, the notes stay in `companies/<name>/` — no migration to `archive/` is needed solely because you changed jobs. Archival is driven by the age and relevance criteria below, not by employment status.
 
