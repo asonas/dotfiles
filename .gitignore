@@ -45,3 +45,21 @@ npm-debug.log
 .claude/skills/humanizer/
 .serena
 .venv/
+
+
+# APM dependencies and generated artifacts.
+# Sources to keep tracked: .apm/instructions/, apm.yml, apm.lock.yaml.
+# Run `apm install && apm compile` after clone to regenerate everything below.
+apm_modules/
+/AGENTS.md
+/CLAUDE.md
+/.agents/
+/.cursor/
+/.claude/skills/
+/.claude/agents/
+/.claude/hooks/
+/.claude/apm-hooks.json
+/.claude/rules/
+# APM-deployed commands. Allow-list hand-written ones below.
+/.claude/commands/*.md
+!/.claude/commands/gemini-search.md

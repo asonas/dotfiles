@@ -1,0 +1,286 @@
+lockfile_version: '1'
+generated_at: '2026-05-19T11:32:54.209971+00:00'
+apm_version: 0.14.0
+dependencies:
+- repo_url: asonas/skills
+  host: github.com
+  resolved_commit: 07dd46c12afdfb56bf4e23f107f9496ca0d9a780
+  virtual_path: commit
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/commit
+  - .claude/skills/commit
+  content_hash: sha256:568fe39c14878477b41d2336baf32dac00f2c6b158125c67bdddb257fd097b2c
+- repo_url: asonas/skills
+  host: github.com
+  resolved_commit: 07dd46c12afdfb56bf4e23f107f9496ca0d9a780
+  virtual_path: entire
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/entire
+  - .claude/skills/entire
+  content_hash: sha256:9dc6d2586b21315eadaf0dab6542be0f8750ec2db221259730fe59ae7bfb4a4c
+- repo_url: asonas/skills
+  host: github.com
+  resolved_commit: 07dd46c12afdfb56bf4e23f107f9496ca0d9a780
+  virtual_path: git-worktree-workflow
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/git-worktree-workflow
+  - .claude/skills/git-worktree-workflow
+  content_hash: sha256:1212a0d5df163ced64ee8f2ad7e122ec93cd825e37ac1a4595e861856454bc54
+- repo_url: asonas/skills
+  host: github.com
+  resolved_commit: 07dd46c12afdfb56bf4e23f107f9496ca0d9a780
+  virtual_path: legacy-code-improvement
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/legacy-code-improvement
+  - .claude/skills/legacy-code-improvement
+  content_hash: sha256:07ddc17724958fae7769cf9e2853fb17ae0c027994a0e81c22b4faae3445fb03
+- repo_url: asonas/skills
+  host: github.com
+  resolved_commit: 07dd46c12afdfb56bf4e23f107f9496ca0d9a780
+  virtual_path: pr-review
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/pr-review
+  - .claude/skills/pr-review
+  content_hash: sha256:78eff7e0284174cc7252dcc050ae704c552783174dadd2756984db7e0073d0f1
+- repo_url: asonas/skills
+  host: github.com
+  resolved_commit: 07dd46c12afdfb56bf4e23f107f9496ca0d9a780
+  virtual_path: usb-debug
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/usb-debug
+  - .claude/skills/usb-debug
+  content_hash: sha256:d2b6ac452347a731738d25204f797e21dfef105825002d8e8d91b354d08ad601
+- repo_url: kepano/obsidian-skills
+  host: github.com
+  resolved_commit: ac9398734fe719565809f7a6048b05c36b1ca38f
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/defuddle
+  - .agents/skills/json-canvas
+  - .agents/skills/obsidian-bases
+  - .agents/skills/obsidian-cli
+  - .agents/skills/obsidian-markdown
+  - .claude/skills/defuddle
+  - .claude/skills/json-canvas
+  - .claude/skills/obsidian-bases
+  - .claude/skills/obsidian-cli
+  - .claude/skills/obsidian-markdown
+  content_hash: sha256:76cb0fc19192ede9c29f3e1b97ff22aa317af9cc8d72b252855ff2e421b58b53
+- repo_url: laiso/cman
+  host: github.com
+  resolved_commit: af84ec3f47e935106dd1b747cb6d70e736e7d7f1
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/cm-search
+  - .agents/skills/cm-status
+  - .agents/skills/remember
+  - .claude/skills/cm-search
+  - .claude/skills/cm-status
+  - .claude/skills/remember
+  content_hash: sha256:185cf47ffc374c3b8579d9e75f6794261f8f32ec92edee4e1a7be1079e77623f
+- repo_url: mizchi/skills
+  host: github.com
+  resolved_commit: ccd344dd3c02db5f28f5f9d06ee5c669231de417
+  virtual_path: empirical-prompt-tuning
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/empirical-prompt-tuning
+  - .claude/skills/empirical-prompt-tuning
+  content_hash: sha256:0caa36857ba4e1f7193fa9ee3e22cac38d7e9787eda95e1726d4a39e40fb9479
+- repo_url: mizchi/skills
+  host: github.com
+  resolved_commit: ccd344dd3c02db5f28f5f9d06ee5c669231de417
+  virtual_path: retrospective-codify
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/retrospective-codify
+  - .claude/skills/retrospective-codify
+  content_hash: sha256:077f9ae3bbf4289fe518e3ad928a6e802d402539ff2e644a7967e3cfbcd443bf
+- repo_url: mizchi/skills
+  host: github.com
+  resolved_commit: ccd344dd3c02db5f28f5f9d06ee5c669231de417
+  virtual_path: review-image
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/review-image
+  - .claude/skills/review-image
+  content_hash: sha256:ad50a8d35e841638ff56cfbd0bd91eaee6348659c464043f5f0d112724a89e3c
+- repo_url: mizchi/skills
+  host: github.com
+  resolved_commit: ccd344dd3c02db5f28f5f9d06ee5c669231de417
+  virtual_path: tech-article-reproducibility
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/tech-article-reproducibility
+  - .claude/skills/tech-article-reproducibility
+  content_hash: sha256:851757e86745141bf688ad68d562f03b056b071269bc123702841c6846df49d0
+- repo_url: obra/superpowers
+  host: github.com
+  resolved_commit: f2cbfbefebbfef77321e4c9abc9e949826bea9d7
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/brainstorming
+  - .agents/skills/dispatching-parallel-agents
+  - .agents/skills/executing-plans
+  - .agents/skills/finishing-a-development-branch
+  - .agents/skills/receiving-code-review
+  - .agents/skills/requesting-code-review
+  - .agents/skills/subagent-driven-development
+  - .agents/skills/systematic-debugging
+  - .agents/skills/test-driven-development
+  - .agents/skills/using-git-worktrees
+  - .agents/skills/using-superpowers
+  - .agents/skills/verification-before-completion
+  - .agents/skills/writing-plans
+  - .agents/skills/writing-skills
+  - .claude/hooks/superpowers/hooks/run-hook.cmd
+  - .claude/hooks/superpowers/hooks/run-hook.cmd
+  - .claude/skills/brainstorming
+  - .claude/skills/dispatching-parallel-agents
+  - .claude/skills/executing-plans
+  - .claude/skills/finishing-a-development-branch
+  - .claude/skills/receiving-code-review
+  - .claude/skills/requesting-code-review
+  - .claude/skills/subagent-driven-development
+  - .claude/skills/systematic-debugging
+  - .claude/skills/test-driven-development
+  - .claude/skills/using-git-worktrees
+  - .claude/skills/using-superpowers
+  - .claude/skills/verification-before-completion
+  - .claude/skills/writing-plans
+  - .claude/skills/writing-skills
+  - .cursor/hooks/superpowers/hooks/run-hook.cmd
+  - .cursor/hooks/superpowers/hooks/run-hook.cmd
+  deployed_file_hashes:
+    .claude/hooks/superpowers/hooks/run-hook.cmd: sha256:d3d9c6199678dab2858e60509dde5e7414f13c2a2b5e48a38b1d368b6e1d6abb
+    .cursor/hooks/superpowers/hooks/run-hook.cmd: sha256:d3d9c6199678dab2858e60509dde5e7414f13c2a2b5e48a38b1d368b6e1d6abb
+  content_hash: sha256:fb4f87bfef928a6d68f5d5aaa29e3eba011961c5f03bbf171c3c348d8d161abb
+- repo_url: sorah/config
+  host: github.com
+  resolved_commit: 8abb1920404b61a8cd63e48da238df29040c18e1
+  virtual_path: claude/marketplace/plugins/sorah-guides
+  is_virtual: true
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/coding
+  - .agents/skills/commit-style
+  - .agents/skills/japanese-text
+  - .agents/skills/rails
+  - .agents/skills/ruby
+  - .agents/skills/rust
+  - .agents/skills/security
+  - .agents/skills/terraform
+  - .claude/agents/security-reviewer.md
+  - .claude/commands/commit.md
+  - .claude/commands/perform-security-review.md
+  - .claude/commands/pull-request.md
+  - .claude/skills/coding
+  - .claude/skills/commit-style
+  - .claude/skills/japanese-text
+  - .claude/skills/rails
+  - .claude/skills/ruby
+  - .claude/skills/rust
+  - .claude/skills/security
+  - .claude/skills/terraform
+  - .cursor/agents/security-reviewer.md
+  - .cursor/commands/commit.md
+  - .cursor/commands/perform-security-review.md
+  - .cursor/commands/pull-request.md
+  deployed_file_hashes:
+    .claude/agents/security-reviewer.md: sha256:988f570fab14bc91284d52bceb2781fed9f95d2eeb0a9f4f280d6f7eb4be687a
+    .claude/commands/commit.md: sha256:c273b93e5c66d9b88fabaaca2eecdd7560043f6fff998c5979139ed6a95b8168
+    .claude/commands/perform-security-review.md: sha256:1b2bf504b5a86a94274dcf34c835f60a0d589436de5278cea33af0a92cac5cf9
+    .claude/commands/pull-request.md: sha256:0ebd283efbce186e8b370df3a22f73677e4c386abe3b5c993b0017370bc6bc99
+    .cursor/agents/security-reviewer.md: sha256:988f570fab14bc91284d52bceb2781fed9f95d2eeb0a9f4f280d6f7eb4be687a
+    .cursor/commands/commit.md: sha256:c273b93e5c66d9b88fabaaca2eecdd7560043f6fff998c5979139ed6a95b8168
+    .cursor/commands/perform-security-review.md: sha256:1b2bf504b5a86a94274dcf34c835f60a0d589436de5278cea33af0a92cac5cf9
+    .cursor/commands/pull-request.md: sha256:0ebd283efbce186e8b370df3a22f73677e4c386abe3b5c993b0017370bc6bc99
+  content_hash: sha256:db7e356855525facdafd4b0d1576b939c0f154b4d3c84724af54f3b422f4ef55
+- repo_url: sorah/config
+  host: github.com
+  resolved_commit: 8abb1920404b61a8cd63e48da238df29040c18e1
+  virtual_path: claude/marketplace/plugins/sorah-spec
+  is_virtual: true
+  package_type: marketplace_plugin
+  deployed_files:
+  - .agents/skills/rails
+  - .agents/skills/ruby
+  - .agents/skills/spec-conventions
+  - .claude/commands/implement.md
+  - .claude/commands/review.md
+  - .claude/commands/validate.md
+  - .claude/skills/spec-conventions
+  - .cursor/commands/implement.md
+  - .cursor/commands/review.md
+  - .cursor/commands/validate.md
+  deployed_file_hashes:
+    .claude/commands/implement.md: sha256:4c9c1cd90ccc878500222bea7167dadb303bd89a96c0a3ad6abcb3206f9471aa
+    .claude/commands/review.md: sha256:d730ef250988082fbea3001f176e849666586135b626d40e598a05aecc5ca999
+    .claude/commands/validate.md: sha256:6cb5d533d94bd6f7303431a66fc6231694cf719b5b683753fcdfda3c3c688a93
+    .cursor/commands/implement.md: sha256:4c9c1cd90ccc878500222bea7167dadb303bd89a96c0a3ad6abcb3206f9471aa
+    .cursor/commands/review.md: sha256:d730ef250988082fbea3001f176e849666586135b626d40e598a05aecc5ca999
+    .cursor/commands/validate.md: sha256:6cb5d533d94bd6f7303431a66fc6231694cf719b5b683753fcdfda3c3c688a93
+  content_hash: sha256:1b99b33451d6612c094fe5142412d1b4cbcae2003ff171e09578c968c163753f
+- repo_url: st0012/cctop
+  host: github.com
+  resolved_commit: d02dc1669ba4673242c1884b42d48c429d1c3a55
+  package_type: marketplace_plugin
+  content_hash: sha256:2f785c440d42dd289af3710f14bc9083eb12ccad1f5ce15f14b73c228fd57536
+local_deployed_files:
+- .claude/rules/base.md
+- .claude/rules/debugging.md
+- .claude/rules/git-workflow.md
+- .claude/rules/github-cli.md
+- .claude/rules/markdown-preview.md
+- .claude/rules/obsidian.md
+- .claude/rules/pull-requests.md
+- .claude/rules/shell.md
+- .claude/rules/tdd.md
+- .cursor/rules/base.mdc
+- .cursor/rules/debugging.mdc
+- .cursor/rules/git-workflow.mdc
+- .cursor/rules/github-cli.mdc
+- .cursor/rules/mairu.mdc
+- .cursor/rules/markdown-preview.mdc
+- .cursor/rules/obsidian-vault.mdc
+- .cursor/rules/obsidian.mdc
+- .cursor/rules/pull-requests.mdc
+- .cursor/rules/shell.mdc
+- .cursor/rules/tdd.mdc
+local_deployed_file_hashes:
+  .claude/rules/base.md: sha256:3e2408137cf91d5b46660cc2611c8d9e785a6506ddcbc55e0d21f1976fe24f5b
+  .claude/rules/debugging.md: sha256:da71b0c7f3cbfac1a27fc76fcac579d0ed2012149847d7074191d3402086f4a8
+  .claude/rules/git-workflow.md: sha256:a599ffb36f37746b5bcf38e3b2433a076e25cf03f7237936e8929190a68f1be0
+  .claude/rules/github-cli.md: sha256:59c3e334372eaded96c4bf71eff38d87a5cee47fc94a83fcb828833fd225b8e2
+  .claude/rules/markdown-preview.md: sha256:1f5b036e3259dab0451c7d09482d948b9fc16e998312203bcf74438c24816326
+  .claude/rules/obsidian.md: sha256:1268dd31abe7a7236bd1904aa80f0f3eb6e547096f2836fa127df29f0a5801e4
+  .claude/rules/pull-requests.md: sha256:4449fe8bdff0dbaa11820f5bc6cbb664455b6c422219e10a692cce62af392bb9
+  .claude/rules/shell.md: sha256:5e302397bbedd461a20ab9a1386b27e9d074a06e6f9ad0121ee3f753c03b3050
+  .claude/rules/tdd.md: sha256:af8e45ff1cfeab70e3f944d8432f5bdeee4403507832c338ecd67df218df5aaf
+  .cursor/rules/base.mdc: sha256:f72cbedc7dbf77d64f6676371326f9025d4cecd04ded07df7148bdb6087af3f9
+  .cursor/rules/debugging.mdc: sha256:7484cd87650b52a6272c4db555fdff50b4585f4d6ba21be575d116c1a2c958c8
+  .cursor/rules/git-workflow.mdc: sha256:5df76d088ca616852fe02e6c501e35e71fb9bf260e06799b5a2847a1eba8d025
+  .cursor/rules/github-cli.mdc: sha256:211d47da68da778549c0e7f39699fbb4305b363944da74f1e0104c5b114790c1
+  .cursor/rules/mairu.mdc: sha256:98875553a9f784bea93dac603d25b25f06574941d15d5af0baf5570dd87e6251
+  .cursor/rules/markdown-preview.mdc: sha256:9a3efb820dd70ad64e3cee2cf81e2b50d0c19e365c8b8cd57cba1f4eb53fcb69
+  .cursor/rules/obsidian-vault.mdc: sha256:6215eb9cd054af4852553a8901b0efbed1eedcb7bbef7919959a5fe8e57a66f3
+  .cursor/rules/obsidian.mdc: sha256:a7ca765b10aca81072213aaabde44bb9e7069112e6dea297230987788f08d400
+  .cursor/rules/pull-requests.mdc: sha256:99a242408d2aee991fa61a67d55bed801834d4f21bc75799ca25bef9f221d4bf
+  .cursor/rules/shell.mdc: sha256:b77ca0df031902c907a4b4c2fa3401beac9343a2227e32cf40ae9a989679466d
+  .cursor/rules/tdd.mdc: sha256:a31cb5584e9efa248017cdb3cfec53d51c2aa00734b36e5661782d925aa8797e

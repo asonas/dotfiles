@@ -72,14 +72,6 @@
           }
         ]
       }
-    ],
-    "sessionStart": [
-      {
-        "command": "/Users/asonas/.apm/apm_modules/obra/superpowers/.apm/hooks/hooks/run-hook.cmd session-start"
-      },
-      {
-        "command": "/Users/asonas/.apm/apm_modules/obra/superpowers/hooks/hooks/run-hook.cmd session-start"
-      }
     ]
   },
   "statusLine": {

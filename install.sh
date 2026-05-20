@@ -91,6 +91,71 @@ else
     echo "         Install Agent Package Manager so global rules and skills can be regenerated."
 fi
 
+# Workaround for APM v0.14.0 bug: 'apm install' deploys only run-hook.cmd
+# from obra/superpowers' hooks/ directory and silently skips session-start
+# (APM searches at hooks/hooks/run-hook.cmd, a doubled 'hooks/' segment),
+# leaving the SessionStart hook configured in .claude/settings.json pointing
+# at a non-existent script. Bridge the missing files from apm_modules/ so
+# 'run-hook.cmd session-start' resolves. Remove once APM ships a fix.
+superpowers_src="$HOME/.apm/apm_modules/obra/superpowers"
+superpowers_dst="$HOME/.claude/hooks/superpowers"
+if [ -f "$superpowers_src/hooks/session-start" ]; then
+    mkdir -p "$superpowers_dst/hooks"
+    ln -sfn "$superpowers_src/hooks/session-start" \
+            "$superpowers_dst/hooks/session-start"
+    # session-start reads ${PLUGIN_ROOT}/skills/using-superpowers/SKILL.md,
+    # where PLUGIN_ROOT resolves to $superpowers_dst, so bridge skills/ too.
+    ln -sfn "$superpowers_src/skills" "$superpowers_dst/skills"
+fi
+
+# Companion workaround: 'apm install' rewrites .claude/settings.json by
+# (1) adding an invalid 'sessionStart' (lowercase) key whose commands point at
+# the doubled hooks/hooks/ paths APM tried and failed to find, and
+# (2) duplicating the canonical 'SessionStart' entry. Both happen on every run,
+# so we normalize the hooks block here: drop the lowercase key and pin
+# SessionStart to a single entry that calls our workaround symlinks.
+settings_file="$PWD/.claude/settings.json"
+if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
+    canonical_cmd="\"$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start"
+    tmp=$(mktemp)
+    jq -a --arg cmd "$canonical_cmd" '
+      .hooks |= (
+        del(.sessionStart)
+        | .SessionStart = [{
+            matcher: "startup|clear|compact",
+            hooks: [{
+              type: "command",
+              command: $cmd,
+              async: false
+            }]
+          }]
+      )
+    ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
+else
+    echo "warning: jq not found or $settings_file missing; skipping SessionStart hook normalization."
+fi
+
+# Register cman MCP server. APM deploys cman's skills (cm-search, cm-status,
+# remember) to ~/.claude/skills/ but does NOT register the MCP server that
+# those skills depend on (their allowed-tools is mcp__plugin_cman_cman__*).
+# The Claude plugin marketplace install path would wire the server under the
+# 'plugin_cman_cman' name; we replicate that name so the tool prefix expected
+# by the skills resolves. uv is required so PEP 723 inline-metadata
+# dependencies in server.py are auto-installed on first run.
+cman_server="$HOME/.apm/apm_modules/laiso/cman/server.py"
+if [ -f "$cman_server" ] && command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
+    if ! command -v uv >/dev/null 2>&1; then
+        echo "warning: uv not found in PATH; cman MCP server will fail to launch until uv is installed."
+    fi
+    tmp=$(mktemp)
+    jq -a --arg path "$cman_server" '
+      .mcpServers["plugin_cman_cman"] = {
+        command: "uv",
+        args: ["run", $path]
+      }
+    ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
+fi
+
 if [ -f "$PWD/CLAUDE.md" ]; then
     link="$HOME/.claude/CLAUDE.md"
     if [ -L "$link" ] || [ -e "$link" ]; then
