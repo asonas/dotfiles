@@ -121,6 +121,13 @@
     },
     "memory-graph": {
       "command": "~/workspace/memory-graph-server/.venv/bin/memory-graph-server"
+    },
+    "plugin_cman_cman": {
+      "command": "uv",
+      "args": [
+        "run",
+        "/Users/asonas/.apm/apm_modules/laiso/cman/server.py"
+      ]
     }
   }
 }
