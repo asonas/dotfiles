@@ -116,6 +116,26 @@ mise exec -- bundle exec bin/activities-render --source calendar --date YYYY-MM-
 - 「子の送迎や会社移動の時間」「送迎で不在」のような特殊予定も activities セクションには **表示する** (活動ログとして事実を残す目的)
 - 上書き方式なので `/morning` を1日に複数回実行しても重複しない
 
+#### 6a-2: Bluesky 投稿 → activities ファイル
+
+[[tempest]] CLI 経由で自分の Bluesky 投稿を取得し、`activities/YYYY-MM-DD.md` の Bluesky セクションに反映する。カーソル方式 (`.state/bluesky.yml` の `last_indexed_at` 以降を全部追従) なので、前日固定では取らない。
+
+```bash
+cd /Users/asonas/workspace/activities
+
+# 取得: state を見て前回実行以降の差分を取り込む (backfill_window_days=7 が上限)
+mise exec -- bundle exec bin/activities-collect --source bluesky --no-render || echo "Warning: bluesky collect failed, skipping"
+
+# 描画: 前日 + 今日を再生成 (state が進んだ範囲はこの2日で必ず覆われる前提)
+YESTERDAY=$(date -v-1d +%Y-%m-%d)
+TODAY=$(date +%Y-%m-%d)
+mise exec -- bundle exec bin/activities-render --source bluesky --date "$YESTERDAY" || true
+mise exec -- bundle exec bin/activities-render --source bluesky --date "$TODAY" || true
+```
+
+- 失敗時は警告のみで `/morning` 全体は止めない
+- 長期間 `/morning` を回さず state が大きく遡って進んだ場合は、`bin/activities-bluesky-import --since YYYY-MM-DD` で手動再取り込み
+
 #### 6b: 前日の未完了タスク
 
 前日からの引き継ぎタスクは個別タスクとして追加する（従来通り）:

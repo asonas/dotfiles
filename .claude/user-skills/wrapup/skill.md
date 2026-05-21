@@ -124,9 +124,25 @@ Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 - Obsidianはファイルシステムの変更を自動で検知するので、Edit後に特別な再読み込み操作は不要
 - **daily note に `# YYYY-MM-DD` 等のh1ヘッディングを絶対に追加しないこと**。ファイル名がObsidian上のタイトルになるため重複する。既存ノートにh1を混入させないためEdit時は慎重に
 
-### Step 7: Update Obsidian Wiki
+### Step 7: Bluesky 投稿の取り込み
 
-daily note への追記が完了したら、`/wiki-update` スキルを `ingest <target-date>` モードで呼び出し、当日の daily note から固有名詞・概念を抽出して `wiki/` 配下のページに統合する。ユーザへの確認は不要。
+tempest CLI 経由でその日の自分の Bluesky 投稿を取得し、`activities/YYYY-MM-DD.md` の Bluesky セクションに反映する。`/wiki-update` がこのファイルを後段でソースとして読むため、wiki 化前に実行する。
+
+```bash
+cd /Users/asonas/workspace/activities
+
+# 取得: state を見て前回実行以降の差分を取り込む
+mise exec -- bundle exec bin/activities-collect --source bluesky --no-render || echo "Warning: bluesky collect failed, skipping"
+
+# 描画: その日の activities ファイルを再生成
+mise exec -- bundle exec bin/activities-render --source bluesky --date YYYY-MM-DD || true
+```
+
+`/wrapup` を一日の終わりに回す前提なので、当日分だけ再描画すれば足りる (前日分は朝の `/morning` 6a-2 でカバーされている)。
+
+### Step 8: Update Obsidian Wiki
+
+daily note への追記が完了したら、`/wiki-update` スキルを `ingest <target-date>` モードで呼び出し、当日の daily note と activities ファイルから固有名詞・概念を抽出して `wiki/` 配下のページに統合する。ユーザへの確認は不要。
 
 ```
 Skill(wiki-update, args: "ingest <YYYY-MM-DD>")
@@ -134,7 +150,7 @@ Skill(wiki-update, args: "ingest <YYYY-MM-DD>")
 
 `<YYYY-MM-DD>` は Step 1 で確定した対象日。`today` 引数で wrapup を起動した場合は `ingest today` でもよい。
 
-### Step 8: Confirm Completion
+### Step 9: Confirm Completion
 
 Report to the user:
 ```
