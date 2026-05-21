@@ -2,7 +2,7 @@
 name: wiki-update
 description: Karpathy-style LLM wiki maintenance over the Obsidian asonas vault. Ingests source notes (daily / notes / essays / 1on1) and incrementally builds and updates entity / concept / event / org pages under `wiki/`. Also supports lint and index rebuild. Use when invoked as `/wiki-update`, called from `/morning` or `/wrapup`, or when the user asks to update / refresh the Obsidian wiki.
 argument-hint: "[ingest <source>... | lint | rebuild-index]"
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 
 # /wiki-update - Obsidian Wiki Maintenance
@@ -54,9 +54,20 @@ updated: 2026-05-20
 
 引数解決:
 
-- `today` / `yesterday` / `YYYY-MM-DD`: `daily/<YYYY-MM-DD>.md` をソースとする。**加えて、その日に `bookmarks/.last_sync` 経由で取り込まれた新着 bookmarks**（= `bookmarks/*.md` のうち `last_synced` が当該日付の md）も同じ ingest セッションのソースに含める
-- vault 相対パス（例: `notes/foo.md`, `bookmarks/123456.md`）: そのまま読む。bookmark を直接渡すと単一ファイル ingest になる
+- `today` / `yesterday` / `YYYY-MM-DD`: 下記5種をまとめて同じ ingest セッションのソースとして読み込む
+  1. `daily/<YYYY-MM-DD>.md`（手書きの日報）
+  2. `activities/<YYYY-MM-DD>.md`（machine-generated。カレンダー予定、GitHub、ブラウザ履歴、Claude Code、Bluesky 投稿などが集約されている。daily note からは transclude されているが Read ツールは transclude を展開しないため、明示的に読む必要がある）
+  3. 当日 `mtime` の `projects/**/*.md`（その日に手で更新したプロジェクトノート。`find /Users/asonas/Documents/asonas/projects -name '*.md' -newermt <YYYY-MM-DD> -not -newermt <翌日>` で検出）
+  4. 当日 `mtime` の `notes/**/*.md`（同上。単発の調査ノートも拾う）
+  5. その日に `bookmarks/.last_sync` 経由で取り込まれた新着 bookmarks（`bookmarks/*.md` のうち frontmatter `last_synced` が当該日付の md）
+- vault 相対パス（例: `notes/foo.md`, `projects/tempest/foo.md`, `bookmarks/123456.md`, `activities/2026-05-20.md`）: そのまま読む。bookmark や個別ファイルを直接渡すと単一ファイル ingest になる
 - 引数省略時: today にフォールバック
+
+`activities/<YYYY-MM-DD>.md` を読む際の注意:
+
+- セクション区切りは `<!-- BEGIN: <source> -->` 〜 `<!-- END: <source> -->` の HTML コメントで囲まれている。各セクションの中身（特に `## Bluesky` の投稿本文と `## GitHub` の PR タイトル）は固有名詞・概念の宝庫
+- 「`_イベントなし_`」とだけ書かれているセクションはスキップしてよい
+- カレンダーセクション（`## カレンダー`）の予定タイトルは個人の打ち合わせ名や子の送迎などプライベートが多いので、wiki 化候補からは除外する（参照のみに留める）
 
 #### 手順
 
@@ -78,11 +89,13 @@ updated: 2026-05-20
    ```markdown
    ## YYYY-MM-DD HH:MM ingest
 
-   - source: [[daily/2026-05-19]]
+   - sources: [[daily/2026-05-19]], [[activities/2026-05-19]], [[projects/tempest/2026-05-19 ...]] (+ bookmarks: 2 件)
    - updated: [[RubyKaigi 2025]], [[asonas/strudel-rb]], [[Strudel]]
    - created: [[Live Coding]]
    - note: <特筆事項。矛盾検出・統合した主張など>
    ```
+
+   日付指定の ingest で実際に読んだソース一覧をすべて記載すること。activities や projects/notes/bookmarks のいずれかが空（該当日に更新ファイルなし）でも、空であることを `(なし)` の形で残しておくと運用上のトレースが楽になる。
 
 ### lint
 
