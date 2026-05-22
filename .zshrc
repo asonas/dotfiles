@@ -459,6 +459,3 @@ wt() {
 
 # Added by Antigravity
 export PATH="/Users/asonas/.antigravity/antigravity/bin:$PATH"
-
-# Entire CLI shell completion
-source <(entire completion zsh)
