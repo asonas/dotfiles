@@ -78,18 +78,6 @@ dependencies:
   - .claude/skills/obsidian-cli
   - .claude/skills/obsidian-markdown
   content_hash: sha256:76cb0fc19192ede9c29f3e1b97ff22aa317af9cc8d72b252855ff2e421b58b53
-- repo_url: laiso/cman
-  host: github.com
-  resolved_commit: af84ec3f47e935106dd1b747cb6d70e736e7d7f1
-  package_type: marketplace_plugin
-  deployed_files:
-  - .agents/skills/cm-search
-  - .agents/skills/cm-status
-  - .agents/skills/remember
-  - .claude/skills/cm-search
-  - .claude/skills/cm-status
-  - .claude/skills/remember
-  content_hash: sha256:185cf47ffc374c3b8579d9e75f6794261f8f32ec92edee4e1a7be1079e77623f
 - repo_url: mizchi/skills
   host: github.com
   resolved_commit: ccd344dd3c02db5f28f5f9d06ee5c669231de417

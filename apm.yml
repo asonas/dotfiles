@@ -16,7 +16,9 @@ dependencies:
     - mizchi/skills/review-image
     # Plugins migrated from Claude Code marketplaces (single-repo form).
     - obra/superpowers
-    - laiso/cman
+    # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
+    # not APM. APM only places sources; it does not register the plugin with
+    # Claude Code, so APM-only management leaves cman non-functional.
     - kepano/obsidian-skills
     - st0012/cctop
     # sorah/config is a monorepo-style marketplace; pin the specific plugin paths.
