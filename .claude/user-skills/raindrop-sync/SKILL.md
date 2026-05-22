@@ -2,7 +2,7 @@
 name: raindrop-sync
 description: Sync Raindrop.io bookmarks into the asonas Obsidian vault under bookmarks/, one markdown file per bookmark with frontmatter metadata and defuddle-extracted page content. Use when invoked as `/raindrop-sync`, called from `/morning`, or when the user asks to import / refresh raindrop bookmarks into Obsidian.
 argument-hint: "[--full | --since YYYY-MM-DD | --collection ID | --dry-run]"
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 
 # /raindrop-sync - Raindrop -> Obsidian Bookmarks Sync
