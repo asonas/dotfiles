@@ -1,6 +1,6 @@
 ---
 name: gmail-triage
-description: Triage Gmail inbox by archiving noise emails (Google Meet, Calendar invitations, dev@ivry.jp without action needed) and surfacing actionable items. Use as standalone or as part of /morning workflow.
+description: Triage Gmail inbox by archiving noise emails (Google Meet, Calendar invitations, dev@ivry.jp without action needed) and surfacing actionable items. Use as standalone or as part of /today workflow.
 ---
 
 # /gmail-triage - Gmail Inbox Triage
@@ -82,10 +82,10 @@ mcp__claude_ai_Gmail__unlabel_thread with threadId: "xxx", labelIds: ["INBOX"]
 （該当なしの場合: 「要アクションのメールはありません」）
 ```
 
-## /morning への組み込み
+## /today への組み込み
 
-`/morning` から呼び出す場合は、Step 2（カレンダー取得）の後、Step 3（前日ノート読み込み）の前に実行する。
-`/morning` のサマリーに Gmail Triage の結果も含める。
+`/today` から呼び出す場合は、Step 2（カレンダー取得）の後、Step 3（前日ノート読み込み）の前に実行する。
+`/today` のサマリーに Gmail Triage の結果も含める。
 
 ## Notes
 

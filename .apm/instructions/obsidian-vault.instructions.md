@@ -77,7 +77,7 @@ Historical context: top-level `.md` files were previously used as Wiki hubs (`IV
 - **Two special files.** `wiki/index.md` is the auto-regenerated catalog (rebuilt by `/wiki-update rebuild-index`); `wiki/log.md` is an append-only operation log.
 - **Citations are mandatory.** Every wiki page has a `sources:` frontmatter array of wikilinks to the originating notes (`[[daily/2026-05-19]]`, `[[notes/foo]]`). Body paragraphs reference their sources inline as well.
 - **Wiki is a derived layer.** Source notes (`daily/`, `notes/`, `essays/`, etc.) remain the ground truth. The wiki summarizes and integrates; it does not invent facts.
-- **Editing convention.** Wiki pages are created and updated by the `/wiki-update` skill (ingest / lint / rebuild-index modes), driven by `/morning`, `/wrapup`, or manual invocation. Manual hand-editing is allowed but should be infrequent.
+- **Editing convention.** Wiki pages are created and updated by the `/wiki-update` skill (ingest / lint / rebuild-index modes), driven by `/today`, `/wrapup`, or manual invocation. Manual hand-editing is allowed but should be infrequent.
 
 ## Employer-Affiliated Notes
 
@@ -128,4 +128,4 @@ When archiving, run the Move / Rename checklist first. Archived notes retain the
 
 - General save destination, tool choice (`obsidian` CLI vs Read+Edit), writing style, and Graph View linking strategy: `~/.claude/CLAUDE.md` → `## Obsidian` section
 - Markdown preview after Write: `.claude/rules/markdown-preview.md`
-- Daily note workflow: invoked through `/morning` and `/wrapup` skills
+- Daily note workflow: invoked through `/today` and `/wrapup` skills

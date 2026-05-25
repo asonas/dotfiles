@@ -17,7 +17,7 @@
 
 ### 基本ルール
 - Obsidianへの保存はユーザーが明示的に指示した場合のみ行う
-- `/morning` でdaily noteを作成、`/wrapup` で追記
+- `/today` でdaily noteを作成、`/wrapup` で追記
 - 作成した記事はObsidianの `daily/` 配下にある作業日の日報に記事のリンクを追記する
 - リポジトリ名に紐付くMarkdownのドキュメントはObsidianから検索して読み取る
 - Obsidianにドキュメントを書くよう指示がない場合はリポジトリで指示されているディレクトリに保存する

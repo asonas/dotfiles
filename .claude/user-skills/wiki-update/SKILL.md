@@ -1,6 +1,6 @@
 ---
 name: wiki-update
-description: Karpathy-style LLM wiki maintenance over the Obsidian asonas vault. Ingests source notes (daily / notes / essays / 1on1) and incrementally builds and updates entity / concept / event / org pages under `wiki/`. Also supports lint and index rebuild. Use when invoked as `/wiki-update`, called from `/morning` or `/wrapup`, or when the user asks to update / refresh the Obsidian wiki.
+description: Karpathy-style LLM wiki maintenance over the Obsidian asonas vault. Ingests source notes (daily / notes / essays / 1on1) and incrementally builds and updates entity / concept / event / org pages under `wiki/`. Also supports lint and index rebuild. Use when invoked as `/wiki-update`, called from `/today` or `/wrapup`, or when the user asks to update / refresh the Obsidian wiki.
 argument-hint: "[ingest <source>... | lint | rebuild-index]"
 disable-model-invocation: false
 ---
@@ -145,10 +145,10 @@ updated: 2026-05-20
 ## 起動経路
 
 - **手動**: `/wiki-update ingest today` 等を直接実行。
-- **`/morning` から**: その日の daily note 作成・前日まとめが終わった直後に `/wiki-update ingest yesterday` を呼ぶ。
+- **`/today` から**: その日の daily note 作成・前日まとめが終わった直後に `/wiki-update ingest yesterday` を呼ぶ。
 - **`/wrapup` から**: 当日 wrapup の追記が終わった直後に `/wiki-update ingest today` を呼ぶ。
 
-morning / wrapup から呼ばれた際は、対話を増やさず黙々と ingest を完了させること（ユーザは別の作業に移っている前提）。
+today / wrapup から呼ばれた際は、対話を増やさず黙々と ingest を完了させること（ユーザは別の作業に移っている前提）。
 
 ## 注意
 

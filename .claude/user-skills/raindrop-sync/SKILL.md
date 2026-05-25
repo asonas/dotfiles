@@ -1,6 +1,6 @@
 ---
 name: raindrop-sync
-description: Sync Raindrop.io bookmarks into the asonas Obsidian vault under bookmarks/, one markdown file per bookmark with frontmatter metadata and defuddle-extracted page content. Use when invoked as `/raindrop-sync`, called from `/morning`, or when the user asks to import / refresh raindrop bookmarks into Obsidian.
+description: Sync Raindrop.io bookmarks into the asonas Obsidian vault under bookmarks/, one markdown file per bookmark with frontmatter metadata and defuddle-extracted page content. Use when invoked as `/raindrop-sync`, called from `/today`, or when the user asks to import / refresh raindrop bookmarks into Obsidian.
 argument-hint: "[--full | --since YYYY-MM-DD | --collection ID | --dry-run]"
 disable-model-invocation: false
 ---
@@ -99,9 +99,9 @@ defuddle で抽出した本文 markdown
 - 同じ raindrop_id のファイルは毎回上書き。手で編集した内容は失われる前提
 - ブックマークを raindrop 側で削除した場合、vault からは消えない（ゴーストファイルとして残る）。整理は別途 `/wiki-update lint` で検出する想定
 
-## /morning との連携
+## /today との連携
 
-`/morning` Step 10 で wiki-update を呼ぶ前に raindrop-sync をインクリメンタル実行する:
+`/today` Step 10 で wiki-update を呼ぶ前に raindrop-sync をインクリメンタル実行する:
 
 ```
 Skill(raindrop-sync)         # 引数なし = 増分同期

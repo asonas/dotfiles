@@ -35,7 +35,7 @@ Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 - 「今日やること」セクションの箇条書き → Step 2 のタスクレビューに使う
 - 「やったこと」セクションの箇条書き → Step 2 の完了判定の参考にする
 
-daily noteが存在しない場合はユーザーに通知してスキルを終了する（`/morning` を先に実行する必要がある）。
+daily noteが存在しない場合はユーザーに通知してスキルを終了する（`/today` を先に実行する必要がある）。
 
 ### Step 2: Task Review (Interactive)
 
@@ -97,7 +97,7 @@ Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 - 完了したタスク数
 - 明日に繰り越したタスク一覧
 - daily note に追記したこと
-- 翌日の `/morning` が明日やることを引き継ぐこと
+- 翌日の `/today` が明日やることを引き継ぐこと
 
 ## Output Format
 
@@ -105,5 +105,5 @@ Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 
 ## Notes
 
-- `/morning` と対になる運用: `/morning` が「今日やること」を作り、`/daily-log` がその結果をレビューする
-- 「明日やること」セクションは翌日の `/morning` が Step 3 の「前日からの引き継ぎ」として参照する
+- `/today` と対になる運用: `/today` が「今日やること」を作り、`/daily-log` がその結果をレビューする
+- 「明日やること」セクションは翌日の `/today` が Step 3 の「前日からの引き継ぎ」として参照する
