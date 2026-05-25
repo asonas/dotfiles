@@ -9,6 +9,8 @@ disable-model-invocation: true
 
 Summarize the day's work and append to the daily note in Obsidian.
 
+タスク管理は Things3 から手離れさせているため、`/wrapup` でも Things3 は読み書きしない。代わりに **Linear** で「今日自分が更新した Issue」を取得してサマリーに含める。
+
 ## Usage
 
 ```
@@ -36,55 +38,67 @@ Use `mcp__google-calendar__get-current-time` to get the current date for referen
 ### Step 2: Verify Daily Note Exists
 
 Check if the target daily note exists:
-```bash
-obsidian read vault=asonas path="daily/YYYY-MM-DD.md" 2>/dev/null
-```
-
-または、Readツールで直接:
 ```
 Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 ```
 
-If it doesn't exist, inform the user and offer to create it.
+If it doesn't exist, ask the user whether to (a) create today's note and append, (b) append to yesterday's note instead, or (c) abort.
 
-### Step 3: Read Completed Tasks from Things3
+### Step 3: Parallel Information Gathering (Sonnet subagent)
 
-Read tasks completed today from Things3:
+メインスレッドが session context（今日の会話・作業）を持っている一方で、Linear のデータは外部 API なので並列に取りに行く。`model: "sonnet"` の Agent tool で起動する。
+
+メインスレッドはこの subagent 起動と同時に **Step 4 (session context からのサマリー組み立て)** を進めて構わない。
+
+#### 3a. linear-today subagent
+
+プロンプト要旨:
 ```
-Bash: ~/.claude/scripts/things-completed-today.sh
+あなたは asonas が今日 Linear で更新した Issue を抽出する任務を持つ。
+対象日は YYYY-MM-DD (Step 1 で確定した日付)。
+
+1. mcp__claude_ai_Linear__get_user で自分（viewer）の user_id を取得
+2. mcp__claude_ai_Linear__list_issues で以下を取得:
+   - assignee=自分、updatedAt が対象日のもの
+   - 加えて、自分がコメント/編集した Issue があれば（API で取れる範囲で）含める
+3. 出力フォーマット:
+
+## 今日更新したLinear Issue
+- [TEAM-123] タイトル — status: started / updatedAt: HH:MM
+- ...
+
+該当なしなら "該当なし" を返す。
+Linear MCP が認証されていない場合は "Linear未認証" を返す。
+推測は禁止。MCP の応答に無いフィールドを捏造しないこと。
 ```
 
-Also read current open tasks in "今日" to report remaining items:
-```
-Bash: ~/.claude/scripts/things-today.sh
-```
+### Step 4: Gather Work Summary (main thread)
 
-### Step 4: Gather Work Summary
+メインスレッドで以下のソースから「やったこと」のドラフトを組み立てる。
 
-Collect information about what was done from the following sources. Each source captures different aspects of the day's work, so all should be checked.
-
-1. **From Things3 (Step 3)**
-   - Completed tasks are the primary source for "やったこと"
-   - Open tasks become carry-over items
-
-2. **From the current session context**
+1. **From the current session context**
    - Claude Codeは現在のセッション内で行われた全ての会話・作業を記憶している
    - セッション中に実施した実装、調査、修正、意思決定を抽出する
    - 変更・作成したファイルの一覧を含める
-   - memory-*に明示的に保存していない内容もここから拾える
+   - **最も信頼できる主情報源** として扱う
 
-3. **From Claude Code auto memory（永続メモリ）**
+2. **From Claude Code auto memory（永続メモリ）**
    - セッションを跨いで保持されるメモリファイルを参照する
-   - auto memoryディレクトリのパスはシステムプロンプトに記載されている（「You have a persistent auto memory directory at ...」の箇所）
-   - そのディレクトリ内のMEMORY.mdおよびトピック別ファイル（例: debugging.md, patterns.md）を確認する
-   - 今日の日付や作業内容に関連するエントリがないか確認する
-   - 今日のセッションで更新されたメモリファイルがあれば、その内容も作業実績として含める
+   - auto memoryディレクトリのパスはシステムプロンプトに記載されている
+   - 今日の日付や作業内容に関連するエントリ、今日更新されたメモリファイルがあれば含める
 
-4. **情報の統合**
-   - 上記3つのソースを統合する
-   - 優先順位: セッションコンテキスト >= Things3完了タスク > auto memory
-   - セッションコンテキストには他のソースに保存されていない情報が含まれるため、特に重視する
+3. **From cm-search (フレッシュセッションで /wrapup を回す場合の補強)**
+   - 現在のセッションが /wrapup 単独で起動された等で session context が乏しい場合は、`cman:cm-search` を keyword=対象日付 で叩いて当日のセッション履歴を補強する
+   - session context が十分にある場合はスキップ可
+
+4. **From Step 3a (linear-today subagent)**
+   - Linear 側で更新したものを「やったこと」のソースとして取り込む
+   - 該当 Issue を `[[TEAM-XXX]]` の wikilink 付きで言及
+
+5. **情報の統合**
+   - 優先順位: セッションコンテキスト >= cm-search > auto memory ≒ Linear today
    - 重複を除去し、時系列または論理的にグループ化する
+   - 散文 1 段落 + 箇条書き の組み合わせで構わない（既存 daily note のフォーマットに合わせる）
 
 ### Step 5: Present Summary for Review
 
@@ -96,10 +110,9 @@ Show the user what will be added:
 - [Item 2]
 - ...
 
-## 未完了タスク（Things3に残っているタスク）
-
-- [Open task 1]
-- [Open task 2]
+## 今日更新したLinear Issue
+- [TEAM-123] タイトル
+- ...
 
 この内容でよろしいですか？
 ```
@@ -121,24 +134,24 @@ Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 
 **注意:**
 - `## やったこと` セクションに既存のエントリがある場合は、その末尾に追記する。Editツールで old_string を末尾行にし、new_string にサマリーを加えて書き戻す
+- Linear Issue を含める場合は `[[TEAM-XXX]]` の wikilink 形式で本文中に埋め込む
 - Obsidianはファイルシステムの変更を自動で検知するので、Edit後に特別な再読み込み操作は不要
 - **daily note に `# YYYY-MM-DD` 等のh1ヘッディングを絶対に追加しないこと**。ファイル名がObsidian上のタイトルになるため重複する。既存ノートにh1を混入させないためEdit時は慎重に
 
-### Step 7: Bluesky 投稿の取り込み
+### Step 7: 一次テキストソース (Bluesky / Scrapbox) の取り込み
 
-tempest CLI 経由でその日の自分の Bluesky 投稿を取得し、`activities/YYYY-MM-DD.md` の Bluesky セクションに反映する。`/wiki-update` がこのファイルを後段でソースとして読むため、wiki 化前に実行する。
+asonas が自分で書いたテキストソース (Bluesky 投稿、Scrapbox ページ) を取得し、`activities/YYYY-MM-DD.md` の各セクションに反映する。`/wiki-update` がこのファイルを後段でソースとして読むため、wiki 化前に実行する。
 
 ```bash
 cd /Users/asonas/workspace/activities
-
-# 取得: state を見て前回実行以降の差分を取り込む
-mise exec -- bundle exec bin/activities-collect --source bluesky --no-render || echo "Warning: bluesky collect failed, skipping"
-
-# 描画: その日の activities ファイルを再生成
-mise exec -- bundle exec bin/activities-render --source bluesky --date YYYY-MM-DD || true
+mise exec -- bundle exec bin/activities-snapshot --source bluesky --source scrapbox --date YYYY-MM-DD || echo "Warning: snapshot failed, skipping"
 ```
 
-`/wrapup` を一日の終わりに回す前提なので、当日分だけ再描画すれば足りる (前日分は朝の `/morning` 6a-2 でカバーされている)。
+`/wrapup` を一日の終わりに回す前提なので、当日分だけ再描画すれば足りる (前日分は朝の `/today` 5b でカバーされている)。
+
+**なぜ `--source` で絞るか**: `github` / `browser` / `claude_code` の3ソースは `~/Library/LaunchAgents/asonas.activities.{github,browser,claude}.plist` の launchd ジョブが 15〜60 分間隔で常時バックグラウンド収集しており、当日分の activities ファイルは常に最新化されている。/wrapup から重複して走らせると同じ state ファイルを並行書き込みするリスクがあるため、launchd でカバーされていない `bluesky` と `scrapbox` だけを明示的に拾う。
+
+`activities-snapshot` は collect + render を1コマンドで実行する薄いラッパで、各スキル (today / wrapup / tempest909-draft) から共通利用される。
 
 ### Step 8: Update Obsidian Wiki
 
@@ -157,9 +170,12 @@ Report to the user:
 daily/YYYY-MM-DD.md の「やったこと」セクションに追記しました。
 wiki/ を更新しました（更新 N ページ、新規 M ページ）。
 
-Things3の未完了タスク:
-- [remaining tasks]
+今日更新したLinear Issue: N件
+- [TEAM-XXX] タイトル
+- ...
 ```
+
+Linear が「該当なし」または「未認証」だった場合はその旨を 1 行で報告する。
 
 ### Step 10: Evening Coaching Question
 
@@ -182,5 +198,6 @@ Always respond in Japanese.
 - If the "やったこと" section doesn't exist, append to the end of the file
 - Keep the summary concise but informative
 - Use bullet points for readability
-- **Things3の完了タスクを主な情報源として使う**
-- Things3の未完了タスクは翌日への引き継ぎとして報告する
+- **タスク管理は Things3 から離脱した**。`/wrapup` では Things3 を読まない・書かない・残タスクを表示しない
+- Linear の今日更新分は補助情報。session context が主情報源
+- subagent から返却された情報を daily note に書き込む前に、明らかに事実と異なるもの・幻覚が紛れ込んでいないか軽く目視確認すること
