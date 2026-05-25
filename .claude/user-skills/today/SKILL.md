@@ -345,6 +345,18 @@ Skill(wiki-update, args: "ingest yesterday")
 
 ユーザへの確認は不要で、黙々と実行して結果を 1〜2 行で報告する。前日の daily note が存在しない場合は wiki-update をスキップする（raindrop-sync は実行してよい）。
 
+### Step 10: Morning Coaching Question
+
+すべての処理が終わったら、`coach-daily-question` スキルを `morning` 引数で呼び出す。
+
+```
+Skill(coach-daily-question, args: "morning")
+```
+
+このスキル内ではコーチング縛り（解決策禁止、観察と問いのみ）に従う。`/today` の実行モードを一時的に切り替えるイメージで構わない。回答が `coaching/log.md` に追記されたら `/today` 全体が終了する。
+
+ユーザーが「今日はコーチングはスキップで」等を事前に明言している場合のみ、このステップを省略してよい。
+
 ## Output Format
 
 Always respond in Japanese. Present information in a clear, organized format that helps the user start their day efficiently.
