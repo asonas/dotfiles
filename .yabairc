@@ -41,40 +41,11 @@ yabai -m space 7 --label social 2>/dev/null || true
 
 yabai -m rule --add app="^Dock" manage=off
 
-# Slackスレッドウィンドウを自動配置（660x1169px、マルチ:左下、シングル:右下）
-# メインウィンドウ（タイトルに「[メイン]」を含む）は除外
-yabai -m signal --add event=window_created app="^Slack$" action="bash -c ' \
-  window_info=\$(yabai -m query --windows --window \$YABAI_WINDOW_ID); \
-  window_title=\$(echo \"\$window_info\" | jq -r \".title\"); \
-  if [[ ! \"\$window_title\" =~ \"[メイン]\" ]] && [[ ! \"\$window_title\" =~ \"\\[メイン\\]\" ]]; then \
-    slack_window_count=\$(yabai -m query --windows | jq \"[.[] | select(.app == \\\"Slack\\\")] | length\"); \
-    if [ \$slack_window_count -gt 1 ]; then \
-      display_count=\$(yabai -m query --displays | jq \"length\"); \
-      if [ \$display_count -gt 1 ]; then \
-        target_display=2; \
-      else \
-        target_display=1; \
-      fi; \
-      display_info=\$(yabai -m query --displays --display \$target_display); \
-      display_x=\$(echo \"\$display_info\" | jq \".frame.x\"); \
-      display_y=\$(echo \"\$display_info\" | jq \".frame.y\"); \
-      display_w=\$(echo \"\$display_info\" | jq \".frame.w\"); \
-      display_h=\$(echo \"\$display_info\" | jq \".frame.h\"); \
-      window_w=660; \
-      window_h=1130; \
-      if [ \$display_count -gt 1 ]; then \
-        new_x=\$display_x; \
-      else \
-        new_x=\$(echo \"\$display_x + \$display_w - \$window_w\" | bc); \
-      fi; \
-      new_y=\$(echo \"\$display_y + \$display_h - \$window_h\" | bc); \
-      yabai -m window \$YABAI_WINDOW_ID --toggle float; \
-      yabai -m window \$YABAI_WINDOW_ID --display \$target_display; \
-      yabai -m window \$YABAI_WINDOW_ID --resize abs:\$window_w:\$window_h; \
-      yabai -m window \$YABAI_WINDOW_ID --move abs:\$new_x:\$new_y; \
-    fi; \
-  fi \
-'"
+# Slackスレッドウィンドウを自動配置（660x1130px、マルチ:左下、シングル:右下）
+# window_title_changed を使ってタイトル確定後に動く。スクリプトは冪等で、
+# 既に規定サイズなら何もしない。メイン判定とスレッド判定はスクリプト側で行う。
+yabai -m signal --add event=window_title_changed app="^Slack$" \
+  action="/Users/asonas/bin/yabai-slack-thread-place"
 
 # cmux: スリープ復帰時に高さが縮む問題の暫定対応
 # 復帰後に cmux の全ウィンドウをディスプレイ縦いっぱいに戻す

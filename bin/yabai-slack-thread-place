@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# Slack スレッドウィンドウを規定位置に配置する。
+# window_title_changed signal から呼ばれる前提（YABAI_WINDOW_ID が渡される）。
+# タイトル確定後に動くため、Slack の中間ウィンドウ消失による race を回避する。
+#
+# 配置ルール:
+#   - マルチディスプレイ時: display 2 の左下、660x1130
+#   - シングルディスプレイ時: display 1 の右下、660x1130
+# 対象外:
+#   - メインウィンドウ（タイトルに "[メイン]" を含む）
+#   - スレッドウィンドウでないもの（タイトルに "スレッド" または "Thread" を含まない）
+#   - 既に規定サイズ (660x1130) になっているもの（再配置防止）
+#
+# 発火頻度について:
+#   Slack はバッジ数更新でもタイトルを書き換えるため、本スクリプトは
+#   1日数百回呼ばれる想定。冪等性ガード（規定サイズ判定）で大部分は
+#   yabai -m query 1回 + 文字列比較で早期 exit するため、実害はない。
+
+set -uo pipefail
+
+WINDOW_ID="${YABAI_WINDOW_ID:-${1:-}}"
+[[ -z "$WINDOW_ID" ]] && exit 0
+
+WINDOW_W=660
+WINDOW_H=1130
+
+info=$(yabai -m query --windows --window "$WINDOW_ID" 2>/dev/null) || exit 0
+[[ -z "$info" ]] && exit 0
+
+IFS=$'\t' read -r app title cur_w cur_h < <(
+  echo "$info" | jq -r '[.app, .title, .frame.w, .frame.h] | @tsv'
+)
+
+[[ "$app" != "Slack" ]] && exit 0
+[[ "$title" == *"[メイン]"* ]] && exit 0
+[[ "$title" != *"スレッド"* && "$title" != *"Thread"* ]] && exit 0
+
+# 既に規定サイズなら配置済みとみなしてスキップ
+if [[ "${cur_w%.*}" == "$WINDOW_W" && "${cur_h%.*}" == "$WINDOW_H" ]]; then
+  exit 0
+fi
+
+display_count=$(yabai -m query --displays | jq 'length')
+if [[ "$display_count" -gt 1 ]]; then
+  target_display=2
+else
+  target_display=1
+fi
+
+IFS=$'\t' read -r dx dy dw dh < <(
+  yabai -m query --displays --display "$target_display" \
+    | jq -r '[.frame.x, .frame.y, .frame.w, .frame.h] | @tsv'
+)
+
+# yabai の frame は小数で返るが、ピクセル単位の整数演算で十分なので
+# ${var%.*} で小数部を落として bash 算術に渡す
+if [[ "$display_count" -gt 1 ]]; then
+  new_x="${dx%.*}"
+else
+  new_x=$(( ${dx%.*} + ${dw%.*} - WINDOW_W ))
+fi
+new_y=$(( ${dy%.*} + ${dh%.*} - WINDOW_H ))
+
+is_floating=$(echo "$info" | jq -r '."is-floating"')
+if [[ "$is_floating" != "true" ]]; then
+  yabai -m window "$WINDOW_ID" --toggle float 2>/dev/null || exit 0
+fi
+yabai -m window "$WINDOW_ID" --display "$target_display" 2>/dev/null || true
+yabai -m window "$WINDOW_ID" --resize abs:"$WINDOW_W":"$WINDOW_H" 2>/dev/null || true
+yabai -m window "$WINDOW_ID" --move abs:"$new_x":"$new_y" 2>/dev/null || true
