@@ -100,49 +100,6 @@ yabai -m signal --add event=window_created app="^Slack$" action="bash -c ' \
   fi \
 '"
 
-# Cursorウィンドウを自動配置（メインディスプレイの左2/3、マルチディスプレイ時は200px余白）
-yabai -m signal --add event=window_created app="^Cursor$" action="bash -c ' \
-  display_count=\$(yabai -m query --displays | jq \"length\"); \
-  main_display_info=\$(yabai -m query --displays --display 1); \
-  main_display_x=\$(echo \"\$main_display_info\" | jq \".frame.x\"); \
-  main_display_y=\$(echo \"\$main_display_info\" | jq \".frame.y\"); \
-  main_display_w=\$(echo \"\$main_display_info\" | jq \".frame.w\"); \
-  main_display_h=\$(echo \"\$main_display_info\" | jq \".frame.h\"); \
-  two_thirds_width=\$(echo \"\$main_display_w * 2 / 3\" | bc); \
-  if [ \$display_count -gt 1 ]; then \
-    new_x=\$(echo \"\$main_display_x + 200\" | bc); \
-  else \
-    new_x=\$main_display_x; \
-  fi; \
-  yabai -m window \$YABAI_WINDOW_ID --toggle float; \
-  yabai -m window \$YABAI_WINDOW_ID --display 1; \
-  yabai -m window \$YABAI_WINDOW_ID --resize abs:\$two_thirds_width:\$main_display_h; \
-  yabai -m window \$YABAI_WINDOW_ID --move abs:\$new_x:\$main_display_y; \
-'"
-
-# Discordウィンドウを自動配置（1140x720px、上中央）
-yabai -m signal --add event=window_created app="^Discord$" action="bash -c ' \
-  display_count=\$(yabai -m query --displays | jq \"length\"); \
-  if [ \$display_count -gt 1 ]; then \
-    target_display=2; \
-  else \
-    target_display=1; \
-  fi; \
-  display_info=\$(yabai -m query --displays --display \$target_display); \
-  display_x=\$(echo \"\$display_info\" | jq \".frame.x\"); \
-  display_y=\$(echo \"\$display_info\" | jq \".frame.y\"); \
-  display_w=\$(echo \"\$display_info\" | jq \".frame.w\"); \
-  display_h=\$(echo \"\$display_info\" | jq \".frame.h\"); \
-  window_w=1140; \
-  window_h=720; \
-  new_x=\$(echo \"\$display_x + (\$display_w - \$window_w) / 2\" | bc); \
-  new_y=\$display_y; \
-  yabai -m window \$YABAI_WINDOW_ID --toggle float; \
-  yabai -m window \$YABAI_WINDOW_ID --display \$target_display; \
-  yabai -m window \$YABAI_WINDOW_ID --resize abs:\$window_w:\$window_h; \
-  yabai -m window \$YABAI_WINDOW_ID --move abs:\$new_x:\$new_y; \
-'"
-
 # cmux: スリープ復帰時に高さが縮む問題の暫定対応
 # 復帰後に cmux の全ウィンドウをディスプレイ縦いっぱいに戻す
 yabai -m signal --add event=system_woke action="/Users/asonas/bin/yabai-fix-cmux-height --wait"
