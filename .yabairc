@@ -1,14 +1,17 @@
 #!/usr/bin/env sh
-yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-
 # ref: https://github.com/koekeishiya/dotfiles/blob/master/yabai/yabairc
+#
+# scripting addition (SA) について:
+#   opacity 設定などに SA が必要。yabai サービス起動時に SA はロード済みのはず。
+#   Dock がクラッシュ等で再起動した直後は SA が外れることがあるが、
+#   sudo がパスワード入力を要求して signal 経由では再ロードできないため、
+#   自動化はしていない。必要になったら `sudo yabai --load-sa` を手動実行する。
 
 # global settings
 yabai -m config external_bar                 off:45:0
 yabai -m config mouse_follows_focus          off
-yabai -m config focus_follows_mouse          autoraise
+yabai -m config focus_follows_mouse          off
 yabai -m config window_placement             second_child
-# yabai -m config window_topmost               on  # この設定は古いバージョン用のため無効化
 yabai -m config window_opacity               on
 yabai -m config active_window_opacity        1.0
 yabai -m config normal_window_opacity        0.85
@@ -17,7 +20,6 @@ yabai -m config auto_balance                 on
 yabai -m config mouse_modifier               fn
 yabai -m config mouse_action1                move
 yabai -m config mouse_action2                resize
-yabai -m config focus_follows_mouse          off
 
 # general space settings
 yabai -m config layout         float
@@ -37,33 +39,7 @@ yabai -m space 5 --label re 2>/dev/null || true
 yabai -m space 6 --label media 2>/dev/null || true
 yabai -m space 7 --label social 2>/dev/null || true
 
-# specific space settings
-#yabai -m config --space web layout float
-#yabai -m config --space productivity layout float
-#yabai -m config --space code layout float
-
-# window rules
-#yabai -m rule --add app="^Alacritty$"          space=code
-#yabai -m rule --add app="^Visual Code Studio$" space=code grid=1:2:1:0:1:1
-#yabai -m rule --add app="^Safari$"        space=web
-#yabai -m rule --add app="^Google Chrome$" space=web
-#yabai -m rule --add app="^Slack$" space=productivity
-#yabai -m rule --add app="^Things$" space=productivity
-#yabai -m rule --add app="^Obsidian$" space=productivity
-
-#yabai -m rule --add app="^Spotify$" space=media
-
-#yabai -m rule --add app="^Discord$" space=social grid=1:1:0:0:1:1 manage=off
-
-#yabai -m rule --add app="^System Preferences$" manage=off
-#
 yabai -m rule --add app="^Dock" manage=off
-
-# Things.appをサブディスプレイの右下端に移動する
-# yabai -m rule --add app="^Things$" action="yabai -m window --move abs:$(($(yabai -m query --displays --display 2 | jq -r '.frame.w') - $(yabai -m query --windows --window | jq -r '.frame.w'))):$(($(yabai -m query --displays --display 2 | jq -r '.frame.h') - $(yabai -m query --windows --window | jq -r '.frame.h')))"
-
-# Things.appのウィンドウが作成されたときに移動する
-#$yabai -m signal --add event=window_created app="^Things$" action="yabai -m window --move abs:$(echo "$(yabai -m query --displays --display 2 | jq -r '.frame.w') - $(yabai -m query --windows --window | jq -r '.frame.w')" | bc -l):$(echo "$(yabai -m query --displays --display 2 | jq -r '.frame.h') - $(yabai -m query --windows --window | jq -r '.frame.h')" | bc -l)"
 
 # Slackスレッドウィンドウを自動配置（660x1169px、マルチ:左下、シングル:右下）
 # メインウィンドウ（タイトルに「[メイン]」を含む）は除外
