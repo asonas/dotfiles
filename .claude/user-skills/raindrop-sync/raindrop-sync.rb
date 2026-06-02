@@ -60,7 +60,9 @@ def fetch_bookmarks(token, collection_id: 0, since: nil)
   all = []
   loop do
     params = { perpage: PERPAGE, page: page, sort: '-lastUpdate' }
-    params[:search] = "lastUpdate:>#{since}" if since
+    # Raindrop's `lastUpdate:>` search only accepts a date (YYYY-MM-DD);
+    # a time component makes it match nothing, so truncate to the date part.
+    params[:search] = "lastUpdate:>#{since[0, 10]}" if since
     body = api_get("/raindrops/#{collection_id}", params, token)
     items = body['items'] || []
     break if items.empty?
