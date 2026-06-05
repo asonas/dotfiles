@@ -46,20 +46,9 @@ npm-debug.log
 .serena
 .venv/
 
-
-# APM dependencies and generated artifacts.
-# Sources to keep tracked: .apm/instructions/, apm.yml, apm.lock.yaml.
-# Run `apm install && apm compile` after clone to regenerate everything below.
-apm_modules/
-/AGENTS.md
-/CLAUDE.md
-/.agents/
-/.cursor/
-/.claude/skills/
-/.claude/agents/
-/.claude/hooks/
-/.claude/apm-hooks.json
-/.claude/rules/
-# APM-deployed commands. Allow-list hand-written ones below.
-/.claude/commands/*.md
-!/.claude/commands/gemini-search.md
+# NOTE: This file is symlinked to ~/.gitignore and used as the global
+# core.excludesfile, so it must only contain patterns safe to apply to every
+# repository. APM dependencies and generated artifacts (CLAUDE.md, AGENTS.md,
+# apm_modules/, .cursor/, .claude/skills/, etc.) are dotfiles-repo specific and
+# would wrongly hide those files in other repos, so they live in this repo's
+# local .git/info/exclude instead (recreated by install.sh).

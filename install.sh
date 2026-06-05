@@ -79,6 +79,44 @@ else
     ln -s "$PWD/apm.yml" "$apm_link"
 fi
 
+# Sync APM ignore rules into this repo's local .git/info/exclude. These cannot
+# live in .gitignore because that file is symlinked to ~/.gitignore (the global
+# core.excludesfile); anchored patterns like /CLAUDE.md and /.cursor/ would then
+# hide those files in every other repository. Keeping them repo-local avoids
+# that. The block is delimited by markers so this stays idempotent.
+exclude_file=$(git rev-parse --git-path info/exclude 2>/dev/null || echo .git/info/exclude)
+if [ -n "$exclude_file" ]; then
+    mkdir -p "$(dirname "$exclude_file")"
+    [ -f "$exclude_file" ] || touch "$exclude_file"
+    tmp=$(mktemp)
+    # Drop any previously managed block, then append the current one.
+    sed '/# === APM (managed by install.sh) ===/,/# === end APM ===/d' \
+        "$exclude_file" > "$tmp"
+    cat >> "$tmp" <<'APM_EXCLUDE'
+# === APM (managed by install.sh) ===
+# APM dependencies and generated artifacts.
+# Sources to keep tracked: .apm/instructions/, apm.yml, apm.lock.yaml.
+# Run `apm install && apm compile` after clone to regenerate everything below.
+# These live here (not in the symlinked .gitignore) so they don't pollute the
+# global core.excludesfile and hide CLAUDE.md/AGENTS.md/etc. in other repos.
+apm_modules/
+/AGENTS.md
+/CLAUDE.md
+/.agents/
+/.cursor/
+/.claude/skills/
+/.claude/agents/
+/.claude/hooks/
+/.claude/apm-hooks.json
+/.claude/rules/
+# APM-deployed commands. Allow-list hand-written ones below.
+/.claude/commands/*.md
+!/.claude/commands/gemini-search.md
+# === end APM ===
+APM_EXCLUDE
+    mv "$tmp" "$exclude_file"
+fi
+
 # Compile APM primitives (.apm/instructions/) into CLAUDE.md and AGENTS.md,
 # then run global install so skills are deployed to ~/.claude and ~/.agents.
 if command -v apm >/dev/null 2>&1; then
