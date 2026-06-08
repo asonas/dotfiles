@@ -1,5 +1,5 @@
 lockfile_version: '1'
-generated_at: '2026-05-19T11:32:54.209971+00:00'
+generated_at: '2026-05-26T04:04:06.721547+00:00'
 apm_version: 0.14.0
 dependencies:
 - repo_url: asonas/skills
@@ -12,6 +12,16 @@ dependencies:
   - .agents/skills/commit
   - .claude/skills/commit
   content_hash: sha256:568fe39c14878477b41d2336baf32dac00f2c6b158125c67bdddb257fd097b2c
+- repo_url: asonas/skills
+  host: github.com
+  resolved_commit: 7582a849f3d210d6e9301cd6d763b7878a1f0bf9
+  virtual_path: cross-review
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/cross-review
+  - .claude/skills/cross-review
+  content_hash: sha256:fee361aeaeea5ab4559694d9709a6ed6cb7d5ae79befd92236bb90485113540c
 - repo_url: asonas/skills
   host: github.com
   resolved_commit: 07dd46c12afdfb56bf4e23f107f9496ca0d9a780
@@ -213,6 +223,8 @@ dependencies:
   - .claude/commands/implement.md
   - .claude/commands/review.md
   - .claude/commands/validate.md
+  - .claude/skills/rails
+  - .claude/skills/ruby
   - .claude/skills/spec-conventions
   - .cursor/commands/implement.md
   - .cursor/commands/review.md
@@ -257,7 +269,7 @@ local_deployed_file_hashes:
   .claude/rules/git-workflow.md: sha256:a599ffb36f37746b5bcf38e3b2433a076e25cf03f7237936e8929190a68f1be0
   .claude/rules/github-cli.md: sha256:59c3e334372eaded96c4bf71eff38d87a5cee47fc94a83fcb828833fd225b8e2
   .claude/rules/markdown-preview.md: sha256:1f5b036e3259dab0451c7d09482d948b9fc16e998312203bcf74438c24816326
-  .claude/rules/obsidian.md: sha256:1268dd31abe7a7236bd1904aa80f0f3eb6e547096f2836fa127df29f0a5801e4
+  .claude/rules/obsidian.md: sha256:3aef307b33f8eafee864635d261a0d15e36c77608e5d6494fd9542c27270d228
   .claude/rules/pull-requests.md: sha256:4449fe8bdff0dbaa11820f5bc6cbb664455b6c422219e10a692cce62af392bb9
   .claude/rules/shell.md: sha256:5e302397bbedd461a20ab9a1386b27e9d074a06e6f9ad0121ee3f753c03b3050
   .claude/rules/tdd.md: sha256:af8e45ff1cfeab70e3f944d8432f5bdeee4403507832c338ecd67df218df5aaf
@@ -267,8 +279,8 @@ local_deployed_file_hashes:
   .cursor/rules/github-cli.mdc: sha256:211d47da68da778549c0e7f39699fbb4305b363944da74f1e0104c5b114790c1
   .cursor/rules/mairu.mdc: sha256:98875553a9f784bea93dac603d25b25f06574941d15d5af0baf5570dd87e6251
   .cursor/rules/markdown-preview.mdc: sha256:9a3efb820dd70ad64e3cee2cf81e2b50d0c19e365c8b8cd57cba1f4eb53fcb69
-  .cursor/rules/obsidian-vault.mdc: sha256:6215eb9cd054af4852553a8901b0efbed1eedcb7bbef7919959a5fe8e57a66f3
-  .cursor/rules/obsidian.mdc: sha256:a7ca765b10aca81072213aaabde44bb9e7069112e6dea297230987788f08d400
+  .cursor/rules/obsidian-vault.mdc: sha256:75be5e5b7c5598793f60f0286b6b17affd28a194233490f1f1716fb96d37d714
+  .cursor/rules/obsidian.mdc: sha256:54ac00fb6ab1289d5ba589eaf1d02f5996fb8ec6ba3a4be0d7c0839c14c6ea5f
   .cursor/rules/pull-requests.mdc: sha256:99a242408d2aee991fa61a67d55bed801834d4f21bc75799ca25bef9f221d4bf
   .cursor/rules/shell.mdc: sha256:b77ca0df031902c907a4b4c2fa3401beac9343a2227e32cf40ae9a989679466d
   .cursor/rules/tdd.mdc: sha256:a31cb5584e9efa248017cdb3cfec53d51c2aa00734b36e5661782d925aa8797e

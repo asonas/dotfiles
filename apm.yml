@@ -14,6 +14,11 @@ dependencies:
     - mizchi/skills/retrospective-codify
     - mizchi/skills/tech-article-reproducibility
     - mizchi/skills/review-image
+    # Anthropic official skills (skill form so Cursor can load them too;
+    # the plugin form in anthropics/claude-plugins-official is Claude-only).
+    # Note: anthropics/skills nests entries under `skills/`, so the subpath
+    # is `skills/frontend-design`, not `frontend-design`.
+    - anthropics/skills/skills/frontend-design
     # Plugins migrated from Claude Code marketplaces (single-repo form).
     - obra/superpowers
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
@@ -26,6 +31,7 @@ dependencies:
     - sorah/config/claude/marketplace/plugins/sorah-guides
     # Self-authored skills published from asonas/skills.
     - asonas/skills/commit
+    - asonas/skills/cross-review
     - asonas/skills/entire
     - asonas/skills/git-worktree-workflow
     - asonas/skills/legacy-code-improvement
