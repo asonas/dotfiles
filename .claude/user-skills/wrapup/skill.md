@@ -104,10 +104,10 @@ Linear MCP が認証されていない場合は "Linear未認証" を返す。
 
 Show the user what will be added:
 ```
-## やったこと（追記予定）
+## ログに追記予定
 
-- [Item 1]
-- [Item 2]
+- HH:MM カテゴリ: 内容
+- HH:MM カテゴリ: 内容
 - ...
 
 ## 今日更新したLinear Issue
@@ -121,22 +121,29 @@ Wait for user confirmation or edits.
 
 ### Step 6: Append to Daily Note
 
-After confirmation, append under the "## やったこと" heading. 公式CLIはheading指定のinsertに対応していないため、Vaultの実ファイルをReadツールで読んでEditツールで挿入する。
+After confirmation, append under the `## ログ` heading. 公式CLIはheading指定のinsertに対応していないため、Vaultの実ファイルをReadツールで読んでEditツールで挿入する。
+
+**ログのフォーマット:**
+- 1行 1エントリ、`- HH:MM <カテゴリ>: <内容>` 形式
+- カテゴリ例: `実装` / `調査` / `レビュー` / `MTG` / `学び` / `その他`
+- 時刻が不明なエントリ（セッション横断的な作業など）は HH:MM を省略して `- <カテゴリ>: <内容>` でよい
+- Linear Issue / プロジェクト名 / 技術用語は wikilink (`[[TEAM-XXX]]`, `[[asonas/foo]]`) で記述してよい
 
 ```
 # Read tool:
 Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 
-# Edit tool: "## やったこと" 直下に追記
-# old_string: "## やったこと\n\n" (または既存の内容の末尾を含む一意なスニペット)
-# new_string: "## やったこと\n\n- [Item 1]\n- [Item 2]\n...\n"
+# Edit tool: "## ログ" セクション末尾に追記
+# old_string: "## ログ\n" (空セクションの場合) または既存ログ末尾の一意なスニペット
+# new_string: "## ログ\n\n- HH:MM 実装: ...\n- HH:MM レビュー: ...\n"
 ```
 
 **注意:**
-- `## やったこと` セクションに既存のエントリがある場合は、その末尾に追記する。Editツールで old_string を末尾行にし、new_string にサマリーを加えて書き戻す
-- Linear Issue を含める場合は `[[TEAM-XXX]]` の wikilink 形式で本文中に埋め込む
+- `## ログ` セクションに既存のエントリがある場合は、その末尾に**時系列順で**追記する
+- 既存エントリと重複する内容は追加しない（同じ作業が複数の append 経路で記録されている場合がある）
 - Obsidianはファイルシステムの変更を自動で検知するので、Edit後に特別な再読み込み操作は不要
-- **daily note に `# YYYY-MM-DD` 等のh1ヘッディングを絶対に追加しないこと**。ファイル名がObsidian上のタイトルになるため重複する。既存ノートにh1を混入させないためEdit時は慎重に
+- **daily note に `# YYYY-MM-DD` 等のh1ヘッディングを絶対に追加しないこと**。ファイル名がObsidian上のタイトルになるため重複する
+- **`## やったこと` セクションは廃止した**。古い daily note にこのセクションが残っていても新規追記はしない
 
 ### Step 7: 一次テキストソース (Bluesky / Scrapbox) の取り込み
 
@@ -167,7 +174,7 @@ Skill(wiki-update, args: "ingest <YYYY-MM-DD>")
 
 Report to the user:
 ```
-daily/YYYY-MM-DD.md の「やったこと」セクションに追記しました。
+daily/YYYY-MM-DD.md の「ログ」セクションに追記しました。
 wiki/ を更新しました（更新 N ページ、新規 M ページ）。
 
 今日更新したLinear Issue: N件
@@ -195,9 +202,9 @@ Always respond in Japanese.
 
 ## Notes
 
-- If the "やったこと" section doesn't exist, append to the end of the file
-- Keep the summary concise but informative
-- Use bullet points for readability
+- If the `## ログ` section doesn't exist (古いテンプレで作られた daily note の場合), create it at the end of the file before appending
+- Keep each log entry concise (1 行 1 作業)
+- Use the `- HH:MM <カテゴリ>: <内容>` format consistently
 - **タスク管理は Things3 から離脱した**。`/wrapup` では Things3 を読まない・書かない・残タスクを表示しない
 - Linear の今日更新分は補助情報。session context が主情報源
 - subagent から返却された情報を daily note に書き込む前に、明らかに事実と異なるもの・幻覚が紛れ込んでいないか軽く目視確認すること

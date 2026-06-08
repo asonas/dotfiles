@@ -211,11 +211,17 @@ Read + Edit ツールで既存の `## Final Summary` セクションの直後に
 
 ### Step 8: Link to Daily Note
 
-公式CLIで今日のdaily noteに追記する:
+今日の daily note の `## ログ` セクション末尾に追記する。公式CLIはheading指定のinsert非対応なので、Read + Edit で直接編集する:
 
-```bash
-obsidian daily:append vault=asonas content="- Reviewed [[PR-{repo}-{number}]] ({critical} critical, {major} major, {disagreements} disagreements)" 2>/dev/null
 ```
+# Read tool:
+Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+
+# Edit tool: "## ログ" セクション末尾に挿入
+# new entry: "- HH:MM レビュー: [[PR-{repo}-{number}]] ({critical} critical, {major} major, {disagreements} disagreements)"
+```
+
+`## ログ` セクションが存在しない場合（古いテンプレの daily note）はファイル末尾に新規セクションを作って追記する。
 
 ## Democratic Principles
 

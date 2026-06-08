@@ -1,11 +1,13 @@
 ---
 name: gmail-digest
-description: Summarize Linear notifications and Datadog Daily Digest from Gmail, then append to today's Obsidian daily note. Use as standalone or as part of /today workflow.
+description: Summarize Linear notifications and Datadog Daily Digest from Gmail. Standalone only — explicitly invoke when needed. No longer auto-called from /today.
 ---
 
 # /gmail-digest - Gmail Digest Summary
 
-Linear通知とDatadog Daily DigestをGmailから取得し、Obsidianのdaily noteにまとめて追記する。
+Linear通知とDatadog Daily DigestをGmailから取得して要約する。
+
+**運用状況 (2026-05-26 更新):** Linear通知 / Datadog Daily Digest の daily note 自動追記は廃止した。`/today` フローからの呼び出しは外され、現在は明示的に `/gmail-digest` と叩いた時のみ動作する。Daily note への append が必要な場合は `## ログ` セクション末尾に Read + Edit で挿入すること（旧フォーマットの `## Linear通知まとめ` / `## Datadog Daily Digest` セクションは新規作成しない）。
 
 ## Workflow
 
