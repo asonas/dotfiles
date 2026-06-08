@@ -15,6 +15,7 @@ Rules for organizing the Obsidian vault. Covers directory layout, naming convent
 | Top level (`*.md`) | No standalone notes. Only specialized directories live at the top level | Any individual `.md` — Wiki hubs now live under `wiki/`, dated notes under their dated directories |
 | `wiki/` | LLM-maintained Wiki hub. Frequently linked proper-noun and concept pages (`RubyKaigi.md`, `TDD.md`, `IVRy.md`). Flat structure; classification is via frontmatter `type`. Managed by `/wiki-update` | Daily notes, work logs, drafts, anything ephemeral |
 | `bookmarks/` | Raindrop.io から自動同期されたブックマーク。1 ファイル 1 ブックマーク（`{raindrop_id}.md`）。frontmatter にメタデータ、本文に defuddle で抽出した記事本文。`/raindrop-sync` で管理 | 手書きノート（同期で上書きされる） |
+| `books/` | Apple Books のハイライトを取り込んだ読書記録。1 書籍 1 ファイル（`<title>（ハイライト）.md`）。frontmatter に書誌、本文に章ごとのハイライト引用。`/books-highlights` で管理（同期で上書きされる）。手書きの読書ノートも置いてよい | — |
 | `daily/` | Daily notes (`YYYY-MM-DD.md`) | Weekly reviews, evergreen notes |
 | `weekly/` | Weekly retros (`YYYY-Wnn.md`) | Daily notes, evaluations |
 | `blog/` | Blog post drafts intended for public publication | Unpublished essays, work logs |
