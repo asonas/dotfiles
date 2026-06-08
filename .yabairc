@@ -41,9 +41,9 @@ yabai -m space 7 --label social 2>/dev/null || true
 
 yabai -m rule --add app="^Dock" manage=off
 
-# Slackスレッドウィンドウを自動配置（660x1130px、マルチ:左下、シングル:右下）
+# Slack のポップアウト（スレッド／チャンネル）を自動配置（660x1130px、マルチ:左下、シングル:右下）
 # window_title_changed を使ってタイトル確定後に動く。スクリプトは冪等で、
-# 既に規定サイズなら何もしない。メイン判定とスレッド判定はスクリプト側で行う。
+# 規定サイズかつ規定位置なら何もしない。メイン判定とポップアウト判定はスクリプト側で行う。
 yabai -m signal --add event=window_title_changed app="^Slack$" \
   action="/Users/asonas/bin/yabai-slack-thread-place"
 

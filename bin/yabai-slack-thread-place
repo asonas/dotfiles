@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Slack スレッドウィンドウを規定位置に配置する。
+# Slack のスレッド／チャンネルのポップアウトを規定位置に配置する。
 # window_title_changed signal から呼ばれる前提（YABAI_WINDOW_ID が渡される）。
 # タイトル確定後に動くため、Slack の中間ウィンドウ消失による race を回避する。
 #
@@ -8,13 +8,13 @@
 #   - シングルディスプレイ時: display 1 の右下、660x1130
 # 対象外:
 #   - メインウィンドウ（タイトルに "[メイン]" を含む）
-#   - スレッドウィンドウでないもの（タイトルに "スレッド" または "Thread" を含まない）
-#   - 既に規定サイズ (660x1130) になっているもの（再配置防止）
+#   - ポップアウトでないもの（タイトルに "スレッド/Thread/チャンネル/Channel" を含まない）
+#   - 既に規定サイズかつ規定位置に居るもの（再配置防止）
 #
 # 発火頻度について:
 #   Slack はバッジ数更新でもタイトルを書き換えるため、本スクリプトは
-#   1日数百回呼ばれる想定。冪等性ガード（規定サイズ判定）で大部分は
-#   yabai -m query 1回 + 文字列比較で早期 exit するため、実害はない。
+#   1日数百回呼ばれる想定。冪等性ガード（サイズ＋位置一致）で大部分は
+#   yabai -m query 2回 + 文字列比較で早期 exit するため、実害はない。
 
 set -uo pipefail
 
@@ -27,18 +27,19 @@ WINDOW_H=1130
 info=$(yabai -m query --windows --window "$WINDOW_ID" 2>/dev/null) || exit 0
 [[ -z "$info" ]] && exit 0
 
-IFS=$'\t' read -r app title cur_w cur_h < <(
-  echo "$info" | jq -r '[.app, .title, .frame.w, .frame.h] | @tsv'
+IFS=$'\t' read -r app title cur_x cur_y cur_w cur_h < <(
+  echo "$info" | jq -r '[.app, .title, .frame.x, .frame.y, .frame.w, .frame.h] | @tsv'
 )
 
 [[ "$app" != "Slack" ]] && exit 0
 [[ "$title" == *"[メイン]"* ]] && exit 0
-[[ "$title" != *"スレッド"* && "$title" != *"Thread"* ]] && exit 0
-
-# 既に規定サイズなら配置済みとみなしてスキップ
-if [[ "${cur_w%.*}" == "$WINDOW_W" && "${cur_h%.*}" == "$WINDOW_H" ]]; then
+if [[ "$title" != *"スレッド"* && "$title" != *"Thread"* \
+   && "$title" != *"チャンネル"* && "$title" != *"Channel"* ]]; then
   exit 0
 fi
+# メインウィンドウは「（チャンネル）」（全角括弧）+ [メイン] マーカーで判定済みだが、
+# 念のため全角括弧入りのチャンネル名は除外する（[メイン] が一時的に欠ける場合の保険）
+[[ "$title" == *"（チャンネル）"* ]] && exit 0
 
 display_count=$(yabai -m query --displays | jq 'length')
 if [[ "$display_count" -gt 1 ]]; then
@@ -60,6 +61,12 @@ else
   new_x=$(( ${dx%.*} + ${dw%.*} - WINDOW_W ))
 fi
 new_y=$(( ${dy%.*} + ${dh%.*} - WINDOW_H ))
+
+# 既に規定サイズかつ規定位置なら配置済みとみなしてスキップ
+if [[ "${cur_w%.*}" == "$WINDOW_W" && "${cur_h%.*}" == "$WINDOW_H" \
+   && "${cur_x%.*}" == "$new_x" && "${cur_y%.*}" == "$new_y" ]]; then
+  exit 0
+fi
 
 is_floating=$(echo "$info" | jq -r '."is-floating"')
 if [[ "$is_floating" != "true" ]]; then
