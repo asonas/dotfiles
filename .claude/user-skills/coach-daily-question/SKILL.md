@@ -2,7 +2,6 @@
 name: coach-daily-question
 description: 日次セルフコーチングの問いを1つだけ投げ、回答を coaching/log.md に append する。/today と /wrapup の末尾から呼び出される。引数 morning|evening で時間帯を切り替える。
 argument-hint: "morning|evening"
-disable-model-invocation: true
 ---
 
 # /coach-daily-question - 日次セルフコーチング
