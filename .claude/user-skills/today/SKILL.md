@@ -313,6 +313,36 @@ Skill(wiki-update, args: "ingest yesterday")
 
 ユーザへの確認は不要で、黙々と実行して結果を 1〜2 行で報告する。前日の daily note が存在しない場合は wiki-update をスキップする（raindrop-sync は実行してよい）。
 
+### Step 9b: Weekly Wiki Lint Gate（週次 lint の自動化）
+
+wiki ingest が終わったら、**前回 lint から 7 日以上経過していれば** `/wiki-update lint` も走らせる。これは「週次の自動 lint をスリープに影響されない形で実現する」ための仕組み。`/today` は本人が起きて作業を始める時にしか走らないため、launchd/cron のようにスリープ中に取りこぼすことがない。
+
+前回 lint 日の判定は `wiki/log.md`（とローテーション済みの `wiki/log-*.md`）の lint エントリ見出しから取る:
+
+```bash
+# find ベースで列挙する（zsh では未マッチの log-*.md グロブがコマンドごと失敗するため、
+# シェル展開ではなく find に glob を渡す）
+last_lint=$(find /Users/asonas/Documents/asonas/wiki -maxdepth 1 \
+  \( -name 'log.md' -o -name 'log-*.md' \) 2>/dev/null \
+  | xargs grep -hoE '^## [0-9]{4}-[0-9]{2}-[0-9]{2}[^#]*lint' 2>/dev/null \
+  | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | sort -r | head -1)
+echo "last_lint=${last_lint:-none}"
+```
+
+判定ルール:
+
+- `last_lint` が空（lint 履歴なし）→ **lint を実行する**
+- Step 1 で取得した今日の日付と `last_lint` の差が **7 日以上** → **lint を実行する**
+- それ未満 → スキップする（その旨を 1 行報告に含める。例: 「Wiki lint: 前回 6/05、7日未満のためスキップ」）
+
+実行する場合:
+
+```
+Skill(wiki-update, args: "lint")
+```
+
+lint は検出結果を `wiki/log.md` に記録するのみで自動修正はしない（human-in-the-loop を維持）。Step 8 のサマリーに lint を走らせた事実と検出件数の概要を 1〜2 行で添える。lint が clean なら「Wiki lint: clean」とだけ報告する。ユーザへの確認は不要。
+
 ### Step 10: Morning Coaching Question
 
 すべての処理が終わったら、`coach-daily-question` スキルを `morning` 引数で呼び出す。
