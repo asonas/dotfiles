@@ -126,7 +126,15 @@ if command -v apm >/dev/null 2>&1; then
     echo "==> apm update --yes (refresh ~/.apm/apm.lock.yaml to latest refs)"
     (cd "$HOME/.apm" && apm update --yes --target claude,cursor)
     echo "==> apm install -g --target claude,cursor (deploy skills, agents, commands)"
-    (cd "$HOME/.apm" && apm install -g --target claude,cursor)
+    # Tolerate non-zero exit: 'apm install' returns an error if ANY dependency
+    # fails (e.g. an upstream subdirectory was removed), but the packages we
+    # depend on still install. Under 'set -e' a partial failure here would abort
+    # the script before the hook bridge and settings normalization below run,
+    # leaving .claude/settings.json polluted with the invalid 'sessionStart' key.
+    if ! (cd "$HOME/.apm" && apm install -g --target claude,cursor); then
+        echo "warning: 'apm install' reported errors (e.g. unavailable dependencies);" \
+             "continuing so the hook bridge and settings normalization still run."
+    fi
     # ~/.apm/apm.yml is a symlink into this repo, but the lockfile written by
     # 'apm update' lives in ~/.apm. Mirror it back so the deployed versions
     # stay version-controlled alongside apm.yml.
@@ -163,7 +171,10 @@ fi
 # SessionStart to a single entry that calls our workaround symlinks.
 settings_file="$PWD/.claude/settings.json"
 if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
-    canonical_cmd="\"$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start"
+    # Write a literal $HOME (not the install-time expansion) so the committed
+    # settings.json is portable across macOS (/Users/...) and Linux (/home/...).
+    # The hook command runs via a shell, which expands $HOME at session start.
+    canonical_cmd='"$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd" session-start'
     tmp=$(mktemp)
     jq --arg cmd "$canonical_cmd" '
       .hooks |= (

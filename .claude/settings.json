@@ -68,7 +68,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"/Users/asonas/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
+            "command": "\"$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
             "async": false
           }
         ]
