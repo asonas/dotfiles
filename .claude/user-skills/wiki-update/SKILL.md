@@ -80,12 +80,23 @@ updated: 2026-05-20
    - 自分が繰り返し参照する概念
    - 一般名詞・1 回限りの固有名詞はリンクにしない
 3. **既存ページ照合**: 各エンティティについて `/Users/asonas/Documents/asonas/wiki/<名前>.md` の存否を確認する。
-4. **更新 or 新規作成**:
-   - **既存ページがある場合**: 本文に新しい事実を統合する。重複は避け、既存記述と矛盾する場合は両論併記したうえで「2026-05-20 時点では後者が正しい」のように日付付きで判断を残す。frontmatter の `sources` と `updated` を更新する。
+4. **新規作成の基準（2ソース・ルール）**: 既存ページがないエンティティは、無条件にページ化せず、まず再出現の証拠を確認する:
+
+   ```bash
+   grep -rl --include='*.md' -F '<名前>' /Users/asonas/Documents/asonas/{daily,notes,essays,projects,weekly,1on1} | grep -v '今回のソース'
+   ```
+
+   - **別の日のソースにも登場している（2回目以降の出現）** → ページを作成する
+   - **今回が初出** → ページは作らない。ソースノート側に赤リンク `[[名前]]` だけ付け、log.md のエントリに `deferred: [[名前]]` として記録する。次回その語が現れた ingest で deferred 一覧と突き合わせてページ化する
+   - 例外として、初出でもページ化してよいのは「自分のプロジェクト・リポジトリ」「継続的に関与することが確実なもの（所属組織、購入した機材など）」に限る。例外を使った場合は log の note に理由を 1 行残す
+
+   この基準の目的は、一度きりの固有名詞による 1 段落スタブの量産を防ぎ、wiki を「繰り返し現れるトピックが積もる場所」に保つことにある。
+5. **更新 or 新規作成**:
+   - **既存ページがある場合**: 本文に新しい事実を統合する。重複は避け、既存記述と矛盾する場合は両論併記したうえで「2026-05-20 時点では後者が正しい」のように日付付きで判断を残す。frontmatter の `sources` と `updated` を更新する。新規作成よりも既存ページの増補を常に優先する
    - **新規作成の場合**: 上記の frontmatter + 散文本文で作成する。本文は最低 1 段落、根拠 wikilink 必須。
-5. **横断更新**: karpathy 流に「1 回の ingest で 10〜15 ページを更新する」想定で、抽出した全エンティティを一度のセッションで処理する。1 ページずつユーザに確認しない。
-6. **ソースノート側へのリンク追加**: ソース note 本文に該当語が出現していて wikilink になっていない場合、CLAUDE.md のリンク戦略に従って初出のみ `[[語]]` を付ける。
-7. **log.md への記録**: `wiki/log.md` の先頭セクション直下に新エントリを追加（append-only。古いエントリは削除しない）:
+6. **横断更新**: karpathy 流に「1 回の ingest で 10〜15 ページを更新する」想定で、抽出した全エンティティを一度のセッションで処理する。1 ページずつユーザに確認しない。
+7. **ソースノート側へのリンク追加**: ソース note 本文に該当語が出現していて wikilink になっていない場合、CLAUDE.md のリンク戦略に従って初出のみ `[[語]]` を付ける。
+8. **log.md への記録**: `wiki/log.md` の先頭セクション直下に新エントリを追加（append-only。古いエントリは削除しない）:
 
    ```markdown
    ## YYYY-MM-DD HH:MM ingest
@@ -93,10 +104,12 @@ updated: 2026-05-20
    - sources: [[daily/2026-05-19]], [[activities/2026-05-19]], [[projects/tempest/2026-05-19 ...]] (+ bookmarks: 2 件)
    - updated: [[RubyKaigi 2025]], [[asonas/strudel-rb]], [[Strudel]]
    - created: [[Live Coding]]
+   - deferred: [[初出のためページ化を見送った語]]
    - note: <特筆事項。矛盾検出・統合した主張など>
    ```
 
    日付指定の ingest で実際に読んだソース一覧をすべて記載すること。activities や projects/notes/bookmarks のいずれかが空（該当日に更新ファイルなし）でも、空であることを `(なし)` の形で残しておくと運用上のトレースが楽になる。
+9. **index 再生成**: ingest の最後に必ず `rebuild-index` の手順を実行して `wiki/index.md` を最新化する。ページの作成・更新が 1 件もなかった場合のみ省略してよい。
 
 ### lint
 
@@ -108,26 +121,36 @@ updated: 2026-05-20
 
 #### 手順
 
-1. `wiki/` 配下の全 .md を列挙（`index.md`, `log.md` は除外）。
+lint は「検出して終わり」にせず、機械的に直せる問題はその場で修復する。判断が必要な問題のみ報告に留める。
+
+1. `wiki/` 配下の全 .md を列挙（`index.md`, `log.md`, `log-*.md` は除外）。
 2. 各ページについて以下をチェック:
    - **孤立ページ**: vault 内のどのノートからも `[[name]]` で参照されていない
    - **未解決リンク**: 本文中の `[[X]]` で `X.md` が vault 内に存在しない
    - **古い `updated`**: 90 日以上更新されていない
    - **矛盾**: 同一トピックに対して相反する記述が含まれる
-   - **frontmatter 欠落**: `type` または `sources` が未定義
-3. 検出結果を `wiki/log.md` の先頭に新エントリとして追加:
+   - **frontmatter 欠落**: `type`、`sources`、`updated` のいずれかが未定義または空
+   - **過剰分割**: 単一の同じソースのみを出典とし、本文が 2 段落以下で、被リンクが wiki 内の相互リンクと index に限られるページ群。統合候補として報告する
+3. **自動修復（その場で直すもの）**:
+   - `type` 欠落 → 本文から判断して補完する
+   - `updated` 欠落 → ファイルの mtime の日付で補完する
+   - `sources` が空 → vault を grep してそのページ名に言及している daily / notes / projects を探し、見つかれば `sources` に追記する。見つからなければ報告に残す
+   - 修復したページは lint エントリの `fixed:` 行に列挙する
+4. **報告のみ（判断が必要なもの）**: 孤立ページ・矛盾・統合候補・出典が見つからないページ。検出結果を `wiki/log.md` の先頭に新エントリとして追加:
 
    ```markdown
    ## YYYY-MM-DD HH:MM lint
 
+   - fixed: [[V]] (type 補完), [[U]] (sources 補完)
    - orphan: [[X]], [[Y]]
    - unresolved: [[X]] が [[Y]] を参照しているが Y は存在しない
    - stale: [[Z]] (last updated 2026-01-15)
    - contradiction: [[W]] 内で〜と〜が矛盾
-   - missing frontmatter: [[V]]
+   - merge-candidate: [[A]] + [[B]] → [[C]] に統合可能（同一ソース・相互リンクのみ）
    ```
 
-4. 何も検出されなければ「clean」と 1 行だけ記録する。
+5. 何も検出されなければ「clean」と 1 行だけ記録する。
+6. 前回の lint エントリに残っている報告項目が今回も未解決のままなら、エントリの note に「前回からの持ち越し」と明記する。同じ項目を 2 回持ち越したら、その場で対処するかページを削除するかを決める。
 
 ### rebuild-index
 
@@ -139,15 +162,24 @@ updated: 2026-05-20
 
 #### 手順
 
-1. `wiki/` 配下の全 .md を frontmatter の `type` ごとに分類する。`index.md`, `log.md` は除外。
+1. `wiki/` 配下の全 .md を frontmatter の `type` ごとに分類する。`index.md`, `log.md`, `log-*.md` は除外。
 2. `wiki/index.md` を上書き再生成する。type の順は `entity → concept → event → org → comparison → summary → orphan`。各 type の下に該当ページを `- [[name]] — frontmatter から拾った 1 行 description（先頭段落の 1 文目を要約）` 形式で並べる。
 3. 孤立ページ（lint で検出されたもの）は `## orphan` セクションに集める。
+
+## log.md のローテーション
+
+log.md は append-only のまま無限に肥大化するため、月単位でローテーションする。
+
+- ingest / lint / rebuild-index のいずれかを月初に最初に実行したとき、log.md に前月以前のエントリが残っていたら、それらを `wiki/log-YYYY-MM.md`（エントリの属する月ごと）へ移動する。log.md には冒頭の説明文と当月分のエントリだけを残す
+- `log-*.md` は lint・rebuild-index の走査対象から除外する（frontmatter 不要）
+- 移動はエントリ単位で行い、内容の書き換えはしない
 
 ## 起動経路
 
 - **手動**: `/wiki-update ingest today` 等を直接実行。
 - **`/today` から**: その日の daily note 作成・前日まとめが終わった直後に `/wiki-update ingest yesterday` を呼ぶ。
 - **`/wrapup` から**: 当日 wrapup の追記が終わった直後に `/wiki-update ingest today` を呼ぶ。
+- **週次 lint**: 金曜の `/wrapup` 経由の ingest が終わったあと、続けて `lint` を実行する。直近 7 日以内に lint 実行記録が log.md にある場合はスキップしてよい。
 
 today / wrapup から呼ばれた際は、対話を増やさず黙々と ingest を完了させること（ユーザは別の作業に移っている前提）。
 
