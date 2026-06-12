@@ -25,8 +25,11 @@ dependencies:
     - sorah/config/claude/marketplace/plugins/sorah-spec
     - sorah/config/claude/marketplace/plugins/sorah-guides
     # Self-authored skills published from asonas/skills.
+    # cross-review is intentionally absent: the locally-maintained copy in
+    # .claude/user-skills/cross-review (deployed as a symlink by install.sh)
+    # has diverged ahead of the published package, and APM refuses to deploy
+    # over the symlink anyway.
     - asonas/skills/commit
-    - asonas/skills/cross-review
     - asonas/skills/entire
     - asonas/skills/git-worktree-workflow
     - asonas/skills/legacy-code-improvement
