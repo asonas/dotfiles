@@ -9,11 +9,6 @@ targets:
   - cursor
 dependencies:
   apm:
-    # Carried over from the prior ~/.apm/apm.yml (deployed to ~/.cursor/skills/ and ~/.claude/skills/).
-    - mizchi/skills/empirical-prompt-tuning
-    - mizchi/skills/retrospective-codify
-    - mizchi/skills/tech-article-reproducibility
-    - mizchi/skills/review-image
     # Anthropic official skills (skill form so Cursor can load them too;
     # the plugin form in anthropics/claude-plugins-official is Claude-only).
     # Note: anthropics/skills nests entries under `skills/`, so the subpath
