@@ -118,12 +118,21 @@ APM_EXCLUDE
 fi
 
 # Compile APM primitives (.apm/instructions/) into CLAUDE.md and AGENTS.md,
-# then run global install so skills are deployed to ~/.claude and ~/.agents.
+# then refresh dependency refs and run global install so skills are deployed
+# to ~/.claude and ~/.agents at their latest upstream versions.
 if command -v apm >/dev/null 2>&1; then
     echo "==> apm compile (.apm/instructions -> CLAUDE.md, AGENTS.md)"
     apm compile
+    echo "==> apm update --yes (refresh ~/.apm/apm.lock.yaml to latest refs)"
+    (cd "$HOME/.apm" && apm update --yes --target claude,cursor)
     echo "==> apm install -g --target claude,cursor (deploy skills, agents, commands)"
     (cd "$HOME/.apm" && apm install -g --target claude,cursor)
+    # ~/.apm/apm.yml is a symlink into this repo, but the lockfile written by
+    # 'apm update' lives in ~/.apm. Mirror it back so the deployed versions
+    # stay version-controlled alongside apm.yml.
+    if [ -f "$HOME/.apm/apm.lock.yaml" ]; then
+        cp "$HOME/.apm/apm.lock.yaml" "$PWD/apm.lock.yaml"
+    fi
 else
     echo "warning: apm not found in PATH; skipping 'apm compile' and 'apm install -g'."
     echo "         Install Agent Package Manager so global rules and skills can be regenerated."
@@ -212,7 +221,7 @@ ghq_skills="
 "
 for repo in $ghq_skills
 do
-    ghq get "$repo"
+    ghq get -u "$repo"
     repo_path=$(ghq list -p "$repo")
     skill_name=$(basename "$repo_path")
     link="$PWD/.claude/user-skills/$skill_name"
