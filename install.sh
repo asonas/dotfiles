@@ -165,7 +165,7 @@ settings_file="$PWD/.claude/settings.json"
 if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
     canonical_cmd="\"$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start"
     tmp=$(mktemp)
-    jq -a --arg cmd "$canonical_cmd" '
+    jq --arg cmd "$canonical_cmd" '
       .hooks |= (
         del(.sessionStart)
         | .SessionStart = [{
@@ -195,7 +195,7 @@ if [ -f "$cman_server" ] && command -v jq >/dev/null 2>&1 && [ -f "$settings_fil
         echo "warning: uv not found in PATH; cman MCP server will fail to launch until uv is installed."
     fi
     tmp=$(mktemp)
-    jq -a --arg path "$cman_server" '
+    jq --arg path "$cman_server" '
       .mcpServers["plugin_cman_cman"] = {
         command: "uv",
         args: ["run", $path]
