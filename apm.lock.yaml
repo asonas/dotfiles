@@ -1,6 +1,6 @@
 lockfile_version: '1'
-generated_at: '2026-06-12T03:06:28.289913+00:00'
-apm_version: 0.19.0
+generated_at: '2026-06-14T23:56:37.403639+00:00'
+apm_version: 0.20.0
 dependencies:
 - repo_url: anthropics/skills
   host: github.com
@@ -515,6 +515,6 @@ dependencies:
   content_hash: sha256:1b99b33451d6612c094fe5142412d1b4cbcae2003ff171e09578c968c163753f
 - repo_url: st0012/cctop
   host: github.com
-  resolved_commit: 1dfb2d5395db8c3aa7e6e7ab9f164bc42b8ca45f
+  resolved_commit: 3841b160e7a017033564416737a384825f7d7a4f
   package_type: marketplace_plugin
-  content_hash: sha256:88d5e6a24db986e28856df6c307180ce96be8c6252eae9bcd2c429867f24544e
+  content_hash: sha256:1f1eb265b4b7537669f384669e9fa9eec1acfcf576a94d7d2c7a2dddce6e19e0
