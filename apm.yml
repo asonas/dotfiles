@@ -32,6 +32,11 @@ dependencies:
     - asonas/skills/commit
     - asonas/skills/entire
     - asonas/skills/git-worktree-workflow
+    # japanese-tech-writing: 日本語技術文書・書籍原稿の文章規範。
+    # k16shikano の gist (fd287c3133457c4fd8f5601d34aa817d) を vendor したもの。
+    # gist 直参照だと APM が gist ID 名で配備し /japanese-tech-writing で起動でき
+    # ないため、asonas/skills 配下に複製して clean な skill 名で配備している。
+    - asonas/skills/japanese-tech-writing
     - asonas/skills/legacy-code-improvement
     - asonas/skills/pr-review
     - asonas/skills/usb-debug
