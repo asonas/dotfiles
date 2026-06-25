@@ -41,7 +41,7 @@ scrollback-limit = "500000000"
 keybind = shift+enter=text:\n
 
 background = 282c34
-foreground = abb2bf
+#foreground = abb2bf
 
 #background-image = "/Users/asonas/.config/ghostty/ivry-logo.png"
 #background-image-opacity = 0.2
