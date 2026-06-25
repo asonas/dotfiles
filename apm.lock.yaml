@@ -1,6 +1,6 @@
 lockfile_version: '1'
-generated_at: '2026-06-25T03:20:47.676295+00:00'
-apm_version: 0.20.0
+generated_at: '2026-06-25T03:39:23.959006+00:00'
+apm_version: 0.21.0
 dependencies:
 - repo_url: anthropics/skills
   host: github.com
@@ -183,6 +183,7 @@ dependencies:
     .claude/skills/obsidian-markdown/references/EMBEDS.md: sha256:63b6205507e28fb58cf200bc348a2b139e50ae739743e2e6316732148973cb7a
     .claude/skills/obsidian-markdown/references/PROPERTIES.md: sha256:392953b5838c3ab3df135b5a914f100ae7b95e4501b6a2e5c8dc63da3ac7558b
   content_hash: sha256:0a1407dab0df665164eea626a4a64c01772a2519f49ee20d4c2580cc7cadc3d8
+  declared_license: MIT
 - repo_url: obra/superpowers
   host: github.com
   resolved_commit: 896224c4b1879920ab573417e68fd51d2ccc9072
@@ -426,6 +427,7 @@ dependencies:
     .claude/skills/writing-skills/testing-skills-with-subagents.md: sha256:c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade
     .cursor/hooks/superpowers/hooks/run-hook.cmd: sha256:d3d9c6199678dab2858e60509dde5e7414f13c2a2b5e48a38b1d368b6e1d6abb
   content_hash: sha256:5b14832a84b21359e629052d2f4692fabded091ae2a80d085909776747e1f26e
+  declared_license: MIT
 - repo_url: sorah/config
   host: github.com
   resolved_commit: da26e516d30336882c6dc898c25ef1a4c588c6d3
@@ -505,6 +507,7 @@ dependencies:
     .cursor/commands/perform-security-review.md: sha256:1b2bf504b5a86a94274dcf34c835f60a0d589436de5278cea33af0a92cac5cf9
     .cursor/commands/pull-request.md: sha256:0ebd283efbce186e8b370df3a22f73677e4c386abe3b5c993b0017370bc6bc99
   content_hash: sha256:cb3c54dea86c80a00f3f4647718af562d75593ae24f723709cae615055360ea6
+  declared_license: CC0-1.0
 - repo_url: sorah/config
   host: github.com
   resolved_commit: da26e516d30336882c6dc898c25ef1a4c588c6d3
@@ -548,6 +551,7 @@ dependencies:
     .cursor/commands/review.md: sha256:d730ef250988082fbea3001f176e849666586135b626d40e598a05aecc5ca999
     .cursor/commands/validate.md: sha256:6cb5d533d94bd6f7303431a66fc6231694cf719b5b683753fcdfda3c3c688a93
   content_hash: sha256:1b99b33451d6612c094fe5142412d1b4cbcae2003ff171e09578c968c163753f
+  declared_license: CC0-1.0
 - repo_url: st0012/cctop
   host: github.com
   resolved_commit: 4c49f8ee823e31fc3ffa020b8ee30532d0034e5a
