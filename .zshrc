@@ -425,6 +425,9 @@ function switch-aws-profile() {
     fi
 }
 
+# trusted_config_paths は global config でのみ有効。dotfiles 内のシンボリックリンク先
+# (ghq 配下) は non-global 扱いされ無視されるため、環境変数で渡す
+export MISE_TRUSTED_CONFIG_PATHS="$HOME/ghq/github.com/ivry-inc:$HOME/ghq/github.com/asonas"
 eval "$(mise activate zsh)"
 
 # Dart補完の遅延読み込み
