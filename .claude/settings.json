@@ -87,7 +87,8 @@
     "sorah-guides@sorah-marketplace": true,
     "obsidian@obsidian-skills": true,
     "cafleet@cafleet": true,
-    "cman@cman": true
+    "cman@cman": true,
+    "cctop@cctop": true
   },
   "extraKnownMarketplaces": {
     "cman": {
@@ -111,6 +112,7 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
+  "tui": "fullscreen",
   "skipAutoPermissionPrompt": true,
   "mcpServers": {
     "plugin_cman_cman": {
