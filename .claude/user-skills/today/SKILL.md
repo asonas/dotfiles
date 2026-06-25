@@ -343,6 +343,41 @@ Skill(wiki-update, args: "lint")
 
 lint は検出結果を `wiki/log.md` に記録するのみで自動修正はしない（human-in-the-loop を維持）。Step 8 のサマリーに lint を走らせた事実と検出件数の概要を 1〜2 行で添える。lint が clean なら「Wiki lint: clean」とだけ報告する。ユーザへの確認は不要。
 
+### Step 9c: qmd 再インデックス
+
+Wiki の処理が終わったら、Alfred の qmd 検索（`ws`/`wsq`、`/Users/asonas/workspace/qmd-alfred/`）が最新の vault を引けるよう、qmd のインデックスを更新する。差分インデックスのため低コスト。失敗してもワークフロー全体は止めない（警告のみ）。`command -v qmd` が無い／collection `asonas` 未登録ならスキップしてよい。
+
+```bash
+qmd update && qmd embed 2>&1 | tail -3 || echo "Warning: qmd reindex failed, skipping"
+```
+
+### Step 9d: cctop プラグイン週次更新チェック（subagent）
+
+cctop の menubar アプリ（`/Applications/cctop.app` と `cctop-hook` バイナリ）は Sparkle で自動更新されるが、**Claude Code プラグイン側は自動更新されない**（手動の `claude plugin update` のみ）。放置するとプラグインがピン留めされたまま取り残され、hook バイナリとのバージョン差が広がる。これを防ぐため、**前回チェックから 7 日以上経過していれば** プラグインを更新する。Step 9b の週次 lint ゲートと同じく、スリープに影響されない「起床して作業を始める時に走る」前提でスロットルする。
+
+スロットル判定とプラグイン更新は **subagent** に任せる（更新コマンドの出力をメインスレッドに流さず、結果だけ 1 行で受け取るため）。`model: "sonnet"`、`subagent_type: "general-purpose"` で 1 つ起動する。
+
+プロンプト要旨:
+```
+あなたは cctop の Claude Code プラグインを最新に保つ任務を持つ。以下を順に実行し、最後に結果を1行で返す。
+
+1. スロットル判定: スタンプファイル ~/.cctop/.last-plugin-update-check を見る。
+   存在し、かつ最終更新から7日未満なら、何もせず
+   "cctop更新: 前回チェックから7日未満のためスキップ" と返して終了する。
+   判定例（ヘレドク禁止、ワンライナーで）:
+   stamp="$HOME/.cctop/.last-plugin-update-check"; if [ -f "$stamp" ] && [ $(( ($(date +%s) - $(stat -f %m "$stamp")) / 86400 )) -lt 7 ]; then echo skip; fi
+2. 7日以上経過 or スタンプ無し → `claude plugin update cctop@cctop` を実行する。
+3. 成功・失敗にかかわらず `touch "$HOME/.cctop/.last-plugin-update-check"` でタイムスタンプを更新する。
+4. 結果を1行で返す:
+   - 更新あり: "cctop更新: X.Y.Z → A.B.C に更新（次回セッションから反映）"
+   - 差分なし: "cctop更新: 既に最新"
+   - 失敗: "cctop更新: 失敗（<理由>）"（ワークフロー全体は止めない）
+
+推測禁止。`claude plugin update` の実際の出力に基づいて報告すること。
+```
+
+subagent の返した 1 行を Step 8 のサマリーに添える（スキップ時も含めて簡潔に）。プラグイン更新は再起動（新セッション）で反映される点に注意。失敗しても `/today` 全体は止めない。
+
 ### Step 10: Morning Coaching Question
 
 すべての処理が終わったら、`coach-daily-question` スキルを `morning` 引数で呼び出す。

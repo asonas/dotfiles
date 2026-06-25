@@ -170,6 +170,14 @@ Skill(wiki-update, args: "ingest <YYYY-MM-DD>")
 
 `<YYYY-MM-DD>` は Step 1 で確定した対象日。`today` 引数で wrapup を起動した場合は `ingest today` でもよい。
 
+### Step 8b: qmd 再インデックス
+
+wiki ingest のあとで、Alfred の qmd 検索（`ws`/`wsq`、`/Users/asonas/workspace/qmd-alfred/`）が最新の vault を引けるよう、qmd のインデックスを更新する。差分インデックスのため低コスト。失敗してもワークフロー全体は止めない（警告のみ）。collection `asonas` が未登録なら（`command -v qmd` も含め）スキップしてよい。
+
+```bash
+qmd update && qmd embed 2>&1 | tail -3 || echo "Warning: qmd reindex failed, skipping"
+```
+
 ### Step 9: Confirm Completion
 
 Report to the user:
