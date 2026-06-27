@@ -96,11 +96,15 @@ if [ -n "$exclude_file" ]; then
     cat >> "$tmp" <<'APM_EXCLUDE'
 # === APM (managed by install.sh) ===
 # APM dependencies and generated artifacts.
-# Sources to keep tracked: .apm/instructions/, apm.yml, apm.lock.yaml.
+# Sources to keep tracked: .apm/instructions/, apm.yml.
 # Run `apm install && apm compile` after clone to regenerate everything below.
 # These live here (not in the symlinked .gitignore) so they don't pollute the
 # global core.excludesfile and hide CLAUDE.md/AGENTS.md/etc. in other repos.
 apm_modules/
+# apm.lock.yaml pins floating deps to whatever commit was latest at install
+# time and is regenerated per-machine, so tracking it causes noisy diffs and
+# cross-machine merge conflicts. Re-resolved by `apm install` after clone.
+/apm.lock.yaml
 /AGENTS.md
 /CLAUDE.md
 /.agents/
@@ -136,12 +140,9 @@ if command -v apm >/dev/null 2>&1; then
         echo "warning: 'apm install' reported errors (e.g. unavailable dependencies);" \
              "continuing so the hook bridge and settings normalization still run."
     fi
-    # ~/.apm/apm.yml is a symlink into this repo, but the lockfile written by
-    # 'apm update' lives in ~/.apm. Mirror it back so the deployed versions
-    # stay version-controlled alongside apm.yml.
-    if [ -f "$HOME/.apm/apm.lock.yaml" ]; then
-        cp "$HOME/.apm/apm.lock.yaml" "$PWD/apm.lock.yaml"
-    fi
+    # apm.lock.yaml is intentionally not version-controlled (see .git/info/exclude):
+    # it is regenerated per-machine by 'apm update'/'apm install' above and lives
+    # only in ~/.apm. Mirroring it back into this repo is no longer needed.
 else
     echo "warning: apm not found in PATH; skipping 'apm compile' and 'apm install -g'."
     echo "         Install Agent Package Manager so global rules and skills can be regenerated."
