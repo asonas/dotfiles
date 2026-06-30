@@ -257,6 +257,32 @@ do
     ln -s "$skill" "$link"
 done
 
+# EasyEDA API skill (darwin-only). Unlike the source-only skills handled by APM,
+# this one ships a Node.js bridge server (npm run server) and is driven against
+# the EasyEDA Pro desktop client, so it needs a real working clone and is only
+# useful on macOS. APM cannot express per-OS gating, hence it lives here. The
+# skill bootstraps its own node_modules via `cd ${CLAUDE_SKILL_DIR} && npm install`,
+# which rewrites package-lock.json and leaves the working tree dirty. A `-u` pull
+# would then fail ("cannot pull with rebase: unstaged changes") and, under set -e,
+# abort this script — so use plain `ghq get` (clone if missing, never auto-pull)
+# and treat the clone as a working tree to be updated by hand. Guarded so a clone
+# failure on this optional skill does not block the rest of install.
+case "$OSTYPE" in
+  darwin*)
+    if ghq get easyeda/easyeda-api-skill; then
+        easyeda_path=$(ghq list -p easyeda/easyeda-api-skill)
+        if [ -n "$easyeda_path" ]; then
+            mkdir -p "$HOME/.claude/skills"
+            link="$HOME/.claude/skills/easyeda-api"
+            if [ -L "$link" ] || [ -e "$link" ]; then
+                rm -rf "$link"
+            fi
+            ln -s "$easyeda_path" "$link"
+        fi
+    fi
+    ;;
+esac
+
 # Setup zsh completions
 mkdir -p "$HOME/.zsh.d/completions"
 curl -fsSL "https://gist.githubusercontent.com/takai/d42693fbd01e8957ca52fa08c8ae660a/raw/_mairu" -o "$HOME/.zsh.d/completions/_mairu"
