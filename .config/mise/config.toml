@@ -6,6 +6,7 @@ node = "lts"
 ruby = "latest"
 yarn = "1.22.19"
 colima = "latest"
+"github:hokaccha/givy" = "latest"
 
 [settings]
 github_attestations = false
