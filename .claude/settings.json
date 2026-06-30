@@ -99,7 +99,8 @@
     "obsidian@obsidian-skills": true,
     "cafleet@cafleet": true,
     "cman@cman": true,
-    "cctop@cctop": true
+    "cctop@cctop": true,
+    "crit@crit": true
   },
   "extraKnownMarketplaces": {
     "cman": {
@@ -118,6 +119,12 @@
       "source": {
         "source": "directory",
         "path": "/Users/asonas/ghq/github.com/asonas/cafleet"
+      }
+    },
+    "crit": {
+      "source": {
+        "source": "github",
+        "repo": "tomasz-tomczyk/crit"
       }
     }
   },
