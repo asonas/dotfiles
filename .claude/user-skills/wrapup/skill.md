@@ -150,7 +150,7 @@ Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 asonas が自分で書いたテキストソース (Bluesky 投稿、Scrapbox ページ) を取得し、`activities/YYYY-MM-DD.md` の各セクションに反映する。`/wiki-update` がこのファイルを後段でソースとして読むため、wiki 化前に実行する。
 
 ```bash
-cd /Users/asonas/workspace/activities
+cd /Users/asonas/ghq/github.com/asonas/activities
 mise exec -- bundle exec bin/activities-snapshot --source bluesky --source scrapbox --date YYYY-MM-DD || echo "Warning: snapshot failed, skipping"
 ```
 

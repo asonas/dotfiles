@@ -158,7 +158,7 @@ Agent(
 Step 2 で取得した GCal events を **activities リポジトリ** にインポートし、`activities/YYYY-MM-DD.md` のカレンダーセクションに反映する。
 
 ```bash
-cd /Users/asonas/workspace/activities
+cd /Users/asonas/ghq/github.com/asonas/activities
 cat /tmp/activities-calendar-events.json | mise exec -- bundle exec bin/activities-calendar-import --date YYYY-MM-DD
 mise exec -- bundle exec bin/activities-render --source calendar --date YYYY-MM-DD
 ```
@@ -173,7 +173,7 @@ mise exec -- bundle exec bin/activities-render --source calendar --date YYYY-MM-
 asonas が自分で書いたテキストソース (Bluesky 投稿、Scrapbox ページ) を取得し、`activities/YYYY-MM-DD.md` の各セクションに反映する。前日分の投稿・編集も当日朝に確定することがあるため、yesterday と today の両方を render する。
 
 ```bash
-cd /Users/asonas/workspace/activities
+cd /Users/asonas/ghq/github.com/asonas/activities
 mise exec -- bundle exec bin/activities-snapshot --source bluesky --source scrapbox --date yesterday --date today || echo "Warning: snapshot failed, skipping"
 ```
 
