@@ -1,14 +1,8 @@
-keybind = ctrl+j>ctrl+c=new_tab
-
-keybind = ctrl+j>ctrl+p=previous_tab
-
-keybind = ctrl+j>ctrl+space=next_tab
-
-keybind = ctrl+j>ctrl+v=new_split:right
-
-keybind = ctrl+j>ctrl+s=new_split:down
-
-keybind = ctrl+j>ctrl+i=goto_split:next
+# Release cmd+shift+j/k so they pass through to herdr for workspace navigation.
+# (default: cmd+shift+j = write_screen_file:paste)
+keybind = cmd+shift+j=unbind
+keybind = cmd+shift+k=unbind
+keybind = cmd+shift+n=unbind
 
 font-family = "SauceCodePro Nerd Font"
 font-family = "源ノ角ゴシック Code JP"
@@ -38,7 +32,10 @@ window-padding-y = 5
 window-padding-balance = true
 
 scrollback-limit = "500000000"
-keybind = shift+enter=text:\n
+# Removed: this forced Shift+Enter to emit a bare LF (0x0A), which collides with
+# the herdr prefix (ctrl+j == LF) and triggered prefix mode. Ghostty supports
+# Shift+Enter for Claude Code natively (kitty keyboard protocol), no LF needed.
+# keybind = shift+enter=text:\n
 
 background = 282c34
 #foreground = abb2bf
