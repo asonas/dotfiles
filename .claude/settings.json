@@ -38,17 +38,6 @@
         ]
       }
     ],
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/scripts/block-git-wt-pseudo-subcommand.sh"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit|MultiEdit",
@@ -73,6 +62,17 @@
         ]
       }
     ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/block-git-wt-pseudo-subcommand.sh"
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "matcher": "startup|clear|compact",
@@ -80,6 +80,26 @@
           {
             "type": "command",
             "command": "\"$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
+            "async": false
+          }
+        ]
+      },
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\".claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
+            "async": false
+          }
+        ]
+      },
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/Users/asonas/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
             "async": false
           }
         ]
@@ -91,40 +111,40 @@
     "command": "~/.claude/scripts/statusline-usage.py"
   },
   "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true,
-    "clangd-lsp@claude-plugins-official": true,
-    "ruby-lsp@claude-plugins-official": true,
-    "sorah-guides@sorah-marketplace": true,
-    "obsidian@obsidian-skills": true,
     "cafleet@cafleet": true,
-    "cman@cman": true,
     "cctop@cctop": true,
-    "crit@crit": true
+    "clangd-lsp@claude-plugins-official": true,
+    "cman@cman": true,
+    "crit@crit": true,
+    "obsidian@obsidian-skills": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "sorah-guides@sorah-marketplace": true,
+    "swift-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
-    "cman": {
-      "source": {
-        "source": "github",
-        "repo": "laiso/cman"
-      }
-    },
-    "obsidian-skills": {
-      "source": {
-        "source": "github",
-        "repo": "kepano/obsidian-skills"
-      }
-    },
     "cafleet": {
       "source": {
         "source": "directory",
         "path": "/Users/asonas/ghq/github.com/asonas/cafleet"
       }
     },
+    "cman": {
+      "source": {
+        "source": "github",
+        "repo": "laiso/cman"
+      }
+    },
     "crit": {
       "source": {
         "source": "github",
         "repo": "tomasz-tomczyk/crit"
+      }
+    },
+    "obsidian-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kepano/obsidian-skills"
       }
     }
   },
