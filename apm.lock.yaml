@@ -1,10 +1,12 @@
 lockfile_version: '1'
-generated_at: '2026-06-26T15:06:00.205686+00:00'
-apm_version: 0.21.0
+generated_at: '2026-07-03T06:58:31.732302+00:00'
+apm_version: 0.23.1
 dependencies:
 - repo_url: anthropics/skills
+  name: skills
   host: github.com
-  resolved_commit: 57546260929473d4e0d1c1bb75297be2fdfa1949
+  resolved_commit: 9d2f1ae187231d8199c64b5b762e1bdf2244733d
+  version: unknown
   virtual_path: skills/frontend-design
   is_virtual: true
   package_type: claude_skill
@@ -22,8 +24,10 @@ dependencies:
     .claude/skills/frontend-design/SKILL.md: sha256:1608ea77fbb6fc30d13a97d12cfa8ebf31358d40f0dd97beed24829d6b3f45dd
   content_hash: sha256:4eabc66183767153e404b39d1b839b1c37f2d82d86f0a0d7e880a579d8d62336
 - repo_url: asonas/skills
+  name: skills
   host: github.com
   resolved_commit: 5ab8b2b5128a3e18234bd3d54c2f622fef6f82ce
+  version: unknown
   virtual_path: commit
   is_virtual: true
   package_type: claude_skill
@@ -37,8 +41,10 @@ dependencies:
     .claude/skills/commit/SKILL.md: sha256:d168b911a9574d194e680e536f44fbb9d932c5871c558ede9fa0f003444a83fe
   content_hash: sha256:568fe39c14878477b41d2336baf32dac00f2c6b158125c67bdddb257fd097b2c
 - repo_url: asonas/skills
+  name: skills
   host: github.com
   resolved_commit: 5ab8b2b5128a3e18234bd3d54c2f622fef6f82ce
+  version: unknown
   virtual_path: entire
   is_virtual: true
   package_type: claude_skill
@@ -52,8 +58,10 @@ dependencies:
     .claude/skills/entire/SKILL.md: sha256:fe4513b8488aea4804d0bb6e524c0254be167d9562781075cb53985fd7dc317b
   content_hash: sha256:9dc6d2586b21315eadaf0dab6542be0f8750ec2db221259730fe59ae7bfb4a4c
 - repo_url: asonas/skills
+  name: skills
   host: github.com
   resolved_commit: 5ab8b2b5128a3e18234bd3d54c2f622fef6f82ce
+  version: unknown
   virtual_path: git-worktree-workflow
   is_virtual: true
   package_type: claude_skill
@@ -67,8 +75,27 @@ dependencies:
     .claude/skills/git-worktree-workflow/SKILL.md: sha256:8516e4ca372db9157117659909da84a5ef4fc3b0b5d81b6ba2255d6472238544
   content_hash: sha256:1212a0d5df163ced64ee8f2ad7e122ec93cd825e37ac1a4595e861856454bc54
 - repo_url: asonas/skills
+  name: skills
+  host: github.com
+  resolved_commit: e2b03168b3324c551c1d29e5b56b145562ba67ec
+  version: unknown
+  virtual_path: herdr
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .agents/skills/herdr
+  - .agents/skills/herdr/SKILL.md
+  - .claude/skills/herdr
+  - .claude/skills/herdr/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/herdr/SKILL.md: sha256:75826452ca09623a7309c0a0d9bd6b29b24c55cf100632fc83bd69a685241f17
+    .claude/skills/herdr/SKILL.md: sha256:75826452ca09623a7309c0a0d9bd6b29b24c55cf100632fc83bd69a685241f17
+  content_hash: sha256:69d3762de6941e5632e7cbcaeea3584b47ce906a9275afb333d5405ff5480b80
+- repo_url: asonas/skills
+  name: skills
   host: github.com
   resolved_commit: 5ab8b2b5128a3e18234bd3d54c2f622fef6f82ce
+  version: unknown
   virtual_path: japanese-tech-writing
   is_virtual: true
   package_type: claude_skill
@@ -82,8 +109,10 @@ dependencies:
     .claude/skills/japanese-tech-writing/SKILL.md: sha256:624b0726d3b94a2336977215488ee35d0140d543550213efa0ae5226f0e23fdb
   content_hash: sha256:07d7ccf65443e4e7eaa8bccf4dc9cdcedd0a997bdeb6914f0c3e7ed2ffbdcc43
 - repo_url: asonas/skills
+  name: skills
   host: github.com
   resolved_commit: 5ab8b2b5128a3e18234bd3d54c2f622fef6f82ce
+  version: unknown
   virtual_path: legacy-code-improvement
   is_virtual: true
   package_type: claude_skill
@@ -97,8 +126,10 @@ dependencies:
     .claude/skills/legacy-code-improvement/SKILL.md: sha256:cceed7a39835ff00f60530287ddc8e98131ddd7fa5e8f5b971b635a17b02d78a
   content_hash: sha256:07ddc17724958fae7769cf9e2853fb17ae0c027994a0e81c22b4faae3445fb03
 - repo_url: asonas/skills
+  name: skills
   host: github.com
   resolved_commit: 5ab8b2b5128a3e18234bd3d54c2f622fef6f82ce
+  version: unknown
   virtual_path: pr-review
   is_virtual: true
   package_type: claude_skill
@@ -112,8 +143,10 @@ dependencies:
     .claude/skills/pr-review/SKILL.md: sha256:b404e107ca2f9423ae2ffc1f28b04a1cbc3e62b3bd12c41a4878c4d4ade86d5e
   content_hash: sha256:78eff7e0284174cc7252dcc050ae704c552783174dadd2756984db7e0073d0f1
 - repo_url: asonas/skills
+  name: skills
   host: github.com
   resolved_commit: 5ab8b2b5128a3e18234bd3d54c2f622fef6f82ce
+  version: unknown
   virtual_path: usb-debug
   is_virtual: true
   package_type: claude_skill
@@ -127,8 +160,10 @@ dependencies:
     .claude/skills/usb-debug/SKILL.md: sha256:3ef918cc60319473a932b06b5a8bbda931226ca64d2098d28d083b342227d77b
   content_hash: sha256:d2b6ac452347a731738d25204f797e21dfef105825002d8e8d91b354d08ad601
 - repo_url: kepano/obsidian-skills
+  name: obsidian
   host: github.com
   resolved_commit: a1dc48e68138490d522c04cbf5822214c6eb1202
+  version: 1.0.1
   package_type: marketplace_plugin
   deployed_files:
   - .agents/skills/defuddle
@@ -185,8 +220,10 @@ dependencies:
   content_hash: sha256:0a1407dab0df665164eea626a4a64c01772a2519f49ee20d4c2580cc7cadc3d8
   declared_license: MIT
 - repo_url: obra/superpowers
+  name: superpowers
   host: github.com
-  resolved_commit: 896224c4b1879920ab573417e68fd51d2ccc9072
+  resolved_commit: d884ae04edebef577e82ff7c4e143debd0bbec99
+  version: 6.1.1
   package_type: marketplace_plugin
   deployed_files:
   - .agents/skills/brainstorming
@@ -236,10 +273,7 @@ dependencies:
   - .agents/skills/using-superpowers
   - .agents/skills/using-superpowers/SKILL.md
   - .agents/skills/using-superpowers/references/antigravity-tools.md
-  - .agents/skills/using-superpowers/references/claude-code-tools.md
   - .agents/skills/using-superpowers/references/codex-tools.md
-  - .agents/skills/using-superpowers/references/copilot-tools.md
-  - .agents/skills/using-superpowers/references/gemini-tools.md
   - .agents/skills/using-superpowers/references/pi-tools.md
   - .agents/skills/verification-before-completion
   - .agents/skills/verification-before-completion/SKILL.md
@@ -302,10 +336,7 @@ dependencies:
   - .claude/skills/using-superpowers
   - .claude/skills/using-superpowers/SKILL.md
   - .claude/skills/using-superpowers/references/antigravity-tools.md
-  - .claude/skills/using-superpowers/references/claude-code-tools.md
   - .claude/skills/using-superpowers/references/codex-tools.md
-  - .claude/skills/using-superpowers/references/copilot-tools.md
-  - .claude/skills/using-superpowers/references/gemini-tools.md
   - .claude/skills/using-superpowers/references/pi-tools.md
   - .claude/skills/verification-before-completion
   - .claude/skills/verification-before-completion/SKILL.md
@@ -329,14 +360,14 @@ dependencies:
     .agents/skills/brainstorming/scripts/start-server.sh: sha256:a4e5ae84275bcaacd2f84345afeabe59cf7b00ba080e123da7cc1fb226f12847
     .agents/skills/brainstorming/scripts/stop-server.sh: sha256:0b5ccbbd57f62d3ed88993f7940b5ee0e5c0fc9b21c550c623da4f6292e47daf
     .agents/skills/brainstorming/spec-document-reviewer-prompt.md: sha256:95a0a195de9d984be2fffa95bab16fc8c563bc296a9cfc5e9c29cb3ece0d7457
-    .agents/skills/brainstorming/visual-companion.md: sha256:60cbad29b9dd7eaf08da020e301c498a72230b2e13c1813fa967a135ffcc1d71
+    .agents/skills/brainstorming/visual-companion.md: sha256:3321a044c777d03d7177df41c77bb83155ff2a6d0c16b8a3d752426d29f14ea8
     .agents/skills/dispatching-parallel-agents/SKILL.md: sha256:f0df13f584049059cc5619f90061405b89dcc6e28ab3f2a8517d27d99c7a46a6
-    .agents/skills/executing-plans/SKILL.md: sha256:b357c2a2e5bf24adf237b5d4a83cacd828f07b886d0873ad91546aa3c99905c9
+    .agents/skills/executing-plans/SKILL.md: sha256:bbd8d28bb655a52817cc129ce49f9e46fa7c6303f72ed5de95bfe914ef8e0ce8
     .agents/skills/finishing-a-development-branch/SKILL.md: sha256:e6d4a812de900d33c6eacfb40747f99427f25c304a7b7099120f9373b115a47f
     .agents/skills/receiving-code-review/SKILL.md: sha256:647036bbdab7bf2317e14e079595e984c9030f64295e2b4c0fb57dbeb48f25dd
     .agents/skills/requesting-code-review/SKILL.md: sha256:1017ccdd5bc61fab67c654cf118cbdb520464b313073a0a6b9a6b9aa647a3ad6
     .agents/skills/requesting-code-review/code-reviewer.md: sha256:b2f2ec7596925fe52dac158fdfbca19b3a7d779d619c481e6706a6c0001662d3
-    .agents/skills/subagent-driven-development/SKILL.md: sha256:abdd682e85bfc52413c997bef4612b2a4094168d8e4d6a967f1c0dcde4d83816
+    .agents/skills/subagent-driven-development/SKILL.md: sha256:5e9e846ae67d153ddf7c5f4fd5102af78454c8f3cdaa0720331cec063fc8861a
     .agents/skills/subagent-driven-development/implementer-prompt.md: sha256:49018b28dc11bc9f3d13a28959bb10ae1a96eabc5d8f19f4079d901f9ff2bf64
     .agents/skills/subagent-driven-development/scripts/review-package: sha256:0c0629f6e2c46fc8bf68dcfb8a247ab24eb548b7004fe494035e6fcba9b5cdfb
     .agents/skills/subagent-driven-development/scripts/sdd-workspace: sha256:9430befaff459ed862415b700c1a9efe45fd34838a684802a1d8320de0c3a007
@@ -356,17 +387,14 @@ dependencies:
     .agents/skills/test-driven-development/SKILL.md: sha256:b5b4717b8b761cce15a6cfe9022e33fd959e0894c0c39d72c9cb49c23486c10e
     .agents/skills/test-driven-development/testing-anti-patterns.md: sha256:bde453bc258f06543987477c837939afaa774ea2acbd9f308d702fc452bc4283
     .agents/skills/using-git-worktrees/SKILL.md: sha256:e2c3ec142e52868a51af246c620cd76ab648dcf27d6900d47e6ffd07159a9794
-    .agents/skills/using-superpowers/SKILL.md: sha256:918562bbba1c73d1407c50de77a92eeaa6930508bdb57a64324d7d508a9069e1
-    .agents/skills/using-superpowers/references/antigravity-tools.md: sha256:00b16e8e8166d972766613c4244a7901d0413af37944741a8b8f40105f9f7f05
-    .agents/skills/using-superpowers/references/claude-code-tools.md: sha256:7d9244dd278db15caa8f9f86bda0546c91fc65163f94b2499999fc72b69c3666
-    .agents/skills/using-superpowers/references/codex-tools.md: sha256:cbce77a3a430688ef0cc3c8f03d17d2df1a2c78603e8b138cec522b74d75e4ab
-    .agents/skills/using-superpowers/references/copilot-tools.md: sha256:9627943f22c8db64ac7fbac3b6e399f73650a5cf3618f7966e802e7fa58d4595
-    .agents/skills/using-superpowers/references/gemini-tools.md: sha256:62b9157bcb0ee3c6784e3d0da0798ddfa5872f9e0c34bea48f3079dabea71965
-    .agents/skills/using-superpowers/references/pi-tools.md: sha256:e89e2d5c7b89cdd2a511aa7ad3c191290baaaed8913006c30f283ac7c4b091fb
+    .agents/skills/using-superpowers/SKILL.md: sha256:55379fe7c1c473a02c61961c822996bff30e1320d6921d9062509bc508482c05
+    .agents/skills/using-superpowers/references/antigravity-tools.md: sha256:d0bcfa94dd0fa399fb9606a0f7c9562b43040cad02be167a2b999c3913a1d5e9
+    .agents/skills/using-superpowers/references/codex-tools.md: sha256:9310bb2315eed2c1cebea02cd1c9e8fe121cb788fc6b41e8b8f8b5ff46f85f37
+    .agents/skills/using-superpowers/references/pi-tools.md: sha256:703dbc83d23ecab9c6f388460c38abc482e9dee2fe6772a8c7a255152ad3a4d5
     .agents/skills/verification-before-completion/SKILL.md: sha256:ea52d15aabaf72bc6b558efe2c126f161b53961090ddcd712000273bfe8c7b6c
     .agents/skills/writing-plans/SKILL.md: sha256:272e1af349f5062c28dc282b3e21b220d58d683a7314a10c455b7432ec91d845
     .agents/skills/writing-plans/plan-document-reviewer-prompt.md: sha256:aa728b96aad603c8be28875a4305637f6c984aa81ffcadcb13e743202fa2a0c7
-    .agents/skills/writing-skills/SKILL.md: sha256:0903f8bef0908ccb5d9fe1a6cfbcf3d20a581c7bfcb547f71aafb795b9433b7b
+    .agents/skills/writing-skills/SKILL.md: sha256:6b8d08fe863318be8480ae8428e169640309fa9208df84bb0510012764454146
     .agents/skills/writing-skills/anthropic-best-practices.md: sha256:217629b356c09c9bd11017c9788e8fc654ca1b32c92d4a51cd490e16dd65e59a
     .agents/skills/writing-skills/examples/CLAUDE_MD_TESTING.md: sha256:0b379a3415e185d3c434b3ad283d8aa132f3022c2a4f210f168865b5986bcef0
     .agents/skills/writing-skills/graphviz-conventions.dot: sha256:e2890a593c91370e384b42f2f67b1a6232c9e69dddea7891a0c1c46d7b20b694
@@ -381,14 +409,14 @@ dependencies:
     .claude/skills/brainstorming/scripts/start-server.sh: sha256:a4e5ae84275bcaacd2f84345afeabe59cf7b00ba080e123da7cc1fb226f12847
     .claude/skills/brainstorming/scripts/stop-server.sh: sha256:0b5ccbbd57f62d3ed88993f7940b5ee0e5c0fc9b21c550c623da4f6292e47daf
     .claude/skills/brainstorming/spec-document-reviewer-prompt.md: sha256:95a0a195de9d984be2fffa95bab16fc8c563bc296a9cfc5e9c29cb3ece0d7457
-    .claude/skills/brainstorming/visual-companion.md: sha256:60cbad29b9dd7eaf08da020e301c498a72230b2e13c1813fa967a135ffcc1d71
+    .claude/skills/brainstorming/visual-companion.md: sha256:3321a044c777d03d7177df41c77bb83155ff2a6d0c16b8a3d752426d29f14ea8
     .claude/skills/dispatching-parallel-agents/SKILL.md: sha256:f0df13f584049059cc5619f90061405b89dcc6e28ab3f2a8517d27d99c7a46a6
-    .claude/skills/executing-plans/SKILL.md: sha256:b357c2a2e5bf24adf237b5d4a83cacd828f07b886d0873ad91546aa3c99905c9
+    .claude/skills/executing-plans/SKILL.md: sha256:bbd8d28bb655a52817cc129ce49f9e46fa7c6303f72ed5de95bfe914ef8e0ce8
     .claude/skills/finishing-a-development-branch/SKILL.md: sha256:e6d4a812de900d33c6eacfb40747f99427f25c304a7b7099120f9373b115a47f
     .claude/skills/receiving-code-review/SKILL.md: sha256:647036bbdab7bf2317e14e079595e984c9030f64295e2b4c0fb57dbeb48f25dd
     .claude/skills/requesting-code-review/SKILL.md: sha256:1017ccdd5bc61fab67c654cf118cbdb520464b313073a0a6b9a6b9aa647a3ad6
     .claude/skills/requesting-code-review/code-reviewer.md: sha256:b2f2ec7596925fe52dac158fdfbca19b3a7d779d619c481e6706a6c0001662d3
-    .claude/skills/subagent-driven-development/SKILL.md: sha256:abdd682e85bfc52413c997bef4612b2a4094168d8e4d6a967f1c0dcde4d83816
+    .claude/skills/subagent-driven-development/SKILL.md: sha256:5e9e846ae67d153ddf7c5f4fd5102af78454c8f3cdaa0720331cec063fc8861a
     .claude/skills/subagent-driven-development/implementer-prompt.md: sha256:49018b28dc11bc9f3d13a28959bb10ae1a96eabc5d8f19f4079d901f9ff2bf64
     .claude/skills/subagent-driven-development/scripts/review-package: sha256:0c0629f6e2c46fc8bf68dcfb8a247ab24eb548b7004fe494035e6fcba9b5cdfb
     .claude/skills/subagent-driven-development/scripts/sdd-workspace: sha256:9430befaff459ed862415b700c1a9efe45fd34838a684802a1d8320de0c3a007
@@ -408,17 +436,14 @@ dependencies:
     .claude/skills/test-driven-development/SKILL.md: sha256:b5b4717b8b761cce15a6cfe9022e33fd959e0894c0c39d72c9cb49c23486c10e
     .claude/skills/test-driven-development/testing-anti-patterns.md: sha256:bde453bc258f06543987477c837939afaa774ea2acbd9f308d702fc452bc4283
     .claude/skills/using-git-worktrees/SKILL.md: sha256:e2c3ec142e52868a51af246c620cd76ab648dcf27d6900d47e6ffd07159a9794
-    .claude/skills/using-superpowers/SKILL.md: sha256:918562bbba1c73d1407c50de77a92eeaa6930508bdb57a64324d7d508a9069e1
-    .claude/skills/using-superpowers/references/antigravity-tools.md: sha256:00b16e8e8166d972766613c4244a7901d0413af37944741a8b8f40105f9f7f05
-    .claude/skills/using-superpowers/references/claude-code-tools.md: sha256:7d9244dd278db15caa8f9f86bda0546c91fc65163f94b2499999fc72b69c3666
-    .claude/skills/using-superpowers/references/codex-tools.md: sha256:cbce77a3a430688ef0cc3c8f03d17d2df1a2c78603e8b138cec522b74d75e4ab
-    .claude/skills/using-superpowers/references/copilot-tools.md: sha256:9627943f22c8db64ac7fbac3b6e399f73650a5cf3618f7966e802e7fa58d4595
-    .claude/skills/using-superpowers/references/gemini-tools.md: sha256:62b9157bcb0ee3c6784e3d0da0798ddfa5872f9e0c34bea48f3079dabea71965
-    .claude/skills/using-superpowers/references/pi-tools.md: sha256:e89e2d5c7b89cdd2a511aa7ad3c191290baaaed8913006c30f283ac7c4b091fb
+    .claude/skills/using-superpowers/SKILL.md: sha256:55379fe7c1c473a02c61961c822996bff30e1320d6921d9062509bc508482c05
+    .claude/skills/using-superpowers/references/antigravity-tools.md: sha256:d0bcfa94dd0fa399fb9606a0f7c9562b43040cad02be167a2b999c3913a1d5e9
+    .claude/skills/using-superpowers/references/codex-tools.md: sha256:9310bb2315eed2c1cebea02cd1c9e8fe121cb788fc6b41e8b8f8b5ff46f85f37
+    .claude/skills/using-superpowers/references/pi-tools.md: sha256:703dbc83d23ecab9c6f388460c38abc482e9dee2fe6772a8c7a255152ad3a4d5
     .claude/skills/verification-before-completion/SKILL.md: sha256:ea52d15aabaf72bc6b558efe2c126f161b53961090ddcd712000273bfe8c7b6c
     .claude/skills/writing-plans/SKILL.md: sha256:272e1af349f5062c28dc282b3e21b220d58d683a7314a10c455b7432ec91d845
     .claude/skills/writing-plans/plan-document-reviewer-prompt.md: sha256:aa728b96aad603c8be28875a4305637f6c984aa81ffcadcb13e743202fa2a0c7
-    .claude/skills/writing-skills/SKILL.md: sha256:0903f8bef0908ccb5d9fe1a6cfbcf3d20a581c7bfcb547f71aafb795b9433b7b
+    .claude/skills/writing-skills/SKILL.md: sha256:6b8d08fe863318be8480ae8428e169640309fa9208df84bb0510012764454146
     .claude/skills/writing-skills/anthropic-best-practices.md: sha256:217629b356c09c9bd11017c9788e8fc654ca1b32c92d4a51cd490e16dd65e59a
     .claude/skills/writing-skills/examples/CLAUDE_MD_TESTING.md: sha256:0b379a3415e185d3c434b3ad283d8aa132f3022c2a4f210f168865b5986bcef0
     .claude/skills/writing-skills/graphviz-conventions.dot: sha256:e2890a593c91370e384b42f2f67b1a6232c9e69dddea7891a0c1c46d7b20b694
@@ -426,11 +451,13 @@ dependencies:
     .claude/skills/writing-skills/render-graphs.js: sha256:ccda971a87bb185f8febf81c56b556a20d026fa980c17b35fa3e8824fbb37852
     .claude/skills/writing-skills/testing-skills-with-subagents.md: sha256:c711346852c911b24a84aa161e0cff06a4cd7f4e2fa9e9c0a266cead5afcbade
     .cursor/hooks/superpowers/hooks/run-hook.cmd: sha256:d3d9c6199678dab2858e60509dde5e7414f13c2a2b5e48a38b1d368b6e1d6abb
-  content_hash: sha256:5b14832a84b21359e629052d2f4692fabded091ae2a80d085909776747e1f26e
+  content_hash: sha256:fcec2b6832dc4a4ce8fd0b7883fc72531fb402dd76537b62e495ab5c09742cf4
   declared_license: MIT
 - repo_url: sorah/config
+  name: sorah-guides
   host: github.com
   resolved_commit: da26e516d30336882c6dc898c25ef1a4c588c6d3
+  version: 0.6.1
   virtual_path: claude/marketplace/plugins/sorah-guides
   is_virtual: true
   package_type: marketplace_plugin
@@ -509,8 +536,10 @@ dependencies:
   content_hash: sha256:cb3c54dea86c80a00f3f4647718af562d75593ae24f723709cae615055360ea6
   declared_license: CC0-1.0
 - repo_url: sorah/config
+  name: sorah-spec
   host: github.com
   resolved_commit: da26e516d30336882c6dc898c25ef1a4c588c6d3
+  version: 0.1.3
   virtual_path: claude/marketplace/plugins/sorah-spec
   is_virtual: true
   package_type: marketplace_plugin
@@ -553,7 +582,55 @@ dependencies:
   content_hash: sha256:1b99b33451d6612c094fe5142412d1b4cbcae2003ff171e09578c968c163753f
   declared_license: CC0-1.0
 - repo_url: st0012/cctop
+  name: cctop
   host: github.com
-  resolved_commit: 9281e7e4384dada14348a3b7ad778ae47fc6d720
+  resolved_commit: 244630917bcab00e6482a69241144e8fd862c38e
+  version: '2446309'
   package_type: marketplace_plugin
-  content_hash: sha256:09eb37c8f3a0374b760b7711316e379896e0799eebf4c6df5e777496f344685c
+  content_hash: sha256:90ddc6c42d94447c26bfbd907bef3c2fb543a083973c965a26958876208077a6
+local_deployed_files:
+- .claude/rules/base.md
+- .claude/rules/debugging.md
+- .claude/rules/git-workflow.md
+- .claude/rules/github-cli.md
+- .claude/rules/mairu.md
+- .claude/rules/markdown-preview.md
+- .claude/rules/obsidian-vault.md
+- .claude/rules/obsidian.md
+- .claude/rules/pull-requests.md
+- .claude/rules/shell.md
+- .claude/rules/tdd.md
+- .cursor/rules/base.mdc
+- .cursor/rules/debugging.mdc
+- .cursor/rules/git-workflow.mdc
+- .cursor/rules/github-cli.mdc
+- .cursor/rules/mairu.mdc
+- .cursor/rules/markdown-preview.mdc
+- .cursor/rules/obsidian-vault.mdc
+- .cursor/rules/obsidian.mdc
+- .cursor/rules/pull-requests.mdc
+- .cursor/rules/shell.mdc
+- .cursor/rules/tdd.mdc
+local_deployed_file_hashes:
+  .claude/rules/base.md: sha256:3e2408137cf91d5b46660cc2611c8d9e785a6506ddcbc55e0d21f1976fe24f5b
+  .claude/rules/debugging.md: sha256:da71b0c7f3cbfac1a27fc76fcac579d0ed2012149847d7074191d3402086f4a8
+  .claude/rules/git-workflow.md: sha256:a599ffb36f37746b5bcf38e3b2433a076e25cf03f7237936e8929190a68f1be0
+  .claude/rules/github-cli.md: sha256:59c3e334372eaded96c4bf71eff38d87a5cee47fc94a83fcb828833fd225b8e2
+  .claude/rules/mairu.md: sha256:94b9bfbd70e7f4e5fcaf2d4d4a6449cebaa4da916df6e5d7d6be15a5b31e93a1
+  .claude/rules/markdown-preview.md: sha256:d7e4bcf6a7ee0b70afc2604455d6b133cbb35100ab6d473f8beaeebf423606b6
+  .claude/rules/obsidian-vault.md: sha256:19186b1aef632364804dab573965c48575b5c53eb526d62eebc39028ef8e1935
+  .claude/rules/obsidian.md: sha256:3aef307b33f8eafee864635d261a0d15e36c77608e5d6494fd9542c27270d228
+  .claude/rules/pull-requests.md: sha256:4449fe8bdff0dbaa11820f5bc6cbb664455b6c422219e10a692cce62af392bb9
+  .claude/rules/shell.md: sha256:5e302397bbedd461a20ab9a1386b27e9d074a06e6f9ad0121ee3f753c03b3050
+  .claude/rules/tdd.md: sha256:66e939c07e871606a4466d96ecbcb80228e6599cf322298a7cad93c8e5f792cc
+  .cursor/rules/base.mdc: sha256:f72cbedc7dbf77d64f6676371326f9025d4cecd04ded07df7148bdb6087af3f9
+  .cursor/rules/debugging.mdc: sha256:7484cd87650b52a6272c4db555fdff50b4585f4d6ba21be575d116c1a2c958c8
+  .cursor/rules/git-workflow.mdc: sha256:5df76d088ca616852fe02e6c501e35e71fb9bf260e06799b5a2847a1eba8d025
+  .cursor/rules/github-cli.mdc: sha256:211d47da68da778549c0e7f39699fbb4305b363944da74f1e0104c5b114790c1
+  .cursor/rules/mairu.mdc: sha256:98875553a9f784bea93dac603d25b25f06574941d15d5af0baf5570dd87e6251
+  .cursor/rules/markdown-preview.mdc: sha256:9a3efb820dd70ad64e3cee2cf81e2b50d0c19e365c8b8cd57cba1f4eb53fcb69
+  .cursor/rules/obsidian-vault.mdc: sha256:b82eb7644494ade40ad2288b2b19528e11b0efe3b8caa41ede9917548529b7c3
+  .cursor/rules/obsidian.mdc: sha256:54ac00fb6ab1289d5ba589eaf1d02f5996fb8ec6ba3a4be0d7c0839c14c6ea5f
+  .cursor/rules/pull-requests.mdc: sha256:99a242408d2aee991fa61a67d55bed801834d4f21bc75799ca25bef9f221d4bf
+  .cursor/rules/shell.mdc: sha256:b77ca0df031902c907a4b4c2fa3401beac9343a2227e32cf40ae9a989679466d
+  .cursor/rules/tdd.mdc: sha256:a31cb5584e9efa248017cdb3cfec53d51c2aa00734b36e5661782d925aa8797e

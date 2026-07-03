@@ -32,6 +32,15 @@ dependencies:
     - asonas/skills/commit
     - asonas/skills/entire
     - asonas/skills/git-worktree-workflow
+    # herdr: herdr（ターミナル常駐エージェントマルチプレクサ）を herdr 内から
+    # 操作するための agent skill。upstream ogulcancelik/herdr の SKILL.md を vendor
+    # したもの（HERDR_ENV=1 のときのみ有効化）。巨大 Rust リポジトリの直接依存を避け、
+    # clean な skill 名で配備するため asonas/skills 配下に複製している。
+    # 更新は upstream を再取得して上書き:
+    #   curl -fsSL -A "claude-code/1.0" \
+    #     https://raw.githubusercontent.com/ogulcancelik/herdr/master/SKILL.md \
+    #     -o ~/ghq/github.com/asonas/skills/herdr/SKILL.md
+    - asonas/skills/herdr
     # japanese-tech-writing: 日本語技術文書・書籍原稿の文章規範。
     # k16shikano の gist (fd287c3133457c4fd8f5601d34aa817d) を vendor したもの。
     # gist 直参照だと APM が gist ID 名で配備し /japanese-tech-writing で起動でき
