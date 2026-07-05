@@ -17,6 +17,7 @@ Rules for organizing the Obsidian vault. Covers directory layout, naming convent
 | `bookmarks/` | Raindrop.io から自動同期されたブックマーク。1 ファイル 1 ブックマーク（`{raindrop_id}.md`）。frontmatter にメタデータ、本文に defuddle で抽出した記事本文。`/raindrop-sync` で管理 | 手書きノート（同期で上書きされる） |
 | `books/` | Apple Books のハイライトを取り込んだ読書記録。1 書籍 1 ファイル（`<title>（ハイライト）.md`）。frontmatter に書誌、本文に章ごとのハイライト引用。`/books-highlights` で管理（同期で上書きされる）。手書きの読書ノートも置いてよい | — |
 | `daily/` | Daily notes (`YYYY-MM-DD.md`) | Weekly reviews, evergreen notes |
+| `activities/` | Machine-generated activity logs (`YYYY-MM-DD.md`)。カレンダー予定、GitHub、ブラウザ履歴、Claude Code、Bluesky、Scrapbox を asonas/activities リポジトリのツール（launchd ジョブと `/today`・`/wrapup`）が集約・上書き描画する。daily note から `![[activities/YYYY-MM-DD#カレンダー]]` で transclude される | 手書きノート（セクションが再描画で上書きされる） |
 | `weekly/` | Weekly retros (`YYYY-Wnn.md`) | Daily notes, evaluations |
 | `blog/` | Blog post drafts intended for public publication | Unpublished essays, work logs |
 | `essays/` | Column-like prose, opinion pieces, and personal essays not intended for public blog publication (or undecided). May be promoted to `blog/` later | Work logs, investigations |
