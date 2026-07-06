@@ -5,7 +5,7 @@ assert_line_count() {
     expected="$1"
     pattern="$2"
     file="$3"
-    actual=$(grep -Ec "$pattern" "$file" || true)
+    actual=$(grep -Ec -- "$pattern" "$file" || true)
 
     if [ "$actual" -ne "$expected" ]; then
         echo "expected $file to contain $pattern $expected time(s), got $actual" >&2
@@ -19,4 +19,11 @@ test_manifest_targets() {
     assert_line_count 1 '^  - codex$' apm.yml
 }
 
+test_install_targets() {
+    assert_line_count 1 '^    \(cd "\$HOME/.apm" && apm update --yes --target claude,cursor,codex\)$' install.sh
+    assert_line_count 1 '^    echo "==> apm install -g --target claude,cursor,codex \(deploy skills, agents, commands\)"$' install.sh
+    assert_line_count 1 '^    if ! \(cd "\$HOME/.apm" && apm install -g --target claude,cursor,codex\); then$' install.sh
+}
+
 test_manifest_targets
+test_install_targets

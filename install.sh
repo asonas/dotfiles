@@ -124,14 +124,14 @@ if command -v apm >/dev/null 2>&1; then
     echo "==> apm compile (.apm/instructions -> CLAUDE.md, AGENTS.md)"
     apm compile
     echo "==> apm update --yes (refresh ~/.apm/apm.lock.yaml to latest refs)"
-    (cd "$HOME/.apm" && apm update --yes --target claude,cursor)
-    echo "==> apm install -g --target claude,cursor (deploy skills, agents, commands)"
+    (cd "$HOME/.apm" && apm update --yes --target claude,cursor,codex)
+    echo "==> apm install -g --target claude,cursor,codex (deploy skills, agents, commands)"
     # Tolerate non-zero exit: 'apm install' returns an error if ANY dependency
     # fails (e.g. an upstream subdirectory was removed), but the packages we
     # depend on still install. Under 'set -e' a partial failure here would abort
     # the script before the hook bridge and settings normalization below run,
     # leaving .claude/settings.json polluted with the invalid 'sessionStart' key.
-    if ! (cd "$HOME/.apm" && apm install -g --target claude,cursor); then
+    if ! (cd "$HOME/.apm" && apm install -g --target claude,cursor,codex); then
         echo "warning: 'apm install' reported errors (e.g. unavailable dependencies);" \
              "continuing so the hook bridge and settings normalization still run."
     fi
