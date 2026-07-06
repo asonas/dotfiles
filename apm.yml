@@ -1,12 +1,13 @@
 name: asonas-dotfiles
 version: 1.0.0
-description: Personal global agent rules and skills, shared across Claude Code and cursor-agent
+description: Personal global agent rules and skills, shared across Claude Code, Cursor, and Codex
 author: Yuya Fujiwara
 # Resolution order: --target flag > this field > auto-detect from filesystem.
 # Accepted values: copilot, claude, cursor, opencode, codex, gemini, windsurf, all
 targets:
   - claude
   - cursor
+  - codex
 dependencies:
   apm:
     # Anthropic official skills (skill form so Cursor can load them too;

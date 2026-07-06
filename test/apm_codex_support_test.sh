@@ -1,0 +1,22 @@
+#!/bin/bash
+set -eu
+
+assert_line_count() {
+    expected="$1"
+    pattern="$2"
+    file="$3"
+    actual=$(grep -Ec "$pattern" "$file" || true)
+
+    if [ "$actual" -ne "$expected" ]; then
+        echo "expected $file to contain $pattern $expected time(s), got $actual" >&2
+        return 1
+    fi
+}
+
+test_manifest_targets() {
+    assert_line_count 1 '^  - claude$' apm.yml
+    assert_line_count 1 '^  - cursor$' apm.yml
+    assert_line_count 1 '^  - codex$' apm.yml
+}
+
+test_manifest_targets
