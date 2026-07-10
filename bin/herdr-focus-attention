@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# herdr-focus-attention — 対応待ちの agent にフォーカスする。
+#
+# blocked（入力待ち）を最優先、次に done（完了して未確認）の順に候補を集め、
+# 現在フォーカス中のペインの次の候補へ移動する。連打すると候補を順に巡回する。
+# ~/.config/herdr/config.toml の [[keys.command]] から cmd+shift+u で起動する想定。
+#
+# miyagawa の herdr-unread に着想を得ている。
+set -euo pipefail
+
+command -v herdr >/dev/null 2>&1 || exit 0
+command -v jq >/dev/null 2>&1 || exit 0
+
+agents_json="$(herdr agent list 2>/dev/null)" || exit 0
+
+# 候補リスト（1 行 1 pane_id）。blocked を先、done を後に並べ、
+# それぞれ pane_id でソートして巡回順を安定させる。
+candidates="$(printf '%s' "$agents_json" | jq -r '
+  .result.agents
+  | ( map(select(.agent_status == "blocked")) | sort_by(.pane_id) )
+    + ( map(select(.agent_status == "done")) | sort_by(.pane_id) )
+  | .[].pane_id
+')"
+
+[ -z "$candidates" ] && exit 0
+
+# 現在フォーカス中の pane_id（候補に含まれないこともある）。
+focused="$(printf '%s' "$agents_json" \
+  | jq -r 'first(.result.agents[] | select(.focused == true) | .pane_id) // empty')"
+
+# フォーカス中ペインの次の候補を選ぶ。候補内になければ先頭、末尾なら先頭へ折り返す。
+target="$(printf '%s\n' "$candidates" | awk -v cur="$focused" '
+  { list[NR] = $0 }
+  END {
+    if (NR == 0) exit
+    idx = 0
+    for (i = 1; i <= NR; i++) if (list[i] == cur) { idx = i; break }
+    print list[(idx % NR) + 1]
+  }
+')"
+
+[ -z "$target" ] && exit 0
+
+herdr agent focus "$target" >/dev/null 2>&1
