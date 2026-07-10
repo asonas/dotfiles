@@ -22,6 +22,12 @@ dependencies:
     # Claude Code, so APM-only management leaves cman non-functional.
     - kepano/obsidian-skills
     - st0012/cctop
+    # ax: AI 向け curl 代替（fetch / discover / extract）。skill は skills/ax に
+    # ネストしているのでサブパス指定する（frontend-design と同様）。リポジトリ直下の
+    # CLAUDE.md は ax 自身の開発用（Bun 強制など）なので、丸ごと参照するとグローバル
+    # CLAUDE.md に混入する。サブパス指定なら skill だけを取り込める。バイナリ本体は
+    # 別途 `curl -fsSL https://ax.yusuke.run/install | sh` が必要（apm は SKILL.md のみ配布）。
+    - yusukebe/ax/skills/ax
     # sorah/config is a monorepo-style marketplace; pin the specific plugin paths.
     - sorah/config/claude/marketplace/plugins/sorah-spec
     - sorah/config/claude/marketplace/plugins/sorah-guides

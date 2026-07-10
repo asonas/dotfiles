@@ -286,3 +286,11 @@ esac
 # Setup zsh completions
 mkdir -p "$HOME/.zsh.d/completions"
 curl -fsSL "https://gist.githubusercontent.com/takai/d42693fbd01e8957ca52fa08c8ae660a/raw/_mairu" -o "$HOME/.zsh.d/completions/_mairu"
+
+# ax CLI (the AI-era curl: fetch / discover / extract). APM deploys the ax
+# SKILL.md (yusukebe/ax) but not the binary, so the skill is inert without this.
+# Install it here for new machines. Idempotent: skip if already on PATH.
+if ! command -v ax >/dev/null 2>&1; then
+    echo "==> installing ax (https://ax.yusuke.run)"
+    curl -fsSL https://ax.yusuke.run/install | sh
+fi
