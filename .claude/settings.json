@@ -140,6 +140,7 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
+  "advisorModel": "opus",
   "tui": "fullscreen",
   "skipAutoPermissionPrompt": true,
   "mcpServers": {
