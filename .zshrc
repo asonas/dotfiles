@@ -460,5 +460,20 @@ wt() {
   git wt "$(git wt | tail -n +2 | peco | awk '{print $(NF-1)}')"
 }
 
+# hunk: always wrap long diff lines for display subcommands.
+# Inserts --wrap right after the subcommand so pathspecs after `--` stay intact.
+# session / daemon / skill pass through untouched.
+hunk() {
+  case "$1" in
+    diff|show|patch|pager|difftool)
+      local sub="$1"; shift
+      command hunk "$sub" --wrap "$@"
+      ;;
+    *)
+      command hunk "$@"
+      ;;
+  esac
+}
+
 # Added by Antigravity
 export PATH="/Users/asonas/.antigravity/antigravity/bin:$PATH"

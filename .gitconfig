@@ -49,6 +49,8 @@
     sw = switch
     new-worktree = "!f() { git worktree add -b \"$1\" \"../$(basename $(pwd))-$1\"; }; f"
     aci = ai-commit
+	hdiff = -c core.pager=\"hunk pager --wrap\" diff
+	hshow = -c core.pager=\"hunk pager --wrap\" show
 
 [color]
     ui = true
