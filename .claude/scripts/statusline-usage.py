@@ -113,11 +113,14 @@ def fmt(label, pct):
     return f'{label} {gradient(pct)}{bar(pct)} {p}%{R}'
 
 
-def fmt_reset(iso_str):
-    if not iso_str:
+def fmt_reset(value):
+    if not value:
         return ''
     try:
-        dt = datetime.fromisoformat(iso_str).astimezone()
+        if isinstance(value, (int, float)):
+            dt = datetime.fromtimestamp(value).astimezone()
+        else:
+            dt = datetime.fromisoformat(value).astimezone()
         now = datetime.now().astimezone()
         if dt.date() == now.date():
             label = dt.strftime('%H:%M')
@@ -170,11 +173,15 @@ if rate_limits is None:
         if seven.get('utilization') is not None:
             line2_parts.append(fmt('7d', seven['utilization']) + fmt_reset(seven.get('resets_at')))
 else:
-    _write_cache(rate_limits)
     five = rate_limits.get('five_hour') or {}
+    week = rate_limits.get('seven_day') or {}
+    # Cache in OAuth API format (utilization) so the fallback path can read it
+    _write_cache({
+        'five_hour': {'utilization': five.get('used_percentage'), 'resets_at': five.get('resets_at')},
+        'seven_day': {'utilization': week.get('used_percentage'), 'resets_at': week.get('resets_at')},
+    })
     if five.get('used_percentage') is not None:
         line2_parts.append(fmt('5h', five['used_percentage']) + fmt_reset(five.get('resets_at')))
-    week = rate_limits.get('seven_day') or {}
     if week.get('used_percentage') is not None:
         line2_parts.append(fmt('7d', week['used_percentage']) + fmt_reset(week.get('resets_at')))
 
