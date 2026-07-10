@@ -20,13 +20,8 @@ disable-model-invocation: true
 
 ### Step 1: Load Today's Daily Note
 
-今日のdaily noteを読み込む。公式CLIまたはReadツールを使う。
+今日のdaily noteを読み込む。Read ツールで絶対パスを直読する（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない）。
 
-```bash
-obsidian read vault=asonas path="daily/YYYY-MM-DD.md" 2>/dev/null
-```
-
-または:
 ```
 Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 ```

@@ -88,7 +88,7 @@ If an existing file must be overwritten, pass the `overwrite` flag. Use this tem
 
 ### Step 3: Claude Code Review (Round N)
 
-Read the current document from Obsidian (`obsidian read vault=asonas path="pr-reviews/PR-{repo}-{number}.md" 2>/dev/null` または Readツールで `/Users/asonas/Documents/asonas/pr-reviews/PR-{repo}-{number}.md`). Review the diff using the pr-review skill perspectives:
+Read the current document from Obsidian with the Read tool: `/Users/asonas/Documents/asonas/pr-reviews/PR-{repo}-{number}.md`（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない）. Review the diff using the pr-review skill perspectives:
 
 1. **Correctness**: Bugs, logic errors, unhandled edge cases
 2. **Design**: Abstraction, separation of concerns, dependencies

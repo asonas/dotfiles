@@ -42,11 +42,13 @@ disable-model-invocation: true
 - `coaching/weekly/YYYY-Wnn.md` を対象月にかかる全週分（通常4〜5ファイル）
 - 前月の `coaching/monthly/YYYY-MM.md`（あれば。前月テーマとの連続性を見るため）
 
-```bash
-obsidian read vault=asonas path="daily/YYYY-MM-DD.md" 2>/dev/null
-obsidian read vault=asonas path="coaching/log.md" 2>/dev/null
-obsidian read vault=asonas path="coaching/weekly/YYYY-Wnn.md" 2>/dev/null
-obsidian read vault=asonas path="coaching/monthly/YYYY-MM.md" 2>/dev/null
+読み取りは Read ツールで絶対パスを直読する（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない）:
+
+```
+Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+Read: /Users/asonas/Documents/asonas/coaching/log.md
+Read: /Users/asonas/Documents/asonas/coaching/weekly/YYYY-Wnn.md
+Read: /Users/asonas/Documents/asonas/coaching/monthly/YYYY-MM.md
 ```
 
 ファイル数が多いので、内容を頭に入れる際は **テーマ抽出に必要な情報** に絞ってメモする（全文を保持しない）。

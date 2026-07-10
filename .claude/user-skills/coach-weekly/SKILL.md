@@ -39,10 +39,12 @@ disable-model-invocation: true
 - `coaching/log.md` の末尾（直近2週間分相当でよい）
 - 前週があれば `coaching/weekly/YYYY-W<前週>.md`
 
-```bash
-obsidian read vault=asonas path="daily/YYYY-MM-DD.md" 2>/dev/null
-obsidian read vault=asonas path="coaching/log.md" 2>/dev/null
-obsidian read vault=asonas path="coaching/weekly/YYYY-W<前週>.md" 2>/dev/null
+読み取りは Read ツールで絶対パスを直読する（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない）:
+
+```
+Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+Read: /Users/asonas/Documents/asonas/coaching/log.md
+Read: /Users/asonas/Documents/asonas/coaching/weekly/YYYY-W<前週>.md
 ```
 
 存在しないファイルはスキップしてよい。

@@ -34,10 +34,10 @@ argument-hint: "morning|evening"
 
 ### Step 2: 文脈の読み込み
 
-`coaching/log.md` の末尾を読む。直近10エントリ程度で十分。
+`coaching/log.md` の末尾を読む。直近10エントリ程度で十分。読み取りは Read ツールで絶対パスを直読する（`obsidian read` は GUI が閉じているとハングするため使わない）:
 
-```bash
-obsidian read vault=asonas path="coaching/log.md" 2>/dev/null
+```
+Read: /Users/asonas/Documents/asonas/coaching/log.md
 ```
 
 ファイルが存在しない場合はスキップして構わない（初回起動時）。
@@ -110,17 +110,18 @@ obsidian read vault=asonas path="coaching/log.md" 2>/dev/null
 
 ```
 
-ファイルが存在しない場合は新規作成する。
+ファイルが存在しない場合は新規作成する。読み書きとも Obsidian GUI に依存しない方法を使う（`obsidian read/create/append` は GUI が閉じているとハングするため使わない）。
 
-```bash
-# 存在確認
-obsidian read vault=asonas path="coaching/log.md" 2>/dev/null
+```
+# 存在確認: Read ツールで直読（無ければ新規作成に進む）
+Read: /Users/asonas/Documents/asonas/coaching/log.md
 
-# 存在しなければ作成
-obsidian create vault=asonas path="coaching/log.md" content="<初回エントリ>" 2>/dev/null
+# 存在しなければ Write ツールで新規作成
+Write: /Users/asonas/Documents/asonas/coaching/log.md  ← <初回エントリ>
 
-# 存在すれば末尾に append
-obsidian append vault=asonas path="coaching/log.md" content="<新エントリ>" 2>/dev/null
+# 存在すれば末尾に追記。Edit ツールで末尾へ append するか、Bash で
+#   cat >> /Users/asonas/Documents/asonas/coaching/log.md
+# を使う（Obsidian はファイルシステムの変更を自動検知する）
 ```
 
 ### Step 7: daily note への wikilink（初回のみ）

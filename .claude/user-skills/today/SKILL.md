@@ -46,8 +46,10 @@ Step 1で取得した現在日付から以下のルールで `YYYY-qN` を導出
 
 例: 2026-04-15 → `goals/2026-q2.md`、2026-10-01 → `goals/2026-q4.md`
 
-```bash
-obsidian read vault=asonas path="goals/2026-q2.md" 2>/dev/null
+読み取りは Read ツールで絶対パスを直読する（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない。詳細は `obsidian.instructions.md`）:
+
+```
+Read: /Users/asonas/Documents/asonas/goals/2026-q3.md
 ```
 
 ファイルが存在しない場合（未作成の四半期）はスキップしてユーザーに通知する。
@@ -185,16 +187,15 @@ mise exec -- bundle exec bin/activities-snapshot --source bluesky --source scrap
 
 **IMPORTANT: Always create today's daily note.**
 
-公式CLIで今日のdaily noteを作成する。既に存在する場合は上書きしない。**`vault=asonas` を必ず指定**:
+今日のdaily noteを作成する。既に存在する場合は上書きしない。
 
-```bash
-obsidian read vault=asonas path="daily/YYYY-MM-DD.md" 2>/dev/null
+まず Read ツールで存在確認する（`obsidian read` は GUI が閉じているとハングするため使わない）:
+
+```
+Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 ```
 
-存在しなければ作成する:
-```bash
-obsidian create vault=asonas path="daily/YYYY-MM-DD.md" content="<daily note本文>" 2>/dev/null
-```
+存在しなければ作成する。Write ツールで `/Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md` に直接書き出す（Obsidian はファイルシステムの変更を自動検知する）。`obsidian create` を使う場合は **`vault=asonas` を必ず指定**する。
 
 Daily note format:
 **IMPORTANT: `# YYYY-MM-DD` のようなh1ヘッディングは絶対に含めないこと。** Obsidianではファイル名がタイトルになるため重複する。ノートは `[[IVRy]]` から直接始める。
