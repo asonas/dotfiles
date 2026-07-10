@@ -477,3 +477,12 @@ hunk() {
 
 # Added by Antigravity
 export PATH="/Users/asonas/.antigravity/antigravity/bin:$PATH"
+
+# herdr: 新規 pane を開いたとき（=ログインシェル起動時）に入力ソースを英数(ABC)へ切り替える。
+# herdr に on-create hook は無いが、pane ごとに login shell が起動し HERDR_ENV=1 が入るので
+# それを pane 作成の callback 代わりに使う。`-o login` でガードして、pane 内で手動起動した
+# 非ログインの zsh サブシェルでは再発火させない。macism の第2引数 0 は CJK race 対策の
+# workaround を無効化する（ABC への切替方向では不要で、待ち時間なしで即切替できる）。
+if [[ "$HERDR_ENV" == "1" && -o login ]] && (( $+commands[macism] )); then
+  macism com.apple.keylayout.ABC 0 >/dev/null 2>&1
+fi
