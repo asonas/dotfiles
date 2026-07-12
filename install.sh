@@ -176,20 +176,56 @@ if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
     # settings.json is portable across macOS (/Users/...) and Linux (/home/...).
     # The hook command runs via a shell, which expands $HOME at session start.
     canonical_cmd='"$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd" session-start'
+    # herdr's Claude integration reports each pane's session id to the running
+    # herdr server so it can `claude --resume <id>` after a server/host restart
+    # (config: [session] resume_agents_on_restore). The reporting hook is the
+    # script installed by `herdr integration install claude`; without it herdr
+    # only knows a pane runs claude, not which conversation. apm's normalization
+    # would otherwise drop this entry, so bake it into the canonical SessionStart
+    # here. Include it only when the script exists so non-herdr machines don't
+    # get a "No such file or directory" SessionStart error. The 'resume' matcher
+    # ensures the id is re-reported when a session is itself resumed.
+    herdr_hook="$HOME/.claude/hooks/herdr-agent-state.sh"
     tmp=$(mktemp)
-    jq --arg cmd "$canonical_cmd" '
-      .hooks |= (
-        del(.sessionStart)
-        | .SessionStart = [{
-            matcher: "startup|clear|compact",
-            hooks: [{
-              type: "command",
-              command: $cmd,
-              async: false
-            }]
-          }]
-      )
-    ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
+    if [ -f "$herdr_hook" ]; then
+        herdr_cmd='"$HOME/.claude/hooks/herdr-agent-state.sh" session'
+        jq --arg cmd "$canonical_cmd" --arg herdr "$herdr_cmd" '
+          .hooks |= (
+            del(.sessionStart)
+            | .SessionStart = [
+                {
+                  matcher: "startup|clear|compact",
+                  hooks: [{
+                    type: "command",
+                    command: $cmd,
+                    async: false
+                  }]
+                },
+                {
+                  matcher: "startup|resume|clear|compact",
+                  hooks: [{
+                    type: "command",
+                    command: $herdr
+                  }]
+                }
+              ]
+          )
+        ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
+    else
+        jq --arg cmd "$canonical_cmd" '
+          .hooks |= (
+            del(.sessionStart)
+            | .SessionStart = [{
+                matcher: "startup|clear|compact",
+                hooks: [{
+                  type: "command",
+                  command: $cmd,
+                  async: false
+                }]
+              }]
+          )
+        ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
+    fi
 else
     echo "warning: jq not found or $settings_file missing; skipping SessionStart hook normalization."
 fi
