@@ -147,29 +147,39 @@ else
     echo "         Install Agent Package Manager so global rules and skills can be regenerated."
 fi
 
-# Workaround for APM v0.14.0 bug: 'apm install' deploys only run-hook.cmd
-# from obra/superpowers' hooks/ directory and silently skips session-start
-# (APM searches at hooks/hooks/run-hook.cmd, a doubled 'hooks/' segment),
-# leaving the SessionStart hook configured in .claude/settings.json pointing
-# at a non-existent script. Bridge the missing files from apm_modules/ so
-# 'run-hook.cmd session-start' resolves. Remove once APM ships a fix.
+# obra/superpowers ships a SessionStart hook (hooks/hooks.json) that runs
+# run-hook.cmd, which execs the extensionless 'session-start' script and reads
+# ${PLUGIN_ROOT}/skills/using-superpowers/SKILL.md (PLUGIN_ROOT resolves to
+# ~/.claude/hooks/superpowers). Verified against APM 0.24.1 (2026-07-12):
+#   - 'apm install' now deploys BOTH run-hook.cmd and session-start as real
+#     files under ~/.claude/hooks/superpowers/hooks/. The older 0.14.0 bug that
+#     skipped session-start (APM looked at a doubled hooks/hooks/ path) is fixed.
+#   - It still does NOT deploy skills/ under the plugin hook root: superpowers
+#     skills land in ~/.claude/skills/, not ~/.claude/hooks/superpowers/skills/,
+#     so session-start cannot find SKILL.md there.
+# So the only bridge still required is skills/. The session-start symlink is kept
+# purely as a defensive fallback and is created only when APM left the file
+# missing, so we don't clobber APM's real copy on every run.
 superpowers_src="$HOME/.apm/apm_modules/obra/superpowers"
 superpowers_dst="$HOME/.claude/hooks/superpowers"
-if [ -f "$superpowers_src/hooks/session-start" ]; then
+if [ -d "$superpowers_src/skills" ]; then
     mkdir -p "$superpowers_dst/hooks"
-    ln -sfn "$superpowers_src/hooks/session-start" \
-            "$superpowers_dst/hooks/session-start"
-    # session-start reads ${PLUGIN_ROOT}/skills/using-superpowers/SKILL.md,
-    # where PLUGIN_ROOT resolves to $superpowers_dst, so bridge skills/ too.
+    [ -e "$superpowers_dst/hooks/session-start" ] || \
+        ln -sfn "$superpowers_src/hooks/session-start" \
+                "$superpowers_dst/hooks/session-start"
     ln -sfn "$superpowers_src/skills" "$superpowers_dst/skills"
 fi
 
-# Companion workaround: 'apm install' rewrites .claude/settings.json by
-# (1) adding an invalid 'sessionStart' (lowercase) key whose commands point at
-# the doubled hooks/hooks/ paths APM tried and failed to find, and
-# (2) duplicating the canonical 'SessionStart' entry. Both happen on every run,
-# so we normalize the hooks block here: drop the lowercase key and pin
-# SessionStart to a single entry that calls our workaround symlinks.
+# Companion workaround: 'apm install' rewrites .claude/settings.json to wire in
+# the SessionStart hook that superpowers declares. Verified against APM 0.24.1
+# (2026-07-12): it appends its own superpowers 'SessionStart' entry on every run
+# (with the install-time-expanded absolute path), so repeated runs accumulate
+# duplicate entries. The older 0.14.0 damage -- an invalid lowercase 'sessionStart'
+# key and commands pointing at doubled hooks/hooks/ paths -- is no longer produced,
+# but we still guard against it. We normalize the hooks block here: drop any stray
+# lowercase 'sessionStart' key and pin SessionStart to our canonical entries
+# (superpowers with a portable $HOME path, plus the herdr hook below). This both
+# de-duplicates APM's re-appended entry and keeps hand-managed hooks from being lost.
 settings_file="$PWD/.claude/settings.json"
 if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
     # Write a literal $HOME (not the install-time expansion) so the committed
