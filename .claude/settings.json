@@ -57,7 +57,7 @@
           },
           {
             "type": "command",
-            "command": "jq -r 'if .tool_input.command | test(\"rm -rf|dd if=|:(){ :|:& };:\") then {\"decision\": \"block\", \"reason\": \"危険なコマンドは実行できません。別の方法を検討してください。\"} else empty end'"
+            "command": "jq -r 'if .tool_input.command | test(\"rm -rf|dd if=|:(){ :|:& };:\") then {\"decision\": \"block\", \"reason\": \"This command is blocked as potentially destructive. Consider a safer approach.\"} else empty end'"
           }
         ]
       }
@@ -90,6 +90,16 @@
           {
             "type": "command",
             "command": "\"$HOME/.claude/hooks/herdr-agent-state.sh\" session"
+          }
+        ]
+      },
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/Users/asonas/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
+            "async": false
           }
         ]
       }
