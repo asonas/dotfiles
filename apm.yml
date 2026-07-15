@@ -37,6 +37,10 @@ dependencies:
     # has diverged ahead of the published package, and APM refuses to deploy
     # over the symlink anyway.
     - asonas/skills/commit
+    # comment-quality: takai の gist (f17b43412243221f918509e989df0a3b) を
+    # asonas/skills 配下に vendor したもの。diff 中の新規コメント・PR 本文・docs の
+    # 文言を R1〜R6 で診断する（report only）。upstream 更新時は再取得して同期する。
+    - asonas/skills/comment-quality
     - asonas/skills/entire
     - asonas/skills/git-worktree-workflow
     # herdr: herdr（ターミナル常駐エージェントマルチプレクサ）を herdr 内から
