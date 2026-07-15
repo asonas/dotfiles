@@ -89,6 +89,18 @@ case "$OSTYPE" in
     ;;
 esac
 
+# herdr Claude integration hook: vendor the reporting script instead of running
+# `herdr integration install claude` on each machine. That command rewrites
+# ~/.claude/settings.json (which is a symlink into this repo) with alphabetically
+# sorted keys AND appends a duplicate '*'-matcher hook entry, dirtying the repo on
+# every new-machine bootstrap. By symlinking the version-pinned script here, the
+# hook is present everywhere and the SessionStart normalization below keeps its own
+# canonical entry, so settings.json never gets churned. Re-vendor by copying
+# ~/.claude/hooks/herdr-agent-state.sh after a `herdr` upgrade bumps the integration
+# version (check with `herdr integration status`).
+mkdir -p "$HOME/.claude/hooks"
+ln -sf "$PWD/.claude/hooks/herdr-agent-state.sh" "$HOME/.claude/hooks/herdr-agent-state.sh"
+
 # Link ~/.apm/apm.yml to this repo's apm.yml so 'apm install -g' is driven
 # from the version-controlled file.
 mkdir -p "$HOME/.apm"
@@ -217,7 +229,7 @@ if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
     # herdr's Claude integration reports each pane's session id to the running
     # herdr server so it can `claude --resume <id>` after a server/host restart
     # (config: [session] resume_agents_on_restore). The reporting hook is the
-    # script installed by `herdr integration install claude`; without it herdr
+    # herdr-agent-state.sh script vendored and symlinked above; without it herdr
     # only knows a pane runs claude, not which conversation. apm's normalization
     # would otherwise drop this entry, so bake it into the canonical SessionStart
     # here. Include it only when the script exists so non-herdr machines don't
