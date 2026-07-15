@@ -15,6 +15,15 @@ dependencies:
     # Note: anthropics/skills nests entries under `skills/`, so the subpath
     # is `skills/frontend-design`, not `frontend-design`.
     - anthropics/skills/skills/frontend-design
+    # emilkowalski/skills: Emil Kowalski (ex-Vercel/Linear) のデザインエンジニア
+    # 向けスキル集。アニメーションとUIデザインの良し悪しの判断基準を文書化したもの。
+    # frontend-design 同様にエントリが `skills/` 配下にネストしているのでサブパス
+    # 指定する。
+    - emilkowalski/skills/skills/animation-vocabulary
+    - emilkowalski/skills/skills/apple-design
+    - emilkowalski/skills/skills/emil-design-eng
+    - emilkowalski/skills/skills/improve-animations
+    - emilkowalski/skills/skills/review-animations
     # Plugins migrated from Claude Code marketplaces (single-repo form).
     - obra/superpowers
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
