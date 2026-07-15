@@ -92,16 +92,6 @@
             "command": "\"$HOME/.claude/hooks/herdr-agent-state.sh\" session"
           }
         ]
-      },
-      {
-        "matcher": "startup|clear|compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"/Users/asonas/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
-            "async": false
-          }
-        ]
       }
     ]
   },
