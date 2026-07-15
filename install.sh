@@ -273,23 +273,6 @@ else
     echo "warning: $PWD/CLAUDE.md not found; skipping ~/.claude/CLAUDE.md symlink."
 fi
 
-# Setup external Claude skills via ghq, parked under .claude/user-skills/
-# so they live alongside the hand-authored skills.
-ghq_skills="
-  git@github.com:blader/humanizer.git
-"
-for repo in $ghq_skills
-do
-    ghq get -u "$repo"
-    repo_path=$(ghq list -p "$repo")
-    skill_name=$(basename "$repo_path")
-    link="$PWD/.claude/user-skills/$skill_name"
-    if [ -L "$link" ] || [ -e "$link" ]; then
-        rm -rf "$link"
-    fi
-    ln -Fis "$repo_path" "$link"
-done
-
 # Expose each entry under .claude/user-skills/ as a per-entry symlink under
 # ~/.claude/skills/. The parent ~/.claude/skills/ is left as a real directory so
 # apm-installed skills coexist without writing back into this repo.
