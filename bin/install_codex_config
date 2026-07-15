@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eu
+
+managed_config="$1"
+user_config="$2"
+temporary_config=$(mktemp "${user_config}.tmp.XXXXXX")
+trap 'command rm -f "$temporary_config"' EXIT
+
+{
+    command cat "$managed_config"
+    printf '\n'
+    if [ -f "$user_config" ]; then
+        awk '
+            BEGIN { in_top_level = 1; content_started = 0 }
+            /^\[/ { in_top_level = 0 }
+            in_top_level && /^(sandbox_mode|approval_policy)[[:space:]]*=/ { next }
+            in_top_level && !content_started && /^[[:space:]]*$/ { next }
+            { print; content_started = 1 }
+        ' "$user_config"
+    fi
+} > "$temporary_config"
+
+chmod 600 "$temporary_config"
+command mv "$temporary_config" "$user_config"
+trap - EXIT

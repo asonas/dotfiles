@@ -67,6 +67,13 @@ case "$OSTYPE" in
     ;;
 esac
 
+# Merge dotfiles-managed Codex defaults without replacing runtime state such as
+# project trust and hook hashes that Codex writes to the same file.
+mkdir -p "$HOME/.codex"
+"$PWD/bin/install_codex_config" \
+    "$PWD/.config/codex/config.toml" \
+    "$HOME/.codex/config.toml"
+
 # herdr: link the OS-appropriate config into place. herdr reads a single
 # ~/.config/herdr/config.toml (no include/merge support), so we keep one
 # self-contained file per platform and symlink the right one. Only config.toml
