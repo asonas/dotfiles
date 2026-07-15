@@ -1,2 +1,5 @@
 sandbox_mode = "workspace-write"
 approval_policy = "on-request"
+
+[tui]
+status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "git-branch"]

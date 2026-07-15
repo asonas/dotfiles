@@ -65,6 +65,25 @@ test_updates_existing_managed_values() {
     assert_line_count 0 '^approval_policy = "never"$' "$config"
 }
 
+test_preserves_other_tui_settings() {
+    config="$test_root/preserves-tui.toml"
+    printf '%s\n' \
+        '[tui]' \
+        'animations = false' \
+        'status_line = ["current-dir"]' \
+        '' \
+        '[projects."/work/project"]' \
+        'trust_level = "trusted"' > "$config"
+
+    "$installer" "$managed_config" "$config"
+
+    assert_line_count 1 '^\[tui\]$' "$config"
+    assert_contains 'animations = false' "$config"
+    assert_contains 'status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "git-branch"]' "$config"
+    assert_line_count 0 '^status_line = \["current-dir"\]$' "$config"
+    assert_contains '[projects."/work/project"]' "$config"
+}
+
 test_is_idempotent() {
     config="$test_root/idempotent.toml"
     first_result="$test_root/idempotent-first.toml"
@@ -110,8 +129,15 @@ test_install_script_deploys_managed_config() {
     assert_line_count 1 '^    "\$HOME/.codex/config.toml"$' "$install_script"
 }
 
+test_managed_config_shows_usage_in_status_line() {
+    assert_contains '[tui]' "$managed_config"
+    assert_contains 'status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "git-branch"]' "$managed_config"
+}
+
 test_preserves_existing_codex_state
 test_updates_existing_managed_values
+test_preserves_other_tui_settings
 test_is_idempotent
 test_creates_missing_user_config
 test_install_script_deploys_managed_config
+test_managed_config_shows_usage_in_status_line

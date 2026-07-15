@@ -7,16 +7,30 @@ temporary_config=$(mktemp "${user_config}.tmp.XXXXXX")
 trap 'command rm -f "$temporary_config"' EXIT
 
 {
-    command cat "$managed_config"
-    printf '\n'
+    awk '/^\[/ { exit } { print }' "$managed_config"
     if [ -f "$user_config" ]; then
         awk '
             BEGIN { in_top_level = 1; content_started = 0 }
             /^\[/ { in_top_level = 0 }
             in_top_level && /^(sandbox_mode|approval_policy)[[:space:]]*=/ { next }
+            !in_top_level { exit }
             in_top_level && !content_started && /^[[:space:]]*$/ { next }
             { print; content_started = 1 }
         ' "$user_config"
+    fi
+    awk 'found || /^\[/ { found = 1; print }' "$managed_config"
+    if [ -f "$user_config" ]; then
+        awk '
+            /^\[tui\]$/ { in_tui = 1; next }
+            /^\[/ { in_tui = 0 }
+            in_tui && /^status_line[[:space:]]*=/ { next }
+            in_tui { print }
+        ' "$user_config"
+        awk '
+            /^\[tui\]$/ { skip = 1; next }
+            /^\[/ { skip = 0 }
+            /^\[/ || !skip { print }
+        ' "$user_config" | awk 'found || /^\[/ { found = 1; print }'
     fi
 } > "$temporary_config"
 
