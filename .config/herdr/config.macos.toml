@@ -1,0 +1,57 @@
+onboarding = false
+# herdr configuration
+# See full defaults with: herdr --default-config
+
+[keys]
+# Prefix key to enter prefix mode (default: "ctrl+b")
+prefix = "ctrl+j"
+
+# Workspace(Space) navigation as direct chords (no prefix needed).
+# j = next, k = previous (vim-style).
+next_workspace = "cmd+shift+j"
+previous_workspace = "cmd+shift+k"
+new_workspace = "cmd+shift+n"
+
+# Use ctrl-modified second keys so bindings survive the Japanese IME (karukan).
+# A bare letter after the prefix gets absorbed as romaji; a ctrl+letter passes
+# through. Avoid ctrl+space (karukan uses it for full-width space).
+new_tab = "prefix+ctrl+c"
+next_tab = "prefix+ctrl+n"
+previous_tab = "prefix+ctrl+p"
+split_vertical = "prefix+ctrl+v"
+split_horizontal = "prefix+ctrl+s"
+cycle_pane_next = "prefix+ctrl+i"
+
+# tmux-fingers 相当。プラグイン hotchpotch/herdr-tiny-fingers の open アクション。
+# 記事のデフォルトは "prefix+f" だが、上記と同じ理由（karukan IME がベアレターを
+# ローマ字として吸う）で ctrl-modified の "prefix+ctrl+f" にしている。
+[[keys.command]]
+key = "prefix+ctrl+f"
+type = "plugin_action"
+command = "hotchpotch.herdr-tiny-fingers.open"
+description = "fingers mode"
+
+# 対応待ち（blocked を優先、次に done）の agent へフォーカスを移す。
+# 連打すると候補を巡回する。cmd+shift+j/k/n と同じく prefix なしの直接チョード。
+# type = "shell" は一時ペインを開かず検出でバックグラウンド実行するので、
+# 巡回の起点となる「現在フォーカス中ペイン」が temp pane に奪われない。
+[[keys.command]]
+key = "cmd+shift+u"
+type = "shell"
+command = "/Users/asonas/bin/herdr-focus-attention"
+description = "focus next agent needing attention"
+
+[ui]
+# 新規タブは名前を聞かず、生成名で即作成する
+prompt_new_tab_name = false
+
+[session]
+# herdr サーバー再起動（update など）後に、Claude Code 等のペインを
+# 元の会話セッションに復帰させる。公式 integration が session ref を報告する前提。
+resume_agents_on_restore = true
+
+[experimental]
+# prefix モード中だけ macOS の入力ソースを ASCII 対応レイアウトへ一時切替し、
+# prefix を抜けたら元の入力ソースへ戻す。karukan IME 有効時でも prefix コマンドが
+# 通るようにするため。best-effort（macOS 限定）。
+switch_ascii_input_source_in_prefix = true

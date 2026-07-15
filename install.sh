@@ -67,6 +67,21 @@ case "$OSTYPE" in
     ;;
 esac
 
+# herdr: link the OS-appropriate config into place. herdr reads a single
+# ~/.config/herdr/config.toml (no include/merge support), so we keep one
+# self-contained file per platform and symlink the right one. Only config.toml
+# is linked; herdr's runtime files (session.json, logs, sockets, plugins) in the
+# same directory are left untouched.
+mkdir -p "$HOME/.config/herdr"
+case "$OSTYPE" in
+  darwin*)
+    ln -sf "$PWD/.config/herdr/config.macos.toml" "$HOME/.config/herdr/config.toml"
+    ;;
+  linux*)
+    ln -sf "$PWD/.config/herdr/config.linux.toml" "$HOME/.config/herdr/config.toml"
+    ;;
+esac
+
 # Link ~/.apm/apm.yml to this repo's apm.yml so 'apm install -g' is driven
 # from the version-controlled file.
 mkdir -p "$HOME/.apm"

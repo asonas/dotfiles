@@ -1,0 +1,52 @@
+onboarding = false
+# herdr configuration (Linux / Arch)
+# See full defaults with: herdr --default-config
+#
+# このホストの herdr サーバへは、ローカルの WezTerm のほか Windows の WezTerm や
+# iPad の Blink から SSH で接続する。cmd/super は制御バイトではないため SSH 越しには
+# 届かない。よって macOS 版のような cmd+shift の直接チョードは使わず、C0 制御バイト
+# として確実に通る prefix+ctrl+<letter> に全操作を寄せている。フロー制御(IXON)に
+# 吸われる ctrl+s(XOFF) / ctrl+q(XON) は second key に使わない。
+
+[keys]
+# Prefix key to enter prefix mode (default: "ctrl+b")
+prefix = "ctrl+j"
+
+# Workspace(Space) navigation. macOS 版は cmd+shift の直接チョードだが、SSH 越しに
+# 届かないため prefix 経由にしている。letter は暫定（Arch 実機で衝突・体感を見て調整）。
+new_workspace = "prefix+ctrl+t"
+next_workspace = "prefix+ctrl+o"
+previous_workspace = "prefix+ctrl+u"
+
+# tab / pane 操作。macOS 版と同じ prefix+ctrl+<letter>。
+new_tab = "prefix+ctrl+c"
+next_tab = "prefix+ctrl+n"
+previous_tab = "prefix+ctrl+p"
+split_vertical = "prefix+ctrl+v"
+split_horizontal = "prefix+ctrl+s"
+cycle_pane_next = "prefix+ctrl+i"
+
+# tmux-fingers 相当。プラグイン hotchpotch/herdr-tiny-fingers の open アクション。
+[[keys.command]]
+key = "prefix+ctrl+f"
+type = "plugin_action"
+command = "hotchpotch.herdr-tiny-fingers.open"
+description = "fingers mode"
+
+# 対応待ち（blocked を優先、次に done）の agent へフォーカスを移す。
+# 連打すると候補を巡回する。macOS 版は cmd+shift+u だが、SSH でも届くよう prefix 経由。
+# 絶対パス指定なので herdr の shell の PATH に依存しない（Arch の home は /home/asonas）。
+[[keys.command]]
+key = "prefix+ctrl+g"
+type = "shell"
+command = "/home/asonas/bin/herdr-focus-attention"
+description = "focus next agent needing attention"
+
+[ui]
+# 新規タブは名前を聞かず、生成名で即作成する
+prompt_new_tab_name = false
+
+[session]
+# herdr サーバー再起動（update など）後に、Claude Code 等のペインを
+# 元の会話セッションに復帰させる。公式 integration が session ref を報告する前提。
+resume_agents_on_restore = true
