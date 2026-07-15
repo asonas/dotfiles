@@ -170,6 +170,11 @@ else
     echo "         Install Agent Package Manager so global rules and skills can be regenerated."
 fi
 
+# APM 0.25.0 drops the multiline security-reviewer description when translating
+# YAML frontmatter to Codex TOML. The fixer changes blank descriptions only.
+"$PWD/bin/fix_codex_agent_description" "$PWD/.codex/agents/security-reviewer.toml"
+"$PWD/bin/fix_codex_agent_description" "$HOME/.codex/agents/security-reviewer.toml"
+
 # obra/superpowers ships a SessionStart hook (hooks/hooks.json) that runs
 # run-hook.cmd, which execs the extensionless 'session-start' script and reads
 # ${PLUGIN_ROOT}/skills/using-superpowers/SKILL.md (PLUGIN_ROOT resolves to

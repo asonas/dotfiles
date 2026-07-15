@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eu
+
+agent_file="$1"
+replacement='description = "Reviews code changes for security vulnerabilities and reports findings."'
+
+[ -f "$agent_file" ] || exit 0
+
+if ! grep -Fqx 'name = "security-reviewer"' "$agent_file"; then
+    exit 0
+fi
+if ! grep -Fqx 'description = ""' "$agent_file"; then
+    exit 0
+fi
+
+temporary_file=$(mktemp "${agent_file}.tmp.XXXXXX")
+trap 'command rm -f "$temporary_file"' EXIT
+
+awk -v replacement="$replacement" '
+    $0 == "description = \"\"" { print replacement; next }
+    { print }
+' "$agent_file" > "$temporary_file"
+
+command mv "$temporary_file" "$agent_file"
+trap - EXIT
