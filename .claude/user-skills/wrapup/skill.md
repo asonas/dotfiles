@@ -44,11 +44,14 @@ Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
 
 If it doesn't exist, ask the user whether to (a) create today's note and append, (b) append to yesterday's note instead, or (c) abort.
 
-### Step 3: Parallel Information Gathering (Sonnet subagent)
+### Step 3: Parallel Information Gathering (Sonnet subagents)
 
-メインスレッドが session context（今日の会話・作業）を持っている一方で、Linear のデータは外部 API なので並列に取りに行く。`model: "sonnet"` の Agent tool で起動する。
+メインスレッドが持っている session context は「今 /wrapup を回しているこの 1 セッション」の範囲でしかない。asonas は 1 日のうちに複数のリポジトリ・複数のセッションを跨いで作業するため、現在セッションのコンテキストだけでは当日の作業を取りこぼす。そこで外部情報は **2 つの Sonnet サブエージェントを並列で** 取りに行く。どちらも `model: "sonnet"` の Agent tool で、Step 3a と Step 3b を **同時に** 起動する。
 
-メインスレッドはこの subagent 起動と同時に **Step 4 (session context からのサマリー組み立て)** を進めて構わない。
+- **3a. linear-today**: Linear で今日更新した Issue を抽出（外部 API）
+- **3b. cman-sessions**: cman で当日の Claude Code セッションを全プロジェクト横断でさらい、プロジェクト別の作業サマリーを返す（これが「やったこと」の主たる網羅ソース）
+
+メインスレッドはこの 2 つの subagent 起動と同時に **Step 4 (現在 session context からのサマリー組み立て)** を進めてよい。3 者の結果は Step 4 で統合する。
 
 #### 3a. linear-today subagent
 
@@ -72,33 +75,74 @@ Linear MCP が認証されていない場合は "Linear未認証" を返す。
 推測は禁止。MCP の応答に無いフィールドを捏造しないこと。
 ```
 
+#### 3b. cman-sessions subagent
+
+当日 asonas が回した Claude Code セッションを全プロジェクト横断で拾い、プロジェクト別の作業サマリーを返す。セッションを跨いだ作業を取りこぼさないための中核ステップ。
+
+プロンプト要旨:
+```
+あなたは asonas が今日 Claude Code で行った作業を全プロジェクト横断でまとめる任務を持つ。
+対象日は YYYY-MM-DD (Step 1 で確定した日付)。
+
+1. まず ToolSearch で cman のツールをロードする
+   (query 例: "select:mcp__plugin_cman_cman__list_sessions,mcp__plugin_cman_cman__search_sessions")
+2. mcp__plugin_cman_cman__list_sessions (limit=60 程度) で直近セッションを列挙する。
+   各エントリの相対時刻 ("X hours ago" 等) と対象日を突き合わせ、対象日のセッションだけを対象にする。
+3. 次のセッションは除外する:
+   - `agent-*` で始まるサブエージェントのセッション (実作業の主体ではない)
+   - 最初のメッセージが "Base directory for this skill: .../commit" の /commit スキル単独セッション
+   - 最初のメッセージが /wrapup や /today など日報運用スキル自体のセッション
+4. 残った各セッションについて、何をしたのかを把握する。セッションタイトル(最初のユーザーメッセージ)
+   だけでは着手した話題しか分からないので、成果まで書くには中身の確認が要る。必要に応じて
+   mcp__plugin_cman_cman__search_sessions を keyword=対象日付 や keyword=プロジェクト固有語 で叩き、
+   マッチしたスニペットから「実際に何が完了/前進したか」を読み取る。
+   確認しても成果が判然としないセッションは、成果を捏造せず「〜に着手」「〜を調査」など
+   着手した作業内容として記述する (推測で完了扱いにしない)。
+5. 出力フォーマット (プロジェクトごとにまとめ、時系列がわかる場合は時刻を添える):
+
+## 今日のセッション横断サマリー
+### <リポジトリ名 / プロジェクト名>
+- HH:MM 内容 (成果 or 着手した作業)
+- ...
+### <別のリポジトリ>
+- ...
+
+対象日のセッションが無ければ "該当なし" を返す。
+cman が使えない (ツール未ロード・エラー) 場合は "cman利用不可" を返す。
+推測は禁止。セッションに実在しない成果を書かないこと。リポジトリ名・Issue番号は実データに従う。
+```
+
+返ってきたサマリーは、現在 session context と重なる部分がある(まさに今のセッションも含まれる)。Step 4 で重複を排除して統合する。
+
 ### Step 4: Gather Work Summary (main thread)
 
 メインスレッドで以下のソースから「やったこと」のドラフトを組み立てる。
 
-1. **From the current session context**
-   - Claude Codeは現在のセッション内で行われた全ての会話・作業を記憶している
-   - セッション中に実施した実装、調査、修正、意思決定を抽出する
-   - 変更・作成したファイルの一覧を含める
-   - **最も信頼できる主情報源** として扱う
+1. **From Step 3b (cman-sessions subagent) — 当日全体の網羅ソース**
+   - 全プロジェクト横断のセッションサマリーが返ってくる。これを「やったこと」の骨格として最初に据える
+   - asonas は 1 日に複数リポジトリを跨ぐため、現在セッションだけでは必ず取りこぼす。cman サマリーが当日像の主たる情報源になる
+   - "cman利用不可" が返ったときのみ、フォールバックとしてメインスレッドから `cman:cm-search` を keyword=対象日付 で直接叩く
 
-2. **From Claude Code auto memory（永続メモリ）**
+2. **From the current session context — 深さの補強**
+   - Claude Code は今 /wrapup を回しているこのセッション内の会話・作業を最も詳細に記憶している
+   - cman サマリーは各セッションを外から要約したものなので、現在セッションに該当する項目は session context の方が正確で詳しい。該当項目は session context で上書き・肉付けする
+   - 変更・作成したファイルの一覧など、session context にしかない具体は積極的に補う
+
+3. **From Claude Code auto memory（永続メモリ）**
    - セッションを跨いで保持されるメモリファイルを参照する
    - auto memoryディレクトリのパスはシステムプロンプトに記載されている
    - 今日の日付や作業内容に関連するエントリ、今日更新されたメモリファイルがあれば含める
-
-3. **From cm-search (フレッシュセッションで /wrapup を回す場合の補強)**
-   - 現在のセッションが /wrapup 単独で起動された等で session context が乏しい場合は、`cman:cm-search` を keyword=対象日付 で叩いて当日のセッション履歴を補強する
-   - session context が十分にある場合はスキップ可
 
 4. **From Step 3a (linear-today subagent)**
    - Linear 側で更新したものを「やったこと」のソースとして取り込む
    - 該当 Issue を `[[TEAM-XXX]]` の wikilink 付きで言及
 
 5. **情報の統合**
-   - 優先順位: セッションコンテキスト >= cm-search > auto memory ≒ Linear today
-   - 重複を除去し、時系列または論理的にグループ化する
+   - 骨格は cman サマリー(当日の全セッション)。そこへ現在 session context の詳細を重ね、auto memory と Linear を補う
+   - 優先順位（同じ作業に複数ソースが触れている場合の詳細さ）: 現在セッションコンテキスト > cman サマリー > auto memory ≒ Linear today。ただし **網羅性は cman サマリーが担う**（現在セッションに無い作業も必ず拾う）
+   - 重複を除去し、プロジェクトごと or 時系列でグループ化する
    - 散文 1 段落 + 箇条書き の組み合わせで構わない（既存 daily note のフォーマットに合わせる）
+   - セッションが多い日はログが長くなる。主要な作業を優先しつつ、Step 5 でユーザーに提示して取捨を委ねる
 
 ### Step 5: Present Summary for Review
 
@@ -214,5 +258,5 @@ Always respond in Japanese.
 - Keep each log entry concise (1 行 1 作業)
 - Use the `- HH:MM <カテゴリ>: <内容>` format consistently
 - **タスク管理は Things3 から離脱した**。`/wrapup` では Things3 を読まない・書かない・残タスクを表示しない
-- Linear の今日更新分は補助情報。session context が主情報源
-- subagent から返却された情報を daily note に書き込む前に、明らかに事実と異なるもの・幻覚が紛れ込んでいないか軽く目視確認すること
+- 当日像の網羅は cman-sessions subagent (Step 3b) が担う。現在 session context は該当セッションの詳細を肉付けする役割、Linear は補助
+- subagent から返却された情報を daily note に書き込む前に、明らかに事実と異なるもの・幻覚が紛れ込んでいないか軽く目視確認すること。特に cman サマリーは各セッションを外から要約したものなので、成果を断定しすぎていないか（着手止まりを完了扱いにしていないか）を確認する
