@@ -36,6 +36,13 @@ local function is_ssh()
 	return ssh_connection ~= ""
 end
 
+local function herdr_prefix_key(key)
+	return act.Multiple({
+		act.SendKey({ key = "j", mods = "CTRL" }),
+		act.SendKey({ key = key, mods = "CTRL" }),
+	})
+end
+
 -- keyconfig
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	config.keys = {
@@ -155,6 +162,13 @@ wezterm.on('gui-startup', function(cmd)
 end)
 
 if wezterm.target_triple == "aarch64-apple-darwin" then
+	config.keys = {
+		{ key = "j", mods = "CMD|SHIFT", action = herdr_prefix_key("o") },
+		{ key = "k", mods = "CMD|SHIFT", action = herdr_prefix_key("u") },
+		{ key = "n", mods = "CMD|SHIFT", action = herdr_prefix_key("t") },
+		{ key = "u", mods = "CMD|SHIFT", action = herdr_prefix_key("g") },
+	}
+
 	wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
 		local title = wezterm.truncate_right(basename(tab.active_pane.foreground_process_name), max_width)
 		if title == "" then
