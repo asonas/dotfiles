@@ -90,7 +90,14 @@ test_install_script_fixes_project_and_user_roles_after_apm() {
     fi
 }
 
+test_repository_agent_has_fixed_description() {
+    agent_file="$repo_root/.codex/agents/security-reviewer.toml"
+
+    assert_line_count 1 '^description = "Reviews code changes for security vulnerabilities and reports findings\."$' "$agent_file"
+}
+
 test_fixes_blank_security_reviewer_description
 test_preserves_non_blank_description
 test_ignores_missing_file
 test_install_script_fixes_project_and_user_roles_after_apm
+test_repository_agent_has_fixed_description
