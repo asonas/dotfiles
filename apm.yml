@@ -66,6 +66,14 @@ dependencies:
     # gist 直参照だと APM が gist ID 名で配備し /japanese-tech-writing で起動でき
     # ないため、asonas/skills 配下に複製して clean な skill 名で配備している。
     - asonas/skills/japanese-tech-writing
+    # cognitive-rhythm-writing: 説明的な文章に認知リズム（緩急）を設計するための
+    # 規範。japanese-tech-writing の姉妹スキルで、作業前に
+    # ../japanese-tech-writing/SKILL.md を併読する前提（配備時に兄弟ディレクトリと
+    # して並ぶので相対参照が解決する）。k16shikano の gist
+    # (eb2929f13ed19c97188393d297be8432) を vendor したもの。gist 直参照だと APM が
+    # gist ID 名で配備し /cognitive-rhythm-writing で起動できないため、asonas/skills
+    # 配下に複製して clean な skill 名で配備している。
+    - asonas/skills/cognitive-rhythm-writing
     - asonas/skills/legacy-code-improvement
     - asonas/skills/pr-review
     - asonas/skills/usb-debug
