@@ -237,18 +237,35 @@ function Invoke-ApmDistribution {
         Copy-Item -LiteralPath (Join-Path $RepoRoot 'apm.lock.yaml') (Join-Path $apmDir 'apm.lock.yaml') -Force
     }
 
-    Push-Location $apmDir
+    $nativeErrorPreference = Get-Variable -Name PSNativeCommandUseErrorActionPreference -ErrorAction SilentlyContinue
     try {
-        # 'apm update' refreshes #main refs so the lockfile matches upstream;
-        # without it 'apm install' aborts on a content-hash mismatch. Both are
-        # tolerant of non-zero exits (a single unavailable dependency must not
-        # abort the whole distribution, same rationale as install.sh).
-        Write-Host "==> apm update --yes (refresh refs)"
-        & apm update --yes --target claude,cursor,codex
-        Write-Host "==> apm install -g --target claude,cursor,codex"
-        & apm install -g --target claude,cursor,codex
+        $PSNativeCommandUseErrorActionPreference = $false
+        Push-Location $apmDir
+        try {
+            # A single unavailable dependency must not prevent the remaining
+            # packages and installer repairs from completing.
+            Write-Host "==> apm update --yes (refresh refs)"
+            & apm update --yes --target claude,cursor,codex
+            $updateExitCode = $LASTEXITCODE
+            if ($updateExitCode -ne 0) {
+                Write-Warning "apm update failed with exit code $updateExitCode; continuing."
+            }
+            Write-Host "==> apm install -g --target claude,cursor,codex"
+            & apm install -g --target claude,cursor,codex
+            $installExitCode = $LASTEXITCODE
+            if ($installExitCode -ne 0) {
+                Write-Warning "apm install failed with exit code $installExitCode; continuing."
+            }
+        } finally {
+            Pop-Location
+        }
     } finally {
-        Pop-Location
+        if ($nativeErrorPreference) {
+            $PSNativeCommandUseErrorActionPreference = $nativeErrorPreference.Value
+        } else {
+            Remove-Variable -Name PSNativeCommandUseErrorActionPreference -Scope Local `
+                -ErrorAction SilentlyContinue
+        }
     }
 
     # Keep the refreshed pins version-controlled alongside apm.yml.

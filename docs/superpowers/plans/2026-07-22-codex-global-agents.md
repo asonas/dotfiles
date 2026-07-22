@@ -32,7 +32,7 @@
 - Consumes: `install.sh` が設定する `$PWD` と `$HOME/.codex`
 - Produces: `$HOME/.codex/AGENTS.md` から `$PWD/AGENTS.md` へのシンボリックリンク
 
-- [ ] **Step 1: POSIX配布契約の失敗するテストを書く**
+- [x] **Step 1: POSIX配布契約の失敗するテストを書く**
 
 `test/codex_global_agents_distribution_test.sh` を作成し、まずPOSIXの1項目だけを有効にします。
 
@@ -64,13 +64,13 @@ test_posix_links_global_agents_file
 
 `plan.md` の先頭項目を進行中にします。
 
-- [ ] **Step 2: テストを実行してRedを確認する**
+- [x] **Step 2: テストを実行してRedを確認する**
 
 Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: FAIL。`install.sh` に `codex_agents_source` が0回しかないと表示されます。
 
-- [ ] **Step 3: POSIX向けの最小実装を書く**
+- [x] **Step 3: POSIX向けの最小実装を書く**
 
 `install.sh` のAPM分岐直後へ次を追加します。
 
@@ -84,23 +84,23 @@ else
 fi
 ```
 
-- [ ] **Step 4: テストを実行してGreenを確認する**
+- [x] **Step 4: テストを実行してGreenを確認する**
 
 Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: PASS、終了コード0。
 
-- [ ] **Step 5: POSIXの構文と既存契約を検証する**
+- [x] **Step 5: POSIXの構文と既存契約を検証する**
 
 Run: `bash -n install.sh && bash test/apm_codex_support_test.sh && bash test/codex_global_agents_distribution_test.sh`
 
 Expected: 全コマンドが終了コード0。
 
-- [ ] **Step 6: テストリストを更新する**
+- [x] **Step 6: テストリストを更新する**
 
 `plan.md` のPOSIX項目を完了にし、Windowsコピー項目を進行中にします。
 
-- [ ] **Step 7: POSIX配布をコミットする**
+- [x] **Step 7: POSIX配布をコミットする**
 
 `commit` スキルを使い、次のファイルだけを一つの論理単位としてステージします。
 
@@ -120,7 +120,7 @@ git ai-commit --context "Add tested POSIX distribution for Codex global AGENTS.m
 - Consumes: `$RepoRoot`、PowerShellの `$HomeDir`、APMコマンド
 - Produces: `$HomeDir\.codex\AGENTS.md` の通常ファイル
 
-- [ ] **Step 1: Windowsコピー配布の失敗するテストを一つ追加する**
+- [x] **Step 1: Windowsコピー配布の失敗するテストを一つ追加する**
 
 テストファイルへ次を追加し、末尾から呼び出します。
 
@@ -142,7 +142,7 @@ Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: FAIL。`install.ps1` に `$CodexDir` が0回しかないと表示されます。
 
-- [ ] **Step 2: Windows向けの最小コピー関数を書く**
+- [x] **Step 2: Windows向けの最小コピー関数を書く**
 
 `install.ps1` の実行部より前へ次を追加します。
 
@@ -175,23 +175,23 @@ Write-Host "==> Copying global Codex AGENTS.md"
 Copy-CodexGlobalAgents -RepoRoot $RepoRoot -CodexDir $CodexDir
 ```
 
-- [ ] **Step 3: テストを実行してGreenを確認する**
+- [x] **Step 3: テストを実行してGreenを確認する**
 
 Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: PASS、終了コード0。
 
-- [ ] **Step 4: Windows関連テストを再実行する**
+- [x] **Step 4: Windows関連テストを再実行する**
 
 Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: PASS、終了コード0。
 
-- [ ] **Step 5: テストリストを更新する**
+- [x] **Step 5: テストリストを更新する**
 
 `plan.md` のWindowsコピー項目を完了にし、APM生成順序項目を進行中にします。
 
-- [ ] **Step 6: Windowsコピー配布をコミットする**
+- [x] **Step 6: Windowsコピー配布をコミットする**
 
 `commit` スキルを使い、次のファイルだけを一つの論理単位としてステージします。
 
@@ -211,7 +211,7 @@ git ai-commit --context "Add tested Windows copy distribution for Codex global A
 - Consumes: `Invoke-ApmDistribution` が受け取る `$RepoRoot`
 - Produces: 配布前に生成済みの `AGENTS.md`、`claude,cursor,codex` で統一されたAPM target
 
-- [ ] **Step 1: Codex targetの失敗するテストを追加する**
+- [x] **Step 1: Codex targetの失敗するテストを追加する**
 
 テストファイルへ次を追加し、末尾から呼び出します。
 
@@ -226,7 +226,7 @@ Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: FAIL。WindowsのAPM targetが `claude,cursor` のままであることを示します。
 
-- [ ] **Step 2: WindowsのAPM targetへCodexを追加する**
+- [x] **Step 2: WindowsのAPM targetへCodexを追加する**
 
 `Invoke-ApmDistribution` 内の2コマンドと表示を `claude,cursor,codex` に変更します。
 
@@ -236,13 +236,13 @@ Write-Host "==> apm install -g --target claude,cursor,codex"
 & apm install -g --target claude,cursor,codex
 ```
 
-- [ ] **Step 3: Codex targetのテストをGreenにする**
+- [x] **Step 3: Codex targetのテストをGreenにする**
 
 Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: PASS、終了コード0。
 
-- [ ] **Step 4: 配布前compileの失敗するテストを追加する**
+- [x] **Step 4: 配布前compileの失敗するテストを追加する**
 
 テストファイルへ次を追加し、末尾から呼び出します。
 
@@ -262,7 +262,7 @@ Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: FAIL。`apm compile` が存在しないことを示します。
 
-- [ ] **Step 5: WindowsのAPM処理へcompileを追加する**
+- [x] **Step 5: WindowsのAPM処理へcompileを追加する**
 
 `Invoke-ApmDistribution` の`Push-Location`でリポジトリを一時的な作業場所にし、生成後に元の場所へ戻します。
 
@@ -278,17 +278,17 @@ try {
 
 このブロックは `$apmDir` で `apm update` を実行するブロックより前へ置きます。
 
-- [ ] **Step 6: compile順序のテストをGreenにする**
+- [x] **Step 6: compile順序のテストをGreenにする**
 
 Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: PASS、終了コード0。
 
-- [ ] **Step 7: テストリストを更新する**
+- [x] **Step 7: テストリストを更新する**
 
 `plan.md` のAPM生成順序項目を完了にし、全体検証項目を進行中にします。
 
-- [ ] **Step 8: WindowsのAPM更新をコミットする**
+- [x] **Step 8: WindowsのAPM更新をコミットする**
 
 `commit` スキルを使い、次のファイルだけを一つの論理単位としてステージします。
 
@@ -307,7 +307,7 @@ git ai-commit --context "Generate and distribute Codex guidance from the Windows
 - Consumes: Task 1からTask 3で追加した両インストーラーの配布処理
 - Produces: 検証済みの実装と完了した進捗記録
 
-- [ ] **Step 1: すべてのシェルテストを実行する**
+- [x] **Step 1: すべてのシェルテストを実行する**
 
 Run:
 
@@ -319,7 +319,7 @@ done
 
 Expected: すべて終了コード0。
 
-- [ ] **Step 2: 構文検査を実行する**
+- [x] **Step 2: 構文検査を実行する**
 
 Run: `bash -n install.sh`
 
@@ -331,18 +331,18 @@ Run: `pwsh -NoProfile -Command '$null = [System.Management.Automation.Language.P
 
 Expected: 終了コード0、出力なし。
 
-- [ ] **Step 3: 設計書とテストリストを完了状態へ更新する**
+- [x] **Step 3: 設計書とテストリストを完了状態へ更新する**
 
 `plan.md` の全項目を完了にします。
-設計書のCurrent Statusを `Implementation complete.` に変え、全チェック項目を完了にし、2026-07-22の検証結果をUpdatesへ追記します。
+設計書のCurrent Statusへ実装完了と利用可能な検証の完了を記録し、PowerShellを利用できるWindows環境での実動作検証だけは未完了として残します。2026-07-22の検証結果もUpdatesへ追記します。
 
-- [ ] **Step 4: 文書更新後に契約テストを再実行する**
+- [x] **Step 4: 文書更新後に契約テストを再実行する**
 
 Run: `bash test/codex_global_agents_distribution_test.sh && bash test/apm_codex_support_test.sh`
 
 Expected: 両方とも終了コード0。
 
-- [ ] **Step 5: 完了記録をコミットする**
+- [x] **Step 5: 完了記録をコミットする**
 
 `commit` スキルを使い、進捗文書だけを一つの論理単位としてステージします。
 

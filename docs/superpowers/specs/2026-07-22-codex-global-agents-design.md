@@ -39,6 +39,7 @@ Windowsでは、APM配布関数がリポジトリを作業場所として `apm c
 
 配布元がない場合、および `apm update` または `apm install` が部分的に失敗した場合は警告して処理を継続します。
 `apm compile` が失敗した場合は、配布元に古い生成物が残っていても処理を停止します。
+Windowsではupdate/installの実行中だけ `$PSNativeCommandUseErrorActionPreference` をfalseに固定し、各終了コードを警告へ変換した後、元の値または未定義状態へ復元します。
 配布元があるにもかかわらずリンク作成またはコピーが失敗した場合は、既存の `$ErrorActionPreference = 'Stop'` または `set -e` に従ってインストールを失敗させます。
 これにより、古いグローバル指示が残った状態を成功として扱いません。
 
@@ -80,7 +81,7 @@ Implementation and POSIX verification complete. Windows execution verification i
 - [x] POSIXの全配置ケースを実動作で検証する
 - [x] POSIXのディレクトリsymlink置換を実装する
 - [x] Windowsのリンク先を変更しない置換を実装する
-- [x] Windowsの全配置ケースを検証する実動作テストを用意する
+- [x] Windowsの全配置ケースとAPM失敗時のpreference復元を検証する実動作テストを用意する
 - [x] APM未導入時、生成物不在時、各APMコマンド失敗時の契約を検証する
 - [x] BashによるWindows実装とテスト項目の静的契約を検証する
 - [ ] WindowsでPowerShell実動作テストを実行する
@@ -90,6 +91,7 @@ Implementation and POSIX verification complete. Windows execution verification i
 
 - 2026-07-22: macOSとLinuxはシンボリックリンク、Windowsはコピーとする設計を承認しました。
 - 2026-07-22: POSIXのディレクトリsymlink誤拒否と`apm update`非ゼロ停止を実動作テストで再現し、修正後にGreenを確認しました。
-- 2026-07-22: Windows向けに7ケースのPowerShell実動作テストを追加し、Bash側からテスト項目と実装契約を静的確認しました。
+- 2026-07-22: Windows向けに10ケースのPowerShell実動作テストを用意し、Bash側からテスト項目と実装契約を静的確認しました。
 - 2026-07-22: `bash test/codex_global_agents_distribution_test.sh`、全7件の`test/*.sh`、`bash -n install.sh`、配布テスト自身のBash構文検査は、すべて終了コード0でした。
+- 2026-07-22: Windowsのupdate/installが非ゼロでも `$PSNativeCommandUseErrorActionPreference` の設定に左右されず警告付きで継続し、元の定義状態を復元する実装とfake APMテストを追加しました。現在のLinuxではPowerShellテストを実行できないため、Bash静的契約のみ終了コード0を確認しました。
 - 2026-07-22: 現在のLinux環境に`pwsh`と`powershell`がないため、Windows実動作テストとPowerShell parserは未実行です。Windowsでは `pwsh -NoProfile -File test/codex_global_agents_distribution_windows_test.ps1` で実行します。

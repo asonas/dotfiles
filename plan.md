@@ -11,4 +11,5 @@
 - [x] Windows実装と実動作テストの静的契約をBashで検証する
 - [x] WindowsのAPM処理がCodexをtargetに含め、コピー前にcompileする
 - [x] APM update/installの非ゼロは許容し、compileの非ゼロは停止する
+- [x] Windowsのnative command error preferenceがfalse・true・未定義の各状態でupdate/install失敗を警告付きで許容し、元の状態を復元するテストと実装を用意する
 - [x] 利用可能な構文検査と全`test/*.sh`が成功する

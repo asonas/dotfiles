@@ -28,6 +28,16 @@ if (-not $copyFunction) {
 }
 . ([scriptblock]::Create($copyFunction.Extent.Text))
 
+$apmFunction = $ast.Find({
+    param($node)
+    $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and
+        $node.Name -eq 'Invoke-ApmDistribution'
+}, $true)
+if (-not $apmFunction) {
+    throw 'Invoke-ApmDistribution was not found in install.ps1.'
+}
+. ([scriptblock]::Create($apmFunction.Extent.Text))
+
 function Assert-True {
     param([bool]$Condition, [string]$Message)
     if (-not $Condition) { throw $Message }
@@ -45,12 +55,45 @@ function New-TestFixture {
 
     $root = Join-Path $script:TestRoot $Name
     $repo = Join-Path $root 'repo'
-    $codex = Join-Path $root 'home\.codex'
+    $home = Join-Path $root 'home'
+    $codex = Join-Path $home '.codex'
+    $claude = Join-Path $home '.claude'
     New-Item -ItemType Directory -Path $repo -Force | Out-Null
+    Set-Content -LiteralPath (Join-Path $repo 'apm.yml') -Value 'dependencies: {}'
     if ($WithSource) {
         Set-Content -LiteralPath (Join-Path $repo 'AGENTS.md') -Value 'generated guidance'
     }
-    [pscustomobject]@{ Repo = $repo; Codex = $codex; Root = $root }
+    [pscustomobject]@{
+        Repo = $repo
+        Home = $home
+        Codex = $codex
+        Claude = $claude
+        Root = $root
+    }
+}
+
+function Add-FakeApmToPath {
+    param([string]$Root)
+
+    $fakeBin = Join-Path $Root 'fake-bin'
+    New-Item -ItemType Directory -Path $fakeBin -Force | Out-Null
+    Set-Content -LiteralPath (Join-Path $fakeBin 'apm.cmd') -Encoding ascii -Value @(
+        '@echo off'
+        'if "%1"=="compile" exit /b 0'
+        'if "%1"=="update" exit /b 23'
+        'if "%1"=="install" exit /b 29'
+        'exit /b 0'
+    )
+    $env:PATH = "$fakeBin;$env:PATH"
+}
+
+function Set-SuperpowersHookBridge {
+    param([string]$ApmModules, [string]$ClaudeDir)
+    Join-Path $ClaudeDir 'run-hook.cmd'
+}
+
+function Repair-ClaudeSettingsHooks {
+    param([string]$SettingsPath, [string]$RunHookCmd)
 }
 
 function Assert-CopiedGuidance {
@@ -160,6 +203,58 @@ function Test-SkipsMissingSource {
         'Expected a missing source not to create the Codex directory.'
 }
 
+function Test-ApmFailuresContinueAndRestoreNativePreference {
+    param([ValidateSet('undefined', 'false', 'true')][string]$InitialState)
+
+    $fixture = New-TestFixture "apm-preference-$InitialState" -WithSource
+    $originalPath = $env:PATH
+    $ambientPreference = Get-Variable -Name PSNativeCommandUseErrorActionPreference `
+        -Scope Global -ErrorAction SilentlyContinue
+
+    try {
+        Add-FakeApmToPath -Root $fixture.Root
+        if ($InitialState -eq 'undefined') {
+            Remove-Variable -Name PSNativeCommandUseErrorActionPreference -Scope Global `
+                -ErrorAction SilentlyContinue
+        } else {
+            Set-Variable -Name PSNativeCommandUseErrorActionPreference -Scope Global `
+                -Value ($InitialState -eq 'true')
+        }
+        $warnings = @()
+
+        Invoke-ApmDistribution -RepoRoot $fixture.Repo -HomeDir $fixture.Home `
+            -ClaudeDir $fixture.Claude -WarningVariable +warnings
+        Copy-CodexGlobalAgents -RepoRoot $fixture.Repo -CodexDir $fixture.Codex
+
+        Assert-Equal 1 @($warnings | Where-Object {
+            $_.Message -eq 'apm update failed with exit code 23; continuing.'
+        }).Count 'Expected one apm update warning.'
+        Assert-Equal 1 @($warnings | Where-Object {
+            $_.Message -eq 'apm install failed with exit code 29; continuing.'
+        }).Count 'Expected one apm install warning.'
+        Assert-CopiedGuidance -CodexDir $fixture.Codex
+
+        $restoredPreference = Get-Variable -Name PSNativeCommandUseErrorActionPreference `
+            -Scope Global -ErrorAction SilentlyContinue
+        if ($InitialState -eq 'undefined') {
+            Assert-True ($null -eq $restoredPreference) `
+                'Expected the native command error preference to remain undefined.'
+        } else {
+            Assert-Equal ($InitialState -eq 'true') $restoredPreference.Value `
+                'Expected the native command error preference value to be restored.'
+        }
+    } finally {
+        $env:PATH = $originalPath
+        if ($ambientPreference) {
+            Set-Variable -Name PSNativeCommandUseErrorActionPreference -Scope Global `
+                -Value $ambientPreference.Value
+        } else {
+            Remove-Variable -Name PSNativeCommandUseErrorActionPreference -Scope Global `
+                -ErrorAction SilentlyContinue
+        }
+    }
+}
+
 $script:TestRoot = Join-Path ([System.IO.Path]::GetTempPath()) `
     ('codex-global-agents-test-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $script:TestRoot | Out-Null
@@ -171,7 +266,10 @@ try {
     Test-ReplacesDirectorySymlinkWithoutChangingLinkTarget
     Test-RejectsRealDirectory
     Test-SkipsMissingSource
-    Write-Host 'PASS: 7 Windows Codex global AGENTS.md distribution tests'
+    Test-ApmFailuresContinueAndRestoreNativePreference -InitialState false
+    Test-ApmFailuresContinueAndRestoreNativePreference -InitialState true
+    Test-ApmFailuresContinueAndRestoreNativePreference -InitialState undefined
+    Write-Host 'PASS: 10 Windows Codex global AGENTS.md distribution tests'
 } finally {
     Remove-Item -LiteralPath $script:TestRoot -Recurse -Force -ErrorAction SilentlyContinue
 }

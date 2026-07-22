@@ -208,8 +208,8 @@ test_windows_rejects_directory_global_agents_target() {
 }
 
 test_windows_apm_targets_include_codex() {
-    assert_line_count 1 '^        & apm update --yes --target claude,cursor,codex$' install.ps1
-    assert_line_count 1 '^        & apm install -g --target claude,cursor,codex$' install.ps1
+    assert_line_count 1 '^[[:space:]]+& apm update --yes --target claude,cursor,codex$' install.ps1
+    assert_line_count 1 '^[[:space:]]+& apm install -g --target claude,cursor,codex$' install.ps1
 }
 
 test_windows_compiles_before_copying() {
@@ -232,6 +232,23 @@ test_windows_stops_when_compile_fails() {
     fi
 
     assert_line_count 1 '^            throw "apm compile failed with exit code \$LASTEXITCODE; refusing to distribute stale AGENTS\.md\."$' install.ps1
+}
+
+test_windows_warns_and_continues_after_apm_dependency_failures() {
+    apm_function="$test_tmp_root/Invoke-ApmDistribution.ps1"
+    sed -n '/^function Invoke-ApmDistribution {/,/^}/p' install.ps1 > "$apm_function"
+
+    assert_line_count 1 '^    \$nativeErrorPreference = Get-Variable -Name PSNativeCommandUseErrorActionPreference -ErrorAction SilentlyContinue$' "$apm_function"
+    assert_line_count 1 '^        \$PSNativeCommandUseErrorActionPreference = \$false$' "$apm_function"
+    assert_line_count 1 '^[[:space:]]+\$updateExitCode = \$LASTEXITCODE$' "$apm_function"
+    assert_line_count 1 '^[[:space:]]+Write-Warning "apm update failed with exit code \$updateExitCode; continuing\."$' "$apm_function"
+    assert_line_count 1 '^[[:space:]]+\$installExitCode = \$LASTEXITCODE$' "$apm_function"
+    assert_line_count 1 '^[[:space:]]+Write-Warning "apm install failed with exit code \$installExitCode; continuing\."$' "$apm_function"
+    assert_line_count 1 '^            \$PSNativeCommandUseErrorActionPreference = \$nativeErrorPreference\.Value$' "$apm_function"
+    assert_line_count 1 '^            Remove-Variable -Name PSNativeCommandUseErrorActionPreference -Scope Local `$' "$apm_function"
+    assert_line_count 1 '^    Test-ApmFailuresContinueAndRestoreNativePreference -InitialState false$' test/codex_global_agents_distribution_windows_test.ps1
+    assert_line_count 1 '^    Test-ApmFailuresContinueAndRestoreNativePreference -InitialState true$' test/codex_global_agents_distribution_windows_test.ps1
+    assert_line_count 1 '^    Test-ApmFailuresContinueAndRestoreNativePreference -InitialState undefined$' test/codex_global_agents_distribution_windows_test.ps1
 }
 
 test_windows_execution_suite_is_available() {
@@ -270,4 +287,5 @@ test_windows_rejects_directory_global_agents_target
 test_windows_apm_targets_include_codex
 test_windows_compiles_before_copying
 test_windows_stops_when_compile_fails
+test_windows_warns_and_continues_after_apm_dependency_failures
 test_windows_execution_suite_is_available
