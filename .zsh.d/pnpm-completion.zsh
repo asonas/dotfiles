@@ -1,0 +1,1 @@
+/home/asonas/ghq/github.com/asonas/dotfiles/.zsh.d/pnpm-completion.zsh
