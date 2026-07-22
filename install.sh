@@ -183,6 +183,14 @@ else
     echo "         Install Agent Package Manager so global rules and skills can be regenerated."
 fi
 
+codex_agents_source="$PWD/AGENTS.md"
+codex_agents_target="$HOME/.codex/AGENTS.md"
+if [ -f "$codex_agents_source" ]; then
+    ln -sfn "$codex_agents_source" "$codex_agents_target"
+else
+    echo "warning: $codex_agents_source not found; skipping Codex global guidance."
+fi
+
 # Codex loads APM-deployed skills directly and does not need the Claude-specific
 # SessionStart hook, whose output schema is incompatible with Codex.
 command rm -f "$PWD/.codex/hooks.json" "$HOME/.codex/hooks.json"
