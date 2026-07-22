@@ -223,6 +223,9 @@ function Invoke-ApmDistribution {
     try {
         Write-Host "==> apm compile (.apm/instructions -> CLAUDE.md, AGENTS.md)"
         & apm compile
+        if ($LASTEXITCODE -ne 0) {
+            throw "apm compile failed with exit code $LASTEXITCODE; refusing to distribute stale AGENTS.md."
+        }
     } finally {
         Pop-Location
     }

@@ -73,9 +73,22 @@ test_windows_compiles_before_copying() {
     fi
 }
 
+test_windows_stops_when_compile_fails() {
+    compile_line=$(grep -n '^        & apm compile$' install.ps1 | cut -d: -f1)
+    exit_check_line=$(grep -n '^        if (\$LASTEXITCODE -ne 0) {$' install.ps1 | cut -d: -f1)
+
+    if [ -z "$compile_line" ] || [ -z "$exit_check_line" ] || [ "$exit_check_line" -ne $((compile_line + 1)) ]; then
+        echo 'expected Windows apm compile failure to stop distribution immediately' >&2
+        return 1
+    fi
+
+    assert_line_count 1 '^            throw "apm compile failed with exit code \$LASTEXITCODE; refusing to distribute stale AGENTS\.md\."$' install.ps1
+}
+
 test_posix_links_global_agents_file
 test_posix_fails_when_global_agents_target_is_a_directory
 test_windows_copies_global_agents_file
 test_windows_rejects_directory_global_agents_target
 test_windows_apm_targets_include_codex
 test_windows_compiles_before_copying
+test_windows_stops_when_compile_fails
