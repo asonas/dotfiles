@@ -65,17 +65,19 @@ APM本体の配置規則、各リポジトリ固有の `AGENTS.md`、`AGENTS.ove
 
 ## Current Status
 
-Design approved. Implementation has not started.
+Implementation complete.
 
 ### Checklist
 
-- [ ] POSIX向けの失敗するテストを追加する
-- [ ] POSIX向けのリンク配布を実装する
-- [ ] Windows向けの失敗するテストを追加する
-- [ ] Windows向けのコピー配布を実装する
-- [ ] APM未導入時と生成物不在時の動作を検証する
-- [ ] 構文検査と既存テストを実行する
+- [x] POSIX向けの失敗するテストを追加する
+- [x] POSIX向けのリンク配布を実装する
+- [x] Windows向けの失敗するテストを追加する
+- [x] Windows向けのコピー配布を実装する
+- [x] APM未導入時と生成物不在時の動作を検証する
+- [x] 構文検査と既存テストを実行する
 
 ### Updates
 
 - 2026-07-22: macOSとLinuxはシンボリックリンク、Windowsはコピーとする設計を承認しました。
+- 2026-07-22: `test/*.sh` の7件、`bash -n install.sh`、および契約テスト2件を実行し、すべて終了コード0でした。
+- 2026-07-22: `pwsh` と `powershell` が利用できないため、PowerShell構文検査は実行していません。
