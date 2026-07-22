@@ -38,7 +38,7 @@ dependencies:
     - yusukebe/ax/skills/ax
     # sorah/config is a monorepo-style marketplace; pin the specific plugin paths.
     - sorah/config/claude/marketplace/plugins/sorah-spec
-    - repo: sorah/config/claude/marketplace/plugins/sorah-guides
+    - git: sorah/config/claude/marketplace/plugins/sorah-guides
       skills:
         - coding
         - commit-style

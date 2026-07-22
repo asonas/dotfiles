@@ -20,10 +20,11 @@ class ApmSkillSubsetTest < Minitest::Test
   def test_sorah_guides_selects_every_skill_except_japanese_text
     entries = YAML.safe_load_file(MANIFEST).fetch("dependencies").fetch("apm")
     matches = entries.select do |entry|
-      entry.is_a?(Hash) && entry.fetch("repo", nil) == SORAH_GUIDES
+      entry == SORAH_GUIDES || (entry.is_a?(Hash) && entry.fetch("git", nil) == SORAH_GUIDES)
     end
 
     assert_equal 1, matches.length
+    assert_kind_of Hash, matches.first
     assert_equal RETAINED_SKILLS.sort, matches.first.fetch("skills").sort
     refute_includes matches.first.fetch("skills"), "japanese-text"
   end

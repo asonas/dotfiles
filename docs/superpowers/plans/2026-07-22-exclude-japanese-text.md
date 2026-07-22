@@ -28,7 +28,7 @@
 - Create: `docs/superpowers/plans/2026-07-22-exclude-japanese-text.md`
 
 **Interfaces:**
-- Consumes: APM object-form dependency entries with `repo` and `skills` keys.
+- Consumes: APM object-form dependency entries with `git` and `skills` keys.
 - Produces: One `sorah-guides` dependency whose `skills` value is the exact retained Skill list.
 
 - [ ] **Step 1: Write the failing manifest test**
@@ -58,10 +58,11 @@ class ApmSkillSubsetTest < Minitest::Test
   def test_sorah_guides_selects_every_skill_except_japanese_text
     entries = YAML.safe_load_file(MANIFEST).fetch("dependencies").fetch("apm")
     matches = entries.select do |entry|
-      entry.is_a?(Hash) && entry.fetch("repo", nil) == SORAH_GUIDES
+      entry == SORAH_GUIDES || (entry.is_a?(Hash) && entry.fetch("git", nil) == SORAH_GUIDES)
     end
 
     assert_equal 1, matches.length
+    assert_kind_of Hash, matches.first
     assert_equal RETAINED_SKILLS.sort, matches.first.fetch("skills").sort
     refute_includes matches.first.fetch("skills"), "japanese-text"
   end
@@ -79,7 +80,7 @@ Expected: FAIL because the current `sorah-guides` entry is a string, so `matches
 Replace the string entry with:
 
 ```yaml
-    - repo: sorah/config/claude/marketplace/plugins/sorah-guides
+    - git: sorah/config/claude/marketplace/plugins/sorah-guides
       skills:
         - coding
         - commit-style
