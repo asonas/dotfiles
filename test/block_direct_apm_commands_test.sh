@@ -75,6 +75,8 @@ assert_allowed 'apm compile'
 assert_allowed 'apm --version'
 assert_allowed './install.sh'
 assert_allowed 'apm "update"x'
+assert_allowed 'capm update'
+assert_allowed 'myapm install'
 
 assert_raw_input_allowed ''
 assert_raw_input_allowed '{}'

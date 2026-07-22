@@ -23,7 +23,7 @@ JSON
 input=$(cat)
 cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
 normalized=$(printf '%s' "$cmd" | normalize_command)
-if ! printf '%s' "$normalized" | grep -Eq '([^;&|()<>[:space:]]*/)?apm[[:space:]]+(update|install)([;&|()<>`[:space:]]|$)'; then
+if ! printf '%s' "$normalized" | grep -Eq '(^|[^[:alnum:]_])([^;&|()<>[:space:]]*/)?apm[[:space:]]+(update|install)([;&|()<>`[:space:]]|$)'; then
   exit 0
 fi
 
