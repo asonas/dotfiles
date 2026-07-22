@@ -164,7 +164,13 @@ if command -v apm >/dev/null 2>&1; then
     echo "==> apm compile (.apm/instructions -> CLAUDE.md, AGENTS.md)"
     apm compile
     echo "==> apm update --yes (refresh ~/.apm/apm.lock.yaml to latest refs)"
+    set +e
     (cd "$HOME/.apm" && apm update --yes --target claude,cursor,codex)
+    apm_update_status=$?
+    set -e
+    if [ "$apm_update_status" -ne 0 ]; then
+        echo "warning: 'apm update' reported errors; continuing with available dependency refs."
+    fi
     echo "==> apm install -g --target claude,cursor,codex (deploy skills, agents, commands)"
     # Tolerate non-zero exit: 'apm install' returns an error if ANY dependency
     # fails (e.g. an upstream subdirectory was removed), but the packages we
@@ -186,7 +192,7 @@ fi
 codex_agents_source="$PWD/AGENTS.md"
 codex_agents_target="$HOME/.codex/AGENTS.md"
 if [ -f "$codex_agents_source" ]; then
-    if [ -d "$codex_agents_target" ]; then
+    if [ -d "$codex_agents_target" ] && [ ! -L "$codex_agents_target" ]; then
         echo "error: $codex_agents_target is a directory; cannot install Codex global guidance." >&2
         exit 1
     fi
