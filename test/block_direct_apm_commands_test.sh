@@ -78,3 +78,12 @@ assert_allowed 'apm "update"x'
 
 assert_raw_input_allowed ''
 assert_raw_input_allowed '{}'
+
+settings="$repo_root/.claude/settings.json"
+jq -e '
+  .hooks.PreToolUse[] |
+  select(.matcher == "Bash") |
+  .hooks[] |
+  select(.type == "command") |
+  select(.command == "~/.claude/scripts/block-direct-apm-commands.sh")
+' "$settings" >/dev/null

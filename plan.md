@@ -25,7 +25,7 @@
 - [x] 分割引用された対象APMサブコマンドを拒否する
 - [x] 引用を含む対象APMコマンド語を拒否する
 - [x] `=` を含む対象APM実行パスを拒否する
-- [ ] PreToolUse設定からHookを呼び出す
+- [x] PreToolUse設定からHookを呼び出す
 
 ## Updates
 
@@ -98,3 +98,5 @@
 - 2026-07-22：保守的な拒否期待へテストを更新し、REDとして `bash test/block_direct_apm_commands_test.sh` が終了コード1で失敗した。
 - 2026-07-22：手製パーサを引用符除去と行継続連結の `normalize_command` および全文grepへ置換し、GREENとして対象テストが終了コード0で成功した。
 - 2026-07-22：保守的検出への変更後に対象テスト、`test/*_test.sh` 7本、Hookとテストの構文検査、settingsのJSON検査、`git diff --check`を実行し、すべて終了コード0で成功した。
+- 2026-07-23：REDとしてHook登録テストを追加し、`bash test/block_direct_apm_commands_test.sh` が未登録の設定により終了コード4で失敗した。
+- 2026-07-23：GREENとしてBash用PreToolUseにAPM直接実行拒否Hookを登録し、全シェルテスト、構文検査、settingsのJSON検査、差分検査がすべて終了コード0で成功した。
