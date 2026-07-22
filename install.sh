@@ -22,6 +22,7 @@ required_dirs="
   .config/peco
   .config/htop
   .config/ghostty
+  .config/git-ai-commit/config.toml
   .config/mise/config.toml
 
   .claude/commands/gemini-search.md
