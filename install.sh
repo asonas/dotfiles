@@ -186,6 +186,10 @@ fi
 codex_agents_source="$PWD/AGENTS.md"
 codex_agents_target="$HOME/.codex/AGENTS.md"
 if [ -f "$codex_agents_source" ]; then
+    if [ -d "$codex_agents_target" ]; then
+        echo "error: $codex_agents_target is a directory; cannot install Codex global guidance." >&2
+        exit 1
+    fi
     ln -sfn "$codex_agents_source" "$codex_agents_target"
 else
     echo "warning: $codex_agents_source not found; skipping Codex global guidance."

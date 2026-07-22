@@ -1,6 +1,6 @@
 # Codexグローバル指示ファイル配布のテストリスト
 
-- [x] POSIXインストーラーが `$HOME/.codex/AGENTS.md` をリポジトリの `AGENTS.md` へリンクする
+- [x] POSIXインストーラーが `$HOME/.codex/AGENTS.md` をリポジトリの `AGENTS.md` へリンクし、既存ディレクトリなら失敗する
 - [-] Windowsインストーラーが `$HOME\.codex\AGENTS.md` へコピーする
 - [ ] Windowsの配布がシンボリックリンク権限に依存しない
 - [ ] WindowsのAPM処理がCodexをtargetに含める
