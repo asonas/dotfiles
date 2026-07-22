@@ -8,6 +8,8 @@ Report findings first. Each finding must include:
 - **Impact:** the concrete task, comprehension, error, or accessibility consequence.
 - **Recommendation:** the smallest verifiable correction.
 
+When a finding involves a live region, separate DOM evidence from announcement evidence. Record the browser and screen reader used, then verify that the message is announced once, repeated actions announce again, focus stays appropriate, and unrelated content is not included. If this manual check was not run, report that limitation as an Observation.
+
 ## Severity
 
 - **Blocker:** an essential task is impossible or a severe accessibility failure prevents use.
