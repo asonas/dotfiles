@@ -58,7 +58,24 @@ test_windows_rejects_directory_global_agents_target() {
     assert_line_count 1 '^        throw "\$target is a directory; cannot install Codex global guidance\."$' install.ps1
 }
 
+test_windows_apm_targets_include_codex() {
+    assert_line_count 1 '^        & apm update --yes --target claude,cursor,codex$' install.ps1
+    assert_line_count 1 '^        & apm install -g --target claude,cursor,codex$' install.ps1
+}
+
+test_windows_compiles_before_copying() {
+    compile_line=$(grep -n '^        & apm compile$' install.ps1 | cut -d: -f1)
+    copy_line=$(grep -n '^Copy-CodexGlobalAgents -RepoRoot \$RepoRoot -CodexDir \$CodexDir$' install.ps1 | cut -d: -f1)
+
+    if [ -z "$compile_line" ] || [ -z "$copy_line" ] || [ "$compile_line" -ge "$copy_line" ]; then
+        echo 'expected Windows apm compile to run before Codex AGENTS.md copy' >&2
+        return 1
+    fi
+}
+
 test_posix_links_global_agents_file
 test_posix_fails_when_global_agents_target_is_a_directory
 test_windows_copies_global_agents_file
 test_windows_rejects_directory_global_agents_target
+test_windows_apm_targets_include_codex
+test_windows_compiles_before_copying

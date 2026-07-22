@@ -206,7 +206,7 @@ function Repair-ClaudeSettingsHooks {
 
 # --- Distribute APM dependencies globally into ~/.claude. ------------------
 # Mirrors the APM section of install.sh: stage the manifest under ~/.apm,
-# refresh refs, install globally for the claude+cursor targets, copy the
+# refresh refs, install globally for the claude+cursor+codex targets, copy the
 # refreshed lockfile back to the repo, then bridge + normalize the hook.
 function Invoke-ApmDistribution {
     param([Parameter(Mandatory)][string]$RepoRoot,
@@ -217,6 +217,14 @@ function Invoke-ApmDistribution {
         Write-Warning 'apm not found on PATH; skipping APM distribution.'
         Write-Warning "Install it with: scoop install apm   (or: irm https://aka.ms/apm-windows | iex)"
         return
+    }
+
+    Push-Location $RepoRoot
+    try {
+        Write-Host "==> apm compile (.apm/instructions -> CLAUDE.md, AGENTS.md)"
+        & apm compile
+    } finally {
+        Pop-Location
     }
 
     $apmDir = Join-Path $HomeDir '.apm'
@@ -233,9 +241,9 @@ function Invoke-ApmDistribution {
         # tolerant of non-zero exits (a single unavailable dependency must not
         # abort the whole distribution, same rationale as install.sh).
         Write-Host "==> apm update --yes (refresh refs)"
-        & apm update --yes --target claude,cursor
-        Write-Host "==> apm install -g --target claude,cursor"
-        & apm install -g --target claude,cursor
+        & apm update --yes --target claude,cursor,codex
+        Write-Host "==> apm install -g --target claude,cursor,codex"
+        & apm install -g --target claude,cursor,codex
     } finally {
         Pop-Location
     }
@@ -333,7 +341,7 @@ if ($LinkSettings) {
 if ($SkipApm) {
     Write-Host "==> Skipping APM distribution (-SkipApm)"
 } else {
-    Write-Host "==> APM distribution (claude, cursor)"
+    Write-Host "==> APM distribution (claude, cursor, codex)"
     Invoke-ApmDistribution -RepoRoot $RepoRoot -HomeDir $HomeDir -ClaudeDir $ClaudeDir
 }
 
