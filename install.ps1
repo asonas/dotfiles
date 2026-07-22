@@ -2,19 +2,21 @@
 #requires -Version 7.0
 <#
 .SYNOPSIS
-    Windows installer for asonas/dotfiles — Claude / Cursor focused subset.
+    Windows installer for asonas/dotfiles — Windows-focused subset.
 
 .DESCRIPTION
     install.sh is the full macOS / Linux setup. This is the Windows counterpart.
-    It does two things:
+    It does three things:
 
-    1. Links the cross-platform hand-authored Claude assets:
+    1. Links WezTerm config to the Windows-recommended ~/.wezterm.lua path.
+
+    2. Links the cross-platform hand-authored Claude assets:
          .claude/commands/gemini-search.md
          .claude/commands/talk-review
          .claude/user-skills/*   -> ~/.claude/skills/<name>
          CLAUDE.md               -> ~/.claude/CLAUDE.md   (only if present)
 
-    2. Distributes APM (Agent Package Manager) dependencies into ~/.claude via
+    3. Distributes APM (Agent Package Manager) dependencies into ~/.claude via
        'apm install -g' (skills, agents, commands from apm.yml), mirroring the
        APM section of install.sh. See Invoke-ApmDistribution below. Skip with
        -SkipApm, or it is skipped automatically when 'apm' is not on PATH.
@@ -78,7 +80,8 @@ function New-DotLink {
     param(
         [Parameter(Mandatory)] [string]$Target,
         [Parameter(Mandatory)] [string]$Link,
-        [Parameter(Mandatory)] [bool]$CanSymlink
+        [Parameter(Mandatory)] [bool]$CanSymlink,
+        [switch]$BackupExisting
     )
 
     if (-not (Test-Path -LiteralPath $Target)) {
@@ -94,13 +97,27 @@ function New-DotLink {
     # Remove an existing entry, including dangling symlinks (Get-Item -Force finds
     # reparse points even when their target is gone). Delete the link itself, not
     # its contents, when it is a symlink/junction.
+    $isDir = (Get-Item -LiteralPath $Target).PSIsContainer
     $existing = Get-Item -LiteralPath $Link -Force -ErrorAction SilentlyContinue
     if ($existing) {
         if ($existing.LinkType) { $existing.Delete() }
-        else { Remove-Item -LiteralPath $Link -Recurse -Force }
+        elseif (
+            $BackupExisting -and
+            -not $CanSymlink -and
+            -not $isDir -and
+            ((Get-FileHash -LiteralPath $Target).Hash -eq (Get-FileHash -LiteralPath $Link).Hash)
+        ) {
+            Write-Host "  unchanged $Link"
+        }
+        elseif ($BackupExisting) {
+            $backup = '{0}.bak-{1}' -f $Link, (Get-Date -Format 'yyyyMMdd-HHmmss')
+            Move-Item -LiteralPath $Link -Destination $backup -Force
+            Write-Host "  backup    $backup"
+        } else {
+            Remove-Item -LiteralPath $Link -Recurse -Force
+        }
     }
 
-    $isDir = (Get-Item -LiteralPath $Target).PSIsContainer
     if ($CanSymlink) {
         New-Item -ItemType SymbolicLink -Path $Link -Target $Target | Out-Null
         Write-Host "  symlink   $Link"
@@ -245,6 +262,12 @@ if (-not $CanSymlink) {
 if (-not (Test-Path -LiteralPath $ClaudeDir)) {
     New-Item -ItemType Directory -Path $ClaudeDir -Force | Out-Null
 }
+
+Write-Host "==> Linking WezTerm config"
+New-DotLink -Target (Join-Path $RepoRoot '.config\wezterm\wezterm.lua') `
+            -Link   (Join-Path $HomeDir '.wezterm.lua') `
+            -CanSymlink $CanSymlink `
+            -BackupExisting
 
 Write-Host "==> Linking Claude commands"
 $commands = @(

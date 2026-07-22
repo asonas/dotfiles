@@ -92,11 +92,6 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 			action = wezterm.action.PasteFrom("Clipboard"),
 		},
 		{
-			key = "v",
-			mods = "CTRL",
-			action = wezterm.action.PasteFrom("PrimarySelection"),
-		},
-		{
 			key = "g",
 			mods = "CTRL",
 			action = wezterm.action.SendKey({ key = "Escape" }),
