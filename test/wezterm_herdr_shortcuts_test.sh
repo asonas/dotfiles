@@ -17,5 +17,9 @@ assert_contains '{ key = "j", mods = "CMD|SHIFT", action = herdr_prefix_key("o")
 assert_contains '{ key = "k", mods = "CMD|SHIFT", action = herdr_prefix_key("u") },'
 assert_contains '{ key = "n", mods = "CMD|SHIFT", action = herdr_prefix_key("t") },'
 assert_contains '{ key = "u", mods = "CMD|SHIFT", action = herdr_prefix_key("g") },'
+assert_contains '{ key = "j", mods = "ALT|SHIFT", action = herdr_prefix_key("o") },'
+assert_contains '{ key = "k", mods = "ALT|SHIFT", action = herdr_prefix_key("u") },'
+assert_contains '{ key = "n", mods = "ALT|SHIFT", action = herdr_prefix_key("t") },'
+assert_contains '{ key = "u", mods = "ALT|SHIFT", action = herdr_prefix_key("g") },'
 
 luac -p "$config"

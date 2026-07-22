@@ -101,6 +101,10 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 			mods = "CTRL|SHIFT",
 			action = wezterm.action.ReloadConfiguration,
 		},
+		{ key = "j", mods = "ALT|SHIFT", action = herdr_prefix_key("o") },
+		{ key = "k", mods = "ALT|SHIFT", action = herdr_prefix_key("u") },
+		{ key = "n", mods = "ALT|SHIFT", action = herdr_prefix_key("t") },
+		{ key = "u", mods = "ALT|SHIFT", action = herdr_prefix_key("g") },
 	}
 end
 
