@@ -134,6 +134,10 @@ test_managed_config_shows_usage_in_status_line() {
     assert_contains 'status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "git-branch"]' "$managed_config"
 }
 
+test_managed_config_uses_low_model_verbosity() {
+    assert_contains 'model_verbosity = "low"' "$managed_config"
+}
+
 test_preserves_existing_codex_state
 test_updates_existing_managed_values
 test_preserves_other_tui_settings
@@ -141,3 +145,4 @@ test_is_idempotent
 test_creates_missing_user_config
 test_install_script_deploys_managed_config
 test_managed_config_shows_usage_in_status_line
+test_managed_config_uses_low_model_verbosity

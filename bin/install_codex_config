@@ -12,7 +12,7 @@ trap 'command rm -f "$temporary_config"' EXIT
         awk '
             BEGIN { in_top_level = 1; content_started = 0 }
             /^\[/ { in_top_level = 0 }
-            in_top_level && /^(sandbox_mode|approval_policy)[[:space:]]*=/ { next }
+            in_top_level && /^(sandbox_mode|approval_policy|model_verbosity)[[:space:]]*=/ { next }
             !in_top_level { exit }
             in_top_level && !content_started && /^[[:space:]]*$/ { next }
             { print; content_started = 1 }
