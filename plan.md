@@ -1,5 +1,19 @@
 # TDDテストリスト
 
+## crit固有ルールの削除
+
+- [x] crit指示の生成元が存在しない
+- [x] AGENTS.mdにcrit固有文字列が存在しない
+- [x] CLAUDE.mdにcrit固有文字列が存在しない
+- [x] `apm compile` が成功する
+
+### Updates
+
+- 2026-07-23：削除対象と生成物のテストリストを追加した。
+- 2026-07-23：REDとして `bash test/crit_instructions_removal_test.sh` を実行し、生成元の存在により終了コード1で失敗した。
+- 2026-07-23：生成元を削除し、`apm compile` が終了コード0でAGENTS.mdとCLAUDE.mdを再生成した。
+- 2026-07-23：GREENとして `bash test/crit_instructions_removal_test.sh` を実行し、終了コード0で成功した。
+
 ## Codexグローバル指示ファイル配布
 
 - [x] POSIXで新規配置が成功する

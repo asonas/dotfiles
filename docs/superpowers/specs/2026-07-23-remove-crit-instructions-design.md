@@ -52,15 +52,17 @@ critプラグインの有効化設定、crit本体、他のレビュー規則は
 
 ## Current Status
 
-設計完了。
+リポジトリ側の削除と生成物の更新は完了した。macOS側のGit管理外スクリプトは、現在のLinux環境から未実施である。
 
 ### Checklist
 
-- [ ] crit指示の生成元を削除する。
-- [ ] AGENTS.mdとCLAUDE.mdを再生成する。
-- [ ] crit固有文字列が残っていないことを確認する。
+- [x] crit指示の生成元を削除する。
+- [x] AGENTS.mdとCLAUDE.mdを再生成する。
+- [x] crit固有文字列が残っていないことを確認する。
 - [ ] macOS側の `crit-open.sh` を削除する。
 
 ### Updates
 
 - 2026-07-23：生成元、生成物、Git管理外スクリプトの削除境界を確定した。
+- 2026-07-23：`.apm/instructions/crit.instructions.md` を削除し、`apm compile` によりAGENTS.mdとCLAUDE.mdを再生成した。
+- 2026-07-23：リポジトリ側の検証を完了した。macOS側の `/Users/asonas/bin/crit-open.sh` はLinux環境から未実施として残す。
