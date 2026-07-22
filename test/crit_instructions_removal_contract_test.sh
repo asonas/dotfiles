@@ -21,3 +21,10 @@ if CRIT_INSTRUCTIONS_REPO_ROOT="$fixture" bash "$checker"; then
   echo "expected renamed crit instructions to fail" >&2
   exit 1
 fi
+
+command rm -rf "$fixture/.apm/instructions"
+
+if CRIT_INSTRUCTIONS_REPO_ROOT="$fixture" bash "$checker"; then
+  echo "expected instructions inspection error to fail" >&2
+  exit 1
+fi

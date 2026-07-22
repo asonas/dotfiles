@@ -100,13 +100,15 @@ pwsh -NoProfile -File test/codex_global_agents_distribution_windows_test.ps1
 
 ### Status
 
-Important 2件を修正し、当該修正コミットへまとめた。
+Important 3件を修正し、各修正コミットへまとめた。
 
 ### Red-Green
 
 生成物欠落のREDでは、fixtureにAGENTS.mdとCLAUDE.mdがない状態でも本番rootを検査して成功したため、契約テストが `expected missing generated files to fail` を出して終了コード1になった。root上書き、生成物の存在・可読性、grepの終了コード2以上のエラー扱いを追加後、契約テストと本番root検査は終了コード0になった。
 
 別名instructions再導入のREDでは、fixtureの `reintroduced.instructions.md` に `# crit（コードレビュー）` を置いても成功したため、契約テストが `expected renamed crit instructions to fail` を出して終了コード1になった。`.apm/instructions` 全体の再帰検査を追加後、契約テストと本番root検査は終了コード0になった。
+
+grepエラー分岐の契約テストでは、`b915549` 版checkerを専用一時rootへ展開し、`.apm/instructions` を欠落させた。旧checkerは検査せず成功したため、契約テストが `expected instructions inspection error to fail` を出して終了コード1になった。現HEAD checkerではgrep終了コード2を非0として返し、同じ契約テストは終了コード0になった。
 
 ### Verification
 
