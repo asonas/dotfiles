@@ -38,7 +38,16 @@ dependencies:
     - yusukebe/ax/skills/ax
     # sorah/config is a monorepo-style marketplace; pin the specific plugin paths.
     - sorah/config/claude/marketplace/plugins/sorah-spec
-    - sorah/config/claude/marketplace/plugins/sorah-guides
+    - git: sorah/config/claude/marketplace/plugins/sorah-guides
+      skills:
+        - coding
+        - commit-style
+        - rails
+        - ruby
+        - rust
+        - security
+        - terraform
+        - typescript
     # Self-authored skills published from asonas/skills.
     # cross-review is intentionally absent: the locally-maintained copy in
     # .claude/user-skills/cross-review (deployed as a symlink by install.sh)
