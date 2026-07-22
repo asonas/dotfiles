@@ -4,7 +4,7 @@
 
 **Goal:** AIエージェントがBashツールから `apm update` または `apm install` を直接実行する前に拒否し、リポジトリの `install.sh` へ誘導する。
 
-**Architecture:** 専用のPreToolUse Hookが入力JSONからBashコマンドを取得し、引用符内の文字列とコメントを除外した検査用文字列を作る。コマンド境界にある `apm update` または `apm install` を検出した場合だけ、Claude Codeの拒否JSONを標準出力へ返す。
+**Architecture:** 専用のPreToolUse Hookが入力JSONからraw Bash commandを取得し、単一・二重引用符の除去とbackslash+改行の連結だけを行う。正規化後の文字列中に `apm update` または `apm install` の対象形があれば、実行位置を解析せずClaude Codeの拒否JSONを返す。
 
 **Tech Stack:** Bash、jq、POSIX awk、grep、Claude Code PreToolUse Hook
 
@@ -12,7 +12,8 @@
 
 - `apm update` と `apm install` だけを拒否し、`apm compile` と `apm --version` は許可する。
 - オプション付き、絶対パスまたは相対パス、複合コマンド内の対象呼び出しを拒否する。
-- コメントと引用符内の単なる文字列は許可する。
+- コメント、引用文字列、引数、代入値に対象形がある場合も保守的に拒否する。
+- `apm compile`、`apm --version`、`./install.sh`、空入力、commandなしは許可する。
 - `./install.sh` は許可し、その内部で実行されるAPMコマンドには干渉しない。
 - AGENTS.mdとCLAUDE.mdには同じ規則を追加しない。
 - テストは一つずつRed、Green、Refactorを繰り返し、各サイクルで `plan.md` を更新する。
@@ -23,7 +24,7 @@
 ## File Structure
 
 - Create: `plan.md`：TDDのテストリスト、完了状態、各サイクルで得た知見を記録する。
-- Create: `.claude/scripts/block-direct-apm-commands.sh`：PreToolUse入力を解析し、対象コマンドだけを拒否する。
+- Create: `.claude/scripts/block-direct-apm-commands.sh`：PreToolUse入力を軽く正規化し、対象形を含む文字列を保守的に拒否する。
 - Create: `test/block_direct_apm_commands_test.sh`：Hookの拒否ケースと許可ケースを実際のJSON入出力で検証する。
 - Modify: `.claude/settings.json`：Bash用PreToolUse Hookとして新しいスクリプトを登録する。
 - Modify: `docs/superpowers/specs/2026-07-22-block-direct-apm-commands-design.md`：実装中のチェックリストと更新履歴を反映する。
@@ -52,7 +53,7 @@
 - [ ] 絶対パスと相対パスの `apm` を拒否する
 - [ ] 複合コマンド内の対象コマンドを拒否する
 - [ ] `apm compile` と `apm --version` を許可する
-- [ ] コメントと引用符内の文字列を許可する
+- [ ] コメントと引用符内の対象形を拒否する
 - [ ] 空入力とcommandなしの入力を許可する
 - [ ] `./install.sh` を許可する
 - [ ] PreToolUse設定からHookを呼び出す
@@ -134,7 +135,7 @@ Suggested context: `Add the first TDD increment that blocks a direct apm update 
 
 **Interfaces:**
 - Consumes: Task 1の `run_hook(command)` とHookの拒否JSON。
-- Produces: 引用符とコメントを除いた検査用文字列を生成する `shell_code_only` 関数と、対象APM呼び出しの境界判定。
+- Produces: 引用符除去と行継続連結を行う `normalize_command` 関数と、文字列中の対象APM形を探す保守的な境界判定。
 
 - [ ] **Step 1: `apm install` の失敗テストを追加する**
 
@@ -152,7 +153,7 @@ Expected: FAIL。出力が空なので `jq` が失敗する。
 完全一致判定を次の判定へ置き換える。
 
 ```bash
-if ! printf '%s' "$cmd" | grep -Eq '(^|[;&|()[:space:]])([^;&|()[:space:]]*/)?apm[[:space:]]+(update|install)([;&|()[:space:]]|$)'; then
+if ! printf '%s' "$cmd" | grep -Eq '([^;&|()<>[:space:]]*/)?apm[[:space:]]+(update|install)([;&|()<>`[:space:]]|$)'; then
   exit 0
 fi
 ```
@@ -186,75 +187,59 @@ Run: `bash test/block_direct_apm_commands_test.sh`
 
 Expected: 各サイクルの実装後にすべてPASS。
 
-- [ ] **Step 4: 引用符の失敗テストを追加する**
+- [ ] **Step 4: 保守的検出の失敗テストを追加する**
 
 ```bash
-assert_allowed() {
-  local command=$1
-  local output
-  output=$(run_hook "$command")
-  [ -z "$output" ]
-}
-
-assert_allowed 'printf "%s\n" "apm install"'
+assert_denied 'printf "%s\n" "apm install"'
+assert_denied 'echo ready # apm update'
+assert_denied 'echo apm update'
+assert_denied 'x=/tmp/apm update'
+assert_denied 'FOO="bar baz" apm update'
 ```
 
 Run: `bash test/block_direct_apm_commands_test.sh`
 
-Expected: FAIL。正規表現が引用符内を誤検出する。
+Expected: FAIL。厳密な実行位置解析が、文字列中の対象形を許可する。
 
-- [ ] **Step 5: 字句処理を追加する**
+- [ ] **Step 5: 軽い正規化を追加する**
 
-Hookへ次を追加し、正規表現の入力を `$cmd` から `$code` へ変更する。
+Hookへ次を追加し、正規表現の入力を `$cmd` から `$normalized` へ変更する。
 
 ```bash
-shell_code_only() {
+normalize_command() {
   awk '
-    BEGIN { quote = ""; escaped = 0; comment = 0 }
     {
-      line = $0 "\n"
-      for (i = 1; i <= length(line); i++) {
-        ch = substr(line, i, 1)
-        if (comment) {
-          if (ch == "\n") { comment = 0; printf "\n" } else { printf " " }
-        } else if (escaped) {
-          printf "%s", ch
-          escaped = 0
-        } else if (ch == "\\") {
-          printf "%s", ch
-          escaped = 1
-        } else if (quote != "") {
-          if (ch == quote) { quote = "" }
-          printf " "
-        } else if (ch == "\"" || ch == "\047") {
-          quote = ch
-          printf " "
-        } else if (ch == "#") {
-          comment = 1
-          printf " "
-        } else {
-          printf "%s", ch
-        }
-      }
+      line = $0
+      continued = sub(/\\$/, "", line)
+      gsub(/["\047]/, "", line)
+      if (NR > 1 && !previous_continued) { printf "\n" }
+      printf "%s", line
+      previous_continued = continued
     }
   '
 }
 
-code=$(printf '%s' "$cmd" | shell_code_only)
+normalized=$(printf '%s' "$cmd" | normalize_command)
 ```
 
 Run: `bash test/block_direct_apm_commands_test.sh`
 
 Expected: PASS。
 
-- [ ] **Step 6: 許可ケースを一つずつ追加する**
+- [ ] **Step 6: 拒否ケースと許可ケースを追加する**
 
 ```bash
 assert_allowed 'apm compile'
 assert_allowed 'apm --version'
-assert_allowed 'echo ready # apm update'
-assert_allowed "printf '%s\\n' 'apm update'"
 assert_allowed './install.sh'
+assert_allowed 'apm "update"x'
+
+assert_denied 'apm "up""date"'
+assert_denied 'a"pm" update'
+assert_denied 'FOO="bar baz" apm update'
+assert_denied '/tmp/a=b/apm update'
+assert_denied 'echo "$(apm update)"'
+assert_denied 'echo `apm install`'
 ```
 
 各テスト追加後に `bash test/block_direct_apm_commands_test.sh` を実行する。
@@ -285,7 +270,11 @@ Expected: すべてPASS。
 Refactor前後に対象テストを実行し、両方がPASSすることを確認する。
 `plan.md` と設計書の該当項目を完了にし、commitスキルでテスト、Hook、進捗文書を `git ai-commit` する。
 
-Suggested context: `Expand direct APM command blocking while avoiding strings and comments.`
+Suggested context: `Simplify APM command blocking with conservative string detection.`
+
+#### Architecture Decision Update
+
+- 2026-07-22：3回のレビュー修正で手製パーサの限界が判明し、ユーザー判断で保守的検出へ変更した。
 
 ### Task 3: PreToolUse設定と全体検証
 
