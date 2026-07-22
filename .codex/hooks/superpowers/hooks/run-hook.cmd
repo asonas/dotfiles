@@ -19,11 +19,11 @@ set "HOOK_DIR=%~dp0"
 
 REM Try Git for Windows bash in standard locations
 if exist "C:\Program Files\Git\bin\bash.exe" (
-    "C:\Program Files\Git\bin\bash.exe" "%HOOK_DIR%%~1" %2 %3 %4 %5 %6 %7 %8 %9
+    "C:\Program Files\Git\bin\bash.exe" -l "%HOOK_DIR%%~1" %2 %3 %4 %5 %6 %7 %8 %9
     exit /b %ERRORLEVEL%
 )
 if exist "C:\Program Files (x86)\Git\bin\bash.exe" (
-    "C:\Program Files (x86)\Git\bin\bash.exe" "%HOOK_DIR%%~1" %2 %3 %4 %5 %6 %7 %8 %9
+    "C:\Program Files (x86)\Git\bin\bash.exe" -l "%HOOK_DIR%%~1" %2 %3 %4 %5 %6 %7 %8 %9
     exit /b %ERRORLEVEL%
 )
 
