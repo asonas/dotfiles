@@ -40,5 +40,18 @@ test_posix_fails_when_global_agents_target_is_a_directory() {
     fi
 }
 
+test_windows_copies_global_agents_file() {
+    assert_line_count 1 '^\$CodexDir = Join-Path \$HomeDir '\''.codex'\''$' install.ps1
+    assert_line_count 1 '^    Copy-Item -LiteralPath \$source -Destination \$target -Force$' install.ps1
+    assert_line_count 1 '^        Write-Warning "\$source not found; skipping Codex global guidance\."$' install.ps1
+    assert_line_count 1 '^Copy-CodexGlobalAgents -RepoRoot \$RepoRoot -CodexDir \$CodexDir$' install.ps1
+
+    if grep -Eq '^New-DotLink .*AGENTS\.md' install.ps1; then
+        echo 'expected Windows Codex AGENTS.md distribution not to use New-DotLink' >&2
+        return 1
+    fi
+}
+
 test_posix_links_global_agents_file
 test_posix_fails_when_global_agents_target_is_a_directory
+test_windows_copies_global_agents_file

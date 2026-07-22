@@ -58,6 +58,7 @@ $ErrorActionPreference = 'Stop'
 $RepoRoot  = $PSScriptRoot
 $HomeDir   = $HOME   # in PowerShell 7 this resolves to %USERPROFILE%
 $ClaudeDir = Join-Path $HomeDir '.claude'
+$CodexDir = Join-Path $HomeDir '.codex'
 
 # --- Can we create real symlinks here? (Developer Mode or elevation required) ---
 function Test-SymlinkCapability {
@@ -250,6 +251,23 @@ function Invoke-ApmDistribution {
     Repair-ClaudeSettingsHooks -SettingsPath (Join-Path $ClaudeDir 'settings.json') -RunHookCmd $runHook
 }
 
+# --- Copy global Codex guidance into ~/.codex. -----------------------------
+function Copy-CodexGlobalAgents {
+    param([Parameter(Mandatory)][string]$RepoRoot,
+          [Parameter(Mandatory)][string]$CodexDir)
+
+    $source = Join-Path $RepoRoot 'AGENTS.md'
+    if (-not (Test-Path -LiteralPath $source)) {
+        Write-Warning "$source not found; skipping Codex global guidance."
+        return
+    }
+
+    New-Item -ItemType Directory -Path $CodexDir -Force | Out-Null
+    $target = Join-Path $CodexDir 'AGENTS.md'
+    Copy-Item -LiteralPath $source -Destination $target -Force
+    Write-Host "  copied    $target"
+}
+
 # --- Run -------------------------------------------------------------------
 
 $CanSymlink = Test-SymlinkCapability
@@ -314,6 +332,9 @@ if ($SkipApm) {
     Write-Host "==> APM distribution (claude, cursor)"
     Invoke-ApmDistribution -RepoRoot $RepoRoot -HomeDir $HomeDir -ClaudeDir $ClaudeDir
 }
+
+Write-Host "==> Copying global Codex AGENTS.md"
+Copy-CodexGlobalAgents -RepoRoot $RepoRoot -CodexDir $CodexDir
 
 Write-Host ""
 Write-Host "Done. Notes:"
