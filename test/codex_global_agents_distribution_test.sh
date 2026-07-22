@@ -52,6 +52,13 @@ test_windows_copies_global_agents_file() {
     fi
 }
 
+test_windows_rejects_directory_global_agents_target() {
+    assert_line_count 1 '^    \$existing = Get-Item -LiteralPath \$target -Force -ErrorAction SilentlyContinue$' install.ps1
+    assert_line_count 1 '^    if \(\$existing -and \$existing\.PSIsContainer\) \{$' install.ps1
+    assert_line_count 1 '^        throw "\$target is a directory; cannot install Codex global guidance\."$' install.ps1
+}
+
 test_posix_links_global_agents_file
 test_posix_fails_when_global_agents_target_is_a_directory
 test_windows_copies_global_agents_file
+test_windows_rejects_directory_global_agents_target

@@ -264,6 +264,10 @@ function Copy-CodexGlobalAgents {
 
     New-Item -ItemType Directory -Path $CodexDir -Force | Out-Null
     $target = Join-Path $CodexDir 'AGENTS.md'
+    $existing = Get-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+    if ($existing -and $existing.PSIsContainer) {
+        throw "$target is a directory; cannot install Codex global guidance."
+    }
     Copy-Item -LiteralPath $source -Destination $target -Force
     Write-Host "  copied    $target"
 }
