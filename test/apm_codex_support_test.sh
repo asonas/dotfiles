@@ -25,5 +25,16 @@ test_install_targets() {
     assert_line_count 1 '^    if ! \(cd "\$HOME/.apm" && apm install -g --target claude,cursor,codex\); then$' install.sh
 }
 
+test_codex_session_start_hooks_are_removed() {
+    assert_line_count 1 '^command rm -f "\$PWD/.codex/hooks.json" "\$HOME/.codex/hooks.json"$' install.sh
+    assert_line_count 1 "canonical_cmd='\"\\\$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start'" install.sh
+}
+
+test_codex_session_start_hook_is_not_tracked() {
+    [ ! -e .codex/hooks.json ]
+}
+
 test_manifest_targets
 test_install_targets
+test_codex_session_start_hooks_are_removed
+test_codex_session_start_hook_is_not_tracked

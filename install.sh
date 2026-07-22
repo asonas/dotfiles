@@ -182,6 +182,10 @@ else
     echo "         Install Agent Package Manager so global rules and skills can be regenerated."
 fi
 
+# Codex loads APM-deployed skills directly and does not need the Claude-specific
+# SessionStart hook, whose output schema is incompatible with Codex.
+command rm -f "$PWD/.codex/hooks.json" "$HOME/.codex/hooks.json"
+
 # APM 0.25.0 drops the multiline security-reviewer description when translating
 # YAML frontmatter to Codex TOML. The fixer changes blank descriptions only.
 "$PWD/bin/fix_codex_agent_description" "$PWD/.codex/agents/security-reviewer.toml"
