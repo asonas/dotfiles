@@ -130,6 +130,11 @@ test_windows_copies_global_agents_file() {
     assert_line_count 1 '^    Copy-Item -LiteralPath \$source -Destination \$target -Force$' install.ps1
     assert_line_count 1 '^        Write-Warning "\$source not found; skipping Codex global guidance\."$' install.ps1
     assert_line_count 1 '^Copy-CodexGlobalAgents -RepoRoot \$RepoRoot -CodexDir \$CodexDir$' install.ps1
+
+    if grep -Eq '^New-DotLink .*AGENTS\.md' install.ps1; then
+        echo 'expected Windows Codex AGENTS.md distribution not to use New-DotLink' >&2
+        return 1
+    fi
 }
 ```
 
@@ -176,33 +181,17 @@ Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: PASS、終了コード0。
 
-- [ ] **Step 4: Windows処理がリンク権限へ依存しない失敗テストを追加する**
-
-テストファイルへ次を追加し、末尾から呼び出します。
-
-```bash
-test_windows_distribution_does_not_use_dot_link() {
-    if grep -Eq '^New-DotLink .*AGENTS\.md' install.ps1; then
-        echo 'expected Windows Codex AGENTS.md distribution not to use New-DotLink' >&2
-        return 1
-    fi
-}
-```
-
-このテストは実装が要件どおりなら最初からPASSします。
-これは新しい振る舞いを駆動するテストではなく、Step 2で選んだコピー方式を固定する回帰制約です。
-
-- [ ] **Step 5: Windows関連テストを再実行する**
+- [ ] **Step 4: Windows関連テストを再実行する**
 
 Run: `bash test/codex_global_agents_distribution_test.sh`
 
 Expected: PASS、終了コード0。
 
-- [ ] **Step 6: テストリストを更新する**
+- [ ] **Step 5: テストリストを更新する**
 
 `plan.md` のWindowsコピー項目を完了にし、APM生成順序項目を進行中にします。
 
-- [ ] **Step 7: Windowsコピー配布をコミットする**
+- [ ] **Step 6: Windowsコピー配布をコミットする**
 
 `commit` スキルを使い、次のファイルだけを一つの論理単位としてステージします。
 
