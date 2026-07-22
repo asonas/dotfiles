@@ -75,7 +75,8 @@ Read: /Users/asonas/Documents/asonas/goals/2026-q3.md
    - 7日遡って何もなければ「対象日なし」と返す
 2. 各日付について以下を実行:
    a. Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
-   b. cman:cm-search を keyword="YYYY-MM-DD" で実行し、その日のClaude Codeセッション履歴を取得
+   b. cman:cm-search を keyword="YYYY-MM-DD"、exclude_subagents=true で実行し、その日のClaude Codeセッション履歴を取得
+      （exclude_subagents=true は必須。agent-* セッションを除外すると全文検索の対象が減り所要時間がほぼ半減する。かつ「昨日やったこと」の材料として subagent の内部ログは不要なので結果品質も上がる）
 3. 抽出する情報:
    - Uncompleted tasks: `- [ ]` 行
    - 「明日」「tomorrow」「次回」を含む引き継ぎ項目
@@ -346,11 +347,16 @@ lint は検出結果を `wiki/log.md` に記録するのみで自動修正はし
 
 ### Step 9c: qmd 再インデックス
 
-Wiki の処理が終わったら、Alfred の qmd 検索（`ws`/`wsq`、`/Users/asonas/workspace/qmd-alfred/`）が最新の vault を引けるよう、qmd のインデックスを更新する。差分インデックスのため低コスト。失敗してもワークフロー全体は止めない（警告のみ）。`command -v qmd` が無い／collection `asonas` 未登録ならスキップしてよい。
+Wiki の処理が終わったら、Alfred の qmd 検索（`ws`/`wsq`、`/Users/asonas/workspace/qmd-alfred/`）が最新の vault を引けるよう、qmd のインデックスを更新する。`command -v qmd` が無い／collection `asonas` 未登録ならスキップしてよい。
+
+**バックグラウンド実行する（同期で待たない）。** qmd の再インデックスは検索インデックスの鮮度を保つだけの純保守で、`/today` の後段（Step 10 のコーチング質問）が結果を必要としない。vault の増大に伴い scan+embed で 10 秒以上かかることがあるため、Bash の `run_in_background` で detach し、`/today` はすぐ次へ進む。失敗してもワークフロー全体は止めない。
 
 ```bash
-qmd update && qmd embed 2>&1 | tail -3 || echo "Warning: qmd reindex failed, skipping"
+# Bash tool の run_in_background=true で起動する（& を付けず、ツール側のバックグラウンド機能を使う）
+qmd update && qmd embed
 ```
+
+起動したら「qmd 再インデックスをバックグラウンドで開始」とだけ報告し、完了は待たない。
 
 ### Step 9d: cctop プラグイン週次更新チェック（subagent）
 
