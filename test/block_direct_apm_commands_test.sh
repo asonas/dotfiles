@@ -43,10 +43,7 @@ jq -e '
   (.hookSpecificOutput.permissionDecisionReason | contains("install.sh"))
 ' <<<"$output" >/dev/null
 
-output=$(run_hook 'apm install')
-[ -n "$output" ]
-jq -e '.hookSpecificOutput.permissionDecision == "deny"' <<<"$output" >/dev/null
-
+assert_denied 'apm install'
 assert_denied 'apm install -g --target claude,cursor,codex'
 assert_denied '/home/asonas/.local/bin/apm update --yes'
 assert_denied './bin/apm install'
@@ -54,11 +51,14 @@ assert_denied 'printf ready && apm update'
 assert_denied 'apm install | tee /tmp/apm.log'
 assert_denied 'echo "$(apm update)"'
 assert_denied 'echo `apm install`'
+assert_denied 'echo "`apm update`"'
 assert_denied 'echo foo#bar; apm update'
 assert_denied 'apm update>/tmp/apm.log'
 assert_denied $'apm \\\nupdate'
 assert_denied "printf '%s\\n' 'foo\\' ; apm update"
 assert_denied '"apm" update'
+assert_denied 'apm "update"'
+assert_denied 'FOO=bar apm update'
 
 assert_allowed 'printf "%s\n" "apm install"'
 assert_allowed 'printf "%s\n" " apm install"'
@@ -69,6 +69,7 @@ assert_allowed 'echo ready # apm update'
 assert_allowed "printf '%s\\n' 'apm update'"
 assert_allowed './install.sh'
 assert_allowed 'echo apm update'
+assert_allowed 'x=/tmp/apm update'
 
 assert_raw_input_allowed ''
 assert_raw_input_allowed '{}'

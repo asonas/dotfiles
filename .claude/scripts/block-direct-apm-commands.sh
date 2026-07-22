@@ -9,6 +9,7 @@ shell_code_only() {
       comment = 0
       command_sub = 0
       backtick_sub = 0
+      backtick_quote = ""
       command_start = 1
       preserve_quote = 0
     }
@@ -18,6 +19,8 @@ shell_code_only() {
         ch = substr(line, i, 1)
         if (backtick_sub && quote == "" && ch == "`") {
           backtick_sub = 0
+          quote = backtick_quote
+          backtick_quote = ""
           printf ";"
           command_start = 1
         } else if (command_sub && quote == "" && ch == ")") {
@@ -52,7 +55,13 @@ shell_code_only() {
           printf "%s", ch
           escaped = 1
         } else if (quote != "") {
-          if (quote == "\"" && ch == "$" && substr(line, i + 1, 1) == "(") {
+          if (quote == "\"" && ch == "`") {
+            quote = ""
+            backtick_sub = 1
+            backtick_quote = "\""
+            printf ";"
+            command_start = 1
+          } else if (quote == "\"" && ch == "$" && substr(line, i + 1, 1) == "(") {
             quote = ""
             command_sub = 1
             printf ";"
@@ -71,11 +80,12 @@ shell_code_only() {
           }
         } else if (ch == "`") {
           backtick_sub = 1
+          backtick_quote = ""
           printf ";"
           command_start = 1
         } else if (ch == "\"" || ch == "\047") {
           quote = ch
-          preserve_quote = command_start
+          preserve_quote = command_start || substr(line, i + 1) ~ ("^(update|install)" ch)
           if (preserve_quote) { command_start = 0 }
           printf " "
         } else if (ch == "#" && (i == 1 || substr(line, i - 1, 1) ~ /[;&|()<>[:space:]]/)) {
@@ -103,7 +113,7 @@ JSON
 input=$(cat)
 cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
 code=$(printf '%s' "$cmd" | shell_code_only)
-if ! printf '%s' "$code" | grep -Eq '(^|[;&|(])[[:space:]]*([^;&|()[:space:]]*/)?apm[[:space:]]+(update|install)([;&|()<>[:space:]]|$)'; then
+if ! printf '%s' "$code" | grep -Eq '(^|[;&|(])[[:space:]]*([[:alpha:]_][[:alnum:]_]*=[^;&|()[:space:]]*[[:space:]]+)*([^=;&|()[:space:]]*/)?apm[[:space:]]+(update|install)([;&|()<>[:space:]]|$)'; then
   exit 0
 fi
 
