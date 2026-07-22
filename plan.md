@@ -6,6 +6,8 @@
 - [x] AGENTS.mdにcrit固有文字列が存在しない
 - [x] CLAUDE.mdにcrit固有文字列が存在しない
 - [x] `apm compile` が成功する
+- [x] AGENTS.mdまたはCLAUDE.mdが不存在・読取不能なら失敗する
+- [x] `.apm/instructions` の別名ファイルにcrit固有文字列があれば失敗する
 
 ### Updates
 
@@ -13,6 +15,10 @@
 - 2026-07-23：REDとして `bash test/crit_instructions_removal_test.sh` を実行し、生成元の存在により終了コード1で失敗した。
 - 2026-07-23：生成元を削除し、`apm compile` が終了コード0でAGENTS.mdとCLAUDE.mdを再生成した。
 - 2026-07-23：GREENとして `bash test/crit_instructions_removal_test.sh` を実行し、終了コード0で成功した。
+- 2026-07-23：REDとして生成物なしfixtureを検査し、root上書き未対応による偽陽性を契約テストが終了コード1で検出した。
+- 2026-07-23：GREENとして検査root上書き、生成物の存在・可読性、grepエラー判定を追加し、契約テストと本番root検査が終了コード0で成功した。
+- 2026-07-23：REDとして別名instructionsに禁止見出しを置き、ディレクトリ全体の未検査による偽陽性を契約テストが終了コード1で検出した。
+- 2026-07-23：GREENとして `.apm/instructions` の再帰検査を追加し、契約テストと本番root検査が終了コード0で成功した。
 
 ## Codexグローバル指示ファイル配布
 

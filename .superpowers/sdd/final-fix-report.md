@@ -96,6 +96,29 @@ pwsh -NoProfile -File test/codex_global_agents_distribution_windows_test.ps1
 - `docs/superpowers/specs/2026-07-22-codex-global-agents-design.md`
 - `.superpowers/sdd/final-fix-report.md`
 
+## crit検査の最終branchレビュー修正
+
+### Status
+
+Important 2件を修正し、当該修正コミットへまとめた。
+
+### Red-Green
+
+生成物欠落のREDでは、fixtureにAGENTS.mdとCLAUDE.mdがない状態でも本番rootを検査して成功したため、契約テストが `expected missing generated files to fail` を出して終了コード1になった。root上書き、生成物の存在・可読性、grepの終了コード2以上のエラー扱いを追加後、契約テストと本番root検査は終了コード0になった。
+
+別名instructions再導入のREDでは、fixtureの `reintroduced.instructions.md` に `# crit（コードレビュー）` を置いても成功したため、契約テストが `expected renamed crit instructions to fail` を出して終了コード1になった。`.apm/instructions` 全体の再帰検査を追加後、契約テストと本番root検査は終了コード0になった。
+
+### Verification
+
+- `bash test/crit_instructions_removal_contract_test.sh`: 終了コード0
+- `bash test/crit_instructions_removal_test.sh`: 終了コード0
+- 全 `test/*.sh`: 終了コード0
+- 追加・変更した2テストの `bash -n`: 終了コード0
+- `.apm/instructions`、AGENTS.md、CLAUDE.mdの禁止文字列 `rg`: マッチなし
+- `git --no-pager diff --check`: 終了コード0
+
+本番検査は既定でリポジトリrootを使い、fixture契約テストだけが `CRIT_INSTRUCTIONS_REPO_ROOT` で検査対象を差し替える。既存の生成元削除と生成物は維持している。
+
 ## 自己レビュー
 
 POSIX側は実際のインストーラー前半を一時repoで実行しており、対象ブロックのコピーではなく実装コードを検証しています。実ディレクトリは維持したまま失敗し、symlinkはリンク先を変更せず置換されます。APMテストはcompile、update、installの各終了経路を分離しています。

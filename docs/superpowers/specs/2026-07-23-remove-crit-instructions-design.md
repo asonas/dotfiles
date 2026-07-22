@@ -33,6 +33,9 @@ macOS側の `/Users/asonas/bin/crit-open.sh` は一度だけ削除する。
 - `# crit（コードレビュー）`
 - `Profile 2`
 
+`.apm/instructions` は特定の削除済みファイルだけでなくディレクトリ全体を検査する。
+AGENTS.mdとCLAUDE.mdは存在して読取可能であることを先に確認し、grepの検査エラーを「禁止文字列なし」として扱わない。
+
 `apm compile` が終了コード0で成功すること、生成物以外へ意図しない差分がないこと、`git diff --check` が成功することも確認する。
 
 macOS側では `/Users/asonas/bin/crit-open.sh` が存在しないことを確認する。
@@ -66,3 +69,4 @@ critプラグインの有効化設定、crit本体、他のレビュー規則は
 - 2026-07-23：生成元、生成物、Git管理外スクリプトの削除境界を確定した。
 - 2026-07-23：`.apm/instructions/crit.instructions.md` を削除し、`apm compile` によりAGENTS.mdとCLAUDE.mdを再生成した。
 - 2026-07-23：リポジトリ側の検証を完了した。macOS側の `/Users/asonas/bin/crit-open.sh` はLinux環境から未実施として残す。
+- 2026-07-23：生成物の存在・可読性とgrepエラーを明示検証し、`.apm/instructions` 全体へのcrit固有文字列の再導入を拒否する契約テストを追加した。
