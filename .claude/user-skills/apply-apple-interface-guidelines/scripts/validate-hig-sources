@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "date"
+require "json"
+require "yaml"
+
+ALLOWED_STATUSES = %w[discovered candidate current missing deprecated].freeze
+REQUIRED_FIELDS = %w[slug title source_url retrieved content_hash status].freeze
+
+unless ARGV.length == 2
+  warn "usage: validate-hig-sources MANIFEST SOURCE_DIRECTORY"
+  exit 2
+end
+
+pages = JSON.parse(File.read(ARGV.fetch(0))).fetch("pages")
+source_directory = ARGV.fetch(1)
+errors = []
+
+pages.each do |page|
+  missing_fields = REQUIRED_FIELDS.reject { |field| page.key?(field) && !page[field].to_s.empty? }
+  errors << "#{page.fetch("slug", "unknown")}: missing #{missing_fields.join(", ")}" unless missing_fields.empty?
+  errors << "#{page.fetch("slug", "unknown")}: invalid status #{page["status"]}" unless ALLOWED_STATUSES.include?(page["status"])
+  errors << "#{page.fetch("slug", "unknown")}: source_url must use Apple HTTPS" unless page["source_url"].to_s.match?(%r{\Ahttps://developer\.apple\.com/})
+  errors << "#{page.fetch("slug", "unknown")}: invalid content_hash" unless page["content_hash"].to_s.match?(/\A[0-9a-f]{64}\z/)
+
+  next unless page["status"] == "current"
+
+  source_metadata = nil
+  source = Dir.glob(File.join(source_directory, "*.md")).find do |path|
+    document = File.read(path)
+    frontmatter = document[/\A---\s*\n(.*?)\n---\s*\n/m, 1]
+    next false unless frontmatter
+
+    metadata = YAML.safe_load(frontmatter, permitted_classes: [Date])
+    next false unless metadata.fetch("slug", nil) == page["slug"]
+
+    source_metadata = metadata.transform_values(&:to_s)
+    true
+  end
+  unless source
+    errors << "#{page.fetch("slug")}: current source note missing"
+    next
+  end
+
+  projected_fields = %w[slug source_url retrieved content_hash status]
+  projection_matches = projected_fields.all? do |field|
+    source_metadata.fetch(field, nil) == page.fetch(field).to_s
+  end
+  errors << "#{page.fetch("slug")}: frontmatter does not match manifest" unless projection_matches
+  body = File.read(source).sub(/\A---\s*\n.*?\n---\s*\n/m, "").strip
+  errors << "#{page.fetch("slug")}: source body is empty" if body.empty?
+end
+
+unless errors.empty?
+  warn errors.join("\n")
+  exit 1
+end

@@ -296,18 +296,18 @@ source noteにはAppleの文書を必要以上に全文複製しません。
 
 ## Current Status
 
-設計インタビューは完了しました。
-実装開始前にユーザーによる本設計書の確認が必要です。
+設計は承認され、Skill本体、用途別reference、manifest比較・source検証・取得用scripts、配布設定を実装しました。
 
 ### Checklist
 
 - [ ] HIGの全カテゴリと子ページを列挙する
 - [ ] source manifestとsource noteを作成する
 - [ ] source noteをLLM Wikiへ取り込む
-- [ ] Skillとreferenceを作成する
-- [ ] 更新用scriptsを作成する
-- [ ] source、Wiki、Skillを検証する
+- [x] Skillとreferenceを作成する
+- [x] 更新用scriptsを作成する
+- [x] Skillとscriptsを検証する
 
 ### Updates
 
 - 2026-07-22：三つの情報レイヤー、四つのSkillモード、差分更新、短期deprecatedの方針を確定しました。
+- 2026-07-22：Skill本体と更新支援scriptsを実装しました。source収集とWiki統合は未実施です。

@@ -1,0 +1,40 @@
+#!/bin/sh
+set -eu
+
+usage() {
+    echo "usage: discover-hig-pages APPLE_HIG_CATEGORY_URL"
+}
+
+if [ "${1:-}" = "--help" ]; then
+    usage
+    exit 0
+fi
+
+if [ "$#" -ne 1 ]; then
+    usage >&2
+    exit 2
+fi
+
+case "$1" in
+    https://developer.apple.com/design/human-interface-guidelines/*|https://developer.apple.com/jp/design/human-interface-guidelines/*)
+        ;;
+    *)
+        echo "URL must be an Apple Human Interface Guidelines page" >&2
+        exit 2
+        ;;
+esac
+
+if ! command -v ax >/dev/null 2>&1; then
+    echo "ax is required to discover HIG pages" >&2
+    exit 127
+fi
+
+output=$(mktemp)
+trap 'rm -f "$output"' EXIT HUP INT TERM
+if ! ax "$1" 'a[href*="/design/human-interface-guidelines/"]' --row 'title=, href=@href' --json --all > "$output" ||
+    ! ruby -rjson -e 'pages = JSON.parse(File.read(ARGV.fetch(0))); exit(pages.is_a?(Array) && !pages.empty? ? 0 : 1)' "$output"; then
+    echo "No HIG links were extracted; use a browser fetch and leave the manifest unchanged" >&2
+    exit 1
+fi
+
+cat "$output"

@@ -1,0 +1,39 @@
+#!/bin/sh
+set -eu
+
+usage() {
+    echo "usage: fetch-hig-page APPLE_HIG_PAGE_URL"
+}
+
+if [ "${1:-}" = "--help" ]; then
+    usage
+    exit 0
+fi
+
+if [ "$#" -ne 1 ]; then
+    usage >&2
+    exit 2
+fi
+
+case "$1" in
+    https://developer.apple.com/design/human-interface-guidelines/*|https://developer.apple.com/jp/design/human-interface-guidelines/*)
+        ;;
+    *)
+        echo "URL must be an Apple Human Interface Guidelines page" >&2
+        exit 2
+        ;;
+esac
+
+if ! command -v ax >/dev/null 2>&1; then
+    echo "ax is required to fetch HIG pages" >&2
+    exit 127
+fi
+
+output=$(mktemp)
+trap 'rm -f "$output"' EXIT HUP INT TERM
+if ! ax "$1" --md --budget 20000 > "$output" || ! grep -q '[^[:space:]]' "$output"; then
+    echo "HIG content was not extracted; use a browser fetch and leave the current source unchanged" >&2
+    exit 1
+fi
+
+cat "$output"

@@ -1,0 +1,8 @@
+{
+  "pages": [
+    {"slug":"stable","title":"Stable","source_url":"https://developer.apple.com/design/human-interface-guidelines/stable","content_hash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","status":"current"},
+    {"slug":"changed","title":"Changed","source_url":"https://developer.apple.com/design/human-interface-guidelines/changed","content_hash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","status":"current"},
+    {"slug":"moved","title":"Moved","source_url":"https://developer.apple.com/design/human-interface-guidelines/old-moved","content_hash":"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","status":"current"},
+    {"slug":"gone","title":"Gone","source_url":"https://developer.apple.com/design/human-interface-guidelines/gone","content_hash":"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd","status":"current"}
+  ]
+}

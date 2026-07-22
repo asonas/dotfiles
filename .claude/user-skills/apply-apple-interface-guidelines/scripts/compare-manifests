@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "json"
+
+unless ARGV.length == 2
+  warn "usage: compare-manifests OLD_MANIFEST NEW_MANIFEST"
+  exit 2
+end
+
+old_pages = JSON.parse(File.read(ARGV.fetch(0))).fetch("pages").to_h { |page| [page.fetch("slug"), page] }
+new_pages = JSON.parse(File.read(ARGV.fetch(1))).fetch("pages").to_h { |page| [page.fetch("slug"), page] }
+
+shared_slugs = old_pages.keys & new_pages.keys
+updated = shared_slugs.select do |slug|
+  old_pages.fetch(slug).fetch("content_hash") != new_pages.fetch(slug).fetch("content_hash")
+end
+moved = shared_slugs.select do |slug|
+  old_pages.fetch(slug).fetch("source_url") != new_pages.fetch(slug).fetch("source_url")
+end
+unchanged = shared_slugs - updated - moved
+
+puts JSON.generate(
+  "new" => new_pages.keys.sort - old_pages.keys.sort,
+  "updated" => updated.sort,
+  "moved" => moved.sort,
+  "missing" => (old_pages.keys.sort - new_pages.keys.sort),
+  "unchanged" => unchanged.sort
+)

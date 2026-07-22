@@ -1,0 +1,4 @@
+interface:
+  display_name: "Apple Interface Guidelines"
+  short_description: "Apply Apple HIG to web and iOS product work"
+  default_prompt: "Use $apply-apple-interface-guidelines to design, implement, review, or update this web or iOS interface."

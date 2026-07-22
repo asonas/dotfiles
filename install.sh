@@ -332,6 +332,23 @@ do
     ln -s "$skill" "$link"
 done
 
+# Expose the same locally-maintained skills to Codex without replacing the
+# APM-managed parent directory.
+mkdir -p "$HOME/.agents/skills"
+for skill in "$PWD"/.claude/user-skills/*
+do
+    [ -e "$skill" ] || continue
+    skill_name=$(basename "$skill")
+    link="$HOME/.agents/skills/$skill_name"
+    if [ -L "$link" ]; then
+        rm "$link"
+    elif [ -e "$link" ]; then
+        echo "warning: refusing to replace non-symlink Skill at $link"
+        continue
+    fi
+    ln -s "$skill" "$link"
+done
+
 # EasyEDA API skill (darwin-only). Unlike the source-only skills handled by APM,
 # this one ships a Node.js bridge server (npm run server) and is driven against
 # the EasyEDA Pro desktop client, so it needs a real working clone and is only
