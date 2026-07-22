@@ -1,14 +1,22 @@
 # APM直接実行拒否のテストリスト
 
 - [x] `apm update` を拒否する
-- [ ] `apm install` を拒否する
-- [ ] サブコマンド後のオプションを含む対象コマンドを拒否する
-- [ ] 絶対パスと相対パスの `apm` を拒否する
-- [ ] 複合コマンド内の対象コマンドを拒否する
-- [ ] `apm compile` と `apm --version` を許可する
-- [ ] コメントと引用符内の文字列を許可する
-- [ ] 空入力とcommandなしの入力を許可する
-- [ ] `./install.sh` を許可する
+- [x] `apm install` を拒否する
+- [x] サブコマンド後のオプションを含む対象コマンドを拒否する
+- [x] 絶対パスと相対パスの `apm` を拒否する
+- [x] 複合コマンド内の対象コマンドを拒否する
+- [x] `apm compile` と `apm --version` を許可する
+- [x] コメントと引用符内の文字列を許可する
+- [x] 空入力とcommandなしの入力を許可する
+- [x] `./install.sh` を許可する
+- [x] 二重引用符内のコマンド置換で対象APMを拒否する
+- [x] バッククォート内の対象APMを拒否する
+- [x] 単語中の `#` より後にある対象APMを拒否する
+- [x] リダイレクト直前の対象APMを拒否する
+- [x] バックスラッシュ改行を挟む対象APMを拒否する
+- [x] 引数として現れる `apm update` を許可する
+- [x] 単一引用符内の末尾バックスラッシュ後に続く対象APMを拒否する
+- [x] 引用符付きの対象APMコマンド語を拒否する
 - [ ] PreToolUse設定からHookを呼び出す
 
 ## Updates
@@ -16,3 +24,46 @@
 - 2026-07-22：設計書からテストリストを作成した。
 - 2026-07-22：REDとして `bash test/block_direct_apm_commands_test.sh` を実行し、Hook未作成により終了コード127で失敗した。
 - 2026-07-22：GREENとして `chmod +x .claude/scripts/block-direct-apm-commands.sh` 実行後に `bash test/block_direct_apm_commands_test.sh` を実行し、終了コード0で成功した。
+- 2026-07-22：`apm install` の指定テストは空出力でも `jq -e` が終了コード0になる偽陽性だったため、拒否出力の非空検証を追加した。
+- 2026-07-22：REDとして `bash test/block_direct_apm_commands_test.sh` を実行し、`apm install` の拒否出力が空のため終了コード1で失敗した。
+- 2026-07-22：GREENとして完全一致の `apm install` だけを拒否対象へ追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：REDとしてオプション付き `apm install` を追加し、`bash test/block_direct_apm_commands_test.sh` が拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとして `apm install` 後方の引数を許容する最小のcase分岐を追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：REDとして絶対パスの `apm update` を追加し、`bash test/block_direct_apm_commands_test.sh` が拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとしてパス付き `apm update` と後方引数を許容する最小のcase分岐を追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：REDとして相対パスの `apm install` を追加し、`bash test/block_direct_apm_commands_test.sh` が拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとしてパス付き `apm install` の完全一致を許容する最小のcase分岐を追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：REDとして `&&` 後方の `apm update` を追加し、`bash test/block_direct_apm_commands_test.sh` が拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとして `&& apm update` だけを許容する最小のcase分岐を追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：REDとしてパイプ前方の `apm install` を追加し、`bash test/block_direct_apm_commands_test.sh` が拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとしてテスト済みのオプション、パス、複合コマンド境界を正規表現へ統合し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：指定の引用符ケース2件は正規表現の前後境界を満たさず追加直後から成功したため、両側空白の引用文字列を追加したところ、REDとして `bash test/block_direct_apm_commands_test.sh` が終了コード1で失敗した。
+- 2026-07-22：GREENとして引用符とコメントを空白化する `shell_code_only` を追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：`apm compile` の許可ケースを追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：`apm --version` の許可ケースを追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：コメント内の `apm update` 許可ケースを追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：単一引用符内の `apm update` 許可ケースを追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：`./install.sh` の許可ケースを追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：空の標準入力を許可するケースを追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：commandなしの `{}` を許可するケースを追加し、`bash test/block_direct_apm_commands_test.sh` が終了コード0で成功した。
+- 2026-07-22：Refactor前に対象テストが終了コード0であることを確認し、拒否JSON出力を `deny_direct_apm` へ抽出した。
+- 2026-07-22：Refactor後に `bash test/block_direct_apm_commands_test.sh` を実行し、終了コード0で成功した。
+- 2026-07-22：最終検証としてHookと対象テストの `bash -n` および `test/*_test.sh` 7本を実行し、すべて終了コード0で成功した。
+- 2026-07-22：追加レビューで二重引用符内のコマンド置換を見逃すことを実測し、REDとして対象ケース追加後のテストが終了コード1で失敗した。
+- 2026-07-22：GREENとして二重引用符内の `$()` だけを検査コードへ戻し、対象テストが終了コード0で成功した。
+- 2026-07-22：REDとしてバッククォート内の `apm install` を追加し、対象テストが拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとしてバッククォート内を検査コードとして扱う最小状態を追加し、対象テストが終了コード0で成功した。
+- 2026-07-22：REDとして単語中の `#` 後方にある `apm update` を追加し、対象テストが拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとして単語境界の `#` だけをコメント開始とみなすようにし、対象テストが終了コード0で成功した。
+- 2026-07-22：REDとしてリダイレクト直前の `apm update` を追加し、対象テストが拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとしてサブコマンド後方境界へリダイレクト演算子を追加し、対象テストが終了コード0で成功した。
+- 2026-07-22：REDとしてバックスラッシュ改行を挟む `apm update` を追加し、対象テストが拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとして字句処理でバックスラッシュ改行を除去し、対象テストが終了コード0で成功した。
+- 2026-07-22：REDとして引数の `apm update` を許可するケースを追加し、誤った拒否出力により対象テストが終了コード1で失敗した。
+- 2026-07-22：GREENとしてAPMの前方境界をコマンド開始位置に限定し、対象テストが終了コード0で成功した。
+- 2026-07-22：REDとして単一引用符内の末尾バックスラッシュ後に続く `apm update` を追加し、対象テストが拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとして単一引用符内のバックスラッシュを通常文字として扱い、対象テストが終了コード0で成功した。
+- 2026-07-22：REDとして引用符付きコマンド語 `"apm" update` を追加し、対象テストが拒否出力なしの終了コード1で失敗した。
+- 2026-07-22：GREENとしてコマンド開始位置の引用内容だけを検査コードへ保持し、対象テストが終了コード0で成功した。
+- 2026-07-22：Refactorとして `assert_denied` をイベント名、拒否判断、案内文まで検証するよう強化した。
+- 2026-07-22：追加修正後の最終検証として構文検査、`git diff --check`、対象テスト、残り6本のシェルテストを実行し、すべて終了コード0で成功した。
