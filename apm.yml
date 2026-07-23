@@ -8,6 +8,9 @@ targets:
   - claude
   - cursor
   - codex
+compilation:
+  exclude:
+    - .worktrees
 dependencies:
   apm:
     # Anthropic official skills (skill form so Cursor can load them too;

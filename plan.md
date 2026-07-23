@@ -9,6 +9,7 @@
 - [x] AGENTS.mdまたはCLAUDE.mdが不存在・読取不能なら失敗する
 - [x] `.apm/instructions` の別名ファイルにcrit固有文字列があれば失敗する
 - [x] `.apm/instructions` の検査エラーを成功扱いせず非0で返す
+- [x] `apm compile` が `.worktrees` 配下のinstructionsを除外する
 
 ### Updates
 
@@ -22,6 +23,8 @@
 - 2026-07-23：GREENとして `.apm/instructions` の再帰検査を追加し、契約テストと本番root検査が終了コード0で成功した。
 - 2026-07-23：grepエラー契約のREDでは、`b915549` 版checkerが欠落したinstructionsディレクトリを未検査のまま成功し、契約テストが終了コード1で失敗した。
 - 2026-07-23：現HEAD checkerで同じgrepエラーfixtureを検査し、grep終了コード2を失敗として扱うため契約テストが終了コード0で成功した。
+- 2026-07-23：REDとして `.worktrees` 配下の一時instructionsが `apm compile --dry-run` に検出され、除外テストが終了コード1で失敗した。
+- 2026-07-23：GREENとして `compilation.exclude` に `.worktrees` を追加し、除外テストが終了コード0で成功した。
 
 ## Codexグローバル指示ファイル配布
 
