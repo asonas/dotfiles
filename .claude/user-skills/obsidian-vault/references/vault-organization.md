@@ -1,12 +1,8 @@
----
-description: Obsidian vault directory layout, naming conventions, and maintenance procedures.
----
-
 # Obsidian Vault Organization
 
 Vault path: `/Users/asonas/Documents/asonas/`
 
-Rules for organizing the Obsidian vault. Covers directory layout, naming conventions, and maintenance procedures. For save destination defaults, link strategy, and writing style, see `obsidian.instructions.md`.
+Rules for organizing the Obsidian vault. Covers directory layout, naming conventions, and maintenance procedures. For save destination defaults, link strategy, and writing style, see this skill's SKILL.md.
 
 ## Directory Layout
 
@@ -128,6 +124,6 @@ When archiving, run the Move / Rename checklist first. Archived notes retain the
 
 ## Related Rules
 
-- General save destination, tool choice (`obsidian` CLI vs Read+Edit), writing style, and Graph View linking strategy: `~/.claude/CLAUDE.md` → `## Obsidian` section
-- Markdown preview after Write: `.claude/rules/markdown-preview.md`
+- General save destination, tool choice (`obsidian` CLI vs Read+Edit), writing style, and Graph View linking strategy: this skill's SKILL.md
+- Markdown preview after Write: the always-loaded markdown-preview rule
 - Daily note workflow: invoked through `/today` and `/wrapup` skills

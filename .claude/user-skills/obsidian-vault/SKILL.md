@@ -1,5 +1,6 @@
 ---
-description: Obsidian workflow rules (CLI choice, writing style, link strategy) for personal note-taking.
+name: obsidian-vault
+description: Obsidian の個人 vault（asonas / ason.as）を扱うための規範。読み書きのツール選択（Read/Write 直読・直書きを優先し obsidian CLI のハングを避ける）、vault の指定、文章スタイル、Graph View 向けの wikilink 戦略、ディレクトリ構成と保存先の決定フロー、移動・アーカイブ手順を定める。Obsidian のノートを読む・書く・整理する作業、daily note や wiki の更新、vault 内のファイル移動を行うときに参照する。
 ---
 
 # Obsidian
@@ -53,4 +54,8 @@ Obsidianの記事を書く際は、以下のハイブリッド戦略でwikiリ�
 
 **注意:** 同一記事内で同じリンクが複数回出現する場合、初出のみリンクにする。
 
-vault組織ルールは `obsidian-vault.instructions.md` を参照。
+vault の組織ルール（ディレクトリ構成、命名規約、移動・アーカイブ手順）は `references/vault-organization.md` を参照。
+
+## vault の組織ルール
+
+ディレクトリ構成、保存先の決定フロー、命名規約、移動・リネーム時のチェックリスト、アーカイブ基準は `references/vault-organization.md` にまとめてある。ノートを新規作成する前と、ファイルを移動・削除する前に必ず読むこと。
