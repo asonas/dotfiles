@@ -1,0 +1,41 @@
+#!/bin/sh
+set -eu
+
+# Remove Skill links this repository created for .claude/user-skills/ entries that
+# no longer exist. Deleting an entry leaves its link behind: the deploy loops in
+# install.sh only iterate over entries that are present, and Claude Code ignores a
+# broken link without reporting it, so the litter accumulates unnoticed.
+#
+# Usage: prune_stale_skill_links <user-skills-dir> <link-dir>...
+#
+# Only symlinks whose target is under <user-skills-dir> are candidates, so
+# APM-deployed real directories and links to other sources (a Homebrew libexec, a
+# ghq clone) are never touched. A candidate is pruned when its target no longer
+# resolves. Pass <user-skills-dir> without a trailing slash and as the same
+# absolute path install.sh used to create the links; links left over from a
+# different checkout location do not match and are kept.
+
+user_skills_dir="$1"
+shift
+
+for link_dir in "$@"
+do
+    [ -d "$link_dir" ] || continue
+
+    for link in "$link_dir"/*
+    do
+        [ -L "$link" ] || continue
+
+        case "$(readlink "$link")" in
+            "$user_skills_dir"/*) ;;
+            *) continue ;;
+        esac
+
+        if [ -e "$link" ]; then
+            continue
+        fi
+
+        echo "==> pruning stale Skill link $link"
+        command rm -f "$link"
+    done
+done

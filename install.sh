@@ -335,6 +335,14 @@ else
     echo "warning: $PWD/CLAUDE.md not found; skipping ~/.claude/CLAUDE.md symlink."
 fi
 
+# Drop links left over from user-skills entries that were deleted or renamed. The
+# deploy loops below only walk entries that exist, so without this the link stays
+# and dangles. Runs first so a rename is pruned and re-created in the same pass.
+"$PWD/bin/prune_stale_skill_links" \
+    "$PWD/.claude/user-skills" \
+    "$HOME/.claude/skills" \
+    "$HOME/.agents/skills"
+
 # Expose each entry under .claude/user-skills/ as a per-entry symlink under
 # ~/.claude/skills/. The parent ~/.claude/skills/ is left as a real directory so
 # apm-installed skills coexist without writing back into this repo.
