@@ -15,7 +15,11 @@
 
 例外は `.claude/commands/gemini-search.md` で、これだけは追跡対象です。
 
-`.claude/rules/*.md` はこの表の例外で、**上書きされません**。2026-07-25 の実測では、`.apm/instructions/base.instructions.md` を編集して `./install.sh` を回しても `.claude/rules/base.md` は書き換わらず、削除した instruction に対応する rules ファイルも残り続けました。生成物を消してから `./install.sh` を2回回しても再生成されず、`.claude/rules/` が空になりました。apm が配備マニフェストで「(files unchanged)」と判断すると書き込みを飛ばすためです。`AGENTS.md` は毎回正しく再生成されます。
+`.claude/rules/*.md` はこの表の例外で、既存ファイルは**上書きされません**。2026-07-25 の実測では、`.apm/instructions/base.instructions.md` を編集して `./install.sh` を回しても `.claude/rules/base.md` は書き換わらず、削除した instruction に対応する rules ファイルも残り続けました。apm が配備マニフェストで「(files unchanged)」と判断すると書き込みを飛ばすためです。
+
+一方、`.claude/rules/` にその instruction が無い場合は、`apm compile` が root `CLAUDE.md` の `## Project Standards` に本文を展開します。rules に有る場合は「Instructions already in .claude/rules/ -- omitting from CLAUDE.md」と言って展開しません。つまり rules を消しても指示は失われず経路が変わるだけですが、消した後に手で復元すると rules と `CLAUDE.md` の両方に同じ本文が載って二重になります。`apm compile` をかけ直せば片方に戻ります。
+
+`AGENTS.md` は毎回正しく全体再生成されます。
 
 ## スキルを追加・削除するとき
 
