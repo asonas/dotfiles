@@ -16,13 +16,13 @@ dependencies:
     # is `skills/frontend-design`, not `frontend-design`.
     - anthropics/skills/skills/frontend-design
     # emilkowalski/skills: Emil Kowalski (ex-Vercel/Linear) のデザインエンジニア
-    # 向けスキル集。アニメーションとUIデザインの良し悪しの判断基準を文書化したもの。
-    # frontend-design 同様にエントリが `skills/` 配下にネストしているのでサブパス
-    # 指定する。
-    - emilkowalski/skills/skills/animation-vocabulary
-    - emilkowalski/skills/skills/emil-design-eng
-    - emilkowalski/skills/skills/improve-animations
-    - emilkowalski/skills/skills/review-animations
+    # 向けスキル集（animation-vocabulary / emil-design-eng / improve-animations /
+    # review-animations）。2026-05-01〜07-25 の 188 セッションで 1 回も起動されず、
+    # description 1,026 文字を毎セッション消費していたため除外した（review-animations
+    # は disable-model-invocation なのでスキル一覧には出ていなかった）。UI の
+    # ガイドラインは apply-apple-interface-guidelines を使っている。必要になったら
+    # ここに名前を足せば戻る。エントリは `skills/` 配下にネストしているので
+    # frontend-design と同じサブパス指定にする。
     # Plugins migrated from Claude Code marketplaces (single-repo form).
     - obra/superpowers
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
@@ -60,11 +60,10 @@ dependencies:
     # has diverged ahead of the published package, and APM refuses to deploy
     # over the symlink anyway.
     - asonas/skills/commit
-    # comment-quality: takai の gist (f17b43412243221f918509e989df0a3b) を
-    # asonas/skills 配下に vendor したもの。diff 中の新規コメント・PR 本文・docs の
-    # 文言を R1〜R6 で診断する（report only）。upstream 更新時は再取得して同期する。
-    - asonas/skills/comment-quality
-    - asonas/skills/entire
+    # comment-quality（takai の gist f17b43412243221f918509e989df0a3b を vendor）と
+    # entire は 2026-05-01〜07-25 の 188 セッションで 1 回も起動されなかった。
+    # description は comment-quality が 758 文字で単体最大、entire が 79 文字。
+    # どちらも source は asonas/skills 側に残っているので、ここに名前を足せば戻る。
     - asonas/skills/git-worktree-workflow
     # herdr: herdr（ターミナル常駐エージェントマルチプレクサ）を herdr 内から
     # 操作するための agent skill。upstream ogulcancelik/herdr の SKILL.md を vendor
@@ -88,9 +87,9 @@ dependencies:
     # gist ID 名で配備し /cognitive-rhythm-writing で起動できないため、asonas/skills
     # 配下に複製して clean な skill 名で配備している。
     - asonas/skills/cognitive-rhythm-writing
-    - asonas/skills/legacy-code-improvement
     - asonas/skills/pr-review
-    - asonas/skills/usb-debug
+    # legacy-code-improvement と usb-debug も同じ 188 セッションで 0 回。source は
+    # asonas/skills 側に残っている。
   mcp: []
 includes: auto
 scripts: {}
