@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# herdr-fork-codex-session [direction]
+#
+# Fork the current Codex CLI session into a new Herdr pane.
+# Companion to herdr-fork-claude-session (see gist:
+# https://gist.github.com/miyagawa/cb1a9f6c8695d1219efba0c66d5f78f7), adapted
+# for Codex. Codex has no per-process session-id env var (unlike Claude Code's
+# CLAUDE_CODE_SESSION_ID), so the session id is looked up from Herdr's own
+# bookkeeping (populated via Codex's SessionStart hook) for THIS pane,
+# identified by HERDR_PANE_ID -- not "focused", which tracks UI focus and can
+# point at a different pane than the one running this script.
+#
+#   direction   right (default) | down  -- which way to split off the new pane
+#
+# Requirements: run from inside a Herdr-managed Codex pane (HERDR_ENV=1,
+# HERDR_PANE_ID set). Needs python3 for JSON.
+set -euo pipefail
+
+if [ "${HERDR_ENV:-}" != "1" ]; then
+    echo "herdr-fork-codex-session: not running inside Herdr (HERDR_ENV != 1)" >&2
+    exit 1
+fi
+
+if [ -z "${HERDR_PANE_ID:-}" ]; then
+    echo "herdr-fork-codex-session: HERDR_PANE_ID is not set" >&2
+    exit 1
+fi
+
+if ! sid=$(herdr agent list |
+    python3 -c "
+import sys, json, os
+agents = json.load(sys.stdin)['result']['agents']
+pane_id = os.environ.get('HERDR_PANE_ID')
+mine = [a for a in agents if a.get('pane_id') == pane_id]
+if not mine:
+    sys.exit('could not find this pane in herdr agent list')
+a = mine[0]
+if a.get('agent') != 'codex':
+    sys.exit(\"this pane's agent is '%s', not codex\" % a.get('agent'))
+print(a['agent_session']['value'])
+"); then
+    echo "herdr-fork-codex-session: could not resolve this pane's Codex session id" >&2
+    exit 1
+fi
+
+direction="${1:-right}"
+case "$direction" in
+    right | down) ;;
+    *)
+        echo "herdr-fork-codex-session: direction must be 'right' or 'down', got '$direction'" >&2
+        exit 1
+        ;;
+esac
+
+pane=$(herdr pane split --current --direction "$direction" --cwd "$PWD" --no-focus |
+    python3 -c "import sys, json; print(json.load(sys.stdin)['result']['pane']['pane_id'])")
+
+herdr pane run "$pane" "codex fork $sid"
+echo "forked session $sid -> pane $pane"
