@@ -100,15 +100,15 @@
     "command": "~/.claude/scripts/statusline-usage.py"
   },
   "enabledPlugins": {
-    "cafleet@cafleet": true,
+    "cafleet@cafleet": false,
     "cctop@cctop": true,
-    "clangd-lsp@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": false,
     "cman@cman": true,
     "crit@crit": true,
-    "obsidian@obsidian-skills": true,
+    "obsidian@obsidian-skills": false,
     "ruby-lsp@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true,
-    "sorah-guides@sorah-marketplace": true,
+    "sorah-guides@sorah-marketplace": false,
     "swift-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {

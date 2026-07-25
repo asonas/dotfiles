@@ -28,7 +28,13 @@ dependencies:
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
     # not APM. APM only places sources; it does not register the plugin with
     # Claude Code, so APM-only management leaves cman non-functional.
-    - kepano/obsidian-skills
+    # kepano/obsidian-skills: defuddle だけを取り込む。json-canvas /
+    # obsidian-bases / obsidian-cli / obsidian-markdown は配備以来（2026-06-12）
+    # 一度も起動されておらず、スキル一覧のトークンだけ消費していたため除外した。
+    # 必要になったらここに名前を足せば戻る。
+    # エントリが `skills/` 配下にネストしているので、frontend-design や ax と同じ
+    # サブパス指定にする。`skills:` フィルタはこのネストで解決できるか不明。
+    - kepano/obsidian-skills/skills/defuddle
     - st0012/cctop
     # ax: AI 向け curl 代替（fetch / discover / extract）。skill は skills/ax に
     # ネストしているのでサブパス指定する（frontend-design と同様）。リポジトリ直下の
