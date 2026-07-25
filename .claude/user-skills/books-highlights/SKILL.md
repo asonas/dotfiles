@@ -1,6 +1,7 @@
 ---
 name: books-highlights
-description: Apple Books.app のハイライト・メモを epub 原本のメタデータ・章構成と突き合わせ、Obsidian asonas vault の books/ に1書籍1ファイルで取り込む。Use when invoked as /books-highlights, or when asked to import Apple Books highlights into Obsidian.
+description: Apple Books.app のハイライト・メモを epub 原本のメタデータ・章構成と突き合わせ、Obsidian asonas vault の books/ に1書籍1ファイルで取り込む。Use when invoked as /books-highlights.
+disable-model-invocation: true
 ---
 
 # /books-highlights - Apple Books Highlights -> Obsidian
