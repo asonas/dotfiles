@@ -286,15 +286,22 @@ if [ -f "$cman_server" ] && command -v jq >/dev/null 2>&1 && [ -f "$settings_fil
     ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
 fi
 
+# apm compile writes CLAUDE.md only when it has something to put in it: the
+# `@apm_modules/<dep>/CLAUDE.md` lines for dependencies materialized with a root
+# CLAUDE.md, plus the instruction bodies when they are not already in
+# .claude/rules/. With every dependency scoped to a subpath and the instructions
+# deployed as rules, neither applies and no CLAUDE.md is produced. Drop the link
+# in that case so ~/.claude/CLAUDE.md does not dangle.
+link="$HOME/.claude/CLAUDE.md"
 if [ -f "$PWD/CLAUDE.md" ]; then
-    link="$HOME/.claude/CLAUDE.md"
     if [ -L "$link" ] || [ -e "$link" ]; then
         rm -rf "$link"
     fi
     mkdir -p "$(dirname "$link")"
     ln -s "$PWD/CLAUDE.md" "$link"
-else
-    echo "warning: $PWD/CLAUDE.md not found; skipping ~/.claude/CLAUDE.md symlink."
+elif [ -L "$link" ]; then
+    echo "==> removing stale ~/.claude/CLAUDE.md symlink ($PWD/CLAUDE.md is gone)"
+    command rm -f "$link"
 fi
 
 # Drop links left over from user-skills entries that were deleted or renamed. The

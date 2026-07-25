@@ -10,7 +10,7 @@
 |---|---|
 | `.claude/rules/*.md`, `AGENTS.md` | `.apm/instructions/*.instructions.md` |
 | `.claude/skills/`, `.agents/skills/`, `.cursor/` | `.claude/user-skills/`（自作）または `apm.yml`（外部） |
-| `/CLAUDE.md`（リポジトリルート） | `apm.yml` の `dependencies`（`apm compile` が生成） |
+| `/CLAUDE.md`（リポジトリルート） | `apm.yml` の `dependencies`（`apm compile` が生成。現在は生成されません） |
 | `.claude/commands/*.md`, `.claude/agents/`, `apm_modules/` | `apm.yml` |
 
 例外は `.claude/commands/gemini-search.md` で、これだけは追跡対象です。
@@ -35,6 +35,10 @@
 
 `~/.claude/settings.json` は `.claude/settings.json` への symlink です。ユーザースコープの設定変更はそのままこのリポジトリの差分になります。`~/.claude/rules`・`~/.claude/scripts` も同様に symlink です。
 
-`~/.claude/CLAUDE.md` の symlink 先はリポジトリ**ルート**の `CLAUDE.md`（apm 生成、`apm.yml` の `dependencies` が正本）で、このファイルではありません。両者は別物です。グローバル規約の本体は `~/.claude/rules/*.md` にあり、ルート `CLAUDE.md` 側は依存の `@` 行だけです。
+`~/.claude/CLAUDE.md` の symlink 先はリポジトリ**ルート**の `CLAUDE.md`（apm 生成）で、このファイルではありません。両者は別物です。グローバル規約の本体は `~/.claude/rules/*.md` にあります。
 
-`apm.yml` の依存をリポジトリ丸ごとで指定すると、その依存の `CLAUDE.md` がルート `CLAUDE.md` に `@apm_modules/<dep>/CLAUDE.md` として混入し、全セッションに注入されます。サブパス指定（`yusukebe/ax/skills/ax` の形）にすれば `@` 行は出ません。現在の依存はすべてサブパス指定かフィルタ指定です。
+ルート `CLAUDE.md` に入るのは2種類だけです。ひとつは `apm_modules/<owner>/<repo>/CLAUDE.md` が実在する依存の `@` 行、もうひとつは `.claude/rules/` にまだ無い instruction の本文です。依存をリポジトリ丸ごとで指定するとその依存の開発用 `CLAUDE.md` がローカルに展開され、`@` 行として全セッションに注入されます。サブパス指定（`yusukebe/ax/skills/ax` の形）ならルートのファイルが展開されないので `@` 行は出ません。
+
+現在は依存がすべてサブパス指定かフィルタ指定で、instruction も rules に配備済みなので、**ルート `CLAUDE.md` は生成されません**。`install.sh` はその場合 `~/.claude/CLAUDE.md` の symlink を張らず、残っていれば消します。丸ごと指定の依存を足すと復活します。
+
+指定を丸ごとからサブパスに変えても、`apm_modules/` に展開済みのルートファイルは apm が消しません。`apm_modules/<owner>/<repo>` を手で消して `./install.sh` を回すとサブパスだけで再展開されます。`apm prune` はサブパス指定を認識せず該当パッケージを孤児として消そうとするので使いません。
