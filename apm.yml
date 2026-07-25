@@ -28,6 +28,12 @@ dependencies:
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
     # not APM. APM only places sources; it does not register the plugin with
     # Claude Code, so APM-only management leaves cman non-functional.
+    # st0012/cctop: 同じ理由で APM 管理から外した。実体は Claude Code プラグイン
+    # (`cctop@cctop`) 側にあり、APM は cctop から何も配備していなかった（install の
+    # 出力に skill/command の integrated 行が出ず、~/.claude/skills にも
+    # ~/.claude/commands にも cctop 由来のファイルが無い）。唯一届いていたのは
+    # root CLAUDE.md に混入する `Read AGENTS.md NOW` の 167 バイトだった。
+    # macOS 専用なので、必要なマシンでプラグインを入れる。
     # kepano/obsidian-skills: defuddle だけを取り込む。json-canvas /
     # obsidian-bases / obsidian-cli / obsidian-markdown は配備以来（2026-06-12）
     # 一度も起動されておらず、スキル一覧のトークンだけ消費していたため除外した。
@@ -35,7 +41,6 @@ dependencies:
     # エントリが `skills/` 配下にネストしているので、frontend-design や ax と同じ
     # サブパス指定にする。`skills:` フィルタはこのネストで解決できるか不明。
     - kepano/obsidian-skills/skills/defuddle
-    - st0012/cctop
     # ax: AI 向け curl 代替（fetch / discover / extract）。skill は skills/ax に
     # ネストしているのでサブパス指定する（frontend-design と同様）。リポジトリ直下の
     # CLAUDE.md は ax 自身の開発用（Bun 強制など）なので、丸ごと参照するとグローバル
