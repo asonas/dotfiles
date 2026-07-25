@@ -27,7 +27,15 @@ test_install_targets() {
 
 test_codex_session_start_hooks_are_removed() {
     assert_line_count 1 '^command rm -f "\$PWD/.codex/hooks.json" "\$HOME/.codex/hooks.json"$' install.sh
-    assert_line_count 1 "canonical_cmd='\"\\\$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start'" install.sh
+}
+
+# The normalization must survive: it is what strips the superpowers SessionStart
+# entry that APM re-appends on every install. Both jq branches delete the stray
+# lowercase key, so the guard expects two occurrences.
+test_claude_session_start_normalization_drops_superpowers() {
+    assert_line_count 2 'del\(\.sessionStart\)' install.sh
+    assert_line_count 0 'run-hook.cmd" session-start' install.sh
+    assert_line_count 0 'run-hook.cmd' .claude/settings.json
 }
 
 test_codex_session_start_hook_is_not_tracked() {
@@ -37,4 +45,5 @@ test_codex_session_start_hook_is_not_tracked() {
 test_manifest_targets
 test_install_targets
 test_codex_session_start_hooks_are_removed
+test_claude_session_start_normalization_drops_superpowers
 test_codex_session_start_hook_is_not_tracked

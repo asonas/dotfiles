@@ -223,6 +223,8 @@ command rm -f "$PWD/.codex/hooks.json" "$HOME/.codex/hooks.json"
 # So the only bridge still required is skills/. The session-start symlink is kept
 # purely as a defensive fallback and is created only when APM left the file
 # missing, so we don't clobber APM's real copy on every run.
+# The SessionStart hook that consumes both is unwired below, so nothing reads
+# these paths; they stay in place so re-wiring it is a settings.json edit.
 superpowers_src="$HOME/.apm/apm_modules/obra/superpowers"
 superpowers_dst="$HOME/.claude/hooks/superpowers"
 if [ -d "$superpowers_src/skills" ]; then
@@ -240,15 +242,15 @@ fi
 # duplicate entries. The older 0.14.0 damage -- an invalid lowercase 'sessionStart'
 # key and commands pointing at doubled hooks/hooks/ paths -- is no longer produced,
 # but we still guard against it. We normalize the hooks block here: drop any stray
-# lowercase 'sessionStart' key and pin SessionStart to our canonical entries
-# (superpowers with a portable $HOME path, plus the herdr hook below). This both
-# de-duplicates APM's re-appended entry and keeps hand-managed hooks from being lost.
+# lowercase 'sessionStart' key and pin SessionStart to our canonical entries.
+#
+# superpowers' entry is deliberately NOT canonical: its session-start script reads
+# skills/using-superpowers/SKILL.md in full and injects ~3.5KB into every session,
+# which we do not want upfront. Pinning SessionStart to the herdr entry alone is
+# what strips APM's re-appended superpowers entry on each run. To re-enable the
+# bootstrap, add it back to the canonical list here and in settings.json.
 settings_file="$PWD/.claude/settings.json"
 if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
-    # Write a literal $HOME (not the install-time expansion) so the committed
-    # settings.json is portable across macOS (/Users/...) and Linux (/home/...).
-    # The hook command runs via a shell, which expands $HOME at session start.
-    canonical_cmd='"$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd" session-start'
     # herdr's Claude integration reports each pane's session id to the running
     # herdr server so it can `claude --resume <id>` after a server/host restart
     # (config: [session] resume_agents_on_restore). The reporting hook is the
@@ -262,18 +264,10 @@ if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
     tmp=$(mktemp)
     if [ -f "$herdr_hook" ]; then
         herdr_cmd='"$HOME/.claude/hooks/herdr-agent-state.sh" session'
-        jq --arg cmd "$canonical_cmd" --arg herdr "$herdr_cmd" '
+        jq --arg herdr "$herdr_cmd" '
           .hooks |= (
             del(.sessionStart)
             | .SessionStart = [
-                {
-                  matcher: "startup|clear|compact",
-                  hooks: [{
-                    type: "command",
-                    command: $cmd,
-                    async: false
-                  }]
-                },
                 {
                   matcher: "startup|resume|clear|compact",
                   hooks: [{
@@ -285,17 +279,10 @@ if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
           )
         ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
     else
-        jq --arg cmd "$canonical_cmd" '
+        jq '
           .hooks |= (
             del(.sessionStart)
-            | .SessionStart = [{
-                matcher: "startup|clear|compact",
-                hooks: [{
-                  type: "command",
-                  command: $cmd,
-                  async: false
-                }]
-              }]
+            | del(.SessionStart)
           )
         ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
     fi

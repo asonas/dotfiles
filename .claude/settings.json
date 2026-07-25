@@ -76,16 +76,6 @@
     ],
     "SessionStart": [
       {
-        "matcher": "startup|clear|compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$HOME/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
-            "async": false
-          }
-        ]
-      },
-      {
         "matcher": "startup|resume|clear|compact",
         "hooks": [
           {
