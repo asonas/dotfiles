@@ -210,31 +210,6 @@ command rm -f "$PWD/.codex/hooks.json" "$HOME/.codex/hooks.json"
 "$PWD/bin/fix_codex_agent_description" "$PWD/.codex/agents/security-reviewer.toml"
 "$PWD/bin/fix_codex_agent_description" "$HOME/.codex/agents/security-reviewer.toml"
 
-# obra/superpowers ships a SessionStart hook (hooks/hooks.json) that runs
-# run-hook.cmd, which execs the extensionless 'session-start' script and reads
-# ${PLUGIN_ROOT}/skills/using-superpowers/SKILL.md (PLUGIN_ROOT resolves to
-# ~/.claude/hooks/superpowers). Verified against APM 0.24.1 (2026-07-12):
-#   - 'apm install' now deploys BOTH run-hook.cmd and session-start as real
-#     files under ~/.claude/hooks/superpowers/hooks/. The older 0.14.0 bug that
-#     skipped session-start (APM looked at a doubled hooks/hooks/ path) is fixed.
-#   - It still does NOT deploy skills/ under the plugin hook root: superpowers
-#     skills land in ~/.claude/skills/, not ~/.claude/hooks/superpowers/skills/,
-#     so session-start cannot find SKILL.md there.
-# So the only bridge still required is skills/. The session-start symlink is kept
-# purely as a defensive fallback and is created only when APM left the file
-# missing, so we don't clobber APM's real copy on every run.
-# The SessionStart hook that consumes both is unwired below, so nothing reads
-# these paths; they stay in place so re-wiring it is a settings.json edit.
-superpowers_src="$HOME/.apm/apm_modules/obra/superpowers"
-superpowers_dst="$HOME/.claude/hooks/superpowers"
-if [ -d "$superpowers_src/skills" ]; then
-    mkdir -p "$superpowers_dst/hooks"
-    [ -e "$superpowers_dst/hooks/session-start" ] || \
-        ln -sfn "$superpowers_src/hooks/session-start" \
-                "$superpowers_dst/hooks/session-start"
-    ln -sfn "$superpowers_src/skills" "$superpowers_dst/skills"
-fi
-
 # Companion workaround: 'apm install' rewrites .claude/settings.json to wire in
 # the SessionStart hook that superpowers declares. Verified against APM 0.24.1
 # (2026-07-12): it appends its own superpowers 'SessionStart' entry on every run

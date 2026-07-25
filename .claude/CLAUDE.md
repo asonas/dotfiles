@@ -33,6 +33,8 @@
 
 ## 把握しておく依存
 
-`~/.claude/settings.json` は `.claude/settings.json` への symlink です。ユーザースコープの設定変更はそのままこのリポジトリの差分になります。`~/.claude/CLAUDE.md`・`~/.claude/rules`・`~/.claude/scripts` も同様に symlink です。
+`~/.claude/settings.json` は `.claude/settings.json` への symlink です。ユーザースコープの設定変更はそのままこのリポジトリの差分になります。`~/.claude/rules`・`~/.claude/scripts` も同様に symlink です。
 
-`install.sh` は `~/.apm/apm_modules/obra/superpowers` に `skills/` と `hooks/session-start` が存在する前提で symlink を張ります。`apm.yml` の `obra/superpowers` をサブパス指定に変えるとこの前提が崩れます。この symlink を読んでいた SessionStart フックは外してあるので、現在この bridge は誰も参照していません。
+`~/.claude/CLAUDE.md` の symlink 先はリポジトリ**ルート**の `CLAUDE.md`（apm 生成、`apm.yml` の `dependencies` が正本）で、このファイルではありません。両者は別物です。グローバル規約の本体は `~/.claude/rules/*.md` にあり、ルート `CLAUDE.md` 側は依存の `@` 行だけです。
+
+`apm.yml` の依存をリポジトリ丸ごとで指定すると、その依存の `CLAUDE.md` がルート `CLAUDE.md` に `@apm_modules/<dep>/CLAUDE.md` として混入し、全セッションに注入されます。サブパス指定（`yusukebe/ax/skills/ax` の形）にすれば `@` 行は出ません。現在の依存はすべてサブパス指定かフィルタ指定です。

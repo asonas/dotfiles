@@ -23,8 +23,28 @@ dependencies:
     # ガイドラインは apply-apple-interface-guidelines を使っている。必要になったら
     # ここに名前を足せば戻る。エントリは `skills/` 配下にネストしているので
     # frontend-design と同じサブパス指定にする。
-    # Plugins migrated from Claude Code marketplaces (single-repo form).
-    - obra/superpowers
+    # obra/superpowers: スキルを1本ずつサブパス指定する。リポジトリ丸ごとの指定に
+    # すると、apm compile が生成する root CLAUDE.md に
+    # `@apm_modules/obra/superpowers/CLAUDE.md` が入り、superpowers 本体への
+    # コントリビュートガイドライン 8,852 バイトが全セッションに注入される。
+    # サブパス指定の依存は @ 行を出さない。丸ごと指定をやめると superpowers が
+    # 宣言している SessionStart フックの統合も止まるが、あのフックは
+    # using-superpowers の全文 3.5KB を毎セッション注入するもので、
+    # settings.json 側でも外している。
+    - obra/superpowers/skills/brainstorming
+    - obra/superpowers/skills/dispatching-parallel-agents
+    - obra/superpowers/skills/executing-plans
+    - obra/superpowers/skills/finishing-a-development-branch
+    - obra/superpowers/skills/receiving-code-review
+    - obra/superpowers/skills/requesting-code-review
+    - obra/superpowers/skills/subagent-driven-development
+    - obra/superpowers/skills/systematic-debugging
+    - obra/superpowers/skills/test-driven-development
+    - obra/superpowers/skills/using-git-worktrees
+    - obra/superpowers/skills/using-superpowers
+    - obra/superpowers/skills/verification-before-completion
+    - obra/superpowers/skills/writing-plans
+    - obra/superpowers/skills/writing-skills
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
     # not APM. APM only places sources; it does not register the plugin with
     # Claude Code, so APM-only management leaves cman non-functional.
