@@ -15,6 +15,8 @@
 
 例外は `.claude/commands/gemini-search.md` で、これだけは追跡対象です。
 
+`.claude/rules/*.md` はこの表の例外で、**上書きされません**。2026-07-25 の実測では、`.apm/instructions/base.instructions.md` を編集して `./install.sh` を回しても `.claude/rules/base.md` は書き換わらず、削除した instruction に対応する rules ファイルも残り続けました。生成物を消してから `./install.sh` を2回回しても再生成されず、`.claude/rules/` が空になりました。apm が配備マニフェストで「(files unchanged)」と判断すると書き込みを飛ばすためです。`AGENTS.md` は毎回正しく再生成されます。
+
 ## スキルを追加・削除するとき
 
 自作スキルは `.claude/user-skills/<name>/SKILL.md` に置きます。`install.sh` が `~/.claude/skills/<name>` と `~/.agents/skills/<name>` へ per-entry symlink を張ります。外部スキルは `apm.yml` の `dependencies.apm` に追加します。リポジトリ直下に開発用 `CLAUDE.md` を持つ依存はサブパス指定（`yusukebe/ax/skills/ax` の形）にしないと、その内容がグローバル `CLAUDE.md` に混入します。
@@ -23,8 +25,10 @@
 
 `.apm/instructions/` や `.claude/user-skills/` を編集したら `./install.sh` を実行します。単体で回すなら `apm install -g --target claude,cursor,codex` です。
 
+`.apm/instructions/` を編集した場合は、対応する `.claude/rules/<name>.md` も手で合わせます。生成物は frontmatter を落とした本文そのものなので、`---` ブロックを除いた内容と一致させれば済みます。instruction を削除したときは `.claude/rules/<name>.md` も手で消します。`.claude/rules/` は git 管理外なので、消す前にコピーを取ります。
+
 ## 把握しておく依存
 
 `~/.claude/settings.json` は `.claude/settings.json` への symlink です。ユーザースコープの設定変更はそのままこのリポジトリの差分になります。`~/.claude/CLAUDE.md`・`~/.claude/rules`・`~/.claude/scripts` も同様に symlink です。
 
-`install.sh` は `~/.apm/apm_modules/obra/superpowers` に `skills/` と `hooks/session-start` が存在する前提で symlink を張ります。`apm.yml` の `obra/superpowers` をサブパス指定に変えるとこの前提が崩れます。
+`install.sh` は `~/.apm/apm_modules/obra/superpowers` に `skills/` と `hooks/session-start` が存在する前提で symlink を張ります。`apm.yml` の `obra/superpowers` をサブパス指定に変えるとこの前提が崩れます。この symlink を読んでいた SessionStart フックは外してあるので、現在この bridge は誰も参照していません。
