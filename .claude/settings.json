@@ -44,7 +44,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/scripts/lint-on-edit.sh"
+            "command": "~/.claude/scripts/lint-on-edit.sh",
+            "async": true
           }
         ]
       },
