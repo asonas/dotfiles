@@ -209,6 +209,15 @@ command rm -f "$PWD/.codex/hooks.json" "$HOME/.codex/hooks.json"
 "$PWD/bin/fix_codex_agent_description" "$PWD/.codex/agents/security-reviewer.toml"
 "$PWD/bin/fix_codex_agent_description" "$HOME/.codex/agents/security-reviewer.toml"
 
+# Root cause of the above: sorah-guides' security-reviewer.md has invalid YAML
+# frontmatter (an unquoted description ending in "Examples:"), so EVERY key is
+# dropped -- including `tools: ["Read", "Grep", "Glob", "Bash"]`. Measured
+# 2026-07-26: the agent did not load in Claude Code at all. Repair the deployed
+# copies after each install; the upstream file in apm_modules/ is refetched on
+# update, so this has to run every time rather than being fixed at the source.
+"$PWD/bin/fix_agent_frontmatter" "$PWD/.claude/agents/security-reviewer.md"
+"$PWD/bin/fix_agent_frontmatter" "$HOME/.claude/agents/security-reviewer.md"
+
 # Companion workaround: 'apm install' rewrites .claude/settings.json to wire in
 # the SessionStart hook that superpowers declares. Verified against APM 0.24.1
 # (2026-07-12): it appends its own superpowers 'SessionStart' entry on every run

@@ -1,0 +1,66 @@
+#!/bin/sh
+# Repair agent frontmatter whose `description:` is an unquoted multi-line plain
+# scalar. sorah-guides' security-reviewer.md ends its description line with
+# "Examples:" and then continues with indented <example> blocks. YAML reads the
+# trailing "Examples:" as a nested mapping key, so the WHOLE frontmatter fails to
+# parse:
+#
+#   Psych::SyntaxError: mapping values are not allowed in this context
+#
+# When that happens every key is lost, not just the description -- including
+# `tools: ["Read", "Grep", "Glob", "Bash"]`, which is what keeps the agent
+# read-only. An agent whose own instructions say "You must never modify any
+# files" would otherwise load with no tool restriction at all (or, as observed
+# on 2026-07-26, fail to load entirely).
+#
+# The fix converts the inline value into a literal block scalar, which preserves
+# the examples verbatim and is valid YAML:
+#
+#   description: |
+#     Use this agent when ... Examples:
+#
+#     <example>
+#     ...
+#
+# Idempotent: a description that is already a block scalar (| or >) is left
+# alone, as is any file without a `name:` key in its frontmatter.
+
+set -eu
+
+agent_file="$1"
+
+[ -f "$agent_file" ] || exit 0
+
+# Only touch files that actually open with a frontmatter block.
+[ "$(head -n 1 "$agent_file")" = "---" ] || exit 0
+
+temporary_file=$(mktemp "${agent_file}.tmp.XXXXXX")
+trap 'command rm -f "$temporary_file"' EXIT
+
+awk '
+    NR == 1 { in_fm = 1; print; next }
+    in_fm && /^---[[:space:]]*$/ { in_fm = 0; print; next }
+    in_fm && /^description:[[:space:]]/ {
+        value = substr($0, index($0, ":") + 1)
+        sub(/^[[:space:]]+/, "", value)
+        # Already a block scalar, or empty -- leave it for the caller to handle.
+        if (value == "|" || value == ">" || value ~ /^[|>][0-9+-]*$/ || value == "") {
+            print
+            next
+        }
+        print "description: |"
+        print "  " value
+        changed = 1
+        next
+    }
+    { print }
+    END { exit(changed ? 0 : 1) }
+' "$agent_file" > "$temporary_file" || {
+    # Nothing to change.
+    command rm -f "$temporary_file"
+    trap - EXIT
+    exit 0
+}
+
+command mv "$temporary_file" "$agent_file"
+trap - EXIT
