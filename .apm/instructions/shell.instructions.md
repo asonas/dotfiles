@@ -4,7 +4,7 @@ description: Shell execution rules under the Bash tool (heredoc ban, alias bypas
 
 # Shell（Bash実行時の注意）
 
-- 複数行のスクリプト（Python, Ruby, Node等）をヘレドク（`<< 'EOF'`）でインライン実行するのは禁止。代わりに Write ツールで一時ファイル（`/tmp/xxx.py` 等）に書き出してから Bash で実行すること
+- 複数行のスクリプト（Python, Ruby, Node等）をヘレドク（`<< 'EOF'`）でインライン実行するのは禁止。代わりに Write ツールで一時ファイルに書き出してから Bash で実行すること。書き出し先はシステムプロンプトで提示される scratchpad ディレクトリを使い、提示が無い場合のみ `/tmp` を使う
 - .zshrc で `rm`, `cp`, `mv` に `-i`（インタラクティブモード）のエイリアスが設定されている
 - Bashツールでこれらのコマンドを実行する際は、エイリアスをバイパスするために `command rm`, `command cp`, `command mv` を使うこと（`\rm` でも可）
 - これにより、インタラクティブプロンプトでエージェントが停止する問題を防ぐ
