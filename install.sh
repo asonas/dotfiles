@@ -233,8 +233,15 @@ command rm -f "$PWD/.codex/hooks.json" "$HOME/.codex/hooks.json"
 # 2026-07-26: the agent did not load in Claude Code at all. Repair the deployed
 # copies after each install; the upstream file in apm_modules/ is refetched on
 # update, so this has to run every time rather than being fixed at the source.
-"$PWD/bin/fix_agent_frontmatter" "$PWD/.claude/agents/security-reviewer.md"
-"$PWD/bin/fix_agent_frontmatter" "$HOME/.claude/agents/security-reviewer.md"
+# The fixer parses YAML to decide whether a file is actually broken, so it needs
+# ruby. Without it we skip rather than guess -- see bin/fix_agent_frontmatter.
+if command -v ruby >/dev/null 2>&1; then
+    "$PWD/bin/fix_agent_frontmatter" "$PWD/.claude/agents/security-reviewer.md"
+    "$PWD/bin/fix_agent_frontmatter" "$HOME/.claude/agents/security-reviewer.md"
+else
+    echo "warning: ruby not found; skipping agent frontmatter repair." \
+         "security-reviewer may load without its read-only tool restriction."
+fi
 
 # Companion workaround: 'apm install' rewrites .claude/settings.json to wire in
 # the SessionStart hook that superpowers declares. Verified against APM 0.24.1

@@ -1,4 +1,6 @@
-#!/bin/sh
+#! /usr/bin/env ruby
+# frozen_string_literal: true
+
 # Repair agent frontmatter whose `description:` is an unquoted multi-line plain
 # scalar. sorah-guides' security-reviewer.md ends its description line with
 # "Examples:" and then continues with indented <example> blocks. YAML reads the
@@ -9,9 +11,8 @@
 #
 # When that happens every key is lost, not just the description -- including
 # `tools: ["Read", "Grep", "Glob", "Bash"]`, which is what keeps the agent
-# read-only. An agent whose own instructions say "You must never modify any
-# files" would otherwise load with no tool restriction at all (or, as observed
-# on 2026-07-26, fail to load entirely).
+# read-only. Measured 2026-07-26: the agent did not load in Claude Code at all,
+# and APM's Codex converter dropped the tool restriction with a warning.
 #
 # The fix converts the inline value into a literal block scalar, which preserves
 # the examples verbatim and is valid YAML:
@@ -22,45 +23,91 @@
 #     <example>
 #     ...
 #
-# Idempotent: a description that is already a block scalar (| or >) is left
-# alone, as is any file without a `name:` key in its frontmatter.
+# Deliberately narrow. The file is left untouched unless every one of these
+# holds, because the upstream file is refetched on `apm update` and may well be
+# fixed there in a different way than we would guess:
+#
+#   - the frontmatter currently fails to parse (nothing to repair otherwise --
+#     this is what makes the script idempotent AND what stops it mangling a
+#     correctly quoted description once upstream fixes it)
+#   - the frontmatter has a top-level `name:` (files without one are co-located
+#     docs, not agent definitions)
+#   - the description value is a bare plain scalar, not already quoted or a
+#     block scalar
+#   - the description is actually continued over following lines; a single-line
+#     plain scalar is valid YAML on its own and never needs this
+#   - the rewritten frontmatter parses and still carries `name` and
+#     `description`; otherwise the original is kept and a warning is printed
+#
+# Exits 0 in every "not applicable" case so `install.sh` under `set -e` keeps
+# going.
 
-set -eu
+require "yaml"
 
-agent_file="$1"
+agent_file = ARGV[0]
+abort "usage: #{File.basename($PROGRAM_NAME)} <agent-file>" if agent_file.nil?
+exit 0 unless File.file?(agent_file)
 
-[ -f "$agent_file" ] || exit 0
+source = File.read(agent_file)
+match = source.match(/\A---\n(.*?\n)---[ \t]*\n/m)
+exit 0 unless match
 
-# Only touch files that actually open with a frontmatter block.
-[ "$(head -n 1 "$agent_file")" = "---" ] || exit 0
+frontmatter = match[1]
 
-temporary_file=$(mktemp "${agent_file}.tmp.XXXXXX")
-trap 'command rm -f "$temporary_file"' EXIT
+begin
+  YAML.safe_load(frontmatter)
+  exit 0
+rescue Psych::SyntaxError
+  # Broken -- this is the case we repair.
+end
 
-awk '
-    NR == 1 { in_fm = 1; print; next }
-    in_fm && /^---[[:space:]]*$/ { in_fm = 0; print; next }
-    in_fm && /^description:[[:space:]]/ {
-        value = substr($0, index($0, ":") + 1)
-        sub(/^[[:space:]]+/, "", value)
-        # Already a block scalar, or empty -- leave it for the caller to handle.
-        if (value == "|" || value == ">" || value ~ /^[|>][0-9+-]*$/ || value == "") {
-            print
-            next
-        }
-        print "description: |"
-        print "  " value
-        changed = 1
-        next
-    }
-    { print }
-    END { exit(changed ? 0 : 1) }
-' "$agent_file" > "$temporary_file" || {
-    # Nothing to change.
-    command rm -f "$temporary_file"
-    trap - EXIT
-    exit 0
-}
+lines = frontmatter.lines
+top_level_keys = lines.filter_map { |line| line[/\A([A-Za-z_][A-Za-z0-9_-]*):/, 1] }
 
-command mv "$temporary_file" "$agent_file"
-trap - EXIT
+# Duplicated keys mean we cannot tell which one YAML would have won. Fail closed.
+duplicated = top_level_keys.tally.select { |_, count| count > 1 }.keys
+unless duplicated.empty?
+  warn "warning: #{agent_file}: duplicated frontmatter keys #{duplicated.join(', ')}; left unchanged"
+  exit 0
+end
+
+exit 0 unless top_level_keys.include?("name")
+
+description_index = lines.index { |line| line.start_with?("description:") }
+exit 0 if description_index.nil?
+
+value = lines[description_index].sub(/\Adescription:[ \t]*/, "").rstrip
+exit 0 if value.empty? || value.start_with?("|", ">", '"', "'")
+
+continuation = lines[description_index + 1]
+exit 0 if continuation.nil?
+exit 0 unless continuation.strip.empty? || continuation.start_with?(" ", "\t")
+
+repaired_lines = lines.dup
+repaired_lines[description_index] = "description: |\n  #{value}\n"
+repaired = repaired_lines.join
+
+begin
+  parsed = YAML.safe_load(repaired)
+rescue Psych::SyntaxError => e
+  warn "warning: #{agent_file}: frontmatter repair did not yield valid YAML (#{e.message}); left unchanged"
+  exit 0
+end
+
+unless parsed.is_a?(Hash)
+  warn "warning: #{agent_file}: repaired frontmatter is not a mapping; left unchanged"
+  exit 0
+end
+
+# Every key that was written at the top level must survive as a top-level key.
+# This is the check that matters: if `tools:` were swallowed into the description
+# block the result would still be valid YAML, but the agent would have lost its
+# read-only restriction -- the very thing this repair exists to preserve.
+lost = top_level_keys.reject { |key| parsed.key?(key) }
+unless lost.empty?
+  warn "warning: #{agent_file}: repair would drop frontmatter keys #{lost.join(', ')}; left unchanged"
+  exit 0
+end
+
+File.write(agent_file, source[0, match.begin(1)] + repaired + source[match.end(1)..])
+puts "==> repaired agent frontmatter: #{agent_file}"
