@@ -57,6 +57,12 @@ qmd query $'intent: <ユーザーが本当に知りたいこと1文>\nlex: <固�
 
 インデックスは `/today` と `/wrapup` のタイミングでしか更新されない。**当日の出来事**を聞かれたら、qmd に頼らず今日の `daily/YYYY-MM-DD.md` と `activities/YYYY-MM-DD.md` を直接 Read する。検索結果が古い気がする場合は `qmd update && qmd embed` を実行してから引き直してよい（差分更新なので低コスト）。
 
+## 検索品質の測定
+
+`bench/` に質問と正解ファイルの組（15問）と実行手順がある。qmd の設定・インデックス・コレクション構成を変えたら `bench/README.md` の手順で前後を測り、結果を README の測定履歴に追記すること。「体感で良くなった」で確定させない。
+
+`wiki/log*.md`・`wiki/index.md`・`wiki/deferred.md` は qmd のインデックスから除外されている（`~/.config/qmd/index.yml` の ignore）。これらは wiki 運用のブックキーピングで固有名詞の密度が高く、リランキングの候補枠を占有して本来の wiki ページを押しのけていた。除外により概観質問（topical）の R@3 が 0.800 から 1.000 に改善した実測がある。
+
 ## 注意
 
 - このスキルは読み取り専用。vault への書き込み・修正は行わない

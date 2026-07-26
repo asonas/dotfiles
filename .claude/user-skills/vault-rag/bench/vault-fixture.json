@@ -1,0 +1,133 @@
+{
+  "description": "asonas Obsidian vault の検索品質ベンチ。wiki（派生レイヤ）と一次ソースの2層構造が正しく引けているかを測る。topical / alias は wiki ページが正解、exact / semantic / cross-domain は一次ソースが正解。",
+  "version": 1,
+  "collection": "asonas",
+  "queries": [
+    {
+      "id": "topical-ai-cost",
+      "type": "topical",
+      "description": "AIコスト可視化プロジェクトの全体像。派生レイヤの要約ページが出るべきで、個別の設計ノートや daily に降りてはいけない",
+      "query": "lex: AI コスト 可視化 ダッシュボード Databricks\nvec: 社内の AI ツール利用コストを可視化する取り組みは全体としてどう進んでいるか",
+      "expected_files": ["wiki/ai-cost-management.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "topical-hr-master",
+      "type": "topical",
+      "description": "組織マスター整備の全体像とデータの流れ。バクラク→SmartHR→Databricks の経路を1ページで説明しているのは wiki",
+      "query": "lex: 組織マスター整備 バクラク SmartHR Databricks\nvec: 組織図と従業員情報をどこを正として一元管理する方針になっているか",
+      "expected_files": ["wiki/組織マスター整備.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "topical-karukan",
+      "type": "topical",
+      "description": "karukan とは何か。個別の設定ノート3枚ではなく概要ページが出るべき",
+      "query": "lex: karukan IME Rust fcitx5 InputMethodKit\nvec: karukan はどういう日本語入力メソッドでどんな構成になっているか",
+      "expected_files": ["wiki/karukan.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "topical-idhub",
+      "type": "topical",
+      "description": "idhub の目的と位置づけ。設計判断の経緯ではなく概要を問う",
+      "query": "lex: idhub People ID アカウント 突合 identity correlation\nvec: 従業員に紐づくアカウントやカードの対応関係を管理する社内サービスの目的は何か",
+      "expected_files": ["wiki/idhub.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "topical-g4",
+      "type": "topical",
+      "description": "G4 という等級の位置づけ。評価シートや目標設定ファイルではなく概要ページを期待する。A（log/index 除外）で順位が動いた題材",
+      "query": "lex: G4 等級 グレード コンピテンシー\nvec: G4 というグレードはどういう位置づけで何が求められるのか",
+      "expected_files": ["wiki/G4.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "alias-apm",
+      "type": "alias",
+      "description": "frontmatter の aliases 経由でページを引けるか。本文中の主表記は APM で、Agent Package Manager は別名",
+      "query": "lex: Agent Package Manager エージェント スキル 配布\nvec: エージェント向けのルールやスキルを再利用可能なモジュールとして配布する仕組み",
+      "expected_files": ["wiki/APM.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "alias-aien",
+      "type": "alias",
+      "description": "略称 AIEN から AI Enablement ページを引けるか",
+      "query": "lex: AIEN 社内 AI 活用 底上げ\nvec: 組織横断で AI 活用を底上げする社内の取り組みは何を優先しているか",
+      "expected_files": ["wiki/AI Enablement.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "exact-mairu-version",
+      "type": "exact",
+      "description": "エラーメッセージからトラブルシュート記録を引く。固有の警告文があるので BM25 が効くべき典型",
+      "query": "lex: mairu agent version is diverged cargo mise\nvec: mairu のクライアントとエージェントでバージョンが食い違う警告が出た原因",
+      "expected_files": ["notes/2026-07-02-mairu-mise-version-divergence.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "exact-identity-center-passkey",
+      "type": "exact",
+      "description": "調査ノートの結論を引く。パスキーを第一要素にできない旨が書かれているのはこのノートだけ",
+      "query": "lex: IAM Identity Center パスキー MFA ユーザー対話型セッション\nvec: パスキーを設定しているのにユーザー名とパスワードを先に求められるのはなぜか",
+      "expected_files": ["notes/2026-07-13-mairu-iam-identity-center-session-passkey.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "exact-container-machine",
+      "type": "exact",
+      "description": "WWDC26 セッションを起点にした調査ノート",
+      "query": "lex: Container machine Apple container Containerization 永続 Linux\nvec: Mac 上で永続的な Linux 環境を持てる仕組みについて調べた内容",
+      "expected_files": ["notes/apple-container-machine-2026-06-09.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "semantic-jellyfin-resume",
+      "type": "semantic",
+      "description": "不具合の症状から修正記録を引く。ノート内に「自動再開」「絶対時間シーク」とあるが質問側の語彙とは一致しない",
+      "query": "lex: jellyfin-viewer VLCKit 再生位置 シーク 自動再開\nvec: 前回の続きから再生されない不具合の原因は何でどう直したか",
+      "expected_files": ["notes/2026-07-03-jellyfin-viewer-m4-testflight.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "semantic-pagespeed",
+      "type": "semantic",
+      "description": "「レンダリングブロックを解消した」という作業内容を、スコアの数字を手がかりに引く",
+      "query": "lex: PageSpeed Insights レンダリングブロック mini-css-extract-plugin FontAwesome\nvec: ブログの初回表示が遅かったのを CSS の配信方法を変えて改善した記録",
+      "expected_files": ["notes/ason-as-pagespeed-optimization.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "semantic-smarthr-retirement",
+      "type": "semantic",
+      "description": "仕様調査。退職日と在籍区分の関係という、複数プロジェクトにまたがる語彙で引く",
+      "query": "lex: SmartHR 退職日 在職中 在籍区分\nvec: 退職年月日が登録されているのに在職中のままになるのはどういう仕様か",
+      "expected_files": ["notes/SmartHR退職日と在籍状況の挙動.md"],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "cross-karukan-config",
+      "type": "cross-domain",
+      "description": "同一トピックが複数ノートに割れている場合に両方を拾えるか。karukan-alfred は別題材なので正解に含めない",
+      "query": "lex: karukan config.toml Ctrl+Space 候補ウィンドウ bare_space\nvec: karukan のキーバインドや候補ウィンドウの表示まわりで行った設定変更",
+      "expected_files": [
+        "notes/karukan-ctrl-space-config.md",
+        "notes/karukan-candidate-window-align.md"
+      ],
+      "expected_in_top_k": 3
+    },
+    {
+      "id": "cross-apm-vendor",
+      "type": "cross-domain",
+      "description": "概念ページ（APM）と、その概念を実際に適用した作業ノート（herdr skill の vendor 導入）の両方が関係する質問",
+      "query": "lex: APM vendor asonas/skills apm.yml npx skills add\nvec: 外部のエージェントスキルを npx ではなく自分の管理下に取り込んで配備した手順",
+      "expected_files": [
+        "notes/2026-07-03-herdr-agent-skill-apm.md",
+        "wiki/APM.md"
+      ],
+      "expected_in_top_k": 3
+    }
+  ]
+}

@@ -1,0 +1,1691 @@
+{
+  "timestamp": "2026-07-26T1006",
+  "fixture": "vault-fixture.json",
+  "results": [
+    {
+      "id": "topical-ai-cost",
+      "query": "lex: AI コスト 可視化 ダッシュボード Databricks\nvec: 社内の AI ツール利用コストを可視化する取り組みは全体としてどう進んでいるか",
+      "type": "topical",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 0,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 1,
+          "mrr": 0.25,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [
+            "wiki/ai-cost-management.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 20,
+          "top_files": [
+            "qmd://asonas/evaluations/2026q2/ai-enablement-meeting-notes-q2.md",
+            "qmd://asonas/evaluations/2026q2/2026Q2評価.md",
+            "qmd://asonas/wiki/Lakeview.md",
+            "qmd://asonas/wiki/ai-cost-management.md",
+            "qmd://asonas/daily/2026-07-09.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md",
+            "qmd://asonas/daily/2026-07-08.md",
+            "qmd://asonas/daily/2026-07-10.md",
+            "qmd://asonas/bookmarks/1735782921.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.5,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/ai-cost-management.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 704,
+          "top_files": [
+            "qmd://asonas/wiki/AI-Enablement.md",
+            "qmd://asonas/wiki/ai-cost-management.md",
+            "qmd://asonas/wiki/Fable-5.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.3333333333333333,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/ai-cost-management.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 328,
+          "top_files": [
+            "qmd://asonas/evaluations/2026q2/ai-enablement-meeting-notes-q2.md",
+            "qmd://asonas/evaluations/2026q2/2026Q2評価.md",
+            "qmd://asonas/wiki/ai-cost-management.md",
+            "qmd://asonas/wiki/AI-Enablement.md",
+            "qmd://asonas/wiki/Lakeview.md",
+            "qmd://asonas/wiki/Fable-5.md",
+            "qmd://asonas/daily/2026-07-09.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md",
+            "qmd://asonas/daily/2026-07-08.md",
+            "qmd://asonas/daily/2026-07-10.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.3333333333333333,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/ai-cost-management.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 34,
+          "top_files": [
+            "qmd://asonas/evaluations/2026q2/ai-enablement-meeting-notes-q2.md",
+            "qmd://asonas/evaluations/2026q2/2026Q2評価.md",
+            "qmd://asonas/wiki/ai-cost-management.md",
+            "qmd://asonas/wiki/Lakeview.md",
+            "qmd://asonas/wiki/AI-Enablement.md",
+            "qmd://asonas/daily/2026-07-09.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md",
+            "qmd://asonas/daily/2026-07-08.md",
+            "qmd://asonas/daily/2026-07-10.md",
+            "qmd://asonas/bookmarks/1735782921.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "topical-hr-master",
+      "query": "lex: 組織マスター整備 バクラク SmartHR Databricks\nvec: 組織図と従業員情報をどこを正として一元管理する方針になっているか",
+      "type": "topical",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/組織マスター整備.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 6,
+          "top_files": [
+            "qmd://asonas/wiki/組織マスター整備.md",
+            "qmd://asonas/wiki/SmartHR.md",
+            "qmd://asonas/activities/2026-06-12.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.3333333333333333,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/組織マスター整備.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 22,
+          "top_files": [
+            "qmd://asonas/activities/2026-07-23.md",
+            "qmd://asonas/Clippings/組織図管理-チーム管理-役職管理-所属管理.md",
+            "qmd://asonas/wiki/組織マスター整備.md",
+            "qmd://asonas/wiki/idhub.md",
+            "qmd://asonas/Clippings/未来の組織図を作成する-組織図予約機能.md",
+            "qmd://asonas/activities/2026-07-02.md",
+            "qmd://asonas/Clippings/部署マスターの履歴を管理する-SmartHR.md",
+            "qmd://asonas/wiki/SmartHR.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/組織マスター整備.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 27,
+          "top_files": [
+            "qmd://asonas/wiki/組織マスター整備.md",
+            "qmd://asonas/wiki/SmartHR.md",
+            "qmd://asonas/activities/2026-07-23.md",
+            "qmd://asonas/activities/2026-06-12.md",
+            "qmd://asonas/Clippings/組織図管理-チーム管理-役職管理-所属管理.md",
+            "qmd://asonas/wiki/idhub.md",
+            "qmd://asonas/Clippings/未来の組織図を作成する-組織図予約機能.md",
+            "qmd://asonas/activities/2026-07-02.md",
+            "qmd://asonas/Clippings/部署マスターの履歴を管理する-SmartHR.md",
+            "qmd://asonas/career/job-search-2023/デジタル庁.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/組織マスター整備.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 24,
+          "top_files": [
+            "qmd://asonas/wiki/組織マスター整備.md",
+            "qmd://asonas/wiki/SmartHR.md",
+            "qmd://asonas/wiki/freee.md",
+            "qmd://asonas/Clippings/部署マスターの履歴管理機能とは-SmartHR.md",
+            "qmd://asonas/activities/2026-06-12.md",
+            "qmd://asonas/activities/2026-07-23.md",
+            "qmd://asonas/wiki/idhub.md",
+            "qmd://asonas/activities/2026-07-02.md",
+            "qmd://asonas/Clippings/部署マスターの履歴を管理する-SmartHR.md",
+            "qmd://asonas/Clippings/組織図管理-チーム管理-役職管理-所属管理.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "topical-karukan",
+      "query": "lex: karukan IME Rust fcitx5 InputMethodKit\nvec: karukan はどういう日本語入力メソッドでどんな構成になっているか",
+      "type": "topical",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/karukan.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 6,
+          "top_files": [
+            "qmd://asonas/wiki/karukan.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 0,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 1,
+          "mrr": 0.25,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [
+            "wiki/karukan.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 22,
+          "top_files": [
+            "qmd://asonas/bookmarks/1776775633.md",
+            "qmd://asonas/bookmarks/1777348810.md",
+            "qmd://asonas/notes/karukan-ctrl-space-config.md",
+            "qmd://asonas/wiki/karukan.md",
+            "qmd://asonas/notes/karukan-alfred.md",
+            "qmd://asonas/notes/karukan-candidate-window-align.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/karukan.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 25,
+          "top_files": [
+            "qmd://asonas/wiki/karukan.md",
+            "qmd://asonas/bookmarks/1776775633.md",
+            "qmd://asonas/bookmarks/1777348810.md",
+            "qmd://asonas/notes/karukan-ctrl-space-config.md",
+            "qmd://asonas/notes/karukan-alfred.md",
+            "qmd://asonas/notes/karukan-candidate-window-align.md",
+            "qmd://asonas/wiki/Karabiner.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/bookmarks/1789952262.md",
+            "qmd://asonas/notes/apple-human-interface-guidelines/design-principles.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/karukan.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 26,
+          "top_files": [
+            "qmd://asonas/wiki/karukan.md",
+            "qmd://asonas/bookmarks/1776775633.md",
+            "qmd://asonas/notes/karukan-ctrl-space-config.md",
+            "qmd://asonas/bookmarks/1777348810.md",
+            "qmd://asonas/notes/karukan-alfred.md",
+            "qmd://asonas/notes/karukan-candidate-window-align.md",
+            "qmd://asonas/bookmarks/1789952262.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/wiki/Karabiner.md",
+            "qmd://asonas/notes/apple-human-interface-guidelines/design-principles.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "topical-idhub",
+      "query": "lex: idhub People ID アカウント 突合 identity correlation\nvec: 従業員に紐づくアカウントやカードの対応関係を管理する社内サービスの目的は何か",
+      "type": "topical",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/idhub.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 6,
+          "top_files": [
+            "qmd://asonas/wiki/idhub.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 0,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 1,
+          "mrr": 0.25,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [
+            "wiki/idhub.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 24,
+          "top_files": [
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu-bak-20260624/落とし物の管理.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/全社向け-セキュリティカード-入館証-東京オフィス.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/全社向け-社内落とし物-忘れ物対応マニュアル.md",
+            "qmd://asonas/wiki/idhub.md",
+            "qmd://asonas/daily/2021-07-14.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/名刺の依頼方法-全社向け.md",
+            "qmd://asonas/archive/ANYCOLOR.md",
+            "qmd://asonas/companies/SmartHR/年末恒例第1回SmartHRハッカソン.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu-bak-20260624/全社向け-セキュリティカート-入館証-東京オフィス.md",
+            "qmd://asonas/projects/the-guild/mission-statement.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/idhub.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 35,
+          "top_files": [
+            "qmd://asonas/wiki/idhub.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu-bak-20260624/落とし物の管理.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/全社向け-セキュリティカード-入館証-東京オフィス.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/全社向け-社内落とし物-忘れ物対応マニュアル.md",
+            "qmd://asonas/daily/2021-07-14.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/名刺の依頼方法-全社向け.md",
+            "qmd://asonas/archive/ANYCOLOR.md",
+            "qmd://asonas/companies/SmartHR/年末恒例第1回SmartHRハッカソン.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu-bak-20260624/全社向け-セキュリティカート-入館証-東京オフィス.md",
+            "qmd://asonas/projects/the-guild/mission-statement.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/idhub.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 34,
+          "top_files": [
+            "qmd://asonas/wiki/idhub.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu-bak-20260624/落とし物の管理.md",
+            "qmd://asonas/wiki/EntraID.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/全社向け-セキュリティカード-入館証-東京オフィス.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/全社向け-社内落とし物-忘れ物対応マニュアル.md",
+            "qmd://asonas/companies/SmartHR/PdE向け共通オンボーディング.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu-bak-20260624/一時貸出備品-コート-アタ-フ-タ等-について.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu-bak-20260624/全社向け-来訪登録-東京オフィス.md",
+            "qmd://asonas/blog/デプロイを1日1回にすると起きること.md",
+            "qmd://asonas/wiki/kakutani.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "topical-g4",
+      "query": "lex: G4 等級 グレード コンピテンシー\nvec: G4 というグレードはどういう位置づけで何が求められるのか",
+      "type": "topical",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "wiki/G4.md"
+          ],
+          "total_expected": 1,
+          "latency_ms": 2,
+          "top_files": []
+        },
+        "vector": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "wiki/G4.md"
+          ],
+          "total_expected": 1,
+          "latency_ms": 24,
+          "top_files": [
+            "qmd://asonas/goals/2026-Q3-目標設定-ルーブリック.md",
+            "qmd://asonas/evaluations/2026q2/2026Q2評価.md",
+            "qmd://asonas/wiki/Guild.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md",
+            "qmd://asonas/C4P/45-C4P数理モデル.md",
+            "qmd://asonas/C4P/00a-用語の定義.md",
+            "qmd://asonas/projects/ai-enablement/Frictionless-読書会.md",
+            "qmd://asonas/C4P/42-アウトオブスコープ.md",
+            "qmd://asonas/projects/the-guild/これから問い合わせをする方へ.md",
+            "qmd://asonas/C4P/06-目的は手段です.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "wiki/G4.md"
+          ],
+          "total_expected": 1,
+          "latency_ms": 25,
+          "top_files": [
+            "qmd://asonas/goals/2026-Q3-目標設定-ルーブリック.md",
+            "qmd://asonas/evaluations/2026q2/2026Q2評価.md",
+            "qmd://asonas/wiki/Guild.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md",
+            "qmd://asonas/C4P/45-C4P数理モデル.md",
+            "qmd://asonas/C4P/00a-用語の定義.md",
+            "qmd://asonas/projects/ai-enablement/Frictionless-読書会.md",
+            "qmd://asonas/C4P/42-アウトオブスコープ.md",
+            "qmd://asonas/projects/the-guild/これから問い合わせをする方へ.md",
+            "qmd://asonas/C4P/06-目的は手段です.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.3333333333333333,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/G4.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 24,
+          "top_files": [
+            "qmd://asonas/goals/2026-Q3-目標設定-ルーブリック.md",
+            "qmd://asonas/evaluations/2026q2/2026Q2評価.md",
+            "qmd://asonas/wiki/G4.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md",
+            "qmd://asonas/wiki/Guild.md",
+            "qmd://asonas/notes/2026-07-17-スタッフエンジニアの道-vault統合とQ3ルーブリック.md",
+            "qmd://asonas/projects/tempest909/icon-idea.md",
+            "qmd://asonas/books/スタッフエンシ-ニアの道/links/www-asce-org-engineergrades.md",
+            "qmd://asonas/C4P/26-チーティング.md",
+            "qmd://asonas/companies/SmartHR/目標2024.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "alias-apm",
+      "query": "lex: Agent Package Manager エージェント スキル 配布\nvec: エージェント向けのルールやスキルを再利用可能なモジュールとして配布する仕組み",
+      "type": "alias",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/APM.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 7,
+          "top_files": [
+            "qmd://asonas/wiki/APM.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "wiki/APM.md"
+          ],
+          "total_expected": 1,
+          "latency_ms": 29,
+          "top_files": [
+            "qmd://asonas/wiki/asonas-skills.md",
+            "qmd://asonas/essays/2026年のAI開発体験トレンド調査.md",
+            "qmd://asonas/companies/SmartHR/いつデプロイするの-今でしょ.md",
+            "qmd://asonas/bookmarks/1750804147.md",
+            "qmd://asonas/essays/そろそろNotionにひとこと言っておくか.md",
+            "qmd://asonas/bookmarks/1748053410.md",
+            "qmd://asonas/bookmarks/1752262589.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/projects/proposals/kaigi-on-rails-2026.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/APM.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 25,
+          "top_files": [
+            "qmd://asonas/wiki/APM.md",
+            "qmd://asonas/wiki/asonas-skills.md",
+            "qmd://asonas/essays/2026年のAI開発体験トレンド調査.md",
+            "qmd://asonas/companies/SmartHR/いつデプロイするの-今でしょ.md",
+            "qmd://asonas/bookmarks/1750804147.md",
+            "qmd://asonas/essays/そろそろNotionにひとこと言っておくか.md",
+            "qmd://asonas/bookmarks/1748053410.md",
+            "qmd://asonas/bookmarks/1752262589.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/projects/proposals/kaigi-on-rails-2026.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "wiki/APM.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 36,
+          "top_files": [
+            "qmd://asonas/wiki/APM.md",
+            "qmd://asonas/wiki/asonas-skills.md",
+            "qmd://asonas/bookmarks/1761023631.md",
+            "qmd://asonas/bookmarks/1748053410.md",
+            "qmd://asonas/essays/2026年のAI開発体験トレンド調査.md",
+            "qmd://asonas/bookmarks/1750804147.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/companies/SmartHR/いつデプロイするの-今でしょ.md",
+            "qmd://asonas/projects/proposals/kaigi-on-rails-2026-テスト実行時間改善.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "alias-aien",
+      "query": "lex: AIEN 社内 AI 活用 底上げ\nvec: 組織横断で AI 活用を底上げする社内の取り組みは何を優先しているか",
+      "type": "alias",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "wiki/AI Enablement.md"
+          ],
+          "total_expected": 1,
+          "latency_ms": 4,
+          "top_files": [
+            "qmd://asonas/wiki/AI-Enablement.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "wiki/AI Enablement.md"
+          ],
+          "total_expected": 1,
+          "latency_ms": 20,
+          "top_files": [
+            "qmd://asonas/wiki/AI-Enablement.md",
+            "qmd://asonas/wiki/Fable-5.md",
+            "qmd://asonas/bookmarks/1798724231.md",
+            "qmd://asonas/bookmarks/1771271210.md",
+            "qmd://asonas/companies/ivry/開発体験ヒアリング-考察-2026-04-06.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md",
+            "qmd://asonas/bookmarks/1795962430.md",
+            "qmd://asonas/notes/AI駆動開発とエージェント時代の技術選定-2026年7月まとめ.md",
+            "qmd://asonas/bookmarks/1795242718.md",
+            "qmd://asonas/essays/そろそろNotionにひとこと言っておくか.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "wiki/AI Enablement.md"
+          ],
+          "total_expected": 1,
+          "latency_ms": 24,
+          "top_files": [
+            "qmd://asonas/wiki/AI-Enablement.md",
+            "qmd://asonas/wiki/Fable-5.md",
+            "qmd://asonas/bookmarks/1798724231.md",
+            "qmd://asonas/bookmarks/1771271210.md",
+            "qmd://asonas/companies/ivry/開発体験ヒアリング-考察-2026-04-06.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md",
+            "qmd://asonas/bookmarks/1795962430.md",
+            "qmd://asonas/notes/AI駆動開発とエージェント時代の技術選定-2026年7月まとめ.md",
+            "qmd://asonas/bookmarks/1795242718.md",
+            "qmd://asonas/essays/そろそろNotionにひとこと言っておくか.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "wiki/AI Enablement.md"
+          ],
+          "total_expected": 1,
+          "latency_ms": 33,
+          "top_files": [
+            "qmd://asonas/wiki/AI-Enablement.md",
+            "qmd://asonas/wiki/Fable-5.md",
+            "qmd://asonas/projects/ai-cost-management/2026-07-06-ai-cost-fable5-meeting.md",
+            "qmd://asonas/companies/ivry/開発体験ヒアリング-考察-2026-04-06.md",
+            "qmd://asonas/bookmarks/1798724231.md",
+            "qmd://asonas/bookmarks/1771271210.md",
+            "qmd://asonas/goals/2026-Q2-目標設定.md",
+            "qmd://asonas/bookmarks/1754609040.md",
+            "qmd://asonas/projects/ai-enablement/interviews/開発体験ヒアリング/yqn/2026-04-20.md",
+            "qmd://asonas/bookmarks/1725814552.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "exact-mairu-version",
+      "query": "lex: mairu agent version is diverged cargo mise\nvec: mairu のクライアントとエージェントでバージョンが食い違う警告が出た原因",
+      "type": "exact",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-02-mairu-mise-version-divergence.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 7,
+          "top_files": [
+            "qmd://asonas/notes/2026-07-02-mairu-mise-version-divergence.md",
+            "qmd://asonas/wiki/mairu.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.5,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-02-mairu-mise-version-divergence.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 19,
+          "top_files": [
+            "qmd://asonas/wiki/mairu.md",
+            "qmd://asonas/notes/2026-07-02-mairu-mise-version-divergence.md",
+            "qmd://asonas/projects/tempest/2026-05-18-認証情報の安全な管理方針の検討.md",
+            "qmd://asonas/wiki/mise.md",
+            "qmd://asonas/daily/2026-07-23.md",
+            "qmd://asonas/projects/tempest/2026-05-17-アバターアイコン表示不具合の調査.md",
+            "qmd://asonas/bookmarks/1771271210.md",
+            "qmd://asonas/bookmarks/1749130232.md",
+            "qmd://asonas/wiki/ma.md",
+            "qmd://asonas/bookmarks/1782513839.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-02-mairu-mise-version-divergence.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 43,
+          "top_files": [
+            "qmd://asonas/notes/2026-07-02-mairu-mise-version-divergence.md",
+            "qmd://asonas/wiki/mairu.md",
+            "qmd://asonas/projects/tempest/2026-05-18-認証情報の安全な管理方針の検討.md",
+            "qmd://asonas/wiki/mise.md",
+            "qmd://asonas/daily/2026-07-23.md",
+            "qmd://asonas/projects/tempest/2026-05-17-アバターアイコン表示不具合の調査.md",
+            "qmd://asonas/bookmarks/1771271210.md",
+            "qmd://asonas/bookmarks/1749130232.md",
+            "qmd://asonas/wiki/ma.md",
+            "qmd://asonas/bookmarks/1782513839.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-02-mairu-mise-version-divergence.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 29,
+          "top_files": [
+            "qmd://asonas/notes/2026-07-02-mairu-mise-version-divergence.md",
+            "qmd://asonas/wiki/mairu.md",
+            "qmd://asonas/wiki/mise.md",
+            "qmd://asonas/notes/2026-07-13-mairu-iam-identity-center-session-passkey.md",
+            "qmd://asonas/projects/tempest/2026-05-18-認証情報の安全な管理方針の検討.md",
+            "qmd://asonas/daily/2026-07-23.md",
+            "qmd://asonas/companies/SmartHR/いつデプロイするの-今でしょ.md",
+            "qmd://asonas/pr-reviews/PR-ivry-web-backend-7671.md",
+            "qmd://asonas/books/スタッフエンシ-ニアの道/links/SOdWl.md",
+            "qmd://asonas/wiki/asonas-skills.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "exact-identity-center-passkey",
+      "query": "lex: IAM Identity Center パスキー MFA ユーザー対話型セッション\nvec: パスキーを設定しているのにユーザー名とパスワードを先に求められるのはなぜか",
+      "type": "exact",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-13-mairu-iam-identity-center-session-passkey.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 6,
+          "top_files": [
+            "qmd://asonas/notes/2026-07-13-mairu-iam-identity-center-session-passkey.md",
+            "qmd://asonas/wiki/AWS-IAM-Identity-Center.md",
+            "qmd://asonas/wiki/mairu.md",
+            "qmd://asonas/daily/2026-07-13.md",
+            "qmd://asonas/daily/2026-07-14.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.5,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-13-mairu-iam-identity-center-session-passkey.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 21,
+          "top_files": [
+            "qmd://asonas/wiki/AWS-IAM-Identity-Center.md",
+            "qmd://asonas/notes/2026-07-13-mairu-iam-identity-center-session-passkey.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/名刺の依頼方法-全社向け.md",
+            "qmd://asonas/wiki/atproto-OAuth.md",
+            "qmd://asonas/daily/2021-07-14.md",
+            "qmd://asonas/projects/tempest/2026-05-18-認証情報の安全な管理方針の検討.md",
+            "qmd://asonas/bookmarks/1749130232.md",
+            "qmd://asonas/daily/2025-02-14.md",
+            "qmd://asonas/notes/オフィス在席位置把握-doko構想.md",
+            "qmd://asonas/daily/2021-07-27.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-13-mairu-iam-identity-center-session-passkey.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 25,
+          "top_files": [
+            "qmd://asonas/notes/2026-07-13-mairu-iam-identity-center-session-passkey.md",
+            "qmd://asonas/wiki/AWS-IAM-Identity-Center.md",
+            "qmd://asonas/wiki/mairu.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/名刺の依頼方法-全社向け.md",
+            "qmd://asonas/daily/2026-07-13.md",
+            "qmd://asonas/daily/2026-07-14.md",
+            "qmd://asonas/wiki/atproto-OAuth.md",
+            "qmd://asonas/daily/2021-07-14.md",
+            "qmd://asonas/projects/tempest/2026-05-18-認証情報の安全な管理方針の検討.md",
+            "qmd://asonas/bookmarks/1749130232.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-13-mairu-iam-identity-center-session-passkey.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 23,
+          "top_files": [
+            "qmd://asonas/notes/2026-07-13-mairu-iam-identity-center-session-passkey.md",
+            "qmd://asonas/wiki/AWS-IAM-Identity-Center.md",
+            "qmd://asonas/wiki/mairu.md",
+            "qmd://asonas/daily/2026-07-13.md",
+            "qmd://asonas/daily/2026-07-14.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/名刺の依頼方法-全社向け.md",
+            "qmd://asonas/daily/2025-02-14.md",
+            "qmd://asonas/notes/オフィス在席位置把握-doko構想.md",
+            "qmd://asonas/daily/2021-07-27.md",
+            "qmd://asonas/daily/2021-07-20.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "exact-container-machine",
+      "query": "lex: Container machine Apple container Containerization 永続 Linux\nvec: Mac 上で永続的な Linux 環境を持てる仕組みについて調べた内容",
+      "type": "exact",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/apple-container-machine-2026-06-09.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 6,
+          "top_files": [
+            "qmd://asonas/notes/apple-container-machine-2026-06-09.md",
+            "qmd://asonas/wiki/Container-machine.md",
+            "qmd://asonas/wiki/Apple-container.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 0,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 1,
+          "mrr": 0.25,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [
+            "notes/apple-container-machine-2026-06-09.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 25,
+          "top_files": [
+            "qmd://asonas/wiki/Container-machine.md",
+            "qmd://asonas/bookmarks/1773086305.md",
+            "qmd://asonas/wiki/Apple-container.md",
+            "qmd://asonas/notes/apple-container-machine-2026-06-09.md",
+            "qmd://asonas/wiki/Containerization.md",
+            "qmd://asonas/notes/karukan-alfred.md",
+            "qmd://asonas/bookmarks/1724729458.md",
+            "qmd://asonas/archive/Rancher-Desktop-メモリ最適化調査.md",
+            "qmd://asonas/bookmarks/1789952262.md",
+            "qmd://asonas/wiki/karukan.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.5,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/apple-container-machine-2026-06-09.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 35,
+          "top_files": [
+            "qmd://asonas/wiki/Container-machine.md",
+            "qmd://asonas/notes/apple-container-machine-2026-06-09.md",
+            "qmd://asonas/wiki/Apple-container.md",
+            "qmd://asonas/bookmarks/1773086305.md",
+            "qmd://asonas/wiki/Containerization.md",
+            "qmd://asonas/notes/karukan-alfred.md",
+            "qmd://asonas/bookmarks/1724729458.md",
+            "qmd://asonas/archive/Rancher-Desktop-メモリ最適化調査.md",
+            "qmd://asonas/bookmarks/1789952262.md",
+            "qmd://asonas/wiki/karukan.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.5,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/apple-container-machine-2026-06-09.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 40,
+          "top_files": [
+            "qmd://asonas/wiki/Container-machine.md",
+            "qmd://asonas/notes/apple-container-machine-2026-06-09.md",
+            "qmd://asonas/bookmarks/1773086305.md",
+            "qmd://asonas/wiki/Apple-container.md",
+            "qmd://asonas/wiki/Containerization.md",
+            "qmd://asonas/projects/tempest/2026-05-17-アバターアイコン表示不具合の調査.md",
+            "qmd://asonas/bookmarks/1796093781.md",
+            "qmd://asonas/bookmarks/1735782921.md",
+            "qmd://asonas/companies/ivry/開発体験ヒアリング-考察-2026-04-06.md",
+            "qmd://asonas/bookmarks/1776775633.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "semantic-jellyfin-resume",
+      "query": "lex: jellyfin-viewer VLCKit 再生位置 シーク 自動再開\nvec: 前回の続きから再生されない不具合の原因は何でどう直したか",
+      "type": "semantic",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-03-jellyfin-viewer-m4-testflight.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 5,
+          "top_files": [
+            "qmd://asonas/notes/2026-07-03-jellyfin-viewer-m4-testflight.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "notes/2026-07-03-jellyfin-viewer-m4-testflight.md"
+          ],
+          "total_expected": 1,
+          "latency_ms": 26,
+          "top_files": [
+            "qmd://asonas/wiki/tscircuit.md",
+            "qmd://asonas/projects/ai-enablement/interviews/開発体験ヒアリング/takumi/開発体験ヒアリング-2026-04-06-13-57-JST-Gemini-によるメモ.md",
+            "qmd://asonas/wiki/raindrop-sync.md",
+            "qmd://asonas/daily/2024-08-17.md",
+            "qmd://asonas/wiki/ai-cost-management.md",
+            "qmd://asonas/notes/c4p-ason-as-構築ログ.md",
+            "qmd://asonas/pr-reviews/PR-ivry-web-backend-7671.md",
+            "qmd://asonas/projects/moire/設計判断と実装の記録.md",
+            "qmd://asonas/daily/2026-04-30.md",
+            "qmd://asonas/projects/ai-enablement/interviews/開発体験ヒアリング/kanno/開発体験ヒアリング-2026-04-06-14-55-JST-Gemini-によるメモ.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-03-jellyfin-viewer-m4-testflight.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 21,
+          "top_files": [
+            "qmd://asonas/notes/2026-07-03-jellyfin-viewer-m4-testflight.md",
+            "qmd://asonas/wiki/tscircuit.md",
+            "qmd://asonas/projects/ai-enablement/interviews/開発体験ヒアリング/takumi/開発体験ヒアリング-2026-04-06-13-57-JST-Gemini-によるメモ.md",
+            "qmd://asonas/wiki/raindrop-sync.md",
+            "qmd://asonas/daily/2024-08-17.md",
+            "qmd://asonas/wiki/ai-cost-management.md",
+            "qmd://asonas/notes/c4p-ason-as-構築ログ.md",
+            "qmd://asonas/pr-reviews/PR-ivry-web-backend-7671.md",
+            "qmd://asonas/projects/moire/設計判断と実装の記録.md",
+            "qmd://asonas/daily/2026-04-30.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-03-jellyfin-viewer-m4-testflight.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 28,
+          "top_files": [
+            "qmd://asonas/notes/2026-07-03-jellyfin-viewer-m4-testflight.md",
+            "qmd://asonas/wiki/tscircuit.md",
+            "qmd://asonas/projects/ai-enablement/interviews/開発体験ヒアリング/takumi/開発体験ヒアリング-2026-04-06-13-57-JST-Gemini-によるメモ.md",
+            "qmd://asonas/wiki/raindrop-sync.md",
+            "qmd://asonas/projects/ai-enablement/interviews/開発体験ヒアリング/kanno/開発体験ヒアリング-2026-04-06-14-55-JST-Gemini-によるメモ.md",
+            "qmd://asonas/projects/2026-06-kosendj-machine-live/references/digitakt-2-book/src/beginner/06-play-a-pattern.md",
+            "qmd://asonas/projects/2026-06-kosendj-machine-live/references/digitakt-2-book/src/beginner/18-keep-editing-while-it-s-playing.md",
+            "qmd://asonas/companies/ivry/ルールCSVインポートエラー修正.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/全社向け-オフィスコンビニ-FAQ.md",
+            "qmd://asonas/projects/tempest909/drafts/2026-05-25-2239.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "semantic-pagespeed",
+      "query": "lex: PageSpeed Insights レンダリングブロック mini-css-extract-plugin FontAwesome\nvec: ブログの初回表示が遅かったのを CSS の配信方法を変えて改善した記録",
+      "type": "semantic",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/ason-as-pagespeed-optimization.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 5,
+          "top_files": [
+            "qmd://asonas/notes/ason-as-pagespeed-optimization.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/ason-as-pagespeed-optimization.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 36,
+          "top_files": [
+            "qmd://asonas/notes/ason-as-pagespeed-optimization.md",
+            "qmd://asonas/companies/SmartHR/デプロイ時間を変えるためのメモ.md",
+            "qmd://asonas/daily/2021-10-11.md",
+            "qmd://asonas/bookmarks/1735782921.md",
+            "qmd://asonas/bookmarks/1759316028.md",
+            "qmd://asonas/wiki/最適な行幅.md",
+            "qmd://asonas/daily/2025-11-07.md",
+            "qmd://asonas/projects/tempest909/log.md",
+            "qmd://asonas/daily/2021-05-18.md",
+            "qmd://asonas/wiki/PageSpeed-Insights.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/ason-as-pagespeed-optimization.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 44,
+          "top_files": [
+            "qmd://asonas/notes/ason-as-pagespeed-optimization.md",
+            "qmd://asonas/companies/SmartHR/デプロイ時間を変えるためのメモ.md",
+            "qmd://asonas/daily/2021-10-11.md",
+            "qmd://asonas/bookmarks/1735782921.md",
+            "qmd://asonas/bookmarks/1759316028.md",
+            "qmd://asonas/wiki/最適な行幅.md",
+            "qmd://asonas/daily/2025-11-07.md",
+            "qmd://asonas/projects/tempest909/log.md",
+            "qmd://asonas/daily/2021-05-18.md",
+            "qmd://asonas/wiki/PageSpeed-Insights.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/ason-as-pagespeed-optimization.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 54,
+          "top_files": [
+            "qmd://asonas/notes/ason-as-pagespeed-optimization.md",
+            "qmd://asonas/companies/SmartHR/デプロイ時間を変えるためのメモ.md",
+            "qmd://asonas/daily/2021-10-11.md",
+            "qmd://asonas/wiki/PageSpeed-Insights.md",
+            "qmd://asonas/bookmarks/1735782921.md",
+            "qmd://asonas/bookmarks/1799693537.md",
+            "qmd://asonas/bookmarks/1796093781.md",
+            "qmd://asonas/companies/ivry/コンタクトセンター通話履歴検索システム調査.md",
+            "qmd://asonas/daily/2021-09-16.md",
+            "qmd://asonas/companies/ivry/コンタクトセンター検索-OpenSearch同期タイミング分析.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "semantic-smarthr-retirement",
+      "query": "lex: SmartHR 退職日 在職中 在籍区分\nvec: 退職年月日が登録されているのに在職中のままになるのはどういう仕様か",
+      "type": "semantic",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/SmartHR退職日と在籍状況の挙動.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 4,
+          "top_files": [
+            "qmd://asonas/notes/SmartHR退職日と在籍状況の挙動.md",
+            "qmd://asonas/wiki/freee.md"
+          ]
+        },
+        "vector": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.5,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/SmartHR退職日と在籍状況の挙動.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 29,
+          "top_files": [
+            "qmd://asonas/wiki/SmartHR在籍状況の自動遷移.md",
+            "qmd://asonas/notes/SmartHR退職日と在籍状況の挙動.md",
+            "qmd://asonas/wiki/SmartHR.md",
+            "qmd://asonas/wiki/freee.md",
+            "qmd://asonas/companies/SmartHR/ご報告-エンジニア定年35歳説-応援してくださっているみなさんへ.md",
+            "qmd://asonas/Clippings/部署マスターに関するよくある質問-SmartHR.md",
+            "qmd://asonas/daily/2021-07-27.md",
+            "qmd://asonas/Clippings/部署マスターの履歴管理機能とは-SmartHR.md",
+            "qmd://asonas/Clippings/部署マスターの履歴を管理する-SmartHR.md",
+            "qmd://asonas/bookmarks/1735782921.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/SmartHR退職日と在籍状況の挙動.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 27,
+          "top_files": [
+            "qmd://asonas/notes/SmartHR退職日と在籍状況の挙動.md",
+            "qmd://asonas/wiki/freee.md",
+            "qmd://asonas/wiki/SmartHR在籍状況の自動遷移.md",
+            "qmd://asonas/wiki/SmartHR.md",
+            "qmd://asonas/companies/SmartHR/ご報告-エンジニア定年35歳説-応援してくださっているみなさんへ.md",
+            "qmd://asonas/Clippings/部署マスターに関するよくある質問-SmartHR.md",
+            "qmd://asonas/daily/2021-07-27.md",
+            "qmd://asonas/Clippings/部署マスターの履歴管理機能とは-SmartHR.md",
+            "qmd://asonas/Clippings/部署マスターの履歴を管理する-SmartHR.md",
+            "qmd://asonas/bookmarks/1735782921.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 1,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 1,
+          "f1": 1,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/SmartHR退職日と在籍状況の挙動.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 1,
+          "latency_ms": 40,
+          "top_files": [
+            "qmd://asonas/notes/SmartHR退職日と在籍状況の挙動.md",
+            "qmd://asonas/wiki/freee.md",
+            "qmd://asonas/wiki/SmartHR.md",
+            "qmd://asonas/wiki/SmartHR在籍状況の自動遷移.md",
+            "qmd://asonas/Clippings/部署マスターに関するよくある質問-SmartHR.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/notion-export-soumu/全社向け-オフィスの全体像について.md",
+            "qmd://asonas/Clippings/Q-部署マスター履歴の一括追加-更新の際のCSVファイルの書き方は-SmartHR.md",
+            "qmd://asonas/daily/2023-12-19.md",
+            "qmd://asonas/daily/2021-06-09.md",
+            "qmd://asonas/Clippings/組織図管理-チーム管理-役職管理-所属管理.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cross-karukan-config",
+      "query": "lex: karukan config.toml Ctrl+Space 候補ウィンドウ bare_space\nvec: karukan のキーバインドや候補ウィンドウの表示まわりで行った設定変更",
+      "type": "cross-domain",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "notes/karukan-ctrl-space-config.md",
+            "notes/karukan-candidate-window-align.md"
+          ],
+          "total_expected": 2,
+          "latency_ms": 1,
+          "top_files": []
+        },
+        "vector": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.5,
+          "f1": 1,
+          "hits_at_k": 2,
+          "matched_files": [
+            "notes/karukan-ctrl-space-config.md",
+            "notes/karukan-candidate-window-align.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 2,
+          "latency_ms": 17,
+          "top_files": [
+            "qmd://asonas/wiki/karukan.md",
+            "qmd://asonas/notes/karukan-candidate-window-align.md",
+            "qmd://asonas/notes/karukan-ctrl-space-config.md",
+            "qmd://asonas/bookmarks/1777348810.md",
+            "qmd://asonas/bookmarks/1776775633.md",
+            "qmd://asonas/wiki/Karabiner.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.5,
+          "f1": 1,
+          "hits_at_k": 2,
+          "matched_files": [
+            "notes/karukan-ctrl-space-config.md",
+            "notes/karukan-candidate-window-align.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 2,
+          "latency_ms": 43,
+          "top_files": [
+            "qmd://asonas/wiki/karukan.md",
+            "qmd://asonas/notes/karukan-candidate-window-align.md",
+            "qmd://asonas/notes/karukan-ctrl-space-config.md",
+            "qmd://asonas/bookmarks/1777348810.md",
+            "qmd://asonas/bookmarks/1776775633.md",
+            "qmd://asonas/wiki/Karabiner.md",
+            "qmd://asonas/notes/karukan-alfred.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/projects/oksskolten/keyboard-navigation.md",
+            "qmd://asonas/daily/2026-07-02.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 1,
+          "recall": 1,
+          "recall_at_1": 0,
+          "recall_at_3": 1,
+          "recall_at_5": 1,
+          "mrr": 0.5,
+          "f1": 1,
+          "hits_at_k": 2,
+          "matched_files": [
+            "notes/karukan-ctrl-space-config.md",
+            "notes/karukan-candidate-window-align.md"
+          ],
+          "unmatched_expected_files": [],
+          "total_expected": 2,
+          "latency_ms": 42,
+          "top_files": [
+            "qmd://asonas/wiki/karukan.md",
+            "qmd://asonas/notes/karukan-candidate-window-align.md",
+            "qmd://asonas/notes/karukan-ctrl-space-config.md",
+            "qmd://asonas/bookmarks/1777348810.md",
+            "qmd://asonas/bookmarks/1776775633.md",
+            "qmd://asonas/daily/2026-07-02.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/bookmarks/1735782921.md",
+            "qmd://asonas/projects/tempest909/drafts/2026-05-25-2239.md",
+            "qmd://asonas/wiki/Karabiner.md"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cross-apm-vendor",
+      "query": "lex: APM vendor asonas/skills apm.yml npx skills add\nvec: 外部のエージェントスキルを npx ではなく自分の管理下に取り込んで配備した手順",
+      "type": "cross-domain",
+      "backends": {
+        "bm25": {
+          "precision_at_k": 0,
+          "recall": 0,
+          "recall_at_1": 0,
+          "recall_at_3": 0,
+          "recall_at_5": 0,
+          "mrr": 0,
+          "f1": 0,
+          "hits_at_k": 0,
+          "matched_files": [],
+          "unmatched_expected_files": [
+            "notes/2026-07-03-herdr-agent-skill-apm.md",
+            "wiki/APM.md"
+          ],
+          "total_expected": 2,
+          "latency_ms": 1,
+          "top_files": []
+        },
+        "vector": {
+          "precision_at_k": 0.5,
+          "recall": 0.5,
+          "recall_at_1": 0,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.5,
+          "mrr": 0.3333333333333333,
+          "f1": 0.5,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-03-herdr-agent-skill-apm.md"
+          ],
+          "unmatched_expected_files": [
+            "wiki/APM.md"
+          ],
+          "total_expected": 2,
+          "latency_ms": 21,
+          "top_files": [
+            "qmd://asonas/wiki/asonas-skills.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/notes/2026-07-03-herdr-agent-skill-apm.md",
+            "qmd://asonas/bookmarks/1750804147.md"
+          ]
+        },
+        "hybrid": {
+          "precision_at_k": 0.5,
+          "recall": 0.5,
+          "recall_at_1": 0,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.5,
+          "mrr": 0.3333333333333333,
+          "f1": 0.5,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-03-herdr-agent-skill-apm.md"
+          ],
+          "unmatched_expected_files": [
+            "wiki/APM.md"
+          ],
+          "total_expected": 2,
+          "latency_ms": 21,
+          "top_files": [
+            "qmd://asonas/wiki/asonas-skills.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/notes/2026-07-03-herdr-agent-skill-apm.md",
+            "qmd://asonas/bookmarks/1750804147.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/docs/レクチャー進行メモ.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/docs/総務向け-ナレッジ更新ガイド.md",
+            "qmd://asonas/companies/SmartHR/いつデプロイするの-今でしょ.md"
+          ]
+        },
+        "full": {
+          "precision_at_k": 0.5,
+          "recall": 0.5,
+          "recall_at_1": 0,
+          "recall_at_3": 0.5,
+          "recall_at_5": 0.5,
+          "mrr": 0.3333333333333333,
+          "f1": 0.5,
+          "hits_at_k": 1,
+          "matched_files": [
+            "notes/2026-07-03-herdr-agent-skill-apm.md"
+          ],
+          "unmatched_expected_files": [
+            "wiki/APM.md"
+          ],
+          "total_expected": 2,
+          "latency_ms": 22,
+          "top_files": [
+            "qmd://asonas/wiki/asonas-skills.md",
+            "qmd://asonas/wiki/Herdr.md",
+            "qmd://asonas/notes/2026-07-03-herdr-agent-skill-apm.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/docs/レクチャー進行メモ.md",
+            "qmd://asonas/bookmarks/1750804147.md",
+            "qmd://asonas/projects/soumu-inquiry-bot/docs/総務向け-ナレッジ更新ガイド.md",
+            "qmd://asonas/companies/SmartHR/いつデプロイするの-今でしょ.md"
+          ]
+        }
+      }
+    }
+  ],
+  "summary": {
+    "bm25": {
+      "avg_precision": 0.6666666666666666,
+      "avg_recall": 0.7333333333333333,
+      "avg_recall_at_1": 0.6666666666666666,
+      "avg_recall_at_3": 0.6666666666666666,
+      "avg_recall_at_5": 0.7333333333333333,
+      "avg_mrr": 0.6833333333333333,
+      "avg_f1": 0.6666666666666666,
+      "avg_latency_ms": 5.733333333333333
+    },
+    "vector": {
+      "avg_precision": 0.5,
+      "avg_recall": 0.7,
+      "avg_recall_at_1": 0.06666666666666667,
+      "avg_recall_at_3": 0.5,
+      "avg_recall_at_5": 0.7,
+      "avg_mrr": 0.3277777777777777,
+      "avg_f1": 0.5,
+      "avg_latency_ms": 69.26666666666667
+    },
+    "hybrid": {
+      "avg_precision": 0.8333333333333334,
+      "avg_recall": 0.8333333333333334,
+      "avg_recall_at_1": 0.6,
+      "avg_recall_at_3": 0.8333333333333334,
+      "avg_recall_at_5": 0.8333333333333334,
+      "avg_mrr": 0.711111111111111,
+      "avg_f1": 0.8333333333333334,
+      "avg_latency_ms": 49.86666666666667
+    },
+    "full": {
+      "avg_precision": 0.9,
+      "avg_recall": 0.9,
+      "avg_recall_at_1": 0.6,
+      "avg_recall_at_3": 0.9,
+      "avg_recall_at_5": 0.9,
+      "avg_mrr": 0.7333333333333333,
+      "avg_f1": 0.9,
+      "avg_latency_ms": 32.6
+    }
+  }
+}
