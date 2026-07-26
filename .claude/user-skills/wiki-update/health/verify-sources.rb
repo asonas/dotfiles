@@ -73,6 +73,11 @@ pages.sort.each do |path|
   next if links.empty?
   checked += 1
 
+  # accepted の行はここで出力せず溜めておく。ここで puts すると、そのページの
+  # OK / NG ヘッダより先に出てしまい、--quiet で OK ページのヘッダが省かれたときに
+  # 直前の NG ページの指摘のように見えてしまう
+  accepted_here = []
+
   bad = links.filter_map do |link|
     file = resolve(link)
     # 実体のないリンクは vault の設計上の赤リンク（Linear issue ID、リポジトリ名など）。
@@ -84,19 +89,22 @@ pages.sort.each do |path|
     body = File.read(file)
     next if terms.any? { |t| body.include?(t) }
     if accepted.key?([name, rel])
-      puts "     accepted: #{rel} — #{accepted[[name, rel]]}" if show_accepted
+      accepted_here << "#{rel} — #{accepted[[name, rel]]}"
       next
     end
     "#{link.strip} → 「#{name}」への言及が見つからない (#{rel})"
   end
 
+  # --show-accepted のときは、抑止した組があるページは quiet でもヘッダを出す。
+  # ヘッダなしで accepted 行だけ出すと、どのページのものか分からなくなる
   if bad.empty?
-    puts "OK   #{name}" unless quiet
+    puts "OK   #{name}" if !quiet || (show_accepted && accepted_here.any?)
   else
     ng_pages += 1
     puts "NG   #{name} (#{bad.size}/#{links.size})"
     bad.each { |b| puts "       #{b}" }
   end
+  accepted_here.each { |a| puts "     accepted: #{a}" } if show_accepted
 end
 
 puts
