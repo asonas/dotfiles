@@ -1,0 +1,27 @@
+{
+  "date": "2026-07-26",
+  "pages": 180,
+  "body_chars": {
+    "median": 829,
+    "p25": 587,
+    "p75": 1171
+  },
+  "ingests": 98,
+  "pages_touched_total": 353,
+  "pages_touched_per_ingest": 3.6,
+  "created_total": 181,
+  "updated_total": 172,
+  "staleness": {
+    "8-30d": 58,
+    "31-60d": 75,
+    "61-90d": 29,
+    "0-7d": 18
+  },
+  "deferred": {
+    "ページ化待ち": 38,
+    "様子見": 45,
+    "見送り": 19
+  },
+  "merge_candidates": 26,
+  "never_linked_from_source": 43
+}
