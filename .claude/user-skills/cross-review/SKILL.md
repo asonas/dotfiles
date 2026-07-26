@@ -2,7 +2,7 @@
 name: cross-review
 description: Cross-model PR review. Claude Code and Cursor review a PR alternately on a shared Obsidian document, rallying until issues converge or disagreements are documented for human decision.
 argument-hint: "<PR_URL>"
-allowed-tools: Bash(gh:*), Bash(obsidian:*), Read, Edit, Write, mcp__cursor-agent__cursor_review, mcp__cursor-agent__cursor_continue
+allowed-tools: Bash(gh pr view:*), Bash(gh pr diff:*), Bash(obsidian:*), Read, Edit, Write, mcp__cursor-agent__cursor_review, mcp__cursor-agent__cursor_continue
 user-invocable: true
 context: fork
 ---
@@ -38,6 +38,11 @@ Fetch PR information using `gh` (read operations only — do not create or modif
 # PR metadata
 gh pr view <PR_URL> --json title,body,author,baseRefName,headRefName,additions,deletions,changedFiles,number
 gh pr view <PR_URL> --comments
+
+# Inline review comments (file + line). Not pre-approved in allowed-tools:
+# `gh api` cannot be restricted to GET by a prefix rule, so this one asks for
+# permission each run. Skip it if the reviewer declines -- the summary-level
+# comments above still cover most of the discussion.
 gh api repos/{owner}/{repo}/pulls/{number}/comments
 
 # Diff
