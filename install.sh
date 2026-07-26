@@ -24,6 +24,7 @@ required_dirs="
   .config/ghostty
   .config/git-ai-commit/config.toml
   .config/mise/config.toml
+  .config/qmd/index.yml
 
   .claude/commands/gemini-search.md
   .claude/commands/talk-review
