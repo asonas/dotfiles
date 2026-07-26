@@ -156,6 +156,8 @@ APM_EXCLUDE
     mv "$tmp" "$exclude_file"
 fi
 
+apm_install_ok=0
+
 # Compile APM primitives (.apm/instructions/) into CLAUDE.md and AGENTS.md,
 # then refresh dependency refs and run global install so skills are deployed
 # to ~/.claude and ~/.agents at their latest upstream versions.
@@ -176,7 +178,9 @@ if command -v apm >/dev/null 2>&1; then
     # depend on still install. Under 'set -e' a partial failure here would abort
     # the script before the hook bridge and settings normalization below run,
     # leaving .claude/settings.json polluted with the invalid 'sessionStart' key.
-    if ! (cd "$HOME/.apm" && apm install -g --target claude,cursor,codex); then
+    if (cd "$HOME/.apm" && apm install -g --target claude,cursor,codex); then
+        apm_install_ok=1
+    else
         echo "warning: 'apm install' reported errors (e.g. unavailable dependencies);" \
              "continuing so the hook bridge and settings normalization still run."
     fi
@@ -190,18 +194,40 @@ fi
 
 # APM can leave project-local copies of globally deployed Skills under
 # .agents/skills. Codex discovers both locations when this repository is the
-# working directory. Remove only names also present globally so a partial APM
-# install cannot discard a Skill available only from the project.
+# working directory, so the local copy shadows the global one. Drop the local
+# copy only when it is genuinely redundant.
+#
+# Deliberately conservative, because the 'apm install' failure above is
+# tolerated: a partial install can leave the global side stale, empty, or a
+# dangling symlink while the project side still holds the only good copy.
+# Matching on the name alone would then delete it. Require all of:
+#
+#   - 'apm install' reported success on this run
+#   - the global entry resolves and actually carries a SKILL.md
+#   - the two directories are identical
+#
+# Anything else is reported and left in place. Verified by
+# test/codex_global_agents_distribution_test.sh.
 project_skill_dir="$PWD/.agents/skills"
 global_skill_dir="$HOME/.agents/skills"
-if [ -d "$project_skill_dir" ] && [ -d "$global_skill_dir" ]; then
+if [ "$apm_install_ok" -eq 1 ] && [ -d "$project_skill_dir" ] && [ -d "$global_skill_dir" ]; then
     for project_skill in "$project_skill_dir"/*
     do
-        [ -e "$project_skill" ] || continue
+        [ -d "$project_skill" ] || continue
         skill_name=$(basename "$project_skill")
-        if [ -e "$global_skill_dir/$skill_name" ] || [ -L "$global_skill_dir/$skill_name" ]; then
+        global_skill="$global_skill_dir/$skill_name"
+
+        # -f follows symlinks, so a dangling global link fails here and the
+        # project copy survives.
+        [ -f "$project_skill/SKILL.md" ] || continue
+        [ -f "$global_skill/SKILL.md" ] || continue
+
+        if diff -rq "$project_skill" "$global_skill" >/dev/null 2>&1; then
             echo "==> removing duplicate project-local Codex Skill: $skill_name"
             command rm -rf "$project_skill"
+        else
+            echo "warning: keeping project-local Codex Skill '$skill_name':" \
+                 "it differs from the global copy, so it may be the newer one."
         fi
     done
 fi

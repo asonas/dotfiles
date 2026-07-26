@@ -22,7 +22,7 @@ test_manifest_targets() {
 test_install_targets() {
     assert_line_count 1 '^    \(cd "\$HOME/.apm" && apm update --yes --target claude,cursor,codex\)$' install.sh
     assert_line_count 1 '^    echo "==> apm install -g --target claude,cursor,codex \(deploy skills, agents, commands\)"$' install.sh
-    assert_line_count 1 '^    if ! \(cd "\$HOME/.apm" && apm install -g --target claude,cursor,codex\); then$' install.sh
+    assert_line_count 1 '^    if \(cd "\$HOME/.apm" && apm install -g --target claude,cursor,codex\); then$' install.sh
 }
 
 test_codex_session_start_hooks_are_removed() {

@@ -185,13 +185,24 @@ test_posix_stops_when_apm_compile_fails() {
     unset test_bin
 }
 
+write_skill() {
+    mkdir -p "$1"
+    printf '%s\n' \
+        '---' \
+        "name: $(basename "$1")" \
+        "description: $2" \
+        '---' \
+        '' \
+        "$2" > "$1/SKILL.md"
+}
+
 test_posix_removes_only_duplicated_project_skills() {
     create_posix_installer_fixture project-skill-mirror
     create_fake_apm project-skill-mirror
     printf 'generated guidance\n' > "$test_repo/AGENTS.md"
-    mkdir -p "$test_repo/.agents/skills/brainstorming"
-    mkdir -p "$test_repo/.agents/skills/project-only"
-    mkdir -p "$test_home/.agents/skills/brainstorming"
+    write_skill "$test_repo/.agents/skills/brainstorming" "shared body"
+    write_skill "$test_home/.agents/skills/brainstorming" "shared body"
+    write_skill "$test_repo/.agents/skills/project-only" "project body"
 
     run_posix_installer_fixture >/dev/null
 
@@ -201,6 +212,68 @@ test_posix_removes_only_duplicated_project_skills() {
     fi
     if [ ! -d "$test_repo/.agents/skills/project-only" ]; then
         echo "expected project-only Skill to remain available" >&2
+        return 1
+    fi
+    unset test_bin
+}
+
+test_posix_keeps_project_skill_when_contents_differ() {
+    create_posix_installer_fixture project-skill-divergent
+    create_fake_apm project-skill-divergent
+    printf 'generated guidance\n' > "$test_repo/AGENTS.md"
+    write_skill "$test_repo/.agents/skills/brainstorming" "newer project body"
+    write_skill "$test_home/.agents/skills/brainstorming" "older global body"
+
+    output=$(run_posix_installer_fixture 2>&1)
+
+    if [ ! -f "$test_repo/.agents/skills/brainstorming/SKILL.md" ]; then
+        echo "expected a diverging project Skill to be kept" >&2
+        return 1
+    fi
+    case "$output" in
+        *"keeping project-local Codex Skill 'brainstorming'"*) ;;
+        *)
+            echo "expected a warning about the diverging Skill, got: $output" >&2
+            return 1
+            ;;
+    esac
+    unset test_bin
+}
+
+# A partial 'apm install' can leave a global entry that exists by name but holds
+# nothing usable. Matching on the name alone would delete the only good copy.
+test_posix_keeps_project_skill_when_global_copy_is_unusable() {
+    create_posix_installer_fixture project-skill-unusable-global
+    create_fake_apm project-skill-unusable-global
+    printf 'generated guidance\n' > "$test_repo/AGENTS.md"
+    write_skill "$test_repo/.agents/skills/empty-global" "project body"
+    write_skill "$test_repo/.agents/skills/dangling-global" "project body"
+    mkdir -p "$test_home/.agents/skills/empty-global"
+    ln -s "$test_tmp_root/does-not-exist" "$test_home/.agents/skills/dangling-global"
+
+    run_posix_installer_fixture >/dev/null
+
+    for unusable_skill in empty-global dangling-global
+    do
+        if [ ! -f "$test_repo/.agents/skills/$unusable_skill/SKILL.md" ]; then
+            echo "expected project Skill '$unusable_skill' to survive an unusable global copy" >&2
+            return 1
+        fi
+    done
+    unset test_bin
+}
+
+test_posix_keeps_project_skills_when_apm_install_fails() {
+    create_posix_installer_fixture project-skill-install-failure
+    create_fake_apm project-skill-install-failure
+    printf 'generated guidance\n' > "$test_repo/AGENTS.md"
+    write_skill "$test_repo/.agents/skills/brainstorming" "shared body"
+    write_skill "$test_home/.agents/skills/brainstorming" "shared body"
+
+    APM_FAIL_COMMAND=install run_posix_installer_fixture >/dev/null
+
+    if [ ! -f "$test_repo/.agents/skills/brainstorming/SKILL.md" ]; then
+        echo "expected a failed apm install to leave project Skills alone" >&2
         return 1
     fi
     unset test_bin
@@ -314,6 +387,9 @@ test_posix_continues_when_apm_update_fails
 test_posix_continues_when_apm_install_fails
 test_posix_stops_when_apm_compile_fails
 test_posix_removes_only_duplicated_project_skills
+test_posix_keeps_project_skill_when_contents_differ
+test_posix_keeps_project_skill_when_global_copy_is_unusable
+test_posix_keeps_project_skills_when_apm_install_fails
 test_windows_copies_global_agents_file
 test_windows_rejects_directory_global_agents_target
 test_windows_apm_targets_include_codex
