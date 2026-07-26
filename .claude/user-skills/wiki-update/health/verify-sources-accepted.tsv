@@ -1,0 +1,22 @@
+# verify-sources.rb が挙げる指摘のうち、実際に出典を読んで「正しい」と判断した組。
+# ページ名が出典本文に出てこないだけで、主張自体は裏付けられているケース。
+#
+# 形式: <ページ名> <TAB> <出典の vault 相対パス> <TAB> <理由>
+#
+# ここに足すのは「出典を開いて主張を確認した」ときだけ。確認せずに黙らせない。
+# aliases で解決できるケース（表記揺れ）は aliases 側で直し、ここには足さないこと。
+#
+# 2026-07-26 レビュー
+chama	daily/2026-07-08.md	AP接続からオフィス在席位置を把握する doko 構想の記録。ページ名ではなく「在席位置」「/doko」で書かれている
+crossbar	daily/2026-06-18.md	ZATSUBE-219（CalVer化）の Linear 更新記録。crossbar は CalVer のリファレンス実装なのでこの日の作業に含まれる
+kosendj-machine-live	daily/2026-05-22.md	kosendj マシンライブの準備（DigitaktII の 16+16 運用、Microcosm のステレオ出力調査）が記録されている
+kosendj-machine-live	projects/2026-06-kosendj-machine-live/spec/oxi-instruments-oxi-one.md	本プロジェクトで使う Oxi One MK I の機材仕様書。プロジェクト配下の spec なので主題は自明
+反転ミーティング	books/シンプリシティ（ハイライト）.md	「ミーティングを反転させよう。事前に共有し、ミーティング中に検討すること」というハイライトが出典
+秘書ドッグラン	daily/2026-05-26.md	tempest909 秘書アカウントの Bluesky フォロー追加の記録。「秘書アカウント」として書かれている
+G4	daily/2026-07-23.md	Q3 ゴール設定のルーブリック記入欄が空のままという状態。G4 のグレードバーを物差しにする文脈
+Jellyfin	daily/2026-07-02.md	jellyfin-viewer の preview-server 構築記録。Jellyfin を自宅運用している前提がここに現れている
+SmartHR在籍状況の自動遷移	notes/SmartHR退職日と在籍状況の挙動.md	退職日と在籍区分の関係を調べた元ノート。ページはこの調査を概念として切り出したもの
+SmartHR在籍状況の自動遷移	daily/2026-06-24.md	退職日が過去なのに在職中の不整合5名を検出した検算記録。この不整合がページの主題
+Tempest (drum machine)	projects/tempest909/persona.md	tempest909 の命名由来（Tempest + TR-909）を説明する記述が出典。ファイル側は小文字の tempest909 表記
+Tempest (drum machine)	projects/tempest909/README.md	同上。リリースマネージャーの設定と名前の由来を説明している
+ai-cost-management	daily/2026-07-01.md	「Claude APIキー単位の使用量取得方法を調査。Admin APIのUsage Report（group_by=api_key_id）」が本文に実在。プロジェクト名ではなく作業内容で書かれている

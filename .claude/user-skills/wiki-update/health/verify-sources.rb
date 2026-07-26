@@ -25,7 +25,22 @@ WIKI  = File.join(VAULT, 'wiki')
 OPERATIONAL = /\A(index|log|log-.*|deferred)\.md\z/
 
 quiet = ARGV.delete('--quiet')
+show_accepted = ARGV.delete('--show-accepted')
 targets = ARGV
+
+# レビュー済みで「出典は正しいがページ名が本文に現れないだけ」と判断した組を抑止する。
+# aliases を歪めて黙らせるより、判断した事実を理由つきで残すほうが後から検証できる。
+# 形式: <ページ名> <TAB> <出典の vault 相対パス> <TAB> <理由>
+ACCEPT_FILE = File.join(__dir__, 'verify-sources-accepted.tsv')
+accepted = {}
+if File.exist?(ACCEPT_FILE)
+  File.readlines(ACCEPT_FILE).each do |line|
+    next if line.strip.empty? || line.start_with?('#')
+    page, src, reason = line.chomp.split("\t", 3)
+    next unless page && src
+    accepted[[page.strip, src.strip]] = reason.to_s.strip
+  end
+end
 
 def resolve(link)
   name = link.gsub(/\A"?\[\[/, '').gsub(/\]\]"?\z/, '').split('|').first.to_s.strip
@@ -68,6 +83,10 @@ pages.sort.each do |path|
     next if terms.any? { |t| rel.include?("/#{t}/") || File.basename(rel, '.md') == t }
     body = File.read(file)
     next if terms.any? { |t| body.include?(t) }
+    if accepted.key?([name, rel])
+      puts "     accepted: #{rel} — #{accepted[[name, rel]]}" if show_accepted
+      next
+    end
     "#{link.strip} → 「#{name}」への言及が見つからない (#{rel})"
   end
 
