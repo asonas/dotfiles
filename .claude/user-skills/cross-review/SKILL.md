@@ -2,7 +2,7 @@
 name: cross-review
 description: Cross-model PR review. Claude Code and Cursor review a PR alternately on a shared Obsidian document, rallying until issues converge or disagreements are documented for human decision.
 argument-hint: "<PR_URL>"
-allowed-tools: Bash(ghro:*), Bash(obsidian:*), Read, Edit, Write, mcp__cursor-agent__cursor_review, mcp__cursor-agent__cursor_continue
+allowed-tools: Bash(gh:*), Bash(obsidian:*), Read, Edit, Write, mcp__cursor-agent__cursor_review, mcp__cursor-agent__cursor_continue
 user-invocable: true
 context: fork
 ---
@@ -32,16 +32,16 @@ Only critical and major drive continuation of rounds.
 
 ### Step 1: Initialize
 
-Fetch PR information using `ghro` (read-only):
+Fetch PR information using `gh` (read operations only — do not create or modify anything):
 
 ```bash
 # PR metadata
-ghro pr view <PR_URL> --json title,body,author,baseRefName,headRefName,additions,deletions,changedFiles,number
-ghro pr view <PR_URL> --comments
-ghro api repos/{owner}/{repo}/pulls/{number}/comments
+gh pr view <PR_URL> --json title,body,author,baseRefName,headRefName,additions,deletions,changedFiles,number
+gh pr view <PR_URL> --comments
+gh api repos/{owner}/{repo}/pulls/{number}/comments
 
 # Diff
-ghro pr diff <PR_URL>
+gh pr diff <PR_URL>
 ```
 
 Extract repo name and PR number from the URL for the document filename. `{repo}` is the bare repository name (owner excluded) — e.g. URL `https://github.com/acme-corp/widget-api/pull/427` → `widget-api`, `427`. If you anticipate cross-org collision on the same bare repo name (rare), prefix the filename with the owner: `PR-{owner}-{repo}-{number}.md`. Otherwise use `PR-{repo}-{number}.md`.

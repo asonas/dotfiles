@@ -1,9 +1,10 @@
 ---
-description: GitHub CLI usage policy (read via ghro, write via gh).
+description: GitHub CLI usage policy (gh for all operations; PR and repository creation are prohibited).
 ---
 
-# GitHub CLI（gh / ghro）
+# GitHub CLI（gh）
 
-- 読み取り操作（PR/issue/ファイル内容の取得など）には `ghro` コマンドを使用すること
-- 書き込み操作（PR作成、issueコメント、マージなど）には通常の `gh` コマンドを使用すること
-- `ghro` は読み取り専用トークンで認証されたラッパー（`~/bin/ghro`）
+- GitHub の操作には `gh` コマンドを使用すること
+- `gh pr create` によるPR作成は禁止。PR は人間が作成する
+- `gh repo create` によるリポジトリ作成は禁止
+- この2つは機微な情報を外部に出す操作なので、エージェントが実行してはならない。必要な場合はコマンド案を提示するにとどめる

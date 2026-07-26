@@ -21,7 +21,8 @@
       "Bash(iris:*)"
     ],
     "deny": [
-      "Bash(gh pr create*)"
+      "Bash(gh pr create*)",
+      "Bash(gh repo create*)"
     ],
     "defaultMode": "auto"
   },

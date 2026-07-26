@@ -1,2 +1,0 @@
-#!/bin/sh
-GH_CONFIG_DIR=~/.config/ghro exec gh "$@"
