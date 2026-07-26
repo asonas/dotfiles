@@ -188,6 +188,24 @@ else
     echo "         Install Agent Package Manager so global rules and skills can be regenerated."
 fi
 
+# APM can leave project-local copies of globally deployed Skills under
+# .agents/skills. Codex discovers both locations when this repository is the
+# working directory. Remove only names also present globally so a partial APM
+# install cannot discard a Skill available only from the project.
+project_skill_dir="$PWD/.agents/skills"
+global_skill_dir="$HOME/.agents/skills"
+if [ -d "$project_skill_dir" ] && [ -d "$global_skill_dir" ]; then
+    for project_skill in "$project_skill_dir"/*
+    do
+        [ -e "$project_skill" ] || continue
+        skill_name=$(basename "$project_skill")
+        if [ -e "$global_skill_dir/$skill_name" ] || [ -L "$global_skill_dir/$skill_name" ]; then
+            echo "==> removing duplicate project-local Codex Skill: $skill_name"
+            command rm -rf "$project_skill"
+        fi
+    done
+fi
+
 codex_agents_source="$PWD/AGENTS.md"
 codex_agents_target="$HOME/.codex/AGENTS.md"
 if [ -f "$codex_agents_source" ]; then

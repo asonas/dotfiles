@@ -1,12 +1,12 @@
 ---
-description: Shell execution rules under the Bash tool (heredoc ban, alias bypass, pager handling, zsh globbing).
+description: Shell execution rules for heredoc handling, alias bypass, pagers, and zsh globbing.
 ---
 
-# Shell（Bash実行時の注意）
+# Shell（シェル実行時の注意）
 
-- 複数行のスクリプト（Python, Ruby, Node等）をヘレドク（`<< 'EOF'`）でインライン実行するのは禁止。代わりに Write ツールで一時ファイルに書き出してから Bash で実行すること。書き出し先はシステムプロンプトで提示される scratchpad ディレクトリを使い、提示が無い場合のみ `/tmp` を使う
+- 複数行のスクリプト（Python, Ruby, Node等）をヘレドク（`<< 'EOF'`）でインライン実行するのは禁止。代わりに、実行環境で利用可能なファイル編集機能で一時ファイルに書き出してからシェルで実行すること。書き出し先はシステムプロンプトで提示される scratchpad ディレクトリを使い、提示が無い場合のみ `/tmp` を使う
 - .zshrc で `rm`, `cp`, `mv` に `-i`（インタラクティブモード）のエイリアスが設定されている
-- Bashツールでこれらのコマンドを実行する際は、エイリアスをバイパスするために `command rm`, `command cp`, `command mv` を使うこと（`\rm` でも可）
+- シェルでこれらのコマンドを実行する際は、エイリアスをバイパスするために `command rm`, `command cp`, `command mv` を使うこと（`\rm` でも可）
 - これにより、インタラクティブプロンプトでエージェントが停止する問題を防ぐ
 - `git log`, `git diff`, `git show` 等のページャが起動するコマンドは `git --no-pager` を付けて実行すること（`GIT_PAGER=cat` は環境変数設定で毎回Permission確認が発生するため使用しない）
 - `git merge` は `--no-edit` を付けてエディタの起動を防ぐこと

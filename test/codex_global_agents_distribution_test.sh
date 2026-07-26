@@ -185,6 +185,27 @@ test_posix_stops_when_apm_compile_fails() {
     unset test_bin
 }
 
+test_posix_removes_only_duplicated_project_skills() {
+    create_posix_installer_fixture project-skill-mirror
+    create_fake_apm project-skill-mirror
+    printf 'generated guidance\n' > "$test_repo/AGENTS.md"
+    mkdir -p "$test_repo/.agents/skills/brainstorming"
+    mkdir -p "$test_repo/.agents/skills/project-only"
+    mkdir -p "$test_home/.agents/skills/brainstorming"
+
+    run_posix_installer_fixture >/dev/null
+
+    if [ -e "$test_repo/.agents/skills/brainstorming" ]; then
+        echo "expected duplicated project Skill to be removed" >&2
+        return 1
+    fi
+    if [ ! -d "$test_repo/.agents/skills/project-only" ]; then
+        echo "expected project-only Skill to remain available" >&2
+        return 1
+    fi
+    unset test_bin
+}
+
 test_windows_copies_global_agents_file() {
     assert_line_count 1 '^\$CodexDir = Join-Path \$HomeDir '\''.codex'\''$' install.ps1
     assert_line_count 1 '^    Copy-Item -LiteralPath \$source -Destination \$target -Force$' install.ps1
@@ -218,6 +239,16 @@ test_windows_compiles_before_copying() {
 
     if [ -z "$compile_line" ] || [ -z "$copy_line" ] || [ "$compile_line" -ge "$copy_line" ]; then
         echo 'expected Windows apm compile to run before Codex AGENTS.md copy' >&2
+        return 1
+    fi
+}
+
+test_windows_removes_only_duplicated_project_skills_after_compiling() {
+    compile_line=$(grep -n '^        & apm compile$' install.ps1 | cut -d: -f1)
+    cleanup_line=$(grep -n 'Remove-Item -LiteralPath \$projectSkill\.FullName -Recurse -Force' install.ps1 | cut -d: -f1)
+
+    if [ -z "$cleanup_line" ] || [ "$cleanup_line" -le "$compile_line" ]; then
+        echo 'expected Windows installer to remove duplicated project Skills after compiling' >&2
         return 1
     fi
 }
@@ -282,10 +313,12 @@ test_posix_replaces_directory_symlink
 test_posix_continues_when_apm_update_fails
 test_posix_continues_when_apm_install_fails
 test_posix_stops_when_apm_compile_fails
+test_posix_removes_only_duplicated_project_skills
 test_windows_copies_global_agents_file
 test_windows_rejects_directory_global_agents_target
 test_windows_apm_targets_include_codex
 test_windows_compiles_before_copying
+test_windows_removes_only_duplicated_project_skills_after_compiling
 test_windows_stops_when_compile_fails
 test_windows_warns_and_continues_after_apm_dependency_failures
 test_windows_execution_suite_is_available

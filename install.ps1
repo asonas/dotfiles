@@ -268,6 +268,22 @@ function Invoke-ApmDistribution {
         }
     }
 
+    # APM can leave project-local copies of globally deployed Skills. Remove
+    # only duplicate names so project-only Skills survive a partial install.
+    $projectSkills = Join-Path $RepoRoot '.agents\skills'
+    $globalSkills = Join-Path $HomeDir '.agents\skills'
+    if (
+        (Test-Path -LiteralPath $projectSkills) -and
+        (Test-Path -LiteralPath $globalSkills)
+    ) {
+        foreach ($projectSkill in Get-ChildItem -LiteralPath $projectSkills -Force) {
+            if (Test-Path -LiteralPath (Join-Path $globalSkills $projectSkill.Name)) {
+                Write-Host "==> Removing duplicate project-local Codex Skill: $($projectSkill.Name)"
+                Remove-Item -LiteralPath $projectSkill.FullName -Recurse -Force
+            }
+        }
+    }
+
     # Keep the refreshed pins version-controlled alongside apm.yml.
     $stagedLock = Join-Path $apmDir 'apm.lock.yaml'
     if (Test-Path -LiteralPath $stagedLock) {
