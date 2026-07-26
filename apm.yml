@@ -70,11 +70,15 @@ dependencies:
     # sorah/config is a monorepo-style marketplace; pin the specific plugin paths.
     - sorah/config/claude/marketplace/plugins/sorah-spec
     - git: sorah/config/claude/marketplace/plugins/sorah-guides
+      # rails と ruby はここに置かない。sorah-spec も同名のスキルを配備しており、
+      # 両方を指定すると apm が毎回「Skill 'rails' replaced -- previously from
+      # another package」を出して互いに上書きする（last installed wins のため、
+      # どちらの内容が残るかがインストール順に依存する）。sorah-spec 側は
+      # /review・/implement・/validate の主力なので外せない。よって rails/ruby は
+      # sorah-spec 一本に寄せる。スキル自体は消えない。
       skills:
         - coding
         - commit-style
-        - rails
-        - ruby
         - rust
         - security
         - terraform
