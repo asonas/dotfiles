@@ -133,14 +133,5 @@
   "effortLevel": "high",
   "advisorModel": "opus",
   "tui": "fullscreen",
-  "skipAutoPermissionPrompt": true,
-  "mcpServers": {
-    "plugin_cman_cman": {
-      "command": "uv",
-      "args": [
-        "run",
-        "/Users/asonas/.apm/apm_modules/laiso/cman/server.py"
-      ]
-    }
-  }
+  "skipAutoPermissionPrompt": true
 }

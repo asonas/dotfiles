@@ -1,0 +1,27 @@
+cman: pin the mcp SDK below 2.0
+
+server.py declares its PEP 723 inline dependency as `mcp>=1.0` with no upper
+bound, so `uv run --script` resolves the newest release. mcp 2.0.0 dropped the
+`mcp.server.fastmcp` module, which server.py imports, so every cman MCP tool
+call fails at startup with:
+
+    ModuleNotFoundError: No module named 'mcp.server.fastmcp'
+
+Verified 2026-08-01: the module is present in mcp 1.9.4 / 1.12.0 / 1.15.0 /
+1.20.0 and absent in 2.0.0. Pinning `<2` makes the server start again.
+
+Affects every released version of cman up to v1.6.0 (in v1.6.0 the import moved
+into main(), but it is the same import and the same failure). No upstream issue
+exists for this as of 2026-08-01 — laiso/cman has only #3 (closed, unrelated).
+Drop this patch once upstream pins the dependency or migrates to the standalone
+`fastmcp` package.
+
+Applied by install.sh against every ~/.claude/plugins/cache/cman/cman/*/server.py.
+
+--- a/server.py
++++ b/server.py
+@@ -1,3 +1,3 @@
+ # /// script
+-# dependencies = ["mcp>=1.0"]
++# dependencies = ["mcp>=1.0,<2"]
+ # ///

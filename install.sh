@@ -325,25 +325,39 @@ else
     echo "warning: jq not found or $settings_file missing; skipping SessionStart hook normalization."
 fi
 
-# Register cman MCP server. APM deploys cman's skills (cm-search, cm-status,
-# remember) to ~/.claude/skills/ but does NOT register the MCP server that
-# those skills depend on (their allowed-tools is mcp__plugin_cman_cman__*).
-# The Claude plugin marketplace install path would wire the server under the
-# 'plugin_cman_cman' name; we replicate that name so the tool prefix expected
-# by the skills resolves. uv is required so PEP 723 inline-metadata
-# dependencies in server.py are auto-installed on first run.
-cman_server="$HOME/.apm/apm_modules/laiso/cman/server.py"
-if [ -f "$cman_server" ] && command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
+# cman is managed as a Claude Code plugin (`/plugin install cman@cman`), not APM.
+# The plugin ships its own .mcp.json pointing at ${CLAUDE_PLUGIN_ROOT}/server.py,
+# so nothing needs to be written into settings.json. An earlier revision of this
+# script registered mcpServers.plugin_cman_cman against the APM copy at
+# ~/.apm/apm_modules/laiso/cman/server.py; that entry outlived the move to plugin
+# management and kept launching a stale tree, so it was removed.
+#
+# What does need doing is a patch. server.py declares `mcp>=1.0` with no upper
+# bound and imports mcp.server.fastmcp, which mcp 2.0.0 removed, so a fresh
+# dependency resolve breaks every cman MCP tool at startup. See the header of
+# patches/cman-pin-mcp.patch for the investigation. Re-run this script after
+# `/plugin update cman@cman`: the update replaces the cached server.py and drops
+# the patch.
+cman_patch="$PWD/patches/cman-pin-mcp.patch"
+cman_cache="$HOME/.claude/plugins/cache/cman/cman"
+if [ -f "$cman_patch" ] && [ -d "$cman_cache" ]; then
     if ! command -v uv >/dev/null 2>&1; then
         echo "warning: uv not found in PATH; cman MCP server will fail to launch until uv is installed."
     fi
-    tmp=$(mktemp)
-    jq --arg path "$cman_server" '
-      .mcpServers["plugin_cman_cman"] = {
-        command: "uv",
-        args: ["run", $path]
-      }
-    ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
+    for cman_server in "$cman_cache"/*/server.py; do
+        [ -f "$cman_server" ] || continue
+        cman_dir=$(dirname "$cman_server")
+        # --forward makes an already-patched tree exit non-zero, so this is idempotent.
+        if patch --dry-run -s -N -p1 -d "$cman_dir" < "$cman_patch" >/dev/null 2>&1; then
+            patch -s -N -p1 -d "$cman_dir" < "$cman_patch" \
+                && echo "==> patched cman: ${cman_dir#"$HOME"/}"
+        fi
+    done
+elif [ -f "$cman_patch" ]; then
+    # The plugin cannot be installed from the CLI (`claude plugin` has no install
+    # subcommand) and its marketplace/install state lives in Claude Code's own
+    # ~/.claude/plugins/*.json, which this script deliberately does not write.
+    echo "note: cman plugin not found; run '/plugin install cman@cman' in Claude Code, then re-run this script."
 fi
 
 # apm compile writes CLAUDE.md only when it has something to put in it: the
