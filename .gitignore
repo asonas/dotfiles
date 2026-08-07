@@ -51,3 +51,5 @@ npm-debug.log
 # apm_modules/, .cursor/, .claude/skills/, etc.) are dotfiles-repo specific and
 # would wrongly hide those files in other repos, so they live in this repo's
 # local .git/info/exclude instead (recreated by install.sh).
+
+**/.claude/settings.local.json

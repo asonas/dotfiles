@@ -1,0 +1,153 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# 毎時 wiki ingest の前段スキャン。
+# Claude Code Desktop のローカルルーティン wiki-hourly-ingest から呼ばれる。
+#
+#   wiki-ingest-scan scan          前回以降に更新されたソースを列挙する
+#   wiki-ingest-scan finish <ISO>  watermark とスナップショットを進めてロックを外す
+#   wiki-ingest-scan abort         watermark を進めずロックだけ外す
+#
+# activities/ は collector が 15〜60 分ごとに全文を書き換えるため、mtime だけを見ると
+# 毎回「更新あり」になる。スナップショットとの行差分を取り、実際に増えた行が無ければ
+# ソースから外す。
+
+require "time"
+require "fileutils"
+require "set"
+
+# scheduled task の環境には LANG が無く、default_external が US-ASCII になる。
+# vault のノートは UTF-8 なので、locale に関わらず UTF-8 で読み書きする。
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = nil
+
+VAULT = ENV.fetch("WIKI_INGEST_VAULT", "/Users/asonas/Documents/asonas")
+WIKI = File.join(VAULT, "wiki")
+WATERMARK = File.join(WIKI, ".last_ingest")
+LOCK = File.join(WIKI, ".ingest.lock")
+STATE = ENV.fetch("WIKI_INGEST_STATE", File.expand_path("~/.local/state/wiki-ingest"))
+SNAP = File.join(STATE, "snapshots")
+STAGE = File.join(STATE, "staging")
+SOURCE_DIRS = %w[daily activities notes projects bookmarks books essays].freeze
+DIFF_DIRS = %w[activities].freeze
+STALE_LOCK_SEC = 20 * 60
+MAX_SOURCES = 40
+
+def since
+  File.exist?(WATERMARK) ? Time.parse(File.read(WATERMARK).strip) : Time.now - 3600
+end
+
+# ランキングの順位入れ替えと回数の増減を差分と見なさないための正規化。
+def normalize(line)
+  line.sub(/\A\s*\d+\.\s*/, "").sub(/\s*—\s*\d+回\s*\z/, "").strip
+end
+
+# frontmatter は collector が毎回書き換える（sources_updated のタイムスタンプ）ので差分から外す。
+def body_lines(path)
+  lines = File.readlines(path, chomp: true)
+  if lines.first&.strip == "---" && (close = lines[1..]&.index { |l| l.strip == "---" })
+    lines = lines[(close + 2)..] || []
+  end
+  lines.reject { |l| l.strip.empty? }
+end
+
+def added_lines(rel, path)
+  snapshot = File.join(SNAP, rel)
+  return body_lines(path) unless File.exist?(snapshot)
+
+  seen = body_lines(snapshot).map { |l| normalize(l) }.to_set
+  body_lines(path).reject { |l| seen.include?(normalize(l)) }
+end
+
+case ARGV[0]
+when "scan"
+  if File.directory?(LOCK) && Time.now - File.mtime(LOCK) > STALE_LOCK_SEC
+    warn "stale lock removed"
+    FileUtils.rmdir(LOCK)
+  end
+
+  begin
+    Dir.mkdir(LOCK)
+  rescue Errno::EEXIST
+    puts "LOCKED"
+    exit 0
+  end
+
+  # ロック取得後の例外でロックが残らないようにする。
+  begin
+  now = Time.now
+  changed = SOURCE_DIRS.flat_map { |d| Dir.glob(File.join(VAULT, d, "**", "*.md")) }
+                       .select { |p| File.mtime(p) > since }
+                       .sort_by { |p| File.mtime(p) }
+
+  FileUtils.rm_rf(STAGE)
+  FileUtils.mkdir_p(STAGE)
+
+  diffs = {}
+  changed = changed.reject do |path|
+    rel = path.delete_prefix("#{VAULT}/")
+    next false unless DIFF_DIRS.include?(rel.split("/").first)
+
+    added = added_lines(rel, path)
+    staged = File.join(STAGE, rel)
+    FileUtils.mkdir_p(File.dirname(staged))
+    FileUtils.cp(path, staged)
+
+    if added.empty?
+      true # 書き換わっただけで中身は増えていない
+    else
+      diffs[rel] = added
+      false
+    end
+  end
+
+  if changed.empty?
+    FileUtils.rmdir(LOCK)
+    puts "NO_NEW_SOURCES"
+    exit 0
+  end
+
+  if changed.size > MAX_SOURCES
+    puts "TRUNCATED #{changed.size} -> #{MAX_SOURCES}"
+    changed = changed.last(MAX_SOURCES)
+  end
+
+  puts "SINCE #{since.iso8601}"
+  puts "NOW #{now.iso8601}"
+  changed.each { |p| puts p.delete_prefix("#{VAULT}/") }
+
+  diffs.each do |rel, lines|
+    puts
+    puts "--- ADDED #{rel} ---"
+    lines.each { |l| puts l }
+    puts "--- END #{rel} ---"
+  end
+  rescue StandardError
+    FileUtils.rm_rf(STAGE)
+    FileUtils.rmdir(LOCK) if File.directory?(LOCK)
+    raise
+  end
+
+when "finish"
+  abort "usage: finish <ISO8601>" unless ARGV[1]
+  File.write(WATERMARK, Time.parse(ARGV[1]).iso8601)
+  if File.directory?(STAGE)
+    Dir.glob(File.join(STAGE, "**", "*.md")).each do |staged|
+      rel = staged.delete_prefix("#{STAGE}/")
+      dest = File.join(SNAP, rel)
+      FileUtils.mkdir_p(File.dirname(dest))
+      FileUtils.mv(staged, dest, force: true)
+    end
+    FileUtils.rm_rf(STAGE)
+  end
+  FileUtils.rmdir(LOCK) if File.directory?(LOCK)
+  puts "OK"
+
+when "abort"
+  FileUtils.rm_rf(STAGE)
+  FileUtils.rmdir(LOCK) if File.directory?(LOCK)
+  puts "OK"
+
+else
+  abort "usage: #{$PROGRAM_NAME} {scan|finish <ISO8601>|abort}"
+end

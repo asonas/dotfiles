@@ -20,6 +20,11 @@
 
 require 'set'
 
+# scheduled task の環境には LANG が無く default_external が US-ASCII になる。
+# vault のノートは UTF-8 なので locale に関わらず UTF-8 で読む。
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = nil
+
 VAULT = '/Users/asonas/Documents/asonas'
 WIKI  = File.join(VAULT, 'wiki')
 OPERATIONAL = /\A(index|log|log-.*|deferred)\.md\z/

@@ -1,12 +1,12 @@
 ---
 name: coach-daily-question
-description: 日次セルフコーチングの問いを1つだけ投げ、回答を coaching/log.md に append する。/today と /wrapup の末尾から呼び出される。引数 morning|evening で時間帯を切り替える。
+description: 日次セルフコーチングの問いを1つだけ投げ、回答を coaching/log.md に append する。明示的に呼ばれたときだけ起動する。引数 morning|evening で時間帯を切り替える。
 argument-hint: "morning|evening"
 ---
 
 # /coach-daily-question - 日次セルフコーチング
 
-エグゼクティブ・コーチングの考え方を日課に組み込むため、朝晩に1つだけ問いを投げ、本人の短い回答を `coaching/log.md` に append する。`/today` と `/wrapup` の最後で呼ばれる前提だが、単独でも起動できる。
+エグゼクティブ・コーチングの考え方を日課に組み込むため、朝晩に1つだけ問いを投げ、本人の短い回答を `coaching/log.md` に append する。単独起動専用で、`/today` や `/wrapup` からは自動で呼ばれない。
 
 ## 振る舞いの厳格な縛り（このスキルが起動している間、常時適用）
 

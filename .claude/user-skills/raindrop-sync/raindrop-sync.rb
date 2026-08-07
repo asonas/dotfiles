@@ -23,6 +23,11 @@ require 'open3'
 require 'optparse'
 require 'timeout'
 
+# Scheduled task sessions run without LANG, so default_external falls back to
+# US-ASCII and defuddle's UTF-8 output raises Encoding::CompatibilityError.
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = nil
+
 TOKEN_PATH         = File.expand_path('~/.config/raindrop/token')
 VAULT_BOOKMARKS    = File.expand_path('~/Documents/asonas/bookmarks')
 LAST_SYNC_PATH     = File.join(VAULT_BOOKMARKS, '.last_sync')
@@ -80,9 +85,13 @@ def defuddle_markdown(url)
   Timeout.timeout(DEFUDDLE_TIMEOUT_S) do
     out, err, status = Open3.capture3('defuddle', 'parse', '--md', url, stdin_data: '')
   end
-  return [out.strip, nil] if status&.success? && !out.to_s.strip.empty?
+  # defuddle は UTF-8 を返す。locale に依存しないよう明示し、
+  # 壊れたバイトはこの時点で潰す（後段のノート書き込みまで持ち越さない）。
+  out = out.to_s.dup.force_encoding(Encoding::UTF_8).scrub
+  err = err.to_s.dup.force_encoding(Encoding::UTF_8).scrub
+  return [out.strip, nil] if status&.success? && !out.strip.empty?
 
-  msg = err.to_s.strip.lines.last&.strip
+  msg = err.strip.lines.last&.strip
   msg = 'defuddle returned empty output' if msg.nil? || msg.empty?
   [nil, msg]
 rescue Timeout::Error

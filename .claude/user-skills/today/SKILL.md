@@ -349,7 +349,7 @@ lint は検出結果を `wiki/log.md` に記録するのみで自動修正はし
 
 Wiki の処理が終わったら、Alfred の qmd 検索（`ws`/`wsq`、`/Users/asonas/workspace/qmd-alfred/`）が最新の vault を引けるよう、qmd のインデックスを更新する。`command -v qmd` が無い／collection `asonas` 未登録ならスキップしてよい。
 
-**バックグラウンド実行する（同期で待たない）。** qmd の再インデックスは検索インデックスの鮮度を保つだけの純保守で、`/today` の後段（Step 10 のコーチング質問）が結果を必要としない。vault の増大に伴い scan+embed で 10 秒以上かかることがあるため、Bash の `run_in_background` で detach し、`/today` はすぐ次へ進む。失敗してもワークフロー全体は止めない。
+**バックグラウンド実行する（同期で待たない）。** qmd の再インデックスは検索インデックスの鮮度を保つだけの純保守で、`/today` の後段が結果を必要としない。vault の増大に伴い scan+embed で 10 秒以上かかることがあるため、Bash の `run_in_background` で detach し、`/today` はすぐ次へ進む。失敗してもワークフロー全体は止めない。
 
 ```bash
 # Bash tool の run_in_background=true で起動する（& を付けず、ツール側のバックグラウンド機能を使う）
@@ -401,18 +401,6 @@ mairu exec --server "$IVRY_MAIRU_SERVER" "$IVRY_DEV_ACCOUNT/$IVRY_MAIRU_ROLE" --
 終了コード: `0`=健全 / `1`=未実行・停滞あり (要確認) / `2`=AWS 認証なし (ログインを促してスキップ)。`mairu` が未ログインや `--server is required` で即失敗した場合も同様にログインを促してスキップする。
 
 結果は成否にかかわらず本日の daily note の `## ログ` セクションに 1 ブロックで追記する (常に記録)。健全なら「ai-cost ダッシュボード鮮度チェック: 全 8 段本日実行済み・全 source SLA 内 (OK)」、要確認なら該当行 (NOT-TODAY / STALE) だけを列挙する。Step 8 のサマリーにも 1 行添える。
-
-### Step 10: Morning Coaching Question
-
-すべての処理が終わったら、`coach-daily-question` スキルを `morning` 引数で呼び出す。
-
-```
-Skill(coach-daily-question, args: "morning")
-```
-
-このスキル内ではコーチング縛り（解決策禁止、観察と問いのみ）に従う。`/today` の実行モードを一時的に切り替えるイメージで構わない。回答が `coaching/log.md` に追記されたら `/today` 全体が終了する。
-
-ユーザーが「今日はコーチングはスキップで」等を事前に明言している場合のみ、このステップを省略してよい。
 
 ## Output Format
 

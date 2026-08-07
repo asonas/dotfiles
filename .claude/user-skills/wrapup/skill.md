@@ -236,18 +236,6 @@ wiki/ を更新しました（更新 N ページ、新規 M ページ）。
 
 Linear が「該当なし」または「未認証」だった場合はその旨を 1 行で報告する。
 
-### Step 10: Evening Coaching Question
-
-完了報告のあとで、`coach-daily-question` スキルを `evening` 引数で呼び出す。
-
-```
-Skill(coach-daily-question, args: "evening")
-```
-
-このスキル内ではコーチング縛り（解決策禁止、観察と問いのみ）に従う。回答が `coaching/log.md` に追記されたら `/wrapup` 全体が終了する。
-
-ユーザーが「今日はコーチングはスキップで」等を事前に明言している場合のみ、このステップを省略してよい。なお、過去30日の節目（月初）であれば、夜の問いではなく `/coach-monthly` を回すのが望ましい旨を1行だけ提案してよい（提案であって押し付けではない）。
-
 ## Output Format
 
 Always respond in Japanese.

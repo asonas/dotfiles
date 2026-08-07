@@ -20,3 +20,5 @@ SmartHR在籍状況の自動遷移	daily/2026-06-24.md	退職日が過去なの�
 Tempest (drum machine)	projects/tempest909/persona.md	tempest909 の命名由来（Tempest + TR-909）を説明する記述が出典。ファイル側は小文字の tempest909 表記
 Tempest (drum machine)	projects/tempest909/README.md	同上。リリースマネージャーの設定と名前の由来を説明している
 ai-cost-management	daily/2026-07-01.md	「Claude APIキー単位の使用量取得方法を調査。Admin APIのUsage Report（group_by=api_key_id）」が本文に実在。プロジェクト名ではなく作業内容で書かれている
+Workload Identity Federation	notes/2026-06-30-slack-action-items.md	ノートは「idトークンフェデレーション」という日本語表記でこの方式を指し、sorah 日記「id-token-federations」と mcp_oauth/config.ru の共有を記録している。2026-08-03 の lint で本文を読んで確認
+himari	notes/2026-06-30-slack-action-items.md	ノートは himari のデプロイ名である mcp_oauth/config.ru として言及しており、ソフトウェア名そのものは現れない。2026-08-03 の lint で本文を読んで確認
