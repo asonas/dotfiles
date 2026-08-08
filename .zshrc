@@ -336,6 +336,9 @@ case ${OSTYPE} in
 
     eval "$(/opt/homebrew/bin/brew shellenv)"
 
+    # rbenv
+    FPATH=~/.rbenv/completions:"$FPATH"
+
         if type brew &>/dev/null; then
       FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
       FPATH=$HOME/.zsh.d/completions:$FPATH
