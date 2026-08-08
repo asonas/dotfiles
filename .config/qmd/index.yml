@@ -1,12 +1,14 @@
 collections:
   asonas:
-    path: /Users/asonas/Documents/asonas
+    path: /Users/asonas/Obsidian/asonas
     pattern: "**/*.md"
     ignore:
       - wiki/log.md
       - wiki/log-*.md
       - wiki/index.md
       - wiki/deferred.md
+    context:
+      "": asonas の個人用 Obsidian vault。wiki は出典付き要約の派生レイヤ、daily・activities・notes・projects は一次ソース、bookmarks・books は外部テキストの取り込み。個人の行動や判断を調べる際は一次ソースを優先する。
   ai-cost:
     path: /Users/asonas/ghq/github.com/ivry-inc/ai-cost-management/docs
     pattern: "**/*.md"
