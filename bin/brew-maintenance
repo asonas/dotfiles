@@ -1,0 +1,224 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+safe_formulae=(
+  git
+  gh
+  jq
+  ghq
+  wget
+  yt-dlp
+  rbenv
+  ruby-build
+  nodenv
+  node-build
+  neovim
+  zsh
+  zsh-completions
+)
+
+safe_casks=(
+  1password-cli
+  keycastr
+)
+
+major_upgrade_candidates=(
+  "cmake: 3.x -> 4.x"
+  "hdf5: 1.x -> 2.x"
+  "protobuf: 28 -> 35"
+  "tcl-tk: 8.6 -> 9.0"
+  "temurin: Java 23 -> 26"
+  "openvino: 2024 -> 2026"
+  "assimp: 5.x -> 6.x"
+  "mbedtls: 3.x -> 4.x"
+  "pmix: 5.x -> 6.x"
+)
+
+usage() {
+  cat <<'USAGE'
+Usage: brew-maintenance <command>
+
+Commands:
+  audit               Show Homebrew health and outdated packages
+  fix-pkgconf         Replace the old pkg-config links with pkgconf
+  upgrade-safe        Upgrade the selected lower-risk formulae and casks
+  show-major          Show packages that need manual major-upgrade review
+  trust-taps          Trust the installed yabai and skhd formulae
+  cleanup-candidates  Show autoremove and cleanup candidates without deleting
+  help                Show this help
+USAGE
+}
+
+require_brew() {
+  if ! command -v brew >/dev/null 2>&1; then
+    echo "brew was not found in PATH" >&2
+    exit 1
+  fi
+}
+
+confirm() {
+  local prompt="$1"
+  local answer
+
+  printf '%s [y/N] ' "$prompt"
+  read -r answer
+  [[ "$answer" == "y" || "$answer" == "Y" ]]
+}
+
+installed_formulae() {
+  local formula
+
+  for formula in "${safe_formulae[@]}"; do
+    if brew list --formula "$formula" >/dev/null 2>&1; then
+      printf '%s\n' "$formula"
+    else
+      echo "Skipping uninstalled formula: $formula" >&2
+    fi
+  done
+}
+
+installed_casks() {
+  local cask
+
+  for cask in "${safe_casks[@]}"; do
+    if brew list --cask "$cask" >/dev/null 2>&1; then
+      printf '%s\n' "$cask"
+    else
+      echo "Skipping uninstalled cask: $cask" >&2
+    fi
+  done
+}
+
+audit() {
+  brew --version
+  brew config
+
+  echo
+  echo "== brew doctor =="
+  brew doctor || true
+
+  echo
+  echo "== outdated packages =="
+  brew outdated --verbose || true
+
+  echo
+  echo "== installed taps =="
+  brew tap
+
+  echo
+  echo "== top-level formulae =="
+  brew leaves
+}
+
+fix_pkgconf() {
+  echo "Files pkgconf would overwrite:"
+  brew link --overwrite pkgconf --dry-run
+
+  if ! confirm "Unlink pkg-config and link pkgconf?"; then
+    echo "Cancelled."
+    return
+  fi
+
+  if brew list --formula pkg-config >/dev/null 2>&1; then
+    brew unlink pkg-config
+  fi
+  brew link --overwrite pkgconf
+
+  echo
+  echo "Active pkg-config: $(command -v pkg-config)"
+  pkg-config --version
+  echo
+  echo "The old pkg-config formula remains installed."
+  echo "After confirming builds work, remove the old keg with: brew cleanup pkgconf"
+}
+
+upgrade_safe() {
+  local -a formulae=()
+  local -a casks=()
+  local package
+
+  while IFS= read -r package; do
+    formulae+=("$package")
+  done < <(installed_formulae)
+  while IFS= read -r package; do
+    casks+=("$package")
+  done < <(installed_casks)
+
+  echo "Formulae to upgrade: ${formulae[*]:-(none)}"
+  echo "Casks to upgrade: ${casks[*]:-(none)}"
+
+  if ! confirm "Run these upgrades?"; then
+    echo "Cancelled."
+    return
+  fi
+
+  if ((${#formulae[@]})); then
+    HOMEBREW_NO_INSTALL_CLEANUP=1 brew upgrade "${formulae[@]}"
+  fi
+  if ((${#casks[@]})); then
+    HOMEBREW_NO_INSTALL_CLEANUP=1 brew upgrade --cask "${casks[@]}"
+  fi
+}
+
+show_major() {
+  printf '%s\n' "${major_upgrade_candidates[@]}"
+  echo
+  echo "Review release notes and dependent projects before upgrading these packages."
+}
+
+trust_taps() {
+  local -a formulae=()
+  local formula
+
+  for formula in yabai skhd; do
+    if brew list --formula "$formula" >/dev/null 2>&1; then
+      formulae+=("asmvik/formulae/$formula")
+    fi
+  done
+
+  if ((${#formulae[@]} == 0)); then
+    echo "Neither asmvik/formulae/yabai nor asmvik/formulae/skhd is installed."
+    return
+  fi
+
+  echo "Formulae to trust: ${formulae[*]}"
+  if ! confirm "Trust these formulae?"; then
+    echo "Cancelled."
+    return
+  fi
+
+  brew trust --formula "${formulae[@]}"
+}
+
+cleanup_candidates() {
+  echo "== autoremove candidates =="
+  brew autoremove --dry-run
+
+  echo
+  echo "== cleanup candidates =="
+  brew cleanup --dry-run
+
+  echo
+  echo "Nothing was removed. Review the output before running cleanup commands."
+}
+
+main() {
+  require_brew
+
+  case "${1:-help}" in
+    audit) audit ;;
+    fix-pkgconf) fix_pkgconf ;;
+    upgrade-safe) upgrade_safe ;;
+    show-major) show_major ;;
+    trust-taps) trust_taps ;;
+    cleanup-candidates) cleanup_candidates ;;
+    help|-h|--help) usage ;;
+    *)
+      echo "Unknown command: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+}
+
+main "$@"
