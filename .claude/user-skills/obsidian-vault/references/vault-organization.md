@@ -125,5 +125,4 @@ When archiving, run the Move / Rename checklist first. Archived notes retain the
 ## Related Rules
 
 - General save destination, tool choice (`obsidian` CLI vs Read+Edit), writing style, and Graph View linking strategy: this skill's SKILL.md
-- Markdown preview after Write: the always-loaded markdown-preview rule
 - Daily note workflow: invoked through `/today` and `/wrapup` skills

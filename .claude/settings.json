@@ -15,7 +15,6 @@
       "Bash(grep:*)",
       "Bash(bundle:*)",
       "Bash(gemini:*)",
-      "Bash(mdv:*)",
       "Bash(twiggy:*)",
       "Bash(wasm-snip:*)",
       "Bash(iris:*)"

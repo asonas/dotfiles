@@ -3,7 +3,6 @@ set -eu
 
 instruction_files='
 .apm/instructions/base.instructions.md
-.apm/instructions/markdown-preview.instructions.md
 .apm/instructions/shell.instructions.md
 '
 

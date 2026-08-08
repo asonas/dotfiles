@@ -8,6 +8,7 @@ yarn = "1.22.19"
 colima = "latest"
 "github:hokaccha/givy" = "latest"
 "github:sorah/mairu" = "latest"
+"github:tokuhirom/mdroll" = "latest"
 
 [settings]
 github_attestations = false
