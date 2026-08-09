@@ -83,6 +83,16 @@
             "command": "\"$HOME/.claude/hooks/herdr-agent-state.sh\" session"
           }
         ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/home/asonas/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
       }
     ]
   },
