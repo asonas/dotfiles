@@ -56,6 +56,8 @@ resume_agents_on_restore = true
 # 通るようにするため。best-effort（macOS 限定）。
 switch_ascii_input_source_in_prefix = true
 
+kitty_graphics = true
+
 [theme]
 name = "tokyo-night"
 auto_switch = false
