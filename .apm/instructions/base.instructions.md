@@ -17,3 +17,7 @@ description: Baseline communication, commit, and review rules that apply to ever
 - 道具ごとの規範はスキルを参照: crit のレビュー URL を開くなら `/crit-open`、mairu CLI を実行するなら `/mairu`、PR description を書くなら `/pull-request-description`
 - URL の取得には、実行環境で利用可能な Web 取得機能または `ax` CLI を使い、目的に合うものを選ぶ。`curl` や使い捨ての HTML 解析スクリプトは使わない。ページの探索、構造化抽出、未知の Web ページや API の調査には `/ax` スキルを使う。User-Agent を手動指定しない
 - サブエージェントの起動は、ユーザーが明示的に依頼したときか、ユーザーが呼び出したスキルが手順として指示しているときに限る。モデルの判断で自動的に起動しない
+
+## Codex CLIでのVisual Companion
+
+- Codex CLIでbrainstormingのVisual Companionサーバーを起動するときは、`scripts/start-server.sh` を `on-request` の権限昇格付きで実行する。`exec_command` の `sandbox_permissions` に `require_escalated` を指定し、localhostポートのbindと `--open` によるブラウザ起動が必要な理由を説明する
