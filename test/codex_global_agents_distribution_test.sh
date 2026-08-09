@@ -58,6 +58,7 @@ assert_posix_agents_link() {
 }
 
 test_posix_links_global_agents_file() {
+    assert_line_count 1 '^    apm compile --clean$' install.sh
     assert_line_count 1 '^codex_agents_source="\$PWD/AGENTS.md"$' install.sh
     assert_line_count 1 '^codex_agents_target="\$HOME/.codex/AGENTS.md"$' install.sh
     assert_line_count 1 '^    ln -sfn "\$codex_agents_source" "\$codex_agents_target"$' install.sh

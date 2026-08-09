@@ -136,7 +136,7 @@ if [ -n "$exclude_file" ]; then
 # === APM (managed by install.sh) ===
 # APM dependencies and generated artifacts.
 # Sources to keep tracked: .apm/instructions/, apm.yml.
-# Run `apm install && apm compile` after clone to regenerate everything below.
+# Run `apm install && apm compile --clean` after clone to regenerate everything below.
 # These live here (not in the symlinked .gitignore) so they don't pollute the
 # global core.excludesfile and hide CLAUDE.md/AGENTS.md/etc. in other repos.
 apm_modules/
@@ -168,7 +168,7 @@ apm_install_ok=0
 # to ~/.claude and ~/.agents at their latest upstream versions.
 if command -v apm >/dev/null 2>&1; then
     echo "==> apm compile (.apm/instructions -> CLAUDE.md, AGENTS.md)"
-    apm compile
+    apm compile --clean
     echo "==> apm update --yes (refresh ~/.apm/apm.lock.yaml to latest refs)"
     set +e
     (cd "$HOME/.apm" && apm update --yes --target claude,cursor,codex)
