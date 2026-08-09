@@ -4,3 +4,7 @@ model_verbosity = "low"
 
 [tui]
 status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "git-branch"]
+
+[mcp_servers.coolify]
+command = "/opt/homebrew/bin/envchain"
+args = ["coolify", "node", "/Users/asonas/ghq/github.com/asonas/mcp-coolify/build/index.js"]

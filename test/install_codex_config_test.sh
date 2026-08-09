@@ -65,6 +65,23 @@ test_updates_existing_managed_values() {
     assert_line_count 0 '^approval_policy = "never"$' "$config"
 }
 
+test_replaces_managed_mcp_server_section() {
+    config="$test_root/replaces-mcp-server.toml"
+    printf '%s\n' \
+        '[mcp_servers.coolify]' \
+        'command = "old-command"' \
+        '' \
+        '[projects."/work/project"]' \
+        'trust_level = "trusted"' > "$config"
+
+    "$installer" "$managed_config" "$config"
+
+    assert_line_count 1 '^\[mcp_servers\.coolify\]$' "$config"
+    assert_contains 'command = "/opt/homebrew/bin/envchain"' "$config"
+    assert_line_count 0 '^command = "old-command"$' "$config"
+    assert_contains '[projects."/work/project"]' "$config"
+}
+
 test_preserves_other_tui_settings() {
     config="$test_root/preserves-tui.toml"
     printf '%s\n' \
@@ -140,6 +157,7 @@ test_managed_config_uses_low_model_verbosity() {
 
 test_preserves_existing_codex_state
 test_updates_existing_managed_values
+test_replaces_managed_mcp_server_section
 test_preserves_other_tui_settings
 test_is_idempotent
 test_creates_missing_user_config

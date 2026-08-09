@@ -24,13 +24,20 @@ trap 'command rm -f "$temporary_config"' EXIT
             /^\[tui\]$/ { in_tui = 1; next }
             /^\[/ { in_tui = 0 }
             in_tui && /^status_line[[:space:]]*=/ { next }
+            in_tui && /^[[:space:]]*$/ { next }
             in_tui { print }
         ' "$user_config"
         awk '
-            /^\[tui\]$/ { skip = 1; next }
-            /^\[/ { skip = 0 }
-            /^\[/ || !skip { print }
-        ' "$user_config" | awk 'found || /^\[/ { found = 1; print }'
+            FNR == NR {
+                if (/^\[/) managed[$0] = 1
+                next
+            }
+            /^\[/ {
+                found = 1
+                skip = ($0 in managed)
+            }
+            found && !skip { print }
+        ' "$managed_config" "$user_config"
     fi
 } > "$temporary_config"
 
