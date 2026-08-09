@@ -25,6 +25,7 @@ create_posix_installer_fixture() {
     sed '/^# Codex loads APM-deployed skills directly/,$d' install.sh > "$test_repo/install.sh"
     ln -s "$PWD/bin" "$test_repo/bin"
     ln -s "$PWD/.config" "$test_repo/.config"
+    ln -s "$PWD/.gnupg" "$test_repo/.gnupg"
     printf '\nexit 0\n' >> "$test_repo/install.sh"
     git init --bare "$test_home/git-dir" >/dev/null
 }

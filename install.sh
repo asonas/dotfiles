@@ -47,6 +47,10 @@ do
     ln -s "$target" "$link"
 done
 
+"$PWD/bin/install_gpg_agent_config" \
+    "$PWD/.gnupg/gpg-agent.conf" \
+    "$HOME/.gnupg/gpg-agent.conf"
+
 [ ! -d "$HOME/bin" ] && mkdir "$HOME/bin"
 ln -sf "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
 ln -sf "$PWD/bin/setup_workspace" "$HOME/bin/setup_workspace"

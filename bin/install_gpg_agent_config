@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu
+
+if [ "$#" -ne 2 ]; then
+    echo "usage: $0 MANAGED_CONFIG USER_CONFIG" >&2
+    exit 1
+fi
+
+managed_config="$1"
+user_config="$2"
+user_config_dir=$(dirname "$user_config")
+
+mkdir -p -m 700 "$user_config_dir"
+chmod 700 "$user_config_dir"
+
+tmp=$(mktemp "$user_config.tmp.XXXXXX")
+trap 'command rm -f "$tmp"' EXIT
+
+if [ -f "$user_config" ]; then
+    sed -E '/^[[:space:]]*(default-cache-ttl|max-cache-ttl)([[:space:]]|$)/d' \
+        "$user_config" > "$tmp"
+fi
+
+cat "$managed_config" >> "$tmp"
+
+chmod 600 "$tmp"
+command mv "$tmp" "$user_config"
+trap - EXIT
