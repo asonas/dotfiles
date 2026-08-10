@@ -27,3 +27,12 @@ description: Baseline communication, commit, and review rules that apply to ever
 - `bash -lc` や `zsh -lc` のようなネストしたログインシェルを使わず、`exec_command` からコマンドを直接実行する。ネストした非対話シェルではmacOSの`/usr/bin`がPATHの先頭に入り、mise管理のランタイムが隠れることがある
 - Ruby、Node.jsなどmise管理のランタイムを使うコマンドは、`mise exec -- <command>` 経由で実行する
 - ランタイムを使うテストやスクリプトの実行前に、`command -v <runtime>` と `<runtime> --version` で解決先とバージョンを確認する
+
+## Herdrでの新しいエージェント起動
+
+- `HERDR_ENV=1` のときは、Herdrの現在のworkspaceを使って新しいエージェントを起動する。新しいworkspaceは作成しない
+- 起動前に現在のtabのpane数を確認する
+- paneが1つなら、`herdr pane split --current --direction right --no-focus` で横方向に分割し、作成されたpaneで起動する
+- paneが2つ以上なら、現在のworkspaceに `herdr tab create --workspace <workspace-id>` で新しいtabを作り、そのroot paneで起動する
+- pane splitやtab createの結果から新しいpane IDを取得してから、`herdr pane run <pane-id> "<agent-command>"` でエージェントを起動する
+- Herdr管理下でない場合は、通常の現在のターミナルで起動する
