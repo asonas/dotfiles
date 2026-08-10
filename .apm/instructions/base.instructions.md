@@ -21,3 +21,9 @@ description: Baseline communication, commit, and review rules that apply to ever
 ## Codex CLIでのVisual Companion
 
 - Codex CLIでbrainstormingのVisual Companionサーバーを起動するときは、`scripts/start-server.sh` を `on-request` の権限昇格付きで実行する。`exec_command` の `sandbox_permissions` に `require_escalated` を指定し、localhostポートのbindと `--open` によるブラウザ起動が必要な理由を説明する
+
+## Codex CLIでの実行環境
+
+- `bash -lc` や `zsh -lc` のようなネストしたログインシェルを使わず、`exec_command` からコマンドを直接実行する。ネストした非対話シェルではmacOSの`/usr/bin`がPATHの先頭に入り、mise管理のランタイムが隠れることがある
+- Ruby、Node.jsなどmise管理のランタイムを使うコマンドは、`mise exec -- <command>` 経由で実行する
+- ランタイムを使うテストやスクリプトの実行前に、`command -v <runtime>` と `<runtime> --version` で解決先とバージョンを確認する

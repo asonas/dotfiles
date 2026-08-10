@@ -16,3 +16,7 @@ grep -q '`ax` CLI' .apm/instructions/base.instructions.md
 grep -q '/ax.*スキル' .apm/instructions/base.instructions.md
 grep -q 'Codex CLIでbrainstormingのVisual Companionサーバーを起動するとき' .apm/instructions/base.instructions.md
 grep -q 'sandbox_permissions.*require_escalated' .apm/instructions/base.instructions.md
+grep -q 'bash -lc.*zsh -lc' .apm/instructions/base.instructions.md
+grep -q 'mise exec --' .apm/instructions/base.instructions.md
+grep -q '^\[shell_environment_policy\]$' .config/codex/config.toml
+grep -q '^experimental_use_profile = true$' .config/codex/config.toml
