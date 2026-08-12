@@ -29,7 +29,7 @@ Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = nil
 
 TOKEN_PATH         = File.expand_path('~/.config/raindrop/token')
-VAULT_BOOKMARKS    = File.expand_path('~/Documents/asonas/bookmarks')
+VAULT_BOOKMARKS    = '/Users/asonas/Obsidian/asonas/bookmarks'
 LAST_SYNC_PATH     = File.join(VAULT_BOOKMARKS, '.last_sync')
 RAINDROP_API_BASE  = 'https://api.raindrop.io/rest/v1'
 PERPAGE            = 50

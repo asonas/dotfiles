@@ -7,7 +7,7 @@ disable-model-invocation: false
 
 # /raindrop-sync - Raindrop -> Obsidian Bookmarks Sync
 
-Raindrop.io API から取得したブックマークを `~/Documents/asonas/bookmarks/` に 1 ファイル 1 ブックマークの markdown として書き出すスキルです。各ファイルは raindrop_id を名前に持ち、frontmatter にメタデータ、本文に defuddle で抽出した記事本文を含みます。
+Raindrop.io API から取得したブックマークを `/Users/asonas/Obsidian/asonas/bookmarks/` に 1 ファイル 1 ブックマークの markdown として書き出すスキルです。各ファイルは raindrop_id を名前に持ち、frontmatter にメタデータ、本文に defuddle で抽出した記事本文を含みます。
 
 karpathy の "LLM Wiki" 3 層モデルで言う **Raw Sources 層の拡張**です。daily / notes / essays に並ぶ第 4 のソースとして `/wiki-update ingest` から参照されます。
 
@@ -16,8 +16,8 @@ karpathy の "LLM Wiki" 3 層モデルで言う **Raw Sources 層の拡張**で�
 - token: `~/.config/raindrop/token` にプレーンファイル（perms 600）で保存されていること。raindrop の test token は https://app.raindrop.io/settings/integrations で発行する
 - defuddle: node 経由でインストール済み（`which defuddle` で確認）
 - ruby: 4.x で動作確認済み（標準ライブラリのみ使用、外部 gem 不要）
-- 出力先: `~/Documents/asonas/bookmarks/` (`/Users/asonas/Documents/asonas/bookmarks/`)
-- 同期状態: `~/Documents/asonas/bookmarks/.last_sync` に最終同期時刻が ISO 8601 で書かれる
+- 出力先: `/Users/asonas/Obsidian/asonas/bookmarks/`
+- 同期状態: `/Users/asonas/Obsidian/asonas/bookmarks/.last_sync` に最終同期時刻が ISO 8601 で書かれる
 
 ## 起動方法
 
