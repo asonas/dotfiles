@@ -13,12 +13,12 @@ description: Obsidian の個人 vault（asonas / ason.as）を扱うための規
 - Obsidianにドキュメントを書くよう指示がない場合はリポジトリで指示されているディレクトリに保存する
 
 ## ツール選択方針（2026-04-15 移行 / 2026-07-08 更新）
-- **読み取り（read）は Read ツールで絶対パスを直読することを第一選択とする**。`/Users/asonas/Documents/asonas/<path>` を Read で開く。`obsidian read` / `obsidian daily:read` は **使わない**
+- **読み取り（read）は Read ツールで絶対パスを直読することを第一選択とする**。`/Users/asonas/Obsidian/asonas/<path>` を Read で開く。`obsidian read` / `obsidian daily:read` は **使わない**
   - 理由: `obsidian` CLI は Obsidian GUI 本体（Electron バイナリ）そのもので、GUI が起動していない瞬間に呼ぶと本体をヘッドレスで冷間起動しようとしてハングする（2026-07-08 に再現確認: exit 124、stderr に `IMKCFRunLoopWakeUpReliable` エラー）。GUI 起動中なら 0.25 秒で返るが、閉じている保証がないため read には使わない
 - **書き込み（create / append）も Write / Edit ツールで絶対パスを直接編集することを推奨する**。`obsidian create` / `obsidian append` も同じ理由でハングし得る。Obsidian はファイルシステムの変更を自動検知するため、直接書けば GUI にも反映される
 - `obsidian search` / `obsidian files` など Read/Write ツールで代替できない操作に限り `obsidian` CLI を使う。その場合も GUI が起動している前提でのみ確実に動く点に注意する
 - 旧 `mcp-obsidian` (REST API依存) は廃止済み
-- Vault は2つある: `asonas`（個人ノート / daily / 仕事メモ。path: `/Users/asonas/Documents/asonas/`）と `ason.as`（公開ブログ用。path: `/Users/asonas/ghq/github.com/asonas/ason.as/`）
+- Vault は2つある: `asonas`（個人ノート / daily / 仕事メモ。path: `/Users/asonas/Obsidian/asonas/`）と `ason.as`（公開ブログ用。path: `/Users/asonas/ghq/github.com/asonas/ason.as/`）
 - **`obsidian` コマンドを使う場合は `vault=<name>` を必ず明示すること**。省略するとアクティブな vault が使われ、daily note などが意図せず `ason.as` 側に作られる事故が起きる
 - daily note / 個人ノート / 仕事関連は `vault=asonas`、ブログ記事は `vault=ason.as` を指定する
 - stderr の "installer out of date" 警告は `2>/dev/null` で抑制してよい（stdoutは正常）

@@ -39,7 +39,7 @@ Use `mcp__google-calendar__get-current-time` to get the current date for referen
 
 Check if the target daily note exists:
 ```
-Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
 ```
 
 If it doesn't exist, ask the user whether to (a) create today's note and append, (b) append to yesterday's note instead, or (c) abort.
@@ -175,7 +175,7 @@ After confirmation, append under the `## ログ` heading. 公式CLIはheading指
 
 ```
 # Read tool:
-Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
 
 # Edit tool: "## ログ" セクション末尾に追記
 # old_string: "## ログ\n" (空セクションの場合) または既存ログ末尾の一意なスニペット

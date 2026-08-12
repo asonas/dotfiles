@@ -49,7 +49,7 @@ Step 1で取得した現在日付から以下のルールで `YYYY-qN` を導出
 読み取りは Read ツールで絶対パスを直読する（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない。詳細は `obsidian.instructions.md`）:
 
 ```
-Read: /Users/asonas/Documents/asonas/goals/2026-q3.md
+Read: /Users/asonas/Obsidian/asonas/goals/2026-q3.md
 ```
 
 ファイルが存在しない場合（未作成の四半期）はスキップしてユーザーに通知する。
@@ -74,7 +74,7 @@ Read: /Users/asonas/Documents/asonas/goals/2026-q3.md
    - 月曜実行時は金/土/日の3日分が返る可能性あり、全部処理する
    - 7日遡って何もなければ「対象日なし」と返す
 2. 各日付について以下を実行:
-   a. Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+   a. Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
    b. cman:cm-search を keyword="YYYY-MM-DD"、exclude_subagents=true で実行し、その日のClaude Codeセッション履歴を取得
       （exclude_subagents=true は必須。agent-* セッションを除外すると全文検索の対象が減り所要時間がほぼ半減する。かつ「昨日やったこと」の材料として subagent の内部ログは不要なので結果品質も上がる）
 3. 抽出する情報:
@@ -193,10 +193,10 @@ mise exec -- bundle exec bin/activities-snapshot --source bluesky --source scrap
 まず Read ツールで存在確認する（`obsidian read` は GUI が閉じているとハングするため使わない）:
 
 ```
-Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
 ```
 
-存在しなければ作成する。Write ツールで `/Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md` に直接書き出す（Obsidian はファイルシステムの変更を自動検知する）。`obsidian create` を使う場合は **`vault=asonas` を必ず指定**する。
+存在しなければ作成する。Write ツールで `/Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md` に直接書き出す（Obsidian はファイルシステムの変更を自動検知する）。`obsidian create` を使う場合は **`vault=asonas` を必ず指定**する。
 
 Daily note format:
 **IMPORTANT: `# YYYY-MM-DD` のようなh1ヘッディングは絶対に含めないこと。** Obsidianではファイル名がタイトルになるため重複する。ノートは `[[IVRy]]` から直接始める。
@@ -324,7 +324,7 @@ wiki ingest が終わったら、**前回 lint から 7 日以上経過してい
 ```bash
 # find ベースで列挙する（zsh では未マッチの log-*.md グロブがコマンドごと失敗するため、
 # シェル展開ではなく find に glob を渡す）
-last_lint=$(find /Users/asonas/Documents/asonas/wiki -maxdepth 1 \
+last_lint=$(find /Users/asonas/Obsidian/asonas/wiki -maxdepth 1 \
   \( -name 'log.md' -o -name 'log-*.md' \) 2>/dev/null \
   | xargs grep -hoE '^## [0-9]{4}-[0-9]{2}-[0-9]{2}[^#]*lint' 2>/dev/null \
   | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' | sort -r | head -1)
@@ -392,7 +392,7 @@ ai-cost-management のダッシュボード (Databricks Lakeview `ai-cost-overvi
 **前提: `mairu login --server ivry` が済んでいること。** 未ログインならスクリプトは exit 2 で失敗する。その場合はユーザーに「`mairu login --server ivry` を実行してください」と促し、このチェックはスキップする (`/today` 全体は止めない)。
 
 ```bash
-cd /Users/asonas/Documents/asonas/projects/ai-cost-management
+cd /Users/asonas/Obsidian/asonas/projects/ai-cost-management
 set -a; source .env.local; set +a
 mairu exec --server "$IVRY_MAIRU_SERVER" "$IVRY_DEV_ACCOUNT/$IVRY_MAIRU_ROLE" --no-login -- \
   env AWS_REGION=ap-northeast-1 bash scripts/check_dashboard_freshness.sh

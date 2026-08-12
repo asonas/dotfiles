@@ -15,8 +15,8 @@ karpathy の "LLM Wiki" 方針に従い、Obsidian asonas vault の `wiki/` 配�
 
 ## 前提
 
-- vault: `asonas`（path: `/Users/asonas/Documents/asonas/`）。`obsidian` CLI を使う場合は必ず `vault=asonas` を明示します。
-- wiki ディレクトリ: `/Users/asonas/Documents/asonas/wiki/`
+- vault: `asonas`（path: `/Users/asonas/Obsidian/asonas/`）。`obsidian` CLI を使う場合は必ず `vault=asonas` を明示します。
+- wiki ディレクトリ: `/Users/asonas/Obsidian/asonas/wiki/`
 - wiki 配下は **フラット構造**。サブディレクトリを切らない。分類は frontmatter の `type` で行い、カタログ化は `wiki/index.md` が担います。
 - 運用ファイルは 3 つ。`wiki/index.md`（カタログ）、`wiki/log.md`（操作履歴、append-only）、`wiki/deferred.md`（ページ化を見送った語の台帳、**状態を持つ唯一のファイル**）。この 3 つは qmd のインデックスから除外されています（`~/.config/qmd/index.yml` の `collections.asonas.ignore`）。固有名詞の密度が高く、検索で本来の wiki ページを押しのけるためです。除外対象を増やす場合は同じ ignore に追記すること。
 - Obsidian は `[[bare-name]]` を vault 全体から解決するため、wiki 配下にあろうと top-level にあろうとリンクは壊れません。
@@ -58,7 +58,7 @@ updated: 2026-05-20
 - `today` / `yesterday` / `YYYY-MM-DD`: 下記6種をまとめて同じ ingest セッションのソースとして読み込む
   1. `daily/<YYYY-MM-DD>.md`（手書きの日報）
   2. `activities/<YYYY-MM-DD>.md`（machine-generated。カレンダー予定、GitHub、ブラウザ履歴、Claude Code、Bluesky 投稿などが集約されている。daily note からは transclude されているが Read ツールは transclude を展開しないため、明示的に読む必要がある）
-  3. 当日 `mtime` の `projects/**/*.md`（その日に手で更新したプロジェクトノート。`find /Users/asonas/Documents/asonas/projects -name '*.md' -newermt <YYYY-MM-DD> -not -newermt <翌日>` で検出）
+  3. 当日 `mtime` の `projects/**/*.md`（その日に手で更新したプロジェクトノート。`find /Users/asonas/Obsidian/asonas/projects -name '*.md' -newermt <YYYY-MM-DD> -not -newermt <翌日>` で検出）
   4. 当日 `mtime` の `notes/**/*.md`（同上。単発の調査ノートも拾う）
   5. その日に `bookmarks/.last_sync` 経由で取り込まれた新着 bookmarks（`bookmarks/*.md` のうち frontmatter `last_synced` が当該日付の md）
   6. その日に `/books-highlights` で更新された読書ハイライト（`books/*.md` のうち frontmatter `last_synced` が当該日付の md）。書名・著者・章ごとのハイライトは概念ページ化の素材になる。引用は逐語なので wiki では要約・統合する
@@ -93,11 +93,11 @@ updated: 2026-05-20
    - `mentions.rb` の `linked` / `plain` / `alias` に出た既存ページは**増補の検討対象**。手順 7 で扱う
    - `--candidates` はノイズを含むチェックリストであって、ページ化の指示ではない。列挙された語のうち固有名詞として意味があるものだけを、手順 5 の 2ソース・ルールにかける
    - 自分の読みで拾った語がスクリプトの出力に無い場合もある（表記揺れなど）。その場合は自分の読みを優先する。スクリプトは下限であって上限ではない
-4. **既存ページ照合**: 各エンティティについて `/Users/asonas/Documents/asonas/wiki/<名前>.md` の存否を確認する。
+4. **既存ページ照合**: 各エンティティについて `/Users/asonas/Obsidian/asonas/wiki/<名前>.md` の存否を確認する。
 5. **新規作成の基準（2ソース・ルール）**: 既存ページがないエンティティは、無条件にページ化せず、まず再出現の証拠を確認する:
 
    ```bash
-   grep -rl --include='*.md' -F '<名前>' /Users/asonas/Documents/asonas/{daily,notes,essays,projects,weekly,1on1} | grep -v '今回のソース'
+   grep -rl --include='*.md' -F '<名前>' /Users/asonas/Obsidian/asonas/{daily,notes,essays,projects,weekly,1on1} | grep -v '今回のソース'
    ```
 
    - **別の日のソースにも登場している（2回目以降の出現）** → ページを作成する
@@ -239,6 +239,6 @@ today / wrapup から呼ばれた際は、対話を増やさず黙々と ingest 
 
 ## 注意
 
-- `wiki/` 配下の編集はすべて Read + Edit / Write で `/Users/asonas/Documents/asonas/wiki/<file>.md` を直接編集する。Obsidian 公式 CLI は heading 指定の insert をサポートしないため、本文への精密な追記は filesystem 直接編集の方が確実。
+- `wiki/` 配下の編集はすべて Read + Edit / Write で `/Users/asonas/Obsidian/asonas/wiki/<file>.md` を直接編集する。Obsidian 公式 CLI は heading 指定の insert をサポートしないため、本文への精密な追記は filesystem 直接編集の方が確実。
 - daily / notes 等の **ソース側ノートには新しい事実を書き足さない**。wiki はソースを要約・統合する派生レイヤであり、源泉ではない。例外はソース側で漏れていた wikilink の付与のみ。
 - LLM の創作を避けるため、ソースに書かれていない事実を wiki に追加しない。各記述は必ず `sources` の wikilink で裏付けられること。

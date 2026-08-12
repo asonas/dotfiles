@@ -23,7 +23,7 @@ disable-model-invocation: true
 今日のdaily noteを読み込む。Read ツールで絶対パスを直読する（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない）。
 
 ```
-Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
 ```
 
 ノートから以下を抽出する:
@@ -57,7 +57,7 @@ Obsidian公式CLIは heading指定のinsertに対応していないため、Vaul
 
 ```
 # Read tool:
-Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
 
 # Edit tool: ファイル末尾に「振り返り」と「明日やること」セクションを追加
 # old_string: 既存ファイル末尾の一意な文字列（例: 最後のセクションの末尾行）

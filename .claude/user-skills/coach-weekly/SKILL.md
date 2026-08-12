@@ -42,9 +42,9 @@ disable-model-invocation: true
 読み取りは Read ツールで絶対パスを直読する（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない）:
 
 ```
-Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
-Read: /Users/asonas/Documents/asonas/coaching/log.md
-Read: /Users/asonas/Documents/asonas/coaching/weekly/YYYY-W<前週>.md
+Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
+Read: /Users/asonas/Obsidian/asonas/coaching/log.md
+Read: /Users/asonas/Obsidian/asonas/coaching/weekly/YYYY-W<前週>.md
 ```
 
 存在しないファイルはスキップしてよい。

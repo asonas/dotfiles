@@ -35,7 +35,7 @@
 - `pr-review`: Claude Code側のレビュー観点（Correctness/Design/Security/Performance/Readability/Testing）を流用
 - `cursor_review` MCP: Cursor側のレビュー実行
 - `cursor_continue` MCP: Cursorとのフォロー対話
-- Obsidian公式CLI + Read/Editツール: レビュー文書の読み書き。heading指定挿入が必要な場合は Read + Edit で vault ファイルを直接編集する（`/Users/asonas/Documents/asonas/pr-reviews/...`）
+- Obsidian公式CLI + Read/Editツール: レビュー文書の読み書き。heading指定挿入が必要な場合は Read + Edit で vault ファイルを直接編集する（`/Users/asonas/Obsidian/asonas/pr-reviews/...`）
 
 ## Obsidian統合の設計決定
 

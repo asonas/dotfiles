@@ -22,7 +22,7 @@ require 'set'
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = nil
 
-VAULT = '/Users/asonas/Documents/asonas'
+VAULT = '/Users/asonas/Obsidian/asonas'
 WIKI  = File.join(VAULT, 'wiki')
 OPERATIONAL = /\A(index|log|log-.*|deferred)\.md\z/
 

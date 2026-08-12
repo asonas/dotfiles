@@ -11,8 +11,8 @@ qmd（collection `asonas`、vault 全体の `**/*.md` をインデックス済�
 ## 前提
 
 - qmd 2.5+ がインストール済み。インデックスは `/today`（Step 9c）と `/wrapup`（Step 8b）で毎日差分更新される
-- collection は `asonas`（`qmd://asonas/` = `/Users/asonas/Documents/asonas/`）
-- vault の実ファイルは `qmd://asonas/<path>` を `/Users/asonas/Documents/asonas/<path>` に読み替えて Read ツールで読める
+- collection は `asonas`（`qmd://asonas/` = `/Users/asonas/Obsidian/asonas/`）
+- vault の実ファイルは `qmd://asonas/<path>` を `/Users/asonas/Obsidian/asonas/<path>` に読み替えて Read ツールで読める
 
 ## 検索ワークフロー
 

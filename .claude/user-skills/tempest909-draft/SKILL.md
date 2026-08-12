@@ -11,7 +11,7 @@ tempest909 (asonas の Bluesky 秘書ボット, `@tempest909.bsky.social`) の�
 
 ## 前提
 
-- Obsidian vault: `/Users/asonas/Documents/asonas/`
+- Obsidian vault: `/Users/asonas/Obsidian/asonas/`
 - プロジェクトディレクトリ: `projects/tempest909/`
 - tempest 本体リポジトリ: `/Users/asonas/ghq/github.com/asonas/tempest`
 

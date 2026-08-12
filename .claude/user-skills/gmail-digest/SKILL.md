@@ -62,7 +62,7 @@ Obsidian公式CLIの `append` は **ファイル末尾への追記のみ** 対�
 
 - daily note は /today のテンプレで「予定 → 引き継ぎ → やったこと → 昨日やったこと → 今日やること → 困りごと」のセクション順になっており、末尾にLinear通知/Datadog Digestが追加される配置で問題ない
 - スタンドアップ3項目（やったこと/今日やること/困りごと）をLinear/Datadogより上に表示したい場合、`/today` の実行順序は **Step 7 (daily note作成) → Step 7.5 (gmail-digest) → Step 8 (Standup Hearing)** を守ること。Step 8 のRead+Editでスタンドアップ項目を埋めた後にgmail-digestを実行すると順序が崩れる
-- 特定セクションの下に挿入したい場合は、`obsidian append` ではなく `/Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md` を Read + Edit ツールで直接編集する（`wrapup` や `daily-log` と同じパターン）
+- 特定セクションの下に挿入したい場合は、`obsidian append` ではなく `/Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md` を Read + Edit ツールで直接編集する（`wrapup` や `daily-log` と同じパターン）
 
 **Linear通知セクションのフォーマット:**
 ```markdown

@@ -94,7 +94,7 @@ If an existing file must be overwritten, pass the `overwrite` flag. Use this tem
 
 ### Step 3: Claude Code Review (Round N)
 
-Read the current document from Obsidian with the Read tool: `/Users/asonas/Documents/asonas/pr-reviews/PR-{repo}-{number}.md`（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない）. Review the diff using the pr-review skill perspectives:
+Read the current document from Obsidian with the Read tool: `/Users/asonas/Obsidian/asonas/pr-reviews/PR-{repo}-{number}.md`（`obsidian read` は Obsidian GUI が閉じているとハングするため使わない）. Review the diff using the pr-review skill perspectives:
 
 1. **Correctness**: Bugs, logic errors, unhandled edge cases
 2. **Design**: Abstraction, separation of concerns, dependencies
@@ -129,7 +129,7 @@ Pass the full review document content to `cursor_review` MCP:
 - **focus**: "Review the PR diff and previous findings. Add your own findings under 'Round {N} - Cursor'. For existing findings from Claude Code, state whether you agree or disagree in the Discussion section. If you disagree, explain why. Use severity levels: critical, major, minor, nit."
 - **context**: "This is a cross-model PR review. You are reviewing independently. Do not defer to Claude Code's findings — if you disagree, document your position clearly. Democratic review: neither side wins by attrition."
 
-Read the response and use Read + Edit tools on `/Users/asonas/Documents/asonas/pr-reviews/PR-{repo}-{number}.md` to add Cursor's findings under the existing `## Review Findings` section as `### Round {N} - Cursor`. Do NOT create a new `## Review Findings` header.
+Read the response and use Read + Edit tools on `/Users/asonas/Obsidian/asonas/pr-reviews/PR-{repo}-{number}.md` to add Cursor's findings under the existing `## Review Findings` section as `### Round {N} - Cursor`. Do NOT create a new `## Review Findings` header.
 
 If Cursor's response needs follow-up, use `cursor_continue` to ask for clarification.
 
@@ -221,7 +221,7 @@ Read + Edit ツールで既存の `## Final Summary` セクションの直後に
 
 ```
 # Read tool:
-Read: /Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md
+Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
 
 # Edit tool: "## ログ" セクション末尾に挿入
 # new entry: "- HH:MM レビュー: [[PR-{repo}-{number}]] ({critical} critical, {major} major, {disagreements} disagreements)"

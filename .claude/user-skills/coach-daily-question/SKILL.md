@@ -37,7 +37,7 @@ argument-hint: "morning|evening"
 `coaching/log.md` の末尾を読む。直近10エントリ程度で十分。読み取りは Read ツールで絶対パスを直読する（`obsidian read` は GUI が閉じているとハングするため使わない）:
 
 ```
-Read: /Users/asonas/Documents/asonas/coaching/log.md
+Read: /Users/asonas/Obsidian/asonas/coaching/log.md
 ```
 
 ファイルが存在しない場合はスキップして構わない（初回起動時）。
@@ -114,19 +114,19 @@ Read: /Users/asonas/Documents/asonas/coaching/log.md
 
 ```
 # 存在確認: Read ツールで直読（無ければ新規作成に進む）
-Read: /Users/asonas/Documents/asonas/coaching/log.md
+Read: /Users/asonas/Obsidian/asonas/coaching/log.md
 
 # 存在しなければ Write ツールで新規作成
-Write: /Users/asonas/Documents/asonas/coaching/log.md  ← <初回エントリ>
+Write: /Users/asonas/Obsidian/asonas/coaching/log.md  ← <初回エントリ>
 
 # 存在すれば末尾に追記。Edit ツールで末尾へ append するか、Bash で
-#   cat >> /Users/asonas/Documents/asonas/coaching/log.md
+#   cat >> /Users/asonas/Obsidian/asonas/coaching/log.md
 # を使う（Obsidian はファイルシステムの変更を自動検知する）
 ```
 
 ### Step 7: daily note への wikilink（初回のみ）
 
-その日の daily note に `[[coaching/log]]` がまだ無ければ、末尾に1行追加する。既にあれば何もしない。`Read` + `Edit` ツールで `/Users/asonas/Documents/asonas/daily/YYYY-MM-DD.md` を直接編集する。
+その日の daily note に `[[coaching/log]]` がまだ無ければ、末尾に1行追加する。既にあれば何もしない。`Read` + `Edit` ツールで `/Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md` を直接編集する。
 
 ```
 [[coaching/log]]

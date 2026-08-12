@@ -10,7 +10,7 @@
 
 require 'json'
 
-VAULT = '/Users/asonas/Documents/asonas'
+VAULT = '/Users/asonas/Obsidian/asonas'
 path = ARGV[0] || File.join(__dir__, 'vault-fixture.json')
 fixture = JSON.parse(File.read(path))
 
