@@ -7,6 +7,10 @@ class ApmSkillSubsetTest < Minitest::Test
   MANIFEST = File.expand_path("../apm.yml", __dir__)
   SORAH_GUIDES = "sorah/config/claude/marketplace/plugins/sorah-guides"
   SORAH_SPEC = "sorah/config/claude/marketplace/plugins/sorah-spec"
+  GRILL_ME = "mattpocock/skills/skills/productivity/grill-me"
+  GRILLING = "mattpocock/skills/skills/productivity/grilling"
+  RETIRED_COMMIT_SKILL = "asonas/skills/commit"
+  BASE_INSTRUCTIONS = File.expand_path("../.apm/instructions/base.instructions.md", __dir__)
   RETAINED_SKILLS = %w[
     coding
     commit-style
@@ -54,5 +58,16 @@ class ApmSkillSubsetTest < Minitest::Test
   def test_sorah_spec_still_supplies_the_delegated_skills
     assert_includes apm_entries, SORAH_SPEC,
                     "rails and ruby are deployed only via sorah-spec now, so dropping it would lose them"
+  end
+
+  def test_grill_me_installs_with_its_grilling_implementation
+    assert_equal 1, apm_entries.count(GRILL_ME)
+    assert_equal 1, apm_entries.count(GRILLING)
+  end
+
+  def test_mandatory_git_ai_commit_workflow_is_retired
+    refute_includes apm_entries, RETIRED_COMMIT_SKILL
+    refute_includes File.read(BASE_INSTRUCTIONS), "git ai-commit"
+    refute_includes File.read(BASE_INSTRUCTIONS), "`/commit`"
   end
 end

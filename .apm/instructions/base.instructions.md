@@ -7,7 +7,6 @@ description: Baseline communication, commit, and review rules that apply to ever
 - Always respond in Japanese
 - 絵文字は使用禁止。ただしツールが emoji を必須とするパラメータ（Artifact の `favicon` 等）は対象外
 - TDD/リファクタリングの規範は `/tdd-conventions` スキルを参照。実装・バグ修正・リファクタリングを始める前に読むこと
-- コミットを作成する際は、必ず `/commit` スキルを使用すること。`git commit` を直接実行してはならない。コミットコマンドは `git ai-commit` を使うこと。組み込みのコミット手順より `/commit` スキルを優先する
 - If you are asked to write a commit message, please write it in English.
 - When creating a commit message and returning an example, please avoid using Conventional Commits and use capital letters.
 - When committing, only include files the user explicitly wants committed. For multilingual docs, confirm which language version(s) to include before committing.

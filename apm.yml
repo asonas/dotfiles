@@ -48,6 +48,10 @@ dependencies:
     - obra/superpowers/skills/verification-before-completion
     - obra/superpowers/skills/writing-plans
     - obra/superpowers/skills/writing-skills
+    # mattpocock/skills: grill-me is the explicit user entry point and delegates
+    # the interview behavior to grilling, so both focused subpaths are required.
+    - mattpocock/skills/skills/productivity/grill-me
+    - mattpocock/skills/skills/productivity/grilling
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
     # not APM. APM only places sources; it does not register the plugin with
     # Claude Code, so APM-only management leaves cman non-functional.
@@ -91,7 +95,6 @@ dependencies:
     # .claude/user-skills/cross-review (deployed as a symlink by install.sh)
     # has diverged ahead of the published package, and APM refuses to deploy
     # over the symlink anyway.
-    - asonas/skills/commit
     # comment-quality（takai の gist f17b43412243221f918509e989df0a3b を vendor）と
     # entire は 2026-05-01〜07-25 の 188 セッションで 1 回も起動されなかった。
     # description は comment-quality が 758 文字で単体最大、entire が 79 文字。
