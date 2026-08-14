@@ -6,7 +6,7 @@ description: Baseline communication, commit, and review rules that apply to ever
 
 - Always respond in Japanese
 - 絵文字は使用禁止。ただしツールが emoji を必須とするパラメータ（Artifact の `favicon` 等）は対象外
-- TDD/リファクタリングの規範は `/tdd-conventions` スキルを参照。実装・バグ修正・リファクタリングを始める前に読むこと
+- 要求された変更に先立って振る舞いを変えない構造整理が必要な場合だけ、`/tidy-first-conventions` スキルを参照する
 - If you are asked to write a commit message, please write it in English.
 - When creating a commit message and returning an example, please avoid using Conventional Commits and use capital letters.
 - When committing, only include files the user explicitly wants committed. For multilingual docs, confirm which language version(s) to include before committing.
@@ -16,6 +16,23 @@ description: Baseline communication, commit, and review rules that apply to ever
 - 道具ごとの規範はスキルを参照: crit のレビュー URL を開くなら `/crit-open`、mairu CLI を実行するなら `/mairu`、PR description を書くなら `/pull-request-description`
 - URL の取得には、実行環境で利用可能な Web 取得機能または `ax` CLI を使い、目的に合うものを選ぶ。`curl` や使い捨ての HTML 解析スクリプトは使わない。ページの探索、構造化抽出、未知の Web ページや API の調査には `/ax` スキルを使う。User-Agent を手動指定しない
 - サブエージェントの起動は、ユーザーが明示的に依頼したときか、ユーザーが呼び出したスキルが手順として指示しているときに限る。モデルの判断で自動的に起動しない
+
+# Scope and YAGNI
+
+- 明示された要求と、その要求を満たすために必要な変更だけを実装する
+- 将来の利用を想定した抽象化、設定項目、拡張ポイント、互換層を追加しない
+- 依頼された変更に不要な近接コードの整理やリファクタリングを行わない
+- 新しい抽象化は、現在の変更で複数の具体的な利用箇所があり、既存の重複基準にも該当する場合に限る
+- 要求を満たし、関連する検証が通った時点で作業を終了する
+- 改善候補が現在の要求に不要なら実装せず、ユーザーの判断に必要な場合だけ報告する
+
+# Testing Scope
+
+- 変更された振る舞いを実証する最小のテストだけを追加する
+- 明示された要件、既存の再現ケース、確認された不具合から直接導けないテストは追加しない
+- 既存テストで変更を十分に検証できる場合は、新しいテストを追加しない
+- Red-Green中は対象に近いテストを実行する。全テストは、影響範囲が広い場合、またはリポジトリやCIが要求する場合に実行する
+- ドキュメントや振る舞いを変えない設定変更のために、意味のないテストを作成しない
 
 ## Codex CLIでのVisual Companion
 
