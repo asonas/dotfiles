@@ -1,0 +1,48 @@
+#!/bin/sh
+set -eu
+
+settings_file=${1:-"$PWD/.claude/settings.json"}
+
+if command -v herdr >/dev/null 2>&1; then
+    echo "==> installing Herdr Claude integration"
+    herdr integration install claude
+else
+    echo "warning: herdr not found; skipping Claude integration"
+fi
+
+if ! command -v jq >/dev/null 2>&1 || [ ! -f "$settings_file" ]; then
+    echo "warning: jq not found or $settings_file missing; skipping SessionStart hook normalization."
+    exit 0
+fi
+
+herdr_hook="$HOME/.claude/hooks/herdr-agent-state.sh"
+tmp=$(mktemp)
+trap 'command rm -f "$tmp"' EXIT
+
+if [ -f "$herdr_hook" ]; then
+    herdr_cmd='"$HOME/.claude/hooks/herdr-agent-state.sh" session'
+    jq --arg herdr "$herdr_cmd" '
+      .hooks |= (
+        del(.sessionStart)
+        | .SessionStart = [
+            {
+              matcher: "startup|resume|clear|compact",
+              hooks: [{
+                type: "command",
+                command: $herdr
+              }]
+            }
+          ]
+      )
+    ' "$settings_file" > "$tmp"
+else
+    jq '
+      .hooks |= (
+        del(.sessionStart)
+        | del(.SessionStart)
+      )
+    ' "$settings_file" > "$tmp"
+fi
+
+command mv "$tmp" "$settings_file"
+trap - EXIT

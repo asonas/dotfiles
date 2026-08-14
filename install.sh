@@ -94,15 +94,9 @@ case "$OSTYPE" in
     ;;
 esac
 
-# herdr Claude integration hook: vendor the reporting script instead of running
-# `herdr integration install claude` on each machine. That command rewrites
-# ~/.claude/settings.json (which is a symlink into this repo) with alphabetically
-# sorted keys AND appends a duplicate '*'-matcher hook entry, dirtying the repo on
-# every new-machine bootstrap. By symlinking the version-pinned script here, the
-# hook is present everywhere and the SessionStart normalization below keeps its own
-# canonical entry, so settings.json never gets churned. Re-vendor by copying
-# ~/.claude/hooks/herdr-agent-state.sh after a `herdr` upgrade bumps the integration
-# version (check with `herdr integration status`).
+# Herdr's installer owns the reporting script. Keep the repository copy linked so
+# an integration upgrade updates the tracked script, then normalize the settings
+# it writes after APM has finished below.
 mkdir -p "$HOME/.claude/hooks"
 ln -sf "$PWD/.claude/hooks/herdr-agent-state.sh" "$HOME/.claude/hooks/herdr-agent-state.sh"
 
@@ -274,7 +268,9 @@ else
          "security-reviewer may load without its read-only tool restriction."
 fi
 
-# Companion workaround: 'apm install' rewrites .claude/settings.json to wire in
+# Companion workaround: 'apm install' and Herdr rewrite .claude/settings.json.
+# Run Herdr after APM so its hook script is current, then normalize the result.
+# 'apm install' rewrites .claude/settings.json to wire in
 # the SessionStart hook that superpowers declares. Verified against APM 0.24.1
 # (2026-07-12): it appends its own superpowers 'SessionStart' entry on every run
 # (with the install-time-expanded absolute path), so repeated runs accumulate
@@ -288,46 +284,11 @@ fi
 # which we do not want upfront. Pinning SessionStart to the herdr entry alone is
 # what strips APM's re-appended superpowers entry on each run. To re-enable the
 # bootstrap, add it back to the canonical list here and in settings.json.
-settings_file="$PWD/.claude/settings.json"
-if command -v jq >/dev/null 2>&1 && [ -f "$settings_file" ]; then
-    # herdr's Claude integration reports each pane's session id to the running
-    # herdr server so it can `claude --resume <id>` after a server/host restart
-    # (config: [session] resume_agents_on_restore). The reporting hook is the
-    # herdr-agent-state.sh script vendored and symlinked above; without it herdr
-    # only knows a pane runs claude, not which conversation. apm's normalization
-    # would otherwise drop this entry, so bake it into the canonical SessionStart
-    # here. Include it only when the script exists so non-herdr machines don't
-    # get a "No such file or directory" SessionStart error. The 'resume' matcher
-    # ensures the id is re-reported when a session is itself resumed.
-    herdr_hook="$HOME/.claude/hooks/herdr-agent-state.sh"
-    tmp=$(mktemp)
-    if [ -f "$herdr_hook" ]; then
-        herdr_cmd='"$HOME/.claude/hooks/herdr-agent-state.sh" session'
-        jq --arg herdr "$herdr_cmd" '
-          .hooks |= (
-            del(.sessionStart)
-            | .SessionStart = [
-                {
-                  matcher: "startup|resume|clear|compact",
-                  hooks: [{
-                    type: "command",
-                    command: $herdr
-                  }]
-                }
-              ]
-          )
-        ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
-    else
-        jq '
-          .hooks |= (
-            del(.sessionStart)
-            | del(.SessionStart)
-          )
-        ' "$settings_file" > "$tmp" && mv "$tmp" "$settings_file"
-    fi
-else
-    echo "warning: jq not found or $settings_file missing; skipping SessionStart hook normalization."
-fi
+# Herdr's Claude integration reports each pane's session id to the running server
+# so it can resume the right conversation after a restart. Its installer appends
+# a broad matcher, so the helper pins that output to the canonical matcher after
+# refreshing the integration.
+"$PWD/bin/install_herdr_claude_integration" "$PWD/.claude/settings.json"
 
 # cman is managed as a Claude Code plugin (`/plugin install cman@cman`), not APM.
 # The plugin ships its own .mcp.json pointing at ${CLAUDE_PLUGIN_ROOT}/server.py,
