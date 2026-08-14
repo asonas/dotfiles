@@ -458,11 +458,6 @@ dart() {
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-eval "$(git wt --init zsh)"
-wt() {
-  git wt "$(git wt | tail -n +2 | peco | awk '{print $(NF-1)}')"
-}
-
 # hunk: always wrap long diff lines for display subcommands.
 # Inserts --wrap right after the subcommand so pathspecs after `--` stay intact.
 # session / daemon / skill pass through untouched.
