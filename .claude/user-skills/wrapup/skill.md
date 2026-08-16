@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Summarize the day's work and append to the daily note in Obsidian.
 
-タスク管理は Things3 から手離れさせているため、`/wrapup` でも Things3 は読み書きしない。代わりに **Linear** で「今日自分が更新した Issue」を取得してサマリーに含める。
+当日の作業記録を、現在のセッション・cmanのセッション履歴・永続メモリから整理してサマリーに含める。外部のタスク管理サービスは参照しない。
 
 ## LLM Wikiへの引き渡し
 
@@ -47,7 +47,7 @@ Parse the argument to determine which daily note to update:
 - `yesterday` → yesterday's date
 - `YYYY-MM-DD` → specified date
 
-Use `mcp__google-calendar__get-current-time` to get the current date for reference.
+セッションの現在日付（Asia/Tokyo）を使って対象日を確定する。
 
 ### Step 2: Verify Daily Note Exists
 
@@ -58,38 +58,10 @@ Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
 
 If it doesn't exist, ask the user whether to (a) create today's note and append, (b) append to yesterday's note instead, or (c) abort.
 
-### Step 3: Parallel Information Gathering (Sonnet subagents)
+### Step 3: Gather Session Information
 
-メインスレッドが持っている session context は「今 /wrapup を回しているこの 1 セッション」の範囲でしかない。asonas は 1 日のうちに複数のリポジトリ・複数のセッションを跨いで作業するため、現在セッションのコンテキストだけでは当日の作業を取りこぼす。そこで外部情報は **2 つの Sonnet サブエージェントを並列で** 取りに行く。どちらも `model: "sonnet"` の Agent tool で、Step 3a と Step 3b を **同時に** 起動する。
-
-- **3a. linear-today**: Linear で今日更新した Issue を抽出（外部 API）
-- **3b. cman-sessions**: cman で当日の Claude Code セッションを全プロジェクト横断でさらい、プロジェクト別の作業サマリーを返す（これが「やったこと」の主たる網羅ソース）
-
-メインスレッドはこの 2 つの subagent 起動と同時に **Step 4 (現在 session context からのサマリー組み立て)** を進めてよい。3 者の結果は Step 4 で統合する。
-
-#### 3a. linear-today subagent
-
-プロンプト要旨:
-```
-あなたは asonas が今日 Linear で更新した Issue を抽出する任務を持つ。
-対象日は YYYY-MM-DD (Step 1 で確定した日付)。
-
-1. mcp__claude_ai_Linear__get_user で自分（viewer）の user_id を取得
-2. mcp__claude_ai_Linear__list_issues で以下を取得:
-   - assignee=自分、updatedAt が対象日のもの
-   - 加えて、自分がコメント/編集した Issue があれば（API で取れる範囲で）含める
-3. 出力フォーマット:
-
-## 今日更新したLinear Issue
-- [TEAM-123] タイトル — status: started / updatedAt: HH:MM
-- ...
-
-該当なしなら "該当なし" を返す。
-Linear MCP が認証されていない場合は "Linear未認証" を返す。
-推測は禁止。MCP の応答に無いフィールドを捏造しないこと。
-```
-
-#### 3b. cman-sessions subagent
+メインスレッドが持っている session context は「今 /wrapup を回しているこの 1 セッション」の範囲でしかない。asonas は 1 日のうちに複数のリポジトリ・複数のセッションを跨いで作業するため、現在セッションのコンテキストだけでは当日の作業を取りこぼす。そこで `model: "sonnet"`、`subagent_type: "general-purpose"` の cman-sessions subagent を1つ起動して、当日のセッションを横断的に確認する。
+#### cman-sessions subagent
 
 当日 asonas が回した Claude Code セッションを全プロジェクト横断で拾い、プロジェクト別の作業サマリーを返す。セッションを跨いだ作業を取りこぼさないための中核ステップ。
 
@@ -126,13 +98,13 @@ cman が使えない (ツール未ロード・エラー) 場合は "cman利用�
 推測は禁止。セッションに実在しない成果を書かないこと。リポジトリ名・Issue番号は実データに従う。
 ```
 
-返ってきたサマリーは、現在 session context と重なる部分がある(まさに今のセッションも含まれる)。Step 4 で重複を排除して統合する。
+返ってきたサマリーは、現在 session context と重なる部分がある（まさに今のセッションも含まれる）。Step 4 で重複を排除して統合する。
 
 ### Step 4: Gather Work Summary (main thread)
 
 メインスレッドで以下のソースから「やったこと」のドラフトを組み立てる。
 
-1. **From Step 3b (cman-sessions subagent) — 当日全体の網羅ソース**
+1. **From Step 3 (cman-sessions subagent) — 当日全体の網羅ソース**
    - 全プロジェクト横断のセッションサマリーが返ってくる。これを「やったこと」の骨格として最初に据える
    - asonas は 1 日に複数リポジトリを跨ぐため、現在セッションだけでは必ず取りこぼす。cman サマリーが当日像の主たる情報源になる
    - "cman利用不可" が返ったときのみ、フォールバックとしてメインスレッドから `cman:cm-search` を keyword=対象日付 で直接叩く
@@ -147,13 +119,9 @@ cman が使えない (ツール未ロード・エラー) 場合は "cman利用�
    - auto memoryディレクトリのパスはシステムプロンプトに記載されている
    - 今日の日付や作業内容に関連するエントリ、今日更新されたメモリファイルがあれば含める
 
-4. **From Step 3a (linear-today subagent)**
-   - Linear 側で更新したものを「やったこと」のソースとして取り込む
-   - 該当 Issue を `[[TEAM-XXX]]` の wikilink 付きで言及
-
-5. **情報の統合**
-   - 骨格は cman サマリー(当日の全セッション)。そこへ現在 session context の詳細を重ね、auto memory と Linear を補う
-   - 優先順位（同じ作業に複数ソースが触れている場合の詳細さ）: 現在セッションコンテキスト > cman サマリー > auto memory ≒ Linear today。ただし **網羅性は cman サマリーが担う**（現在セッションに無い作業も必ず拾う）
+4. **情報の統合**
+   - 骨格は cman サマリー(当日の全セッション)。そこへ現在 session context の詳細と auto memory を重ねる
+   - 優先順位（同じ作業に複数ソースが触れている場合の詳細さ）: 現在セッションコンテキスト > cman サマリー > auto memory。ただし **網羅性は cman サマリーが担う**（現在セッションに無い作業も必ず拾う）
    - 重複を除去し、プロジェクトごと or 時系列でグループ化する
    - 散文 1 段落 + 箇条書き の組み合わせで構わない（既存 daily note のフォーマットに合わせる）
    - セッションが多い日はログが長くなる。主要な作業を優先しつつ、Step 5 でユーザーに提示して取捨を委ねる
@@ -162,14 +130,10 @@ cman が使えない (ツール未ロード・エラー) 場合は "cman利用�
 
 Show the user what will be added:
 ```
-## ログに追記予定
+## ログの追記内容
 
 - HH:MM カテゴリ: 内容
 - HH:MM カテゴリ: 内容
-- ...
-
-## 今日更新したLinear Issue
-- [TEAM-123] タイトル
 - ...
 
 この内容でよろしいですか？
@@ -185,7 +149,7 @@ After confirmation, append under the `## ログ` heading. 公式CLIはheading指
 - 1行 1エントリ、`- HH:MM <カテゴリ>: <内容>` 形式
 - カテゴリ例: `実装` / `調査` / `レビュー` / `MTG` / `学び` / `その他`
 - 時刻が不明なエントリ（セッション横断的な作業など）は HH:MM を省略して `- <カテゴリ>: <内容>` でよい
-- Linear Issue / プロジェクト名 / 技術用語は wikilink (`[[TEAM-XXX]]`, `[[asonas/foo]]`) で記述してよい
+- プロジェクト名 / 技術用語は wikilink (`[[asonas/foo]]`) で記述してよい
 
 ```
 # Read tool:
@@ -212,7 +176,7 @@ cd /Users/asonas/ghq/github.com/asonas/activities
 mise exec -- bundle exec bin/activities-snapshot --source bluesky --source scrapbox --date YYYY-MM-DD || echo "Warning: snapshot failed, skipping"
 ```
 
-`/wrapup` を一日の終わりに回す前提なので、当日分だけ再描画すれば足りる (前日分は朝の `/today` 5b でカバーされている)。
+`/wrapup` を一日の終わりに回す前提なので、当日分だけ再描画すれば足りる (前日分は朝の `/today` 3a でカバーされている)。
 
 **なぜ `--source` で絞るか**: `github` / `browser` / `claude_code` の3ソースは `~/Library/LaunchAgents/asonas.activities.{github,browser,claude}.plist` の launchd ジョブが 15〜60 分間隔で常時バックグラウンド収集しており、当日分の activities ファイルは常に最新化されている。/wrapup から重複して走らせると同じ state ファイルを並行書き込みするリスクがあるため、launchd でカバーされていない `bluesky` と `scrapbox` だけを明示的に拾う。
 
@@ -242,13 +206,7 @@ Report to the user:
 ```
 daily/YYYY-MM-DD.md の「ログ」セクションに追記しました。
 wiki/ を更新しました（更新 N ページ、新規 M ページ）。
-
-今日更新したLinear Issue: N件
-- [TEAM-XXX] タイトル
-- ...
 ```
-
-Linear が「該当なし」または「未認証」だった場合はその旨を 1 行で報告する。
 
 ## Output Format
 
@@ -259,6 +217,5 @@ Always respond in Japanese.
 - If the `## ログ` section doesn't exist (古いテンプレで作られた daily note の場合), create it at the end of the file before appending
 - Keep each log entry concise (1 行 1 作業)
 - Use the `- HH:MM <カテゴリ>: <内容>` format consistently
-- **タスク管理は Things3 から離脱した**。`/wrapup` では Things3 を読まない・書かない・残タスクを表示しない
-- 当日像の網羅は cman-sessions subagent (Step 3b) が担う。現在 session context は該当セッションの詳細を肉付けする役割、Linear は補助
+- 当日像の網羅は cman-sessions subagent (Step 3) が担う。現在 session context は該当セッションの詳細を肉付けする役割
 - subagent から返却された情報を daily note に書き込む前に、明らかに事実と異なるもの・幻覚が紛れ込んでいないか軽く目視確認すること。特に cman サマリーは各セッションを外から要約したものなので、成果を断定しすぎていないか（着手止まりを完了扱いにしていないか）を確認する
