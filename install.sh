@@ -384,6 +384,18 @@ do
     ln -s "$skill" "$link"
 done
 
+# Keep the wiki-update health helpers available alongside the skill symlink.
+for health_script in \
+    "$HOME/.claude/skills/wiki-update/health/wiki-health.rb" \
+    "$HOME/.claude/skills/wiki-update/health/mentions.rb" \
+    "$HOME/.claude/skills/wiki-update/health/verify-sources.rb"
+do
+    if [ ! -f "$health_script" ]; then
+        echo "error: missing wiki-update health script: $health_script" >&2
+        exit 1
+    fi
+done
+
 # Setup zsh completions
 mkdir -p "$HOME/.zsh.d/completions"
 curl -fsSL "https://gist.githubusercontent.com/takai/d42693fbd01e8957ca52fa08c8ae660a/raw/_mairu" -o "$HOME/.zsh.d/completions/_mairu"
