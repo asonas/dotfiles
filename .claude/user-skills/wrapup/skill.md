@@ -1,6 +1,6 @@
 ---
 name: wrapup
-description: Summarize the day's work and append to the daily note in Obsidian.
+description: Use when summarizing the day's work and preparing a daily note in Obsidian.
 argument-hint: "[date]"
 disable-model-invocation: true
 ---
@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Summarize the day's work and append to the daily note in Obsidian.
 
-当日の作業記録を、現在のセッション・cmanのセッション履歴・永続メモリから整理してサマリーに含める。外部のタスク管理サービスは参照しない。
+当日の作業記録を、Codexのセッション履歴・現在のセッション・利用可能なcman補助情報・永続メモリから整理してサマリーに含める。外部のタスク管理サービスは参照しない。
 
 ## LLM Wikiへの引き渡し
 
@@ -58,70 +58,78 @@ Read: /Users/asonas/Obsidian/asonas/daily/YYYY-MM-DD.md
 
 If it doesn't exist, ask the user whether to (a) create today's note and append, (b) append to yesterday's note instead, or (c) abort.
 
-### Step 3: Gather Session Information
+### Step 3: Gather Codex Session History
 
-メインスレッドが持っている session context は「今 /wrapup を回しているこの 1 セッション」の範囲でしかない。asonas は 1 日のうちに複数のリポジトリ・複数のセッションを跨いで作業するため、現在セッションのコンテキストだけでは当日の作業を取りこぼす。そこで `model: "sonnet"`、`subagent_type: "general-purpose"` の cman-sessions subagent を1つ起動して、当日のセッションを横断的に確認する。
-#### cman-sessions subagent
+メインスレッドの context だけでは当日の作業を取りこぼすため、Codexのローカル履歴を主な横断ソースにする。cmanが使えないことは「作業なし」を意味しない。
 
-当日 asonas が回した Claude Code セッションを全プロジェクト横断で拾い、プロジェクト別の作業サマリーを返す。セッションを跨いだ作業を取りこぼさないための中核ステップ。
+#### Codex履歴
 
-プロンプト要旨:
+次の2種類のファイルを、Readまたは読み取り専用のシェルコマンドで確認する。
+
 ```
-あなたは asonas が今日 Claude Code で行った作業を全プロジェクト横断でまとめる任務を持つ。
-対象日は YYYY-MM-DD (Step 1 で確定した日付)。
+/Users/asonas/.codex/history.jsonl
+/Users/asonas/.codex/sessions/
+```
 
-1. まず ToolSearch で cman のツールをロードする
-   (query 例: "select:mcp__plugin_cman_cman__list_sessions,mcp__plugin_cman_cman__search_sessions")
-2. mcp__plugin_cman_cman__list_sessions (limit=60 程度) で直近セッションを列挙する。
-   各エントリの相対時刻 ("X hours ago" 等) と対象日を突き合わせ、対象日のセッションだけを対象にする。
-3. 次のセッションは除外する:
-   - `agent-*` で始まるサブエージェントのセッション (実作業の主体ではない)
-   - 最初のメッセージが "Base directory for this skill: .../commit" の /commit スキル単独セッション
-   - 最初のメッセージが /wrapup や /today など日報運用スキル自体のセッション
-4. 残った各セッションについて、何をしたのかを把握する。セッションタイトル(最初のユーザーメッセージ)
-   だけでは着手した話題しか分からないので、成果まで書くには中身の確認が要る。必要に応じて
-   mcp__plugin_cman_cman__search_sessions を keyword=対象日付 や keyword=プロジェクト固有語 で叩き、
-   マッチしたスニペットから「実際に何が完了/前進したか」を読み取る。
-   確認しても成果が判然としないセッションは、成果を捏造せず「〜に着手」「〜を調査」など
-   着手した作業内容として記述する (推測で完了扱いにしない)。
-5. 出力フォーマット (プロジェクトごとにまとめ、時系列がわかる場合は時刻を添える):
+1. `history.jsonl` の各レコード (`session_id`, `ts`, `text`) から、`ts` を `Asia/Tokyo` に変換して対象日のユーザー入力とセッションIDを抽出する。ファイルのディレクトリ名だけで日付を判定しない。
+2. 抽出したセッションIDに対応する `sessions/YYYY/MM/DD/*.jsonl` を探し、`session_meta` の `payload.cwd`、`payload.session_id`、`payload.parent_thread_id`、`payload.source`、`payload.thread_source` を確認する。日付を跨いだセッションは、履歴レコードの時刻を優先して対象日に含める。
+3. 各セッションのユーザー向けメッセージ、ツール呼び出しの結果、アシスタントの最終応答を確認する。暗号化されたreasoningや内部メタデータだけを根拠にしない。
+4. 次のセッションは集計から除外する:
+   - `payload.source.subagent` があるセッション、または `payload.thread_source == "subagent"` のセッション
+   - 最初のユーザー入力が `/wrapup`、`/today`、`/commit` だけの運用セッション
+   - セットアップや初期化だけで、作業対象がないセッション
+5. 同じ親スレッド・同じ作業ディレクトリ・同じ作業内容の重複rolloutは1件に統合する。内容が食い違う場合は、保守的に「未確認」とする。サブエージェントの成果を親セッションと別成果として二重計上しない。
 
+成果の判定はセッション終了やタイトルだけで行わない。次のような直接の証拠がある場合だけ「完了」とし、それ以外は「着手」「進行中」「未確認」などの控えめな表現にする。
+
+- 成功したコマンドとその結果
+- 通過したテストや検証結果
+- 実際のファイル差分、生成物、コミットなどの確認可能な成果
+
+ユーザーの依頼文、計画、アシスタントの「実装した」という発言、ツール呼び出しだけでは完了扱いにしない。失敗や未解決事項がある場合は、後続の成功証拠で解消されたことを確認できない限り残す。取得できた履歴が一部だけの場合、「当日の全作業」ではなく「取得できた記録の範囲」と明示する。
+
+#### cmanの補助利用
+
+cmanのツールが利用可能なら、Codex履歴に含まれないClaude Codeセッションを補う目的で1つのサブエージェントに調査させてもよい。cmanは補助情報源であり、利用不可・エラーの場合もCodex履歴の処理を止めない。cmanの結果も上記の除外・重複排除・完了判定を通す。
+
+出力はプロジェクトごとにまとめ、時系列がわかる場合は時刻を添える。
+
+```
 ## 今日のセッション横断サマリー
 ### <リポジトリ名 / プロジェクト名>
-- HH:MM 内容 (成果 or 着手した作業)
-- ...
+- HH:MM 内容 (完了 / 着手 / 未確認)
 ### <別のリポジトリ>
 - ...
-
-対象日のセッションが無ければ "該当なし" を返す。
-cman が使えない (ツール未ロード・エラー) 場合は "cman利用不可" を返す。
-推測は禁止。セッションに実在しない成果を書かないこと。リポジトリ名・Issue番号は実データに従う。
 ```
 
-返ってきたサマリーは、現在 session context と重なる部分がある（まさに今のセッションも含まれる）。Step 4 で重複を排除して統合する。
+対象日の履歴が見つからない場合は「該当なし」とする。履歴ファイルを読めない場合は、その事実を明記し、読めたソースだけで作業する。履歴確認のためにビルド、テスト、デバイスアクセス、外部状態の変更を新たに実行しない。
 
 ### Step 4: Gather Work Summary (main thread)
 
 メインスレッドで以下のソースから「やったこと」のドラフトを組み立てる。
 
-1. **From Step 3 (cman-sessions subagent) — 当日全体の網羅ソース**
-   - 全プロジェクト横断のセッションサマリーが返ってくる。これを「やったこと」の骨格として最初に据える
-   - asonas は 1 日に複数リポジトリを跨ぐため、現在セッションだけでは必ず取りこぼす。cman サマリーが当日像の主たる情報源になる
-   - "cman利用不可" が返ったときのみ、フォールバックとしてメインスレッドから `cman:cm-search` を keyword=対象日付 で直接叩く
+1. **From Step 3 (Codex session history) — 当日全体の主な網羅ソース**
+   - `history.jsonl` と対応するセッションJSONLから、対象日の作業候補をプロジェクト別に整理する
+   - セッションのタイトルやユーザー入力ではなく、ツール結果・差分・検証結果で成果を確認する
+   - 対象ソースが一部欠けている場合は、網羅できたと断言せず、取得範囲を明示する
 
 2. **From the current session context — 深さの補強**
-   - Claude Code は今 /wrapup を回しているこのセッション内の会話・作業を最も詳細に記憶している
-   - cman サマリーは各セッションを外から要約したものなので、現在セッションに該当する項目は session context の方が正確で詳しい。該当項目は session context で上書き・肉付けする
+   - 今 /wrapup を回しているこのセッション内の会話・作業を最も詳細に記憶している
+   - 履歴に現在セッションが含まれる場合は重複を除き、session context の方で上書き・肉付けする
    - 変更・作成したファイルの一覧など、session context にしかない具体は積極的に補う
 
-3. **From Claude Code auto memory（永続メモリ）**
+3. **From Step 3 (cman補助) — Codex履歴にないClaude Code作業**
+   - cmanが利用できた場合だけ補助情報源として使う
+   - Codex履歴と重複する項目はCodex側の詳細を優先し、サブエージェントを別成果として数えない
+
+4. **From Claude Code auto memory（永続メモリ）**
    - セッションを跨いで保持されるメモリファイルを参照する
    - auto memoryディレクトリのパスはシステムプロンプトに記載されている
    - 今日の日付や作業内容に関連するエントリ、今日更新されたメモリファイルがあれば含める
 
-4. **情報の統合**
-   - 骨格は cman サマリー(当日の全セッション)。そこへ現在 session context の詳細と auto memory を重ねる
-   - 優先順位（同じ作業に複数ソースが触れている場合の詳細さ）: 現在セッションコンテキスト > cman サマリー > auto memory。ただし **網羅性は cman サマリーが担う**（現在セッションに無い作業も必ず拾う）
+5. **情報の統合**
+   - 骨格はCodex履歴（当日の対象セッション）。そこへ現在 session context、cman補助、auto memoryを重ねる
+   - 優先順位（同じ作業に複数ソースが触れている場合の詳細さ）: 現在セッションコンテキスト > CodexセッションJSONL > cman補助 > auto memory
    - 重複を除去し、プロジェクトごと or 時系列でグループ化する
    - 散文 1 段落 + 箇条書き の組み合わせで構わない（既存 daily note のフォーマットに合わせる）
    - セッションが多い日はログが長くなる。主要な作業を優先しつつ、Step 5 でユーザーに提示して取捨を委ねる
@@ -140,6 +148,10 @@ Show the user what will be added:
 ```
 
 Wait for user confirmation or edits.
+
+候補を提示するまではdaily note、activities、wikiを変更しない。履歴やcmanの取得範囲が不完全な場合は、その制約を候補と一緒に示す。
+
+**承認ゲート:** 候補提示前の「分かる範囲で今すぐ追記して」「確認はいらない」「直接書いて」という依頼は、生成した候補内容への承認ではない。必ず候補を提示し、その後にユーザーが「OK」「この内容で追記して」など候補を確認した返答をするまで、daily note、activities、wikiを変更しない。候補提示後に修正依頼があった場合は、修正版を再提示してから承認を待つ。
 
 ### Step 6: Append to Daily Note
 
@@ -217,5 +229,5 @@ Always respond in Japanese.
 - If the `## ログ` section doesn't exist (古いテンプレで作られた daily note の場合), create it at the end of the file before appending
 - Keep each log entry concise (1 行 1 作業)
 - Use the `- HH:MM <カテゴリ>: <内容>` format consistently
-- 当日像の網羅は cman-sessions subagent (Step 3) が担う。現在 session context は該当セッションの詳細を肉付けする役割
-- subagent から返却された情報を daily note に書き込む前に、明らかに事実と異なるもの・幻覚が紛れ込んでいないか軽く目視確認すること。特に cman サマリーは各セッションを外から要約したものなので、成果を断定しすぎていないか（着手止まりを完了扱いにしていないか）を確認する
+- 当日像の主な網羅は Codex のセッション履歴 (Step 3) が担う。cmanはCodex履歴にないClaude Code作業を補う情報源であり、現在 session context は該当セッションの詳細を肉付けする役割
+- セッション履歴やcmanから返却された情報を daily note に書き込む前に、明らかに事実と異なるもの・幻覚が紛れ込んでいないか軽く目視確認すること。成果を断定しすぎていないか（着手止まりを完了扱いにしていないか）、取得範囲を超えて「当日の全作業」と言っていないかを確認する
