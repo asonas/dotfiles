@@ -52,6 +52,7 @@ dependencies:
     # the interview behavior to grilling, so both focused subpaths are required.
     - mattpocock/skills/skills/productivity/grill-me
     - mattpocock/skills/skills/productivity/grilling
+    - mattpocock/skills/skills/engineering/wayfinder
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
     # not APM. APM only places sources; it does not register the plugin with
     # Claude Code, so APM-only management leaves cman non-functional.

@@ -9,6 +9,7 @@ class ApmSkillSubsetTest < Minitest::Test
   SORAH_SPEC = "sorah/config/claude/marketplace/plugins/sorah-spec"
   GRILL_ME = "mattpocock/skills/skills/productivity/grill-me"
   GRILLING = "mattpocock/skills/skills/productivity/grilling"
+  WAYFINDER = "mattpocock/skills/skills/engineering/wayfinder"
   RETIRED_COMMIT_SKILL = "asonas/skills/commit"
   BASE_INSTRUCTIONS = File.expand_path("../.apm/instructions/base.instructions.md", __dir__)
   RETAINED_SKILLS = %w[
@@ -63,6 +64,10 @@ class ApmSkillSubsetTest < Minitest::Test
   def test_grill_me_installs_with_its_grilling_implementation
     assert_equal 1, apm_entries.count(GRILL_ME)
     assert_equal 1, apm_entries.count(GRILLING)
+  end
+
+  def test_wayfinder_is_installed
+    assert_equal 1, apm_entries.count(WAYFINDER)
   end
 
   def test_mandatory_git_ai_commit_workflow_is_retired
