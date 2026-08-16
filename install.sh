@@ -259,12 +259,13 @@ command rm -f "$PWD/.codex/hooks.json" "$HOME/.codex/hooks.json"
 # copies after each install; the upstream file in apm_modules/ is refetched on
 # update, so this has to run every time rather than being fixed at the source.
 # The fixer parses YAML to decide whether a file is actually broken, so it needs
-# ruby. Without it we skip rather than guess -- see bin/fix_agent_frontmatter.
-if command -v ruby >/dev/null 2>&1; then
-    "$PWD/bin/fix_agent_frontmatter" "$PWD/.claude/agents/security-reviewer.md"
-    "$PWD/bin/fix_agent_frontmatter" "$HOME/.claude/agents/security-reviewer.md"
+# Ruby. Without mise-managed Ruby we skip rather than guess -- see
+# bin/fix_agent_frontmatter.
+if command -v mise >/dev/null 2>&1 && mise exec -- ruby --version >/dev/null 2>&1; then
+    mise exec -- ruby "$PWD/bin/fix_agent_frontmatter" "$PWD/.claude/agents/security-reviewer.md"
+    mise exec -- ruby "$PWD/bin/fix_agent_frontmatter" "$HOME/.claude/agents/security-reviewer.md"
 else
-    echo "warning: ruby not found; skipping agent frontmatter repair." \
+    echo "warning: mise-managed ruby not found; skipping agent frontmatter repair." \
          "security-reviewer may load without its read-only tool restriction."
 fi
 

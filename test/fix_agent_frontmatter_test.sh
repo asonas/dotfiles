@@ -2,14 +2,26 @@
 set -eu
 
 repo_root=$(cd "$(dirname "$0")/.." && pwd)
-fixer="$repo_root/bin/fix_agent_frontmatter"
 test_root=$(mktemp -d)
 trap 'command rm -rf "$test_root"' EXIT
 
-if ! command -v ruby >/dev/null 2>&1; then
-    echo "ruby not found; skipping $(basename "$0")" >&2
+if ! command -v mise >/dev/null 2>&1 || ! mise exec -- ruby --version >/dev/null 2>&1; then
+    echo "mise-managed ruby not found; skipping $(basename "$0")" >&2
     exit 0
 fi
+
+if ! grep -Fq 'mise exec -- ruby' "$repo_root/install.sh"; then
+    echo "FAIL: install.sh must invoke the fixer with mise-managed Ruby" >&2
+    exit 1
+fi
+
+run_ruby() {
+    mise exec -- ruby "$@"
+}
+
+run_fixer() {
+    run_ruby "$repo_root/bin/fix_agent_frontmatter" "$@"
+}
 
 failures=0
 
@@ -39,7 +51,7 @@ write_broken_agent() {
 }
 
 frontmatter_key() {
-    ruby -ryaml -e '
+    run_ruby -ryaml -e '
       body = File.read(ARGV[0])
       fm = body[/\A---\n(.*?\n)---[ \t]*\n/m, 1]
       abort "no frontmatter" if fm.nil?
@@ -52,7 +64,7 @@ assert_unchanged() {
     label="$1"
     file="$2"
     before=$(shasum "$file" | cut -d' ' -f1)
-    "$fixer" "$file" >/dev/null 2>&1
+    run_fixer "$file" >/dev/null 2>&1
     after=$(shasum "$file" | cut -d' ' -f1)
 
     if [ "$before" != "$after" ]; then
@@ -64,7 +76,7 @@ test_repairs_the_broken_agent() {
     agent_file="$test_root/broken.md"
     write_broken_agent "$agent_file"
 
-    "$fixer" "$agent_file" >/dev/null
+    run_fixer "$agent_file" >/dev/null
 
     tools=$(frontmatter_key "$agent_file" tools)
     if [ "$tools" != "Read,Grep,Glob,Bash" ]; then
@@ -88,7 +100,7 @@ test_repairs_the_broken_agent() {
 test_repair_is_idempotent() {
     agent_file="$test_root/idempotent.md"
     write_broken_agent "$agent_file"
-    "$fixer" "$agent_file" >/dev/null
+    run_fixer "$agent_file" >/dev/null
 
     assert_unchanged "idempotent" "$agent_file"
 }
@@ -185,7 +197,7 @@ test_preserves_file_mode() {
     write_broken_agent "$agent_file"
     chmod 644 "$agent_file"
 
-    "$fixer" "$agent_file" >/dev/null
+    run_fixer "$agent_file" >/dev/null
 
     mode=$(stat -f '%Lp' "$agent_file" 2>/dev/null || stat -c '%a' "$agent_file")
     if [ "$mode" != "644" ]; then
@@ -194,7 +206,7 @@ test_preserves_file_mode() {
 }
 
 test_is_a_no_op_for_missing_files() {
-    if ! "$fixer" "$test_root/does-not-exist.md" >/dev/null 2>&1; then
+    if ! run_fixer "$test_root/does-not-exist.md" >/dev/null 2>&1; then
         fail "missing file: expected exit 0"
     fi
 }
