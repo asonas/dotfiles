@@ -17,6 +17,10 @@ description: Baseline communication, commit, and review rules that apply to ever
 - URL の取得には、実行環境で利用可能な Web 取得機能または `ax` CLI を使い、目的に合うものを選ぶ。`curl` や使い捨ての HTML 解析スクリプトは使わない。ページの探索、構造化抽出、未知の Web ページや API の調査には `/ax` スキルを使う。User-Agent を手動指定しない
 - サブエージェントの起動は、ユーザーが明示的に依頼したときか、ユーザーが呼び出したスキルが手順として指示しているときに限る。モデルの判断で自動的に起動しない
 
+## Bettr Issue updates
+
+- When the conversation explicitly identifies an active bettr Issue as `project#number`, apply the bettr skill's conversation-update and status-review policies before finalizing a response. Never infer an Issue number. Autonomous changes are limited to comments and the narrowly defined status transitions in the bettr skill; do not change other Issue fields without explicit user instruction.
+
 ## 知識・事実の確認
 
 - 事実や知識を問う質問（聞き覚えのない単語・固有名詞だけでなく、記憶で答えられそうな一般的な質問も含む）には、憶測や記憶だけで即答せず、回答前に少なくとも1回は Web検索・Web取得機能で裏取りする。検索結果を回答の根拠として扱い、情報の鮮度や一次情報の有無も確認する。
