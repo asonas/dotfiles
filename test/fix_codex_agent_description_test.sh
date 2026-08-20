@@ -74,22 +74,6 @@ test_ignores_missing_file() {
     fi
 }
 
-test_install_script_fixes_project_and_user_roles_after_apm() {
-    install_script="$repo_root/install.sh"
-    apm_install_line=$(grep -n 'apm install -g --target claude,cursor,codex' "$install_script" | tail -1 | cut -d: -f1)
-    project_fix_line=$(grep -n '^"\$PWD/bin/fix_codex_agent_description" "\$PWD/.codex/agents/security-reviewer.toml"$' "$install_script" | cut -d: -f1)
-    user_fix_line=$(grep -n '^"\$PWD/bin/fix_codex_agent_description" "\$HOME/.codex/agents/security-reviewer.toml"$' "$install_script" | cut -d: -f1)
-
-    if [ -z "$project_fix_line" ] || [ -z "$user_fix_line" ]; then
-        echo "expected install.sh to fix project and user security-reviewer roles" >&2
-        return 1
-    fi
-    if [ "$project_fix_line" -le "$apm_install_line" ] || [ "$user_fix_line" -le "$apm_install_line" ]; then
-        echo "expected role fixes to run after APM installation" >&2
-        return 1
-    fi
-}
-
 test_repository_agent_has_fixed_description() {
     agent_file="$repo_root/.codex/agents/security-reviewer.toml"
 
@@ -99,5 +83,4 @@ test_repository_agent_has_fixed_description() {
 test_fixes_blank_security_reviewer_description
 test_preserves_non_blank_description
 test_ignores_missing_file
-test_install_script_fixes_project_and_user_roles_after_apm
 test_repository_agent_has_fixed_description

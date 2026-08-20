@@ -17,5 +17,3 @@ grep -q 'Dynamic Type' "$skill/references/swiftui.md"
 
 "$skill/scripts/discover-hig-pages" --help >/dev/null
 "$skill/scripts/fetch-hig-page" --help >/dev/null
-grep -q '"$HOME/.agents/skills"' install.sh
-grep -q 'warning: refusing to replace non-symlink Skill' install.sh

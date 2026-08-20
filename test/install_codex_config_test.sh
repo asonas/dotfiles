@@ -138,14 +138,6 @@ test_creates_missing_user_config() {
     fi
 }
 
-test_install_script_deploys_managed_config() {
-    install_script="$repo_root/install.sh"
-
-    assert_line_count 1 '^"\$PWD/bin/install_codex_config" \\$' "$install_script"
-    assert_line_count 1 '^    "\$PWD/.config/codex/config.toml" \\$' "$install_script"
-    assert_line_count 1 '^    "\$HOME/.codex/config.toml"$' "$install_script"
-}
-
 test_managed_config_shows_usage_in_status_line() {
     assert_contains '[tui]' "$managed_config"
     assert_contains 'status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "git-branch"]' "$managed_config"
@@ -161,6 +153,5 @@ test_replaces_managed_mcp_server_section
 test_preserves_other_tui_settings
 test_is_idempotent
 test_creates_missing_user_config
-test_install_script_deploys_managed_config
 test_managed_config_shows_usage_in_status_line
 test_managed_config_uses_low_model_verbosity

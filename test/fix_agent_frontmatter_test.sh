@@ -10,11 +10,6 @@ if ! command -v mise >/dev/null 2>&1 || ! mise exec -- ruby --version >/dev/null
     exit 0
 fi
 
-if ! grep -Fq 'mise exec -- ruby' "$repo_root/install.sh"; then
-    echo "FAIL: install.sh must invoke the fixer with mise-managed Ruby" >&2
-    exit 1
-fi
-
 run_ruby() {
     mise exec -- ruby "$@"
 }

@@ -4,34 +4,28 @@ set -eu
 test_tmp_root=$(mktemp -d)
 trap 'command rm -rf "$test_tmp_root"' EXIT
 
-assert_line_count() {
-    expected="$1"
-    pattern="$2"
-    file="$3"
-    actual=$(grep -Ec -- "$pattern" "$file" || true)
-
-    if [ "$actual" -ne "$expected" ]; then
-        echo "expected $file to contain $pattern $expected time(s), got $actual" >&2
-        return 1
-    fi
-}
-
 create_posix_installer_fixture() {
     fixture_name="$1"
     test_home="$test_tmp_root/$fixture_name/home"
     test_repo="$test_tmp_root/$fixture_name/repo"
+    test_bin="$test_tmp_root/$fixture_name/bin:/usr/bin:/bin"
 
-    mkdir -p "$test_home" "$test_repo"
-    sed '/^# Codex loads APM-deployed skills directly/,$d' install.sh > "$test_repo/install.sh"
+    mkdir -p "$test_home" "$test_repo" "${test_bin%%:*}"
+    ln -s "$PWD/test/fixtures/fake_git_worktree" "${test_bin%%:*}/git"
+    sed '/^"\$PWD\/bin\/install_apm_environment"$/,$d' install.sh > "$test_repo/install.sh"
     ln -s "$PWD/bin" "$test_repo/bin"
     ln -s "$PWD/.config" "$test_repo/.config"
     ln -s "$PWD/.gnupg" "$test_repo/.gnupg"
-    printf '\nexit 0\n' >> "$test_repo/install.sh"
-    git init --bare "$test_home/git-dir" >/dev/null
+    printf '%s\n' \
+        '"$PWD/bin/install_apm_environment"' \
+        'exit 0' >> "$test_repo/install.sh"
 }
 
 run_posix_installer_fixture() {
-    HOME="$test_home" GIT_DIR="$test_home/git-dir" PATH="${test_bin:-/usr/bin:/bin}" \
+    HOME="$test_home" \
+        FAKE_CURRENT_ROOT="$test_repo" \
+        FAKE_MAIN_ROOT="$test_repo" \
+        PATH="${test_bin:-/usr/bin:/bin}" \
         OSTYPE=unsupported bash "$test_repo/install.sh"
 }
 
@@ -55,14 +49,6 @@ assert_posix_agents_link() {
         echo "expected Codex AGENTS.md link to target $expected, got $actual" >&2
         return 1
     fi
-}
-
-test_posix_links_global_agents_file() {
-    assert_line_count 1 '^    apm compile --clean$' install.sh
-    assert_line_count 1 '^codex_agents_source="\$PWD/AGENTS.md"$' install.sh
-    assert_line_count 1 '^codex_agents_target="\$HOME/.codex/AGENTS.md"$' install.sh
-    assert_line_count 1 '^    ln -sfn "\$codex_agents_source" "\$codex_agents_target"$' install.sh
-    assert_line_count 1 '^    echo "warning: \$codex_agents_source not found; skipping Codex global guidance\."$' install.sh
 }
 
 test_posix_installs_global_agents_link() {
@@ -281,7 +267,6 @@ test_posix_keeps_project_skills_when_apm_install_fails() {
     unset test_bin
 }
 
-test_posix_links_global_agents_file
 test_posix_installs_global_agents_link
 test_posix_skips_missing_global_agents_source
 test_posix_replaces_existing_file

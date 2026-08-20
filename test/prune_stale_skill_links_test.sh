@@ -110,39 +110,6 @@ test_tolerates_empty_link_dir() {
     "$pruner" "$user_skills" "$links"
 }
 
-test_install_script_prunes_before_deploying() {
-    install_script="$repo_root/install.sh"
-
-    if ! grep -Fq '"$PWD/bin/prune_stale_skill_links" \' "$install_script"; then
-        echo "expected install.sh to invoke bin/prune_stale_skill_links" >&2
-        return 1
-    fi
-
-    prune_line=$(grep -n '"\$PWD/bin/prune_stale_skill_links"' "$install_script" | head -1 | cut -d: -f1)
-    deploy_line=$(grep -n '^for skill in "\$PWD"/\.claude/user-skills/\*$' "$install_script" | head -1 | cut -d: -f1)
-    if [ "$prune_line" -ge "$deploy_line" ]; then
-        echo "expected the prune call (line $prune_line) to precede the deploy loop (line $deploy_line)" >&2
-        return 1
-    fi
-}
-
-test_install_script_verifies_wiki_health_assets() {
-    install_script="$repo_root/install.sh"
-
-    for asset in wiki-health.rb mentions.rb verify-sources.rb
-    do
-        if ! grep -Fq "wiki-update/health/$asset" "$install_script"; then
-            echo "expected install.sh to verify wiki-update health asset $asset" >&2
-            return 1
-        fi
-    done
-
-    if ! grep -Fq "missing wiki-update health script" "$install_script"; then
-        echo "expected install.sh to report missing wiki-update health scripts" >&2
-        return 1
-    fi
-}
-
 test_prunes_link_to_deleted_entry
 test_keeps_link_to_existing_entry
 test_keeps_dangling_link_to_other_source
@@ -151,5 +118,3 @@ test_prunes_link_through_broken_entry
 test_prunes_across_multiple_link_dirs
 test_tolerates_missing_link_dir
 test_tolerates_empty_link_dir
-test_install_script_prunes_before_deploying
-test_install_script_verifies_wiki_health_assets

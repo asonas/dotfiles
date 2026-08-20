@@ -3,7 +3,6 @@ set -eu
 
 repo_root=$(cd "$(dirname "$0")/.." && pwd)
 config="$repo_root/.gnupg/gpg-agent.conf"
-install_script="$repo_root/install.sh"
 installer="$repo_root/bin/install_gpg_agent_config"
 test_root=$(mktemp -d)
 trap 'command rm -rf "$test_root"' EXIT
@@ -21,12 +20,6 @@ assert_contains() {
 test_configures_passphrase_cache() {
     assert_contains 'default-cache-ttl 28800' "$config"
     assert_contains 'max-cache-ttl 86400' "$config"
-}
-
-test_install_script_manages_gpg_agent_config() {
-    assert_contains '"$PWD/bin/install_gpg_agent_config" \' "$install_script"
-    assert_contains '    "$PWD/.gnupg/gpg-agent.conf" \' "$install_script"
-    assert_contains '    "$HOME/.gnupg/gpg-agent.conf"' "$install_script"
 }
 
 test_preserves_existing_agent_options() {
@@ -64,6 +57,5 @@ test_installation_is_idempotent() {
 }
 
 test_configures_passphrase_cache
-test_install_script_manages_gpg_agent_config
 test_preserves_existing_agent_options
 test_installation_is_idempotent

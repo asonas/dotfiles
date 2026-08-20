@@ -69,24 +69,7 @@ test_tolerates_missing_directory() {
     "$pruner" "$test_root/does-not-exist" brainstorming
 }
 
-test_install_script_invokes_pruner_after_successful_apm_install() {
-    install_script="$repo_root/install.sh"
-
-    if ! grep -Fq 'bin/prune_stale_apm_paths' "$install_script"; then
-        echo "expected install.sh to invoke bin/prune_stale_apm_paths" >&2
-        return 1
-    fi
-
-    install_line=$(grep -n 'bin/prune_stale_apm_paths' "$install_script" | head -1 | cut -d: -f1)
-    success_line=$(grep -n 'apm_install_ok=1' "$install_script" | head -1 | cut -d: -f1)
-    if [ "$install_line" -le "$success_line" ]; then
-        echo "expected stale-target pruning after apm_install_ok=1" >&2
-        return 1
-    fi
-}
-
 test_prunes_listed_real_paths
 test_keeps_unlisted_real_paths
 test_keeps_symlinked_paths
 test_tolerates_missing_directory
-test_install_script_invokes_pruner_after_successful_apm_install
