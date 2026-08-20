@@ -35,3 +35,6 @@ fi
 [ -f "$repo_root/chezmoi/dot_psqlrc" ]
 [ -L "$repo_root/.psqlrc" ]
 [ "$(readlink "$repo_root/.psqlrc")" = 'chezmoi/dot_psqlrc' ]
+[ -f "$repo_root/chezmoi/dot_config/rubocop/config.yml" ]
+[ -L "$repo_root/.config/rubocop" ]
+[ "$(readlink "$repo_root/.config/rubocop")" = '../chezmoi/dot_config/rubocop' ]
