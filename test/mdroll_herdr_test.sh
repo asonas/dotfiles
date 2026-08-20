@@ -20,14 +20,13 @@ printf '%s\n' \
     '#!/bin/sh' \
     'set -eu' \
     'printf "%s\\n" "$*" >> "$HERDR_CALL_LOG"' \
-    'if [ "$1" = tab ] && [ "$2" = create ]; then' \
-    '  printf "%s\\n" '\''{"result":{"root_pane":{"pane_id":"w-test:p-test"}}}'\''' \
-    'elif [ "$1" = pane ] && [ "$2" = run ]; then' \
-    '  exit 0' \
-    'else' \
-    '  echo "unexpected herdr command: $*" >&2' \
-    '  exit 1' \
-    'fi' > "$tmp_dir/bin/herdr"
+    'case "$1 $2" in' \
+    '  "tab list") printf "%s\\n" "$HERDR_TAB_LIST_RESPONSE" ;;' \
+    '  "tab create") printf "%s\\n" "$HERDR_TAB_CREATE_RESPONSE" ;;' \
+    '  "pane split") printf "%s\\n" "$HERDR_PANE_SPLIT_RESPONSE" ;;' \
+    '  "pane run") exit 0 ;;' \
+    '  *) echo "unexpected herdr command: $*" >&2; exit 1 ;;' \
+    'esac' > "$tmp_dir/bin/herdr"
 chmod +x "$tmp_dir/bin/herdr"
 
 printf '%s\n' \
@@ -49,12 +48,44 @@ printf '%s\n' "$function_source" > "$tmp_dir/mdroll-function.zsh"
 
 HERDR_ENV=1 \
 HERDR_WORKSPACE_ID=w-test \
-HERDR_CALL_LOG="$tmp_dir/herdr-call.log" \
+HERDR_TAB_ID=w-test:t-test \
 MISE_MDROLL_BIN="$tmp_dir/bin/mdroll-real" \
 MISE_MDROLL_EXEC_LOG="$tmp_dir/mdroll-exec.log" \
 MDROLL_FUNCTION="$tmp_dir/mdroll-function.zsh" \
 MDROLL_TEST_WORKDIR="$tmp_dir/work" \
 PATH="$tmp_dir/bin:$PATH" \
+    HERDR_CALL_LOG="$tmp_dir/single-pane-herdr-call.log" \
+    HERDR_TAB_LIST_RESPONSE='{"result":{"tabs":[{"tab_id":"w-test:t-test","pane_count":1}]}}' \
+    HERDR_TAB_CREATE_RESPONSE='{"result":{"root_pane":{"pane_id":"w-test:p-tab"}}}' \
+    HERDR_PANE_SPLIT_RESPONSE='{"result":{"pane":{"pane_id":"w-test:p-split"}}}' \
+    /bin/zsh -f -c '
+        source "$MDROLL_FUNCTION"
+        cd "$MDROLL_TEST_WORKDIR"
+        mdroll README.md
+    '
+
+expected_tab_list="tab list --workspace w-test"
+[ "$(sed -n '1p' "$tmp_dir/single-pane-herdr-call.log")" = "$expected_tab_list" ]
+
+expected_split="pane split --current --direction right --cwd $tmp_dir/work --no-focus"
+[ "$(sed -n '2p' "$tmp_dir/single-pane-herdr-call.log")" = "$expected_split" ]
+
+expected_pane="pane run w-test:p-split exec $tmp_dir/bin/mdroll-real README.md"
+[ "$(sed -n '3p' "$tmp_dir/single-pane-herdr-call.log")" = "$expected_pane" ]
+[ "$(wc -l < "$tmp_dir/single-pane-herdr-call.log")" -eq 3 ]
+
+HERDR_ENV=1 \
+HERDR_WORKSPACE_ID=w-test \
+HERDR_TAB_ID=w-test:t-test \
+MISE_MDROLL_BIN="$tmp_dir/bin/mdroll-real" \
+MISE_MDROLL_EXEC_LOG="$tmp_dir/mdroll-exec.log" \
+MDROLL_FUNCTION="$tmp_dir/mdroll-function.zsh" \
+MDROLL_TEST_WORKDIR="$tmp_dir/work" \
+    PATH="$tmp_dir/bin:$PATH" \
+    HERDR_CALL_LOG="$tmp_dir/multiple-pane-herdr-call.log" \
+    HERDR_TAB_LIST_RESPONSE='{"result":{"tabs":[{"tab_id":"w-test:t-test","pane_count":2}]}}' \
+    HERDR_TAB_CREATE_RESPONSE='{"result":{"root_pane":{"pane_id":"w-test:p-tab"}}}' \
+    HERDR_PANE_SPLIT_RESPONSE='{"result":{"pane":{"pane_id":"w-test:p-split"}}}' \
     /bin/zsh -f -c '
         source "$MDROLL_FUNCTION"
         cd "$MDROLL_TEST_WORKDIR"
@@ -62,9 +93,11 @@ PATH="$tmp_dir/bin:$PATH" \
     '
 
 expected_tab="tab create --workspace w-test --cwd $tmp_dir/work --focus"
-[ "$(sed -n '1p' "$tmp_dir/herdr-call.log")" = "$expected_tab" ]
+[ "$(sed -n '1p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_tab_list" ]
+[ "$(sed -n '2p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_tab" ]
 
-expected_pane="pane run w-test:p-test exec $tmp_dir/bin/mdroll-real README.md"
-[ "$(sed -n '2p' "$tmp_dir/herdr-call.log")" = "$expected_pane" ]
+expected_pane="pane run w-test:p-tab exec $tmp_dir/bin/mdroll-real README.md"
+[ "$(sed -n '3p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_pane" ]
+[ "$(wc -l < "$tmp_dir/multiple-pane-herdr-call.log")" -eq 3 ]
 
 [ ! -e "$tmp_dir/mdroll-exec.log" ]

@@ -5,6 +5,7 @@ description: Baseline communication, commit, and review rules that apply to ever
 # Base
 
 - Always respond in Japanese
+- When you write a Markdown file, run `mdroll <file>` to preview it.
 - 絵文字は使用禁止。ただしツールが emoji を必須とするパラメータ（Artifact の `favicon` 等）は対象外
 - 要求された変更に先立って振る舞いを変えない構造整理が必要な場合だけ、`/tidy-first-conventions` スキルを参照する
 - If you are asked to write a commit message, please write it in English.
