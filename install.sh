@@ -233,6 +233,46 @@ if [ "$apm_install_ok" -eq 1 ] && [ -d "$project_skill_dir" ] && [ -d "$global_s
     done
 fi
 
+# APM's per-dependency targets control where the current install is integrated,
+# but they do not remove real files deployed by an earlier, broader target set.
+# Remove only the known APM paths whose target ownership changed. The helper
+# preserves symlinks so locally-maintained Skills are handled by the link
+# cleanup below instead.
+if [ "$apm_install_ok" -eq 1 ]; then
+    "$PWD/bin/prune_stale_apm_paths" "$HOME/.agents/skills" \
+        brainstorming \
+        dispatching-parallel-agents \
+        executing-plans \
+        finishing-a-development-branch \
+        receiving-code-review \
+        requesting-code-review \
+        subagent-driven-development \
+        systematic-debugging \
+        test-driven-development \
+        using-git-worktrees \
+        using-superpowers \
+        verification-before-completion \
+        writing-plans \
+        writing-skills \
+        rails ruby spec-conventions
+    "$PWD/bin/prune_stale_apm_paths" "$HOME/.claude/skills" \
+        grill-me \
+        grilling \
+        wayfinder \
+        implement \
+        tdd \
+        code-review \
+        prototype \
+        wizard \
+        handoff \
+        to-questionnaire \
+        rails ruby spec-conventions
+    "$PWD/bin/prune_stale_apm_paths" "$HOME/.claude/commands" \
+        implement.md review.md validate.md
+    "$PWD/bin/prune_stale_apm_paths" "$HOME/.cursor/commands" \
+        implement.md review.md validate.md
+fi
+
 codex_agents_source="$PWD/AGENTS.md"
 codex_agents_target="$HOME/.codex/AGENTS.md"
 if [ -f "$codex_agents_source" ]; then
