@@ -3,6 +3,8 @@ set -e
 
 cd "$(dirname "$0")"
 
+"$PWD/bin/ensure_main_worktree"
+
 "$PWD/bin/link_legacy_dotfiles" "$PWD" "$HOME"
 
 # Apply entries that have already migrated to chezmoi. The legacy link loop

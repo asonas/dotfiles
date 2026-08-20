@@ -64,6 +64,45 @@ $HomeDir   = $HOME   # in PowerShell 7 this resolves to %USERPROFILE%
 $ClaudeDir = Join-Path $HomeDir '.claude'
 $CodexDir = Join-Path $HomeDir '.codex'
 
+# --- Prevent home-directory changes from a linked worktree. ---------------
+function Assert-MainWorktree {
+    param([Parameter(Mandatory)][string]$RepoRoot)
+
+    Push-Location -LiteralPath $RepoRoot
+    try {
+        $currentRoot = (& git rev-parse --show-toplevel)
+        $currentExitCode = $LASTEXITCODE
+        $currentRoot = ($currentRoot | Out-String).Trim()
+        if ($currentExitCode -ne 0 -or [string]::IsNullOrWhiteSpace($currentRoot)) {
+            throw 'Unable to determine the current Git worktree.'
+        }
+
+        $worktreeLines = @(& git worktree list --porcelain)
+        $worktreeExitCode = $LASTEXITCODE
+        if ($worktreeExitCode -ne 0) {
+            throw 'Unable to list Git worktrees.'
+        }
+    } finally {
+        Pop-Location
+    }
+
+    $mainLine = $worktreeLines |
+        Where-Object { $_ -like 'worktree *' } |
+        Select-Object -First 1
+    if (-not $mainLine) {
+        throw 'Unable to determine the main worktree.'
+    }
+
+    $mainRoot = $mainLine.Substring('worktree '.Length)
+    $currentPath = (Resolve-Path -LiteralPath $currentRoot).Path
+    $mainPath = (Resolve-Path -LiteralPath $mainRoot).Path
+    if (-not [StringComparer]::OrdinalIgnoreCase.Equals($currentPath, $mainPath)) {
+        throw 'install.ps1 must be run from the main worktree.'
+    }
+}
+
+Assert-MainWorktree -RepoRoot $RepoRoot
+
 # --- Can we create real symlinks here? (Developer Mode or elevation required) ---
 function Test-SymlinkCapability {
     $target = Join-Path $env:TEMP ('dotfiles-symlink-target-' + [guid]::NewGuid().ToString('N'))

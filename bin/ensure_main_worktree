@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+
+current_root=$(git rev-parse --show-toplevel)
+main_root=$(git worktree list --porcelain | sed -n '1s/^worktree //p')
+
+if [ -z "$main_root" ]; then
+    echo 'error: unable to determine the main worktree.' >&2
+    exit 1
+fi
+
+current_root=$(cd "$current_root" && pwd -P)
+main_root=$(cd "$main_root" && pwd -P)
+
+if [ "$current_root" != "$main_root" ]; then
+    echo 'error: install.sh must be run from the main worktree.' >&2
+    echo "current worktree: $current_root" >&2
+    echo "main worktree: $main_root" >&2
+    exit 1
+fi

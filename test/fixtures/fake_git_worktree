@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ "$#" -eq 2 ] && [ "$1" = 'rev-parse' ] && [ "$2" = '--show-toplevel' ]; then
+    printf '%s\n' "$FAKE_CURRENT_ROOT"
+    exit 0
+fi
+
+if [ "$#" -eq 3 ] && [ "$1" = 'worktree' ] && [ "$2" = 'list' ] && [ "$3" = '--porcelain' ]; then
+    printf 'worktree %s\n' "$FAKE_MAIN_ROOT"
+    printf 'HEAD 0000000000000000000000000000000000000000\n'
+    exit 0
+fi
+
+printf 'unexpected git arguments: %s\n' "$*" >&2
+exit 2
