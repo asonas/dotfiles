@@ -29,3 +29,6 @@ fi
 [ -f "$repo_root/chezmoi/dot_gemrc" ]
 [ -L "$repo_root/.gemrc" ]
 [ "$(readlink "$repo_root/.gemrc")" = 'chezmoi/dot_gemrc' ]
+[ -f "$repo_root/chezmoi/dot_config/peco/config.json" ]
+[ -L "$repo_root/.config/peco" ]
+[ "$(readlink "$repo_root/.config/peco")" = '../chezmoi/dot_config/peco' ]
