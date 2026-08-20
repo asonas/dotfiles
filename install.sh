@@ -3,49 +3,7 @@ set -e
 
 cd "$(dirname "$0")"
 
-required_dirs="
-  .zshrc
-  .skhdrc
-  .yabairc
-  .gitignore
-  .gitconfig
-  .tigrc
-  .gemrc
-  .irbrc
-  .psqlrc
-  .tmux.conf
-  .config/nvim
-  .config/karabiner
-  .config/starship.toml
-  .config/wezterm
-  .config/rubocop
-  .config/peco
-  .config/htop
-  .config/ghostty
-  .config/git-ai-commit/config.toml
-  .config/mise/config.toml
-  .config/qmd/index.yml
-
-  .claude/commands/gemini-search.md
-  .claude/commands/talk-review
-  .claude/settings.json
-  .claude/scripts
-  .claude/rules
-"
-
-for dir in $required_dirs
-do
-    target="$PWD/$dir"
-    link="$HOME/$dir"
-
-    if [ -L "$link" ] || [ -e "$link" ]; then
-	rm -rf "$link"
-    fi
-
-    mkdir -p "$(dirname "$link")"
-
-    ln -s "$target" "$link"
-done
+"$PWD/bin/link_legacy_dotfiles" "$PWD" "$HOME"
 
 # Apply entries that have already migrated to chezmoi. The legacy link loop
 # remains in place while the source state is migrated incrementally; machines
