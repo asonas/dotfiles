@@ -452,8 +452,8 @@ Copy-CodexGlobalAgents -RepoRoot $RepoRoot -CodexDir $CodexDir
 
 Write-Host ""
 Write-Host "Done. Notes:"
-Write-Host "  * Cursor rules are per-project (.cursorrules / .cursor/rules); there is no"
-Write-Host "    global equivalent to link from here."
+Write-Host "  * Cursor rules are project-specific; this installer does not link them"
+Write-Host "    globally."
 Write-Host "  * Keep the repo at a stable ghq path so the links survive (e.g."
 Write-Host "    `$env:USERPROFILE\ghq\github.com\asonas\dotfiles)."
 Write-Host "  * APM refreshed apm.lock.yaml in the repo; commit it to keep pins tracked."
