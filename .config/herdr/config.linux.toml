@@ -46,6 +46,9 @@ description = "focus next agent needing attention"
 # 新規タブは名前を聞かず、生成名で即作成する
 prompt_new_tab_name = false
 
+[ui.toast]
+delivery = "herdr"
+
 [session]
 # herdr サーバー再起動（update など）後に、Claude Code 等のペインを
 # 元の会話セッションに復帰させる。公式 integration が session ref を報告する前提。

@@ -55,6 +55,7 @@ done
 ln -sf "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
 ln -sf "$PWD/bin/setup_workspace" "$HOME/bin/setup_workspace"
 ln -sf "$PWD/bin/herdr-focus-attention" "$HOME/bin/herdr-focus-attention"
+ln -sf "$PWD/bin/hw" "$HOME/bin/hw"
 ln -sf "$PWD/bin/herdr-fork-claude-session" "$HOME/bin/herdr-fork-claude-session"
 ln -sf "$PWD/bin/herdr-fork-codex-session" "$HOME/bin/herdr-fork-codex-session"
 

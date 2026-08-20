@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# hw (Herdr Watch) — 長時間コマンドを Herdr の agents 欄に表示する wrapper
+#
+# Usage: hw <label> -- <command...>
+#   例: hw "jbt deploy" -- kamal deploy
+#       hw "CI #123" -- gh run watch 123
+#
+# Herdr 内では実行中を working、成功を idle、失敗を blocked として報告する。
+# Herdr 外ではコマンドをそのまま実行する。
+set -u
+
+usage() {
+    echo "usage: hw <label> -- <command...>" >&2
+    exit 2
+}
+
+[ "$#" -ge 3 ] || usage
+label="$1"
+shift
+[ "$1" = "--" ] || usage
+shift
+[ "$#" -ge 1 ] || usage
+
+pane_id=""
+if command -v herdr >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+    pane_id=$(herdr pane current 2>/dev/null | jq -r '.result.pane.pane_id // empty' 2>/dev/null)
+fi
+
+if [ -z "$pane_id" ]; then
+    echo "hw: Herdr の pane を特定できないため、そのまま実行します" >&2
+    exec "$@"
+fi
+
+source_id="hwatch-$$"
+seq=0
+
+report() {
+    seq=$((seq + 1))
+    # Herdr CLIでは表示用テキストを --message で渡す。
+    herdr pane report-agent "$pane_id" \
+        --source "$source_id" \
+        --agent "$label" \
+        --state "$1" \
+        --message "$2" \
+        --seq "$seq" >/dev/null 2>&1
+}
+
+elapsed() {
+    local seconds
+    seconds=$(( $(date +%s) - start ))
+    if [ "$seconds" -ge 60 ]; then
+        echo "$((seconds / 60))m$((seconds % 60))s"
+    else
+        echo "${seconds}s"
+    fi
+}
+
+on_interrupt() {
+    report blocked "INTERRUPTED ($(elapsed))"
+    exit 130
+}
+start=$(date +%s)
+trap on_interrupt INT TERM
+report working "実行中"
+
+"$@"
+status=$?
+trap - INT TERM
+
+if [ "$status" -eq 0 ]; then
+    duration=$(elapsed)
+    report idle "OK ($duration)"
+    herdr notification show "$label 完了" \
+        --body "$duration で完了" \
+        --sound done >/dev/null 2>&1
+else
+    duration=$(elapsed)
+    report blocked "FAILED exit=$status ($duration)"
+    herdr notification show "$label 失敗" \
+        --body "exit=$status ($duration)" \
+        --sound request >/dev/null 2>&1
+fi
+
+exit "$status"

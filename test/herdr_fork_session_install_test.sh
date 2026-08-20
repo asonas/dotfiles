@@ -17,3 +17,10 @@ assert_bin_linked() {
 
 assert_bin_linked herdr-fork-claude-session
 assert_bin_linked herdr-fork-codex-session
+assert_bin_linked hw
+
+for config in "$repo_root/.config/herdr/config.macos.toml" "$repo_root/.config/herdr/config.linux.toml"
+do
+    grep -Fxc '[ui.toast]' "$config" | grep -Fx 1 >/dev/null
+    grep -Fxc 'delivery = "herdr"' "$config" | grep -Fx 1 >/dev/null
+done
