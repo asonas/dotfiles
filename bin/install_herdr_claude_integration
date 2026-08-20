@@ -44,5 +44,14 @@ else
     ' "$settings_file" > "$tmp"
 fi
 
-command mv "$tmp" "$settings_file"
+if [ -L "$settings_file" ]; then
+    if [ ! -e "$settings_file" ]; then
+        echo "error: refusing to write through dangling symlink: $settings_file" >&2
+        exit 1
+    fi
+    cat "$tmp" > "$settings_file"
+    command rm -f "$tmp"
+else
+    command mv "$tmp" "$settings_file"
+fi
 trap - EXIT

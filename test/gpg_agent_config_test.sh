@@ -56,6 +56,20 @@ test_installation_is_idempotent() {
     fi
 }
 
+test_preserves_existing_symlink() {
+    target="$test_root/symlink-target.conf"
+    link="$test_root/symlink.conf"
+    printf '%s\n' 'pinentry-program /usr/bin/pinentry' > "$target"
+    ln -s "$target" "$link"
+
+    "$installer" "$config" "$link"
+
+    [ -L "$link" ]
+    assert_contains 'default-cache-ttl 28800' "$target"
+    assert_contains 'max-cache-ttl 86400' "$target"
+}
+
 test_configures_passphrase_cache
 test_preserves_existing_agent_options
 test_installation_is_idempotent
+test_preserves_existing_symlink

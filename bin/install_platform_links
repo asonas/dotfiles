@@ -3,25 +3,25 @@ set -e
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$repo_root"
+link_if_safe="$PWD/bin/link_if_safe"
 
-[ ! -d "$HOME/bin" ] && mkdir "$HOME/bin"
-ln -sf "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
-ln -sf "$PWD/bin/setup_workspace" "$HOME/bin/setup_workspace"
-ln -sf "$PWD/bin/herdr-focus-attention" "$HOME/bin/herdr-focus-attention"
-ln -sf "$PWD/bin/hw" "$HOME/bin/hw"
-ln -sf "$PWD/bin/herdr-fork-claude-session" "$HOME/bin/herdr-fork-claude-session"
-ln -sf "$PWD/bin/herdr-fork-codex-session" "$HOME/bin/herdr-fork-codex-session"
+"$link_if_safe" "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
+"$link_if_safe" "$PWD/bin/setup_workspace" "$HOME/bin/setup_workspace"
+"$link_if_safe" "$PWD/bin/herdr-focus-attention" "$HOME/bin/herdr-focus-attention"
+"$link_if_safe" "$PWD/bin/hw" "$HOME/bin/hw"
+"$link_if_safe" "$PWD/bin/herdr-fork-claude-session" "$HOME/bin/herdr-fork-claude-session"
+"$link_if_safe" "$PWD/bin/herdr-fork-codex-session" "$HOME/bin/herdr-fork-codex-session"
 
 case "$OSTYPE" in
   darwin*)
     # macOS
     GIT_PATH=$(brew --prefix git)
-    ln -sf "$GIT_PATH/share/git-core/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
+    "$link_if_safe" "$GIT_PATH/share/git-core/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
     ;;
   linux*)
     # Linux
     GIT_PATH=$(dirname "$(which git)")
-    ln -sf "$GIT_PATH/../share/git/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
+    "$link_if_safe" "$GIT_PATH/../share/git/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
     ;;
   *)
     echo "Unsupported OS: $OSTYPE"
@@ -43,10 +43,10 @@ mkdir -p "$HOME/.codex"
 mkdir -p "$HOME/.config/herdr"
 case "$OSTYPE" in
   darwin*)
-    ln -sf "$PWD/.config/herdr/config.macos.toml" "$HOME/.config/herdr/config.toml"
+    "$link_if_safe" "$PWD/.config/herdr/config.macos.toml" "$HOME/.config/herdr/config.toml"
     ;;
   linux*)
-    ln -sf "$PWD/.config/herdr/config.linux.toml" "$HOME/.config/herdr/config.toml"
+    "$link_if_safe" "$PWD/.config/herdr/config.linux.toml" "$HOME/.config/herdr/config.toml"
     ;;
 esac
 
@@ -54,4 +54,4 @@ esac
 # an integration upgrade updates the tracked script, then normalize the settings
 # it writes after APM has finished below.
 mkdir -p "$HOME/.claude/hooks"
-ln -sf "$PWD/.claude/hooks/herdr-agent-state.sh" "$HOME/.claude/hooks/herdr-agent-state.sh"
+"$link_if_safe" "$PWD/.claude/hooks/herdr-agent-state.sh" "$HOME/.claude/hooks/herdr-agent-state.sh"

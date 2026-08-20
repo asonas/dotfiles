@@ -42,5 +42,15 @@ trap 'command rm -f "$temporary_config"' EXIT
 } > "$temporary_config"
 
 chmod 600 "$temporary_config"
-command mv "$temporary_config" "$user_config"
+if [ -L "$user_config" ]; then
+    if [ ! -e "$user_config" ]; then
+        echo "error: refusing to write through dangling symlink: $user_config" >&2
+        exit 1
+    fi
+    cat "$temporary_config" > "$user_config"
+    chmod 600 "$user_config"
+    command rm -f "$temporary_config"
+else
+    command mv "$temporary_config" "$user_config"
+fi
 trap - EXIT

@@ -3,6 +3,8 @@ set -euo pipefail
 
 repo_root=${1:?repository root is required}
 home_dir=${2:-$HOME}
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+link_if_safe="$script_dir/link_if_safe"
 
 required_dirs="
   .zshrc
@@ -34,15 +36,22 @@ required_dirs="
   .claude/rules
 "
 
+# Check all managed destinations before changing any of them. This prevents a
+# regular user file discovered late in the list from leaving earlier links
+# partially updated.
+for dir in $required_dirs
+do
+    link="$home_dir/$dir"
+    if [ -e "$link" ] && [ ! -L "$link" ]; then
+        echo "error: refusing to replace existing path: $link" >&2
+        echo "       remove or move it explicitly before running the installer" >&2
+        exit 1
+    fi
+done
+
 for dir in $required_dirs
 do
     target="$repo_root/$dir"
     link="$home_dir/$dir"
-
-    if [ -L "$link" ] || [ -e "$link" ]; then
-        rm -rf "$link"
-    fi
-
-    mkdir -p "$(dirname "$link")"
-    ln -s "$target" "$link"
+    "$link_if_safe" "$target" "$link"
 done

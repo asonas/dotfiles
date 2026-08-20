@@ -78,18 +78,21 @@ test_posix_skips_missing_global_agents_source() {
     fi
 }
 
-test_posix_replaces_existing_file() {
+test_posix_refuses_existing_file() {
     create_posix_installer_fixture existing-file
     printf 'generated guidance\n' > "$test_repo/AGENTS.md"
     mkdir -p "$test_home/.codex"
     printf 'old guidance\n' > "$test_home/.codex/AGENTS.md"
 
-    run_posix_installer_fixture >/dev/null
+    if run_posix_installer_fixture >/dev/null 2>&1; then
+        echo "expected installation to refuse an existing Codex AGENTS.md file" >&2
+        return 1
+    fi
 
-    assert_posix_agents_link
+    [ "$(cat "$test_home/.codex/AGENTS.md")" = 'old guidance' ]
 }
 
-test_posix_replaces_existing_symlink() {
+test_posix_replaces_existing_symlink_without_changing_target() {
     create_posix_installer_fixture existing-symlink
     printf 'generated guidance\n' > "$test_repo/AGENTS.md"
     printf 'old guidance\n' > "$test_home/old-AGENTS.md"
@@ -99,6 +102,7 @@ test_posix_replaces_existing_symlink() {
     run_posix_installer_fixture >/dev/null
 
     assert_posix_agents_link
+    [ "$(cat "$test_home/old-AGENTS.md")" = 'old guidance' ]
 }
 
 test_posix_replaces_dangling_symlink() {
@@ -110,6 +114,7 @@ test_posix_replaces_dangling_symlink() {
     run_posix_installer_fixture >/dev/null
 
     assert_posix_agents_link
+    [ ! -e "$test_home/missing-AGENTS.md" ]
 }
 
 test_posix_fails_when_global_agents_target_is_a_directory() {
@@ -123,16 +128,18 @@ test_posix_fails_when_global_agents_target_is_a_directory() {
     fi
 }
 
-test_posix_replaces_directory_symlink() {
+test_posix_replaces_directory_symlink_without_changing_target() {
     create_posix_installer_fixture directory-symlink
     printf 'generated guidance\n' > "$test_repo/AGENTS.md"
     mkdir -p "$test_home/existing-directory"
+    printf 'keep directory target\n' > "$test_home/existing-directory/sentinel.txt"
     mkdir -p "$test_home/.codex"
     ln -s "$test_home/existing-directory" "$test_home/.codex/AGENTS.md"
 
     run_posix_installer_fixture >/dev/null
 
     assert_posix_agents_link
+    [ "$(cat "$test_home/existing-directory/sentinel.txt")" = 'keep directory target' ]
 }
 
 test_posix_continues_when_apm_update_fails() {
@@ -269,11 +276,11 @@ test_posix_keeps_project_skills_when_apm_install_fails() {
 
 test_posix_installs_global_agents_link
 test_posix_skips_missing_global_agents_source
-test_posix_replaces_existing_file
-test_posix_replaces_existing_symlink
+test_posix_refuses_existing_file
+test_posix_replaces_existing_symlink_without_changing_target
 test_posix_replaces_dangling_symlink
 test_posix_fails_when_global_agents_target_is_a_directory
-test_posix_replaces_directory_symlink
+test_posix_replaces_directory_symlink_without_changing_target
 test_posix_continues_when_apm_update_fails
 test_posix_continues_when_apm_install_fails
 test_posix_stops_when_apm_compile_fails

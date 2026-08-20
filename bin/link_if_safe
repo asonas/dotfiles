@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eu
+
+target=${1:?target is required}
+link=${2:?link is required}
+
+if [ -L "$link" ]; then
+    existing_target=$(readlink "$link")
+    if [ "$existing_target" = "$target" ]; then
+        exit 0
+    fi
+    echo "==> replacing symlink $link" >&2
+    echo "    existing target: $existing_target" >&2
+    echo "    expected target: $target" >&2
+    command rm -f "$link"
+fi
+
+if [ -e "$link" ]; then
+    echo "error: refusing to replace existing path: $link" >&2
+    echo "       remove or move it explicitly before running the installer" >&2
+    exit 1
+fi
+
+mkdir -p "$(dirname "$link")"
+ln -s "$target" "$link"

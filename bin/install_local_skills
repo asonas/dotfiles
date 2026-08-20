@@ -3,6 +3,7 @@ set -e
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$repo_root"
+link_if_safe="$PWD/bin/link_if_safe"
 
 # Drop links left over from user-skills entries that were deleted or renamed. The
 # deploy loops below only walk entries that exist, so without this the link stays
@@ -21,10 +22,7 @@ do
     [ -e "$skill" ] || continue
     skill_name=$(basename "$skill")
     link="$HOME/.claude/skills/$skill_name"
-    if [ -L "$link" ] || [ -e "$link" ]; then
-        rm -rf "$link"
-    fi
-    ln -s "$skill" "$link"
+    "$link_if_safe" "$skill" "$link"
 done
 
 # Expose the same locally-maintained skills to Codex without replacing the
@@ -36,12 +34,13 @@ do
     skill_name=$(basename "$skill")
     link="$HOME/.agents/skills/$skill_name"
     if [ -L "$link" ]; then
-        rm "$link"
+        "$link_if_safe" "$skill" "$link"
+        continue
     elif [ -e "$link" ]; then
         echo "warning: refusing to replace non-symlink Skill at $link"
         continue
     fi
-    ln -s "$skill" "$link"
+    "$link_if_safe" "$skill" "$link"
 done
 
 # Keep the wiki-update health helpers available alongside the skill symlink.

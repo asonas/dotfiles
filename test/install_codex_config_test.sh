@@ -138,6 +138,19 @@ test_creates_missing_user_config() {
     fi
 }
 
+test_preserves_existing_symlink() {
+    target="$test_root/symlink-target.toml"
+    config="$test_root/symlink.toml"
+    printf '%s\n' '[projects."/work/project"]' 'trust_level = "trusted"' > "$target"
+    ln -s "$target" "$config"
+
+    "$installer" "$managed_config" "$config"
+
+    [ -L "$config" ]
+    assert_contains 'sandbox_mode = "workspace-write"' "$target"
+    assert_contains '[projects."/work/project"]' "$target"
+}
+
 test_managed_config_shows_usage_in_status_line() {
     assert_contains '[tui]' "$managed_config"
     assert_contains 'status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "git-branch"]' "$managed_config"
@@ -153,5 +166,6 @@ test_replaces_managed_mcp_server_section
 test_preserves_other_tui_settings
 test_is_idempotent
 test_creates_missing_user_config
+test_preserves_existing_symlink
 test_managed_config_shows_usage_in_status_line
 test_managed_config_uses_low_model_verbosity

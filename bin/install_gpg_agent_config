@@ -24,5 +24,15 @@ fi
 cat "$managed_config" >> "$tmp"
 
 chmod 600 "$tmp"
-command mv "$tmp" "$user_config"
+if [ -L "$user_config" ]; then
+    if [ ! -e "$user_config" ]; then
+        echo "error: refusing to write through dangling symlink: $user_config" >&2
+        exit 1
+    fi
+    cat "$tmp" > "$user_config"
+    chmod 600 "$user_config"
+    command rm -f "$tmp"
+else
+    command mv "$tmp" "$user_config"
+fi
 trap - EXIT

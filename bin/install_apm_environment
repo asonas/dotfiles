@@ -3,19 +3,13 @@ set -e
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$repo_root"
+link_if_safe="$PWD/bin/link_if_safe"
 
 # Link ~/.apm/apm.yml to this repo's apm.yml so 'apm install -g' is driven
 # from the version-controlled file.
 mkdir -p "$HOME/.apm"
 apm_link="$HOME/.apm/apm.yml"
-if [ -L "$apm_link" ] || [ -e "$apm_link" ]; then
-    if [ "$(readlink "$apm_link" 2>/dev/null)" != "$PWD/apm.yml" ]; then
-        rm -rf "$apm_link"
-        ln -s "$PWD/apm.yml" "$apm_link"
-    fi
-else
-    ln -s "$PWD/apm.yml" "$apm_link"
-fi
+"$link_if_safe" "$PWD/apm.yml" "$apm_link"
 
 # Sync APM ignore rules into this repo's local .git/info/exclude. These cannot
 # live in .gitignore because that file is symlinked to ~/.gitignore (the global
@@ -178,11 +172,7 @@ fi
 codex_agents_source="$PWD/AGENTS.md"
 codex_agents_target="$HOME/.codex/AGENTS.md"
 if [ -f "$codex_agents_source" ]; then
-    if [ -d "$codex_agents_target" ] && [ ! -L "$codex_agents_target" ]; then
-        echo "error: $codex_agents_target is a directory; cannot install Codex global guidance." >&2
-        exit 1
-    fi
-    ln -sfn "$codex_agents_source" "$codex_agents_target"
+    "$link_if_safe" "$codex_agents_source" "$codex_agents_target"
 else
     echo "warning: $codex_agents_source not found; skipping Codex global guidance."
 fi
@@ -278,12 +268,12 @@ fi
 # in that case so ~/.claude/CLAUDE.md does not dangle.
 link="$HOME/.claude/CLAUDE.md"
 if [ -f "$PWD/CLAUDE.md" ]; then
-    if [ -L "$link" ] || [ -e "$link" ]; then
-        rm -rf "$link"
-    fi
-    mkdir -p "$(dirname "$link")"
-    ln -s "$PWD/CLAUDE.md" "$link"
+    "$link_if_safe" "$PWD/CLAUDE.md" "$link"
 elif [ -L "$link" ]; then
-    echo "==> removing stale ~/.claude/CLAUDE.md symlink ($PWD/CLAUDE.md is gone)"
-    command rm -f "$link"
+    if [ "$(readlink "$link")" = "$PWD/CLAUDE.md" ]; then
+        echo "==> removing stale ~/.claude/CLAUDE.md symlink ($PWD/CLAUDE.md is gone)"
+        command rm -f "$link"
+    else
+        echo "warning: keeping unrelated ~/.claude/CLAUDE.md symlink ($PWD/CLAUDE.md is gone)."
+    fi
 fi
