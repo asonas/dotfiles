@@ -26,3 +26,6 @@ fi
 [ -f "$repo_root/chezmoi/dot_config/starship.toml" ]
 [ -L "$repo_root/.config/starship.toml" ]
 [ "$(readlink "$repo_root/.config/starship.toml")" = '../chezmoi/dot_config/starship.toml' ]
+[ -f "$repo_root/chezmoi/dot_gemrc" ]
+[ -L "$repo_root/.gemrc" ]
+[ "$(readlink "$repo_root/.gemrc")" = 'chezmoi/dot_gemrc' ]
