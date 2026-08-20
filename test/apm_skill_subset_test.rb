@@ -5,13 +5,40 @@ require "yaml"
 
 class ApmSkillSubsetTest < Minitest::Test
   MANIFEST = File.expand_path("../apm.yml", __dir__)
+  SUPERPOWERS = "obra/superpowers"
+  MATT_SKILLS = "mattpocock/skills"
   SORAH_GUIDES = "sorah/config/claude/marketplace/plugins/sorah-guides"
   SORAH_SPEC = "sorah/config/claude/marketplace/plugins/sorah-spec"
-  GRILL_ME = "mattpocock/skills/skills/productivity/grill-me"
-  GRILLING = "mattpocock/skills/skills/productivity/grilling"
-  WAYFINDER = "mattpocock/skills/skills/engineering/wayfinder"
   RETIRED_COMMIT_SKILL = "asonas/skills/commit"
   BASE_INSTRUCTIONS = File.expand_path("../.apm/instructions/base.instructions.md", __dir__)
+  SUPERPOWERS_PATHS = %w[
+    skills/brainstorming
+    skills/dispatching-parallel-agents
+    skills/executing-plans
+    skills/finishing-a-development-branch
+    skills/receiving-code-review
+    skills/requesting-code-review
+    skills/subagent-driven-development
+    skills/systematic-debugging
+    skills/test-driven-development
+    skills/using-git-worktrees
+    skills/using-superpowers
+    skills/verification-before-completion
+    skills/writing-plans
+    skills/writing-skills
+  ].freeze
+  MATT_PATHS = %w[
+    skills/productivity/grill-me
+    skills/productivity/grilling
+    skills/engineering/wayfinder
+    skills/engineering/implement
+    skills/engineering/tdd
+    skills/engineering/code-review
+    skills/engineering/prototype
+    skills/engineering/wizard
+    skills/productivity/handoff
+    skills/productivity/to-questionnaire
+  ].freeze
   RETAINED_SKILLS = %w[
     coding
     commit-style
@@ -20,14 +47,21 @@ class ApmSkillSubsetTest < Minitest::Test
     terraform
     typescript
   ].freeze
-  # rails and ruby are deliberately absent from the sorah-guides filter: sorah-spec
-  # ships skills by the same names. Listing them in both makes APM deploy one over
-  # the other on every install ("Skill 'rails' replaced -- previously from another
-  # package", last installed wins), so which body lands depends on install order.
-  DELEGATED_TO_SORAH_SPEC = %w[rails ruby].freeze
-
   def apm_entries
     YAML.safe_load_file(MANIFEST).fetch("dependencies").fetch("apm")
+  end
+
+  def dependency_entry(source, path)
+    matches = apm_entries.select do |entry|
+      entry.is_a?(Hash) && entry.fetch("git", nil) == source && entry.fetch("path", nil) == path
+    end
+
+    assert_equal 1, matches.length, "expected exactly one #{source}/#{path} dependency"
+    matches.first
+  end
+
+  def assert_targeted_dependency(source, path, target)
+    assert_equal [target], dependency_entry(source, path).fetch("targets")
   end
 
   def sorah_guides_entry
@@ -47,27 +81,38 @@ class ApmSkillSubsetTest < Minitest::Test
     refute_includes skills, "japanese-text"
   end
 
-  def test_sorah_guides_does_not_duplicate_sorah_spec_skills
+  def test_sorah_guides_does_not_install_rails_or_ruby
     skills = sorah_guides_entry.fetch("skills")
 
-    DELEGATED_TO_SORAH_SPEC.each do |skill|
-      refute_includes skills, skill,
-                      "#{skill} also ships from sorah-spec; listing it here makes APM overwrite one copy with the other"
-    end
+    refute_includes skills, "rails"
+    refute_includes skills, "ruby"
   end
 
-  def test_sorah_spec_still_supplies_the_delegated_skills
-    assert_includes apm_entries, SORAH_SPEC,
-                    "rails and ruby are deployed only via sorah-spec now, so dropping it would lose them"
+  def test_sorah_spec_is_removed
+    refute(apm_entries.any? do |entry|
+      entry == SORAH_SPEC || (entry.is_a?(Hash) && entry.fetch("git", nil) == SORAH_SPEC)
+    end)
   end
 
   def test_grill_me_installs_with_its_grilling_implementation
-    assert_equal 1, apm_entries.count(GRILL_ME)
-    assert_equal 1, apm_entries.count(GRILLING)
+    assert_targeted_dependency(MATT_SKILLS, "skills/productivity/grill-me", "codex")
+    assert_targeted_dependency(MATT_SKILLS, "skills/productivity/grilling", "codex")
   end
 
   def test_wayfinder_is_installed
-    assert_equal 1, apm_entries.count(WAYFINDER)
+    assert_targeted_dependency(MATT_SKILLS, "skills/engineering/wayfinder", "codex")
+  end
+
+  def test_superpowers_are_installed_for_claude_only
+    SUPERPOWERS_PATHS.each do |path|
+      assert_targeted_dependency(SUPERPOWERS, path, "claude")
+    end
+  end
+
+  def test_selected_matt_skills_are_installed_for_codex_only
+    MATT_PATHS.each do |path|
+      assert_targeted_dependency(MATT_SKILLS, path, "codex")
+    end
   end
 
   def test_mandatory_git_ai_commit_workflow_is_retired

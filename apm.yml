@@ -26,6 +26,8 @@ dependencies:
     # ガイドラインは apply-apple-interface-guidelines を使っている。必要になったら
     # ここに名前を足せば戻る。エントリは `skills/` 配下にネストしているので
     # frontend-design と同じサブパス指定にする。
+    # APM dependency targets keep Claude's Superpowers workflow and Codex's Matt
+    # Pocock workflow separate while install.sh can continue to run one command.
     # obra/superpowers: スキルを1本ずつサブパス指定する。リポジトリ丸ごとの指定に
     # すると、apm compile が生成する root CLAUDE.md に
     # `@apm_modules/obra/superpowers/CLAUDE.md` が入り、superpowers 本体への
@@ -34,25 +36,82 @@ dependencies:
     # 宣言している SessionStart フックの統合も止まるが、あのフックは
     # using-superpowers の全文 3.5KB を毎セッション注入するもので、
     # settings.json 側でも外している。
-    - obra/superpowers/skills/brainstorming
-    - obra/superpowers/skills/dispatching-parallel-agents
-    - obra/superpowers/skills/executing-plans
-    - obra/superpowers/skills/finishing-a-development-branch
-    - obra/superpowers/skills/receiving-code-review
-    - obra/superpowers/skills/requesting-code-review
-    - obra/superpowers/skills/subagent-driven-development
-    - obra/superpowers/skills/systematic-debugging
-    - obra/superpowers/skills/test-driven-development
-    - obra/superpowers/skills/using-git-worktrees
-    - obra/superpowers/skills/using-superpowers
-    - obra/superpowers/skills/verification-before-completion
-    - obra/superpowers/skills/writing-plans
-    - obra/superpowers/skills/writing-skills
+    - git: obra/superpowers
+      path: skills/brainstorming
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/dispatching-parallel-agents
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/executing-plans
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/finishing-a-development-branch
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/receiving-code-review
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/requesting-code-review
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/subagent-driven-development
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/systematic-debugging
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/test-driven-development
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/using-git-worktrees
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/using-superpowers
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/verification-before-completion
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/writing-plans
+      targets: [claude]
+    - git: obra/superpowers
+      path: skills/writing-skills
+      targets: [claude]
     # mattpocock/skills: grill-me is the explicit user entry point and delegates
     # the interview behavior to grilling, so both focused subpaths are required.
-    - mattpocock/skills/skills/productivity/grill-me
-    - mattpocock/skills/skills/productivity/grilling
-    - mattpocock/skills/skills/engineering/wayfinder
+    # implement also references tdd and code-review, so keep those three paths
+    # together with the explicitly selected Codex workflow skills.
+    - git: mattpocock/skills
+      path: skills/productivity/grill-me
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/productivity/grilling
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/wayfinder
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/implement
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/tdd
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/code-review
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/prototype
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/wizard
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/productivity/handoff
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/productivity/to-questionnaire
+      targets: [codex]
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
     # not APM. APM only places sources; it does not register the plugin with
     # Claude Code, so APM-only management leaves cman non-functional.
@@ -76,14 +135,10 @@ dependencies:
     # 別途 `curl -fsSL https://ax.yusuke.run/install | sh` が必要（apm は SKILL.md のみ配布）。
     - yusukebe/ax/skills/ax
     # sorah/config is a monorepo-style marketplace; pin the specific plugin paths.
-    - sorah/config/claude/marketplace/plugins/sorah-spec
+    # sorah-spec is retired; its rails/ruby/spec-conventions skills and commands
+    # are intentionally no longer deployed.
     - git: sorah/config/claude/marketplace/plugins/sorah-guides
-      # rails と ruby はここに置かない。sorah-spec も同名のスキルを配備しており、
-      # 両方を指定すると apm が毎回「Skill 'rails' replaced -- previously from
-      # another package」を出して互いに上書きする（last installed wins のため、
-      # どちらの内容が残るかがインストール順に依存する）。sorah-spec 側は
-      # /review・/implement・/validate の主力なので外せない。よって rails/ruby は
-      # sorah-spec 一本に寄せる。スキル自体は消えない。
+      # rails と ruby はこのグローバルセットに含めない。
       skills:
         - coding
         - commit-style
