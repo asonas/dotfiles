@@ -281,102 +281,6 @@ test_posix_keeps_project_skills_when_apm_install_fails() {
     unset test_bin
 }
 
-test_windows_copies_global_agents_file() {
-    assert_line_count 1 '^\$CodexDir = Join-Path \$HomeDir '\''.codex'\''$' install.ps1
-    assert_line_count 1 '^    Copy-Item -LiteralPath \$source -Destination \$target -Force$' install.ps1
-    assert_line_count 1 '^        Write-Warning "\$source not found; skipping Codex global guidance\."$' install.ps1
-    assert_line_count 1 '^Copy-CodexGlobalAgents -RepoRoot \$RepoRoot -CodexDir \$CodexDir$' install.ps1
-
-    if grep -Eq '^New-DotLink .*AGENTS\.md' install.ps1; then
-        echo 'expected Windows Codex AGENTS.md distribution not to use New-DotLink' >&2
-        return 1
-    fi
-}
-
-test_windows_rejects_directory_global_agents_target() {
-    copy_function="$test_tmp_root/Copy-CodexGlobalAgents.ps1"
-    sed -n '/^function Copy-CodexGlobalAgents {/,/^}/p' install.ps1 > "$copy_function"
-
-    assert_line_count 1 '^    \$existing = Get-Item -LiteralPath \$target -Force -ErrorAction SilentlyContinue$' "$copy_function"
-    assert_line_count 1 '^        if \(\$existing\.LinkType\) \{ \$existing\.Delete\(\) \}$' "$copy_function"
-    assert_line_count 1 '^        elseif \(\$existing\.PSIsContainer\) \{$' "$copy_function"
-    assert_line_count 1 '^            throw "\$target is a directory; cannot install Codex global guidance\."$' "$copy_function"
-}
-
-test_windows_apm_targets_include_codex() {
-    assert_line_count 1 '^[[:space:]]+& apm update --yes --target claude,cursor,codex$' install.ps1
-    assert_line_count 1 '^[[:space:]]+& apm install -g --target claude,cursor,codex$' install.ps1
-}
-
-test_windows_compiles_before_copying() {
-    compile_line=$(grep -n '^        & apm compile$' install.ps1 | cut -d: -f1)
-    copy_line=$(grep -n '^Copy-CodexGlobalAgents -RepoRoot \$RepoRoot -CodexDir \$CodexDir$' install.ps1 | cut -d: -f1)
-
-    if [ -z "$compile_line" ] || [ -z "$copy_line" ] || [ "$compile_line" -ge "$copy_line" ]; then
-        echo 'expected Windows apm compile to run before Codex AGENTS.md copy' >&2
-        return 1
-    fi
-}
-
-test_windows_removes_only_duplicated_project_skills_after_compiling() {
-    compile_line=$(grep -n '^        & apm compile$' install.ps1 | cut -d: -f1)
-    cleanup_line=$(grep -n 'Remove-Item -LiteralPath \$projectSkill\.FullName -Recurse -Force' install.ps1 | cut -d: -f1)
-
-    if [ -z "$cleanup_line" ] || [ "$cleanup_line" -le "$compile_line" ]; then
-        echo 'expected Windows installer to remove duplicated project Skills after compiling' >&2
-        return 1
-    fi
-}
-
-test_windows_stops_when_compile_fails() {
-    compile_line=$(grep -n '^        & apm compile$' install.ps1 | cut -d: -f1)
-    exit_check_line=$(grep -n '^        if (\$LASTEXITCODE -ne 0) {$' install.ps1 | cut -d: -f1)
-
-    if [ -z "$compile_line" ] || [ -z "$exit_check_line" ] || [ "$exit_check_line" -ne $((compile_line + 1)) ]; then
-        echo 'expected Windows apm compile failure to stop distribution immediately' >&2
-        return 1
-    fi
-
-    assert_line_count 1 '^            throw "apm compile failed with exit code \$LASTEXITCODE; refusing to distribute stale AGENTS\.md\."$' install.ps1
-}
-
-test_windows_warns_and_continues_after_apm_dependency_failures() {
-    apm_function="$test_tmp_root/Invoke-ApmDistribution.ps1"
-    sed -n '/^function Invoke-ApmDistribution {/,/^}/p' install.ps1 > "$apm_function"
-
-    assert_line_count 1 '^    \$nativeErrorPreference = Get-Variable -Name PSNativeCommandUseErrorActionPreference -ErrorAction SilentlyContinue$' "$apm_function"
-    assert_line_count 1 '^        \$PSNativeCommandUseErrorActionPreference = \$false$' "$apm_function"
-    assert_line_count 1 '^[[:space:]]+\$updateExitCode = \$LASTEXITCODE$' "$apm_function"
-    assert_line_count 1 '^[[:space:]]+Write-Warning "apm update failed with exit code \$updateExitCode; continuing\."$' "$apm_function"
-    assert_line_count 1 '^[[:space:]]+\$installExitCode = \$LASTEXITCODE$' "$apm_function"
-    assert_line_count 1 '^[[:space:]]+Write-Warning "apm install failed with exit code \$installExitCode; continuing\."$' "$apm_function"
-    assert_line_count 1 '^            \$PSNativeCommandUseErrorActionPreference = \$nativeErrorPreference\.Value$' "$apm_function"
-    assert_line_count 1 '^            Remove-Variable -Name PSNativeCommandUseErrorActionPreference -Scope Local `$' "$apm_function"
-    assert_line_count 1 '^    Test-ApmFailuresContinueAndRestoreNativePreference -InitialState false$' test/codex_global_agents_distribution_windows_test.ps1
-    assert_line_count 1 '^    Test-ApmFailuresContinueAndRestoreNativePreference -InitialState true$' test/codex_global_agents_distribution_windows_test.ps1
-    assert_line_count 1 '^    Test-ApmFailuresContinueAndRestoreNativePreference -InitialState undefined$' test/codex_global_agents_distribution_windows_test.ps1
-}
-
-test_windows_execution_suite_is_available() {
-    windows_test=test/codex_global_agents_distribution_windows_test.ps1
-
-    if [ ! -f "$windows_test" ]; then
-        echo "expected Windows execution test suite at $windows_test" >&2
-        return 1
-    fi
-    assert_line_count 1 '^    Test-CopiesToNewTarget$' "$windows_test"
-    assert_line_count 1 '^    Test-OverwritesExistingFile$' "$windows_test"
-    assert_line_count 1 '^    Test-ReplacesFileSymlinkWithoutChangingLinkTarget$' "$windows_test"
-    assert_line_count 1 '^    Test-ReplacesDanglingFileSymlink$' "$windows_test"
-    assert_line_count 1 '^    Test-ReplacesDirectorySymlinkWithoutChangingLinkTarget$' "$windows_test"
-    assert_line_count 1 '^    Test-RejectsRealDirectory$' "$windows_test"
-    assert_line_count 1 '^    Test-SkipsMissingSource$' "$windows_test"
-
-    if command -v pwsh >/dev/null 2>&1; then
-        pwsh -NoProfile -File "$windows_test"
-    fi
-}
-
 test_posix_links_global_agents_file
 test_posix_installs_global_agents_link
 test_posix_skips_missing_global_agents_source
@@ -392,11 +296,7 @@ test_posix_removes_only_duplicated_project_skills
 test_posix_keeps_project_skill_when_contents_differ
 test_posix_keeps_project_skill_when_global_copy_is_unusable
 test_posix_keeps_project_skills_when_apm_install_fails
-test_windows_copies_global_agents_file
-test_windows_rejects_directory_global_agents_target
-test_windows_apm_targets_include_codex
-test_windows_compiles_before_copying
-test_windows_removes_only_duplicated_project_skills_after_compiling
-test_windows_stops_when_compile_fails
-test_windows_warns_and_continues_after_apm_dependency_failures
-test_windows_execution_suite_is_available
+
+if command -v pwsh >/dev/null 2>&1; then
+    pwsh -NoProfile -File test/codex_global_agents_distribution_windows_test.ps1
+fi
