@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+
+repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+source_dir="$repo_root/chezmoi"
+
+if ! command -v chezmoi >/dev/null 2>&1; then
+    echo "error: chezmoi is required to apply the migrated dotfiles source." >&2
+    exit 127
+fi
+
+exec chezmoi --source "$source_dir" apply "$@"

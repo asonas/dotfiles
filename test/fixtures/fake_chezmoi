@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+
+printf '%s\n' "$@" > "$CHEZMOI_ARGS_FILE"

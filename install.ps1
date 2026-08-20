@@ -21,6 +21,10 @@
        APM section of install.sh. See Invoke-ApmDistribution below. Skip with
        -SkipApm, or it is skipped automatically when 'apm' is not on PATH.
 
+    4. Applies the migrated chezmoi source state when chezmoi is available.
+       The migration starts with the Starship configuration and is intentionally
+       independent of the APM step.
+
     It intentionally SKIPS vim / emacs / zsh / tmux and the macOS-only configs
     (yabai, skhd, karabiner, nvim) and the zsh completion machinery, none of
     which apply on Windows.
@@ -319,6 +323,24 @@ function Copy-CodexGlobalAgents {
     Write-Host "  copied    $target"
 }
 
+# --- Apply the migrated chezmoi source state. ------------------------------
+function Invoke-ChezmoiDistribution {
+    param([Parameter(Mandatory)][string]$RepoRoot)
+
+    $chezmoi = Get-Command chezmoi -ErrorAction SilentlyContinue
+    if (-not $chezmoi) {
+        Write-Warning 'chezmoi not found on PATH; skipping migrated dotfiles.'
+        return
+    }
+
+    $source = Join-Path $RepoRoot 'chezmoi'
+    Write-Host "==> chezmoi apply (migrated dotfiles)"
+    & $chezmoi.Source --source $source apply
+    if ($LASTEXITCODE -ne 0) {
+        throw "chezmoi apply failed with exit code $LASTEXITCODE."
+    }
+}
+
 # --- Run -------------------------------------------------------------------
 
 $CanSymlink = Test-SymlinkCapability
@@ -376,6 +398,8 @@ if ($LinkSettings) {
 } elseif ($SkipApm) {
     Write-Host "==> Skipping .claude/settings.json (macOS-tuned; -LinkSettings to link it)"
 }
+
+Invoke-ChezmoiDistribution -RepoRoot $RepoRoot
 
 if ($SkipApm) {
     Write-Host "==> Skipping APM distribution (-SkipApm)"
