@@ -32,3 +32,6 @@ fi
 [ -f "$repo_root/chezmoi/dot_config/peco/config.json" ]
 [ -L "$repo_root/.config/peco" ]
 [ "$(readlink "$repo_root/.config/peco")" = '../chezmoi/dot_config/peco' ]
+[ -f "$repo_root/chezmoi/dot_psqlrc" ]
+[ -L "$repo_root/.psqlrc" ]
+[ "$(readlink "$repo_root/.psqlrc")" = 'chezmoi/dot_psqlrc' ]
