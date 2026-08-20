@@ -1,0 +1,57 @@
+#!/bin/bash
+set -e
+
+repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+cd "$repo_root"
+
+[ ! -d "$HOME/bin" ] && mkdir "$HOME/bin"
+ln -sf "$PWD/bin/check_sip.sh" "$HOME/bin/check_sip.sh"
+ln -sf "$PWD/bin/setup_workspace" "$HOME/bin/setup_workspace"
+ln -sf "$PWD/bin/herdr-focus-attention" "$HOME/bin/herdr-focus-attention"
+ln -sf "$PWD/bin/hw" "$HOME/bin/hw"
+ln -sf "$PWD/bin/herdr-fork-claude-session" "$HOME/bin/herdr-fork-claude-session"
+ln -sf "$PWD/bin/herdr-fork-codex-session" "$HOME/bin/herdr-fork-codex-session"
+
+case "$OSTYPE" in
+  darwin*)
+    # macOS
+    GIT_PATH=$(brew --prefix git)
+    ln -sf "$GIT_PATH/share/git-core/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
+    ;;
+  linux*)
+    # Linux
+    GIT_PATH=$(dirname "$(which git)")
+    ln -sf "$GIT_PATH/../share/git/contrib/diff-highlight/diff-highlight" "$HOME/bin/diff-highlight"
+    ;;
+  *)
+    echo "Unsupported OS: $OSTYPE"
+    ;;
+esac
+
+# Merge dotfiles-managed Codex defaults without replacing runtime state such as
+# project trust and hook hashes that Codex writes to the same file.
+mkdir -p "$HOME/.codex"
+"$PWD/bin/install_codex_config" \
+    "$PWD/.config/codex/config.toml" \
+    "$HOME/.codex/config.toml"
+
+# herdr: link the OS-appropriate config into place. herdr reads a single
+# ~/.config/herdr/config.toml (no include/merge support), so we keep one
+# self-contained file per platform and symlink the right one. Only config.toml
+# is linked; herdr's runtime files (session.json, logs, sockets, plugins) in the
+# same directory are left untouched.
+mkdir -p "$HOME/.config/herdr"
+case "$OSTYPE" in
+  darwin*)
+    ln -sf "$PWD/.config/herdr/config.macos.toml" "$HOME/.config/herdr/config.toml"
+    ;;
+  linux*)
+    ln -sf "$PWD/.config/herdr/config.linux.toml" "$HOME/.config/herdr/config.toml"
+    ;;
+esac
+
+# Herdr's installer owns the reporting script. Keep the repository copy linked so
+# an integration upgrade updates the tracked script, then normalize the settings
+# it writes after APM has finished below.
+mkdir -p "$HOME/.claude/hooks"
+ln -sf "$PWD/.claude/hooks/herdr-agent-state.sh" "$HOME/.claude/hooks/herdr-agent-state.sh"
