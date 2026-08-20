@@ -1,0 +1,24 @@
+#!/bin/sh
+set -eu
+
+# Remove real paths that APM deployed before a dependency's target filter was
+# narrowed or before the dependency was removed from apm.yml. Symlinks are
+# preserved because install.sh may have created them for locally-maintained
+# skills, and another cleanup pass owns those links.
+#
+# Usage: prune_stale_apm_paths <target-dir> <path-name>...
+
+target_dir="$1"
+shift
+
+[ -d "$target_dir" ] || exit 0
+
+for path_name in "$@"
+do
+    stale_path="$target_dir/$path_name"
+    [ -L "$stale_path" ] && continue
+    [ -e "$stale_path" ] || continue
+
+    echo "==> removing stale APM path $stale_path"
+    command rm -rf "$stale_path"
+done
