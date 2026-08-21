@@ -99,32 +99,6 @@ function display_branches_with_pr() {
   done
 }
 
-function gcloud_ssh() {
-  selected_project=$(gcloud projects list --format="value(projectId)" | peco)
-  if [ -z "$selected_project" ]; then
-    return 1
-  fi
-
-  selected_service=$(gcloud app services list --project="$selected_project" --format="value(id)" | peco)
-  if [ -z "$selected_service" ]; then
-    return 1
-  fi
-
-  selected_instance=$(gcloud app instances list --service="$selected_service" --project="$selected_project" --format="value(id)" | peco)
-  if [ -z "$selected_instance" ]; then
-    return 1
-  fi
-
-  latest_version=$(gcloud app versions list --service="$selected_service" --project="$selected_project" --sort-by="~version" --limit=1 --format="value(id)")
-  if [ -z "$latest_version" ]; then
-    return 1
-  fi
-  echo "running version: $latest_version"
-
-  gcloud app instances ssh "$selected_instance" --service "$selected_service" --version "$latest_version" --project "$selected_project"
-}
-
-
 function peco-history-selection() {
     BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
     CURSOR=$#BUFFER
@@ -265,9 +239,6 @@ zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin \
 # ps コマンドのプロセス名補完
 zstyle ':completion:*:processes' command 'ps x -o pid,s,args'
 
-# gitサブコマンド補完 (git ai-commit)
-zstyle ':completion:*:*:git:*' user-commands ai-commit:'generate commit message using AI'
-
 # git
 a() { git add $*; git status -s }
 
@@ -311,20 +282,6 @@ setopt extended_glob
 
 # ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
 bindkey '^R' history-incremental-pattern-search-backward
-
-# C で標準出力をクリップボードにコピーする
-# mollifier delta blog : http://mollifier.hatenablog.com/entry/20100317/p1
-if which pbcopy >/dev/null 2>&1 ; then
-    # Mac
-    alias -g C='| pbcopy'
-elif which xsel >/dev/null 2>&1 ; then
-    # Linux
-    alias -g C='| xsel --input --clipboard'
-elif which putclip >/dev/null 2>&1 ; then
-    # Cygwin
-    alias -g C='| putclip'
-fi
-
 
 ########################################
 # OS 別の設定
@@ -392,21 +349,6 @@ source $HOME/.cargo/env
 source ~/.zsh.d/personal
 
 
-# heroku autocomplete setup - 遅延読み込み
-_setup_heroku() {
-  if [[ -z "$_HEROKU_SETUP" ]] && [[ -f /Users/asonas/Library/Caches/heroku/autocomplete/zsh_setup ]]; then
-    source /Users/asonas/Library/Caches/heroku/autocomplete/zsh_setup
-    export _HEROKU_SETUP=1
-  fi
-}
-
-# herokuコマンドが実行される時に初期化
-heroku() {
-  _setup_heroku
-  command heroku "$@"
-}
-
-
 # starshipの初期化（プロンプトなので即座に必要）
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
@@ -415,18 +357,6 @@ fi
 export WASMTIME_HOME="$HOME/.wasmtime"
 
 export PATH="$WASMTIME_HOME/bin:$PATH"
-
-function switch-aws-profile() {
-    local profiles=$(aws configure list-profiles)
-    local profile=$(echo "$profiles" | fzf --prompt="Select AWS Profile: ")
-
-    if [ -n "$profile" ]; then
-        export AWS_PROFILE="$profile"
-        echo "Switched to AWS profile: $AWS_PROFILE"
-    else
-        echo "No profile selected."
-    fi
-}
 
 # trusted_config_paths は global config でのみ有効。dotfiles 内のシンボリックリンク先
 # (ghq 配下) は non-global 扱いされ無視されるため、環境変数で渡す
@@ -449,32 +379,12 @@ dart() {
 
 #zprof
 
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
-
 # bun completions
 [ -s "/Users/asonas/.bun/_bun" ] && source "/Users/asonas/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
-# hunk: always wrap long diff lines for display subcommands.
-# Inserts --wrap right after the subcommand so pathspecs after `--` stay intact.
-# session / daemon / skill pass through untouched.
-hunk() {
-  case "$1" in
-    diff|show|patch|pager|difftool)
-      local sub="$1"; shift
-      command hunk "$sub" --wrap "$@"
-      ;;
-    *)
-      command hunk "$@"
-      ;;
-  esac
-}
-
-# Added by Antigravity
-export PATH="/Users/asonas/.antigravity/antigravity/bin:$PATH"
 
 # herdr: 新規 pane を開いたとき（=ログインシェル起動時）に入力ソースを英数(ABC)へ切り替える。
 # herdr に on-create hook は無いが、pane ごとに login shell が起動し HERDR_ENV=1 が入るので

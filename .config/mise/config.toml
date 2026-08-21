@@ -1,5 +1,4 @@
 [tools]
-"github:takai/git-ai-commit" = "latest"
 "github:cli/cli" = "latest"
 node = "lts"
 ruby = "latest"
