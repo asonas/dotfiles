@@ -2,6 +2,9 @@ sandbox_mode = "workspace-write"
 approval_policy = "on-request"
 model_verbosity = "low"
 
+[sandbox_workspace_write]
+network_access = true
+
 [shell_environment_policy]
 experimental_use_profile = true
 

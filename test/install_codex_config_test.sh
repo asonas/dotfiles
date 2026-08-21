@@ -138,6 +138,15 @@ test_creates_missing_user_config() {
     fi
 }
 
+test_deploys_workspace_network_access() {
+    config="$test_root/network-access.toml"
+
+    "$installer" "$managed_config" "$config"
+
+    assert_contains '[sandbox_workspace_write]' "$config"
+    assert_contains 'network_access = true' "$config"
+}
+
 test_install_script_deploys_managed_config() {
     install_script="$repo_root/install.sh"
 
@@ -161,6 +170,7 @@ test_replaces_managed_mcp_server_section
 test_preserves_other_tui_settings
 test_is_idempotent
 test_creates_missing_user_config
+test_deploys_workspace_network_access
 test_install_script_deploys_managed_config
 test_managed_config_shows_usage_in_status_line
 test_managed_config_uses_low_model_verbosity
