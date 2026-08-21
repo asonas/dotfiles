@@ -14,3 +14,7 @@ status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "
 [mcp_servers.coolify]
 command = "/opt/homebrew/bin/envchain"
 args = ["coolify", "node", "/Users/asonas/ghq/github.com/asonas/mcp-coolify/build/index.js"]
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["--yes", "@playwright/mcp@latest"]
