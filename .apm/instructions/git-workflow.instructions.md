@@ -10,3 +10,12 @@ description: Git workflow rules (worktree-first development, safe path handling)
 - 詳細は `/using-git-worktrees` スキルを参照
 - Never use `cd /path && git ...`. Use `git -C /path ...` instead to avoid bare repository attack warnings
 - カレントディレクトリがworktree内であれば、絶対パスで `cd` せずそのままコマンドを実行すること。`cd /absolute/path/to/worktree && mise run test:backend` のような冗長なコマンドは禁止。単に `mise run test:backend` と実行すればよい
+
+## Linear Integration
+
+- Do not create merge commits in this repository.
+- Immediately before integration, rebase the worktree branch onto the current `main` branch with `git rebase main`.
+- Resolve rebase conflicts on the worktree branch, then run the relevant focused verification again before integration.
+- From `main`, integrate a rebased branch only with `git merge --ff-only <branch>`.
+- If fast-forward integration fails, stop and repair the branch history. Do not use a regular merge, `--no-ff`, or another workaround that creates a merge commit.
+- Confirm that `main` is clean and has not moved unexpectedly before the fast-forward integration.
