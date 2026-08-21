@@ -51,6 +51,16 @@ assert_posix_agents_link() {
     fi
 }
 
+assert_posix_mdroll_in_herdr_link() {
+    expected="$test_repo/bin/mdroll-in-herdr"
+    actual=$(readlink "$test_home/bin/mdroll-in-herdr")
+
+    if [ "$actual" != "$expected" ]; then
+        echo "expected mdroll-in-herdr link to target $expected, got $actual" >&2
+        return 1
+    fi
+}
+
 test_posix_installs_global_agents_link() {
     create_posix_installer_fixture new-link
     printf 'generated guidance\n' > "$test_repo/AGENTS.md"
@@ -58,6 +68,7 @@ test_posix_installs_global_agents_link() {
     run_posix_installer_fixture >/dev/null
 
     assert_posix_agents_link
+    assert_posix_mdroll_in_herdr_link
 }
 
 test_posix_skips_missing_global_agents_source() {

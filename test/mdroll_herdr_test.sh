@@ -74,6 +74,28 @@ expected_pane="pane run w-test:p-split exec $tmp_dir/bin/mdroll-real README.md"
 [ "$(sed -n '3p' "$tmp_dir/single-pane-herdr-call.log")" = "$expected_pane" ]
 [ "$(wc -l < "$tmp_dir/single-pane-herdr-call.log")" -eq 3 ]
 
+if HERDR_ENV=0 HERDR_WORKSPACE_ID= \
+    "$repo_root/bin/mdroll-in-herdr" README.md >/dev/null 2>&1; then
+    echo "expected mdroll-in-herdr to refuse non-Herdr environments" >&2
+    exit 1
+fi
+
+HERDR_ENV=1 \
+HERDR_WORKSPACE_ID=w-test \
+HERDR_TAB_ID=w-test:t-test \
+MISE_MDROLL_BIN="$tmp_dir/bin/mdroll-real" \
+MISE_MDROLL_EXEC_LOG="$tmp_dir/mdroll-exec.log" \
+PATH="$tmp_dir/bin:$PATH" \
+    HERDR_CALL_LOG="$tmp_dir/direct-command-herdr-call.log" \
+    HERDR_TAB_LIST_RESPONSE='{"result":{"tabs":[{"tab_id":"w-test:t-test","pane_count":1}]}}' \
+    HERDR_PANE_SPLIT_RESPONSE='{"result":{"pane":{"pane_id":"w-test:p-split"}}}' \
+    "$repo_root/bin/mdroll-in-herdr" README.md
+
+[ "$(sed -n '1p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_tab_list" ]
+[ "$(sed -n '2p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_split" ]
+[ "$(sed -n '3p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_pane" ]
+[ "$(wc -l < "$tmp_dir/direct-command-herdr-call.log")" -eq 3 ]
+
 HERDR_ENV=1 \
 HERDR_WORKSPACE_ID=w-test \
 HERDR_TAB_ID=w-test:t-test \

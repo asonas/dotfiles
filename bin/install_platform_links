@@ -11,6 +11,7 @@ link_if_safe="$PWD/bin/link_if_safe"
 "$link_if_safe" "$PWD/bin/hw" "$HOME/bin/hw"
 "$link_if_safe" "$PWD/bin/herdr-fork-claude-session" "$HOME/bin/herdr-fork-claude-session"
 "$link_if_safe" "$PWD/bin/herdr-fork-codex-session" "$HOME/bin/herdr-fork-codex-session"
+"$link_if_safe" "$PWD/bin/mdroll-in-herdr" "$HOME/bin/mdroll-in-herdr"
 
 case "$OSTYPE" in
   darwin*)

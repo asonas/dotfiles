@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "${HERDR_ENV:-}" != "1" || -z "${HERDR_WORKSPACE_ID:-}" ]]; then
+    echo 'error: mdroll-in-herdr must be run inside a Herdr-managed pane.' >&2
+    exit 1
+fi
+
+if [[ "$#" -eq 0 ]]; then
+    echo 'usage: mdroll-in-herdr <markdown-file> [mdroll-options...]' >&2
+    exit 2
+fi
+
+for command_name in herdr jq mise; do
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+        echo "error: mdroll-in-herdr requires '$command_name' on PATH." >&2
+        exit 1
+    fi
+done
+
+mdroll_bin=$(command mise which mdroll)
+if [[ -z "$mdroll_bin" || ! -x "$mdroll_bin" ]]; then
+    echo 'error: unable to resolve the mdroll executable through mise.' >&2
+    exit 1
+fi
+
+tab_id="${HERDR_TAB_ID:-}"
+if [[ -z "$tab_id" ]]; then
+    tab_id=$(herdr pane current --current | jq -r '.result.pane.tab_id // empty')
+fi
+
+if [[ -z "$tab_id" ]]; then
+    echo 'error: unable to determine the current Herdr tab.' >&2
+    exit 1
+fi
+
+pane_count=$(herdr tab list --workspace "$HERDR_WORKSPACE_ID" |
+    jq -r --arg tab_id "$tab_id" \
+        '[.result.tabs[] | select(.tab_id == $tab_id) | .pane_count] | first // 0')
+
+if [[ "$pane_count" == "0" ]]; then
+    echo 'error: unable to determine the current Herdr tab pane count.' >&2
+    exit 1
+fi
+
+if [[ "$pane_count" == "1" ]]; then
+    pane_id=$(herdr pane split \
+        --current \
+        --direction right \
+        --cwd "$PWD" \
+        --no-focus |
+        jq -r '.result.pane.pane_id')
+else
+    tab_response=$(herdr tab create \
+        --workspace "$HERDR_WORKSPACE_ID" \
+        --cwd "$PWD" \
+        --focus)
+    pane_id=$(printf '%s\n' "$tab_response" | jq -r '.result.root_pane.pane_id')
+fi
+
+if [[ -z "$pane_id" || "$pane_id" == "null" ]]; then
+    echo 'error: failed to create a Herdr pane for mdroll.' >&2
+    exit 1
+fi
+
+command_line=$(printf '%q' "$mdroll_bin")
+for arg in "$@"; do
+    command_line+=" $(printf '%q' "$arg")"
+done
+
+herdr pane run "$pane_id" "exec $command_line"
