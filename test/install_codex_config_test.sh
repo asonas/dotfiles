@@ -71,6 +71,10 @@ test_replaces_managed_mcp_server_section() {
         '[mcp_servers.coolify]' \
         'command = "old-command"' \
         '' \
+        '[mcp_servers.playwright]' \
+        'command = "old-playwright"' \
+        'args = ["old"]' \
+        '' \
         '[projects."/work/project"]' \
         'trust_level = "trusted"' > "$config"
 
@@ -79,6 +83,10 @@ test_replaces_managed_mcp_server_section() {
     assert_line_count 1 '^\[mcp_servers\.coolify\]$' "$config"
     assert_contains 'command = "/opt/homebrew/bin/envchain"' "$config"
     assert_line_count 0 '^command = "old-command"$' "$config"
+    assert_line_count 1 '^\[mcp_servers\.playwright\]$' "$config"
+    assert_contains 'command = "npx"' "$config"
+    assert_contains 'args = ["--yes", "@playwright/mcp@latest"]' "$config"
+    assert_line_count 0 '^command = "old-playwright"$' "$config"
     assert_contains '[projects."/work/project"]' "$config"
 }
 
@@ -132,6 +140,9 @@ test_creates_missing_user_config() {
 
     assert_line_count 1 '^sandbox_mode = "workspace-write"$' "$config"
     assert_line_count 1 '^approval_policy = "on-request"$' "$config"
+    assert_line_count 1 '^\[mcp_servers\.playwright\]$' "$config"
+    assert_contains 'command = "npx"' "$config"
+    assert_contains 'args = ["--yes", "@playwright/mcp@latest"]' "$config"
     if [ "$(file_mode "$config")" != "600" ]; then
         echo "expected $config to have mode 600" >&2
         return 1
