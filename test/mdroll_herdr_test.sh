@@ -92,7 +92,8 @@ PATH="$tmp_dir/bin:$PATH" \
     "$repo_root/bin/mdroll-in-herdr" README.md
 
 [ "$(sed -n '1p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_tab_list" ]
-[ "$(sed -n '2p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_split" ]
+expected_direct_split="pane split --current --direction right --cwd $repo_root --no-focus"
+[ "$(sed -n '2p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_direct_split" ]
 [ "$(sed -n '3p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_pane" ]
 [ "$(wc -l < "$tmp_dir/direct-command-herdr-call.log")" -eq 3 ]
 
