@@ -433,60 +433,6 @@ function switch-aws-profile() {
 export MISE_TRUSTED_CONFIG_PATHS="$HOME/ghq/github.com/ivry-inc:$HOME/ghq/github.com/asonas"
 eval "$(mise activate zsh)"
 
-# Herdr 内では、現在のtabにpaneが1つだけなら右にpaneを追加し、
-# paneが2つ以上なら専用tabでMarkdownを表示する。実体の絶対パスを使って
-# 新しいpaneのシェルでこのラッパーが再び呼ばれることを防ぐ。
-mdroll() {
-  local mdroll_bin
-  mdroll_bin=$(command mise which mdroll)
-
-  if [[ "${HERDR_ENV:-}" != "1" || -z "${HERDR_WORKSPACE_ID:-}" ]]; then
-    command "$mdroll_bin" "$@"
-    return
-  fi
-
-  local tab_response pane_id command_line arg pane_count tab_id
-  tab_id="${HERDR_TAB_ID:-}"
-  if [[ -z "$tab_id" ]]; then
-    tab_id=$(herdr pane current --current | jq -r '.result.pane.tab_id // empty')
-  fi
-
-  pane_count=$(herdr tab list --workspace "$HERDR_WORKSPACE_ID" |
-    jq -r --arg tab_id "$tab_id" \
-      '[.result.tabs[] | select(.tab_id == $tab_id) | .pane_count] | first // 0')
-
-  if [[ -z "$pane_count" || "$pane_count" == "0" ]]; then
-    print -u2 'mdroll: failed to determine current tab pane count'
-    return 1
-  fi
-
-  if [[ "$pane_count" == "1" ]]; then
-    pane_id=$(herdr pane split \
-      --current \
-      --direction right \
-      --cwd "$PWD" \
-      --no-focus |
-      jq -r '.result.pane.pane_id')
-  else
-    tab_response=$(herdr tab create \
-      --workspace "$HERDR_WORKSPACE_ID" \
-      --cwd "$PWD" \
-      --focus)
-    pane_id=$(printf '%s\n' "$tab_response" | jq -r '.result.root_pane.pane_id')
-  fi
-
-  if [[ -z "$pane_id" || "$pane_id" == "null" ]]; then
-    print -u2 'mdroll: failed to create Herdr pane'
-    return 1
-  fi
-
-  command_line=$(printf '%q' "$mdroll_bin")
-  for arg in "$@"; do
-    command_line+=" $(printf '%q' "$arg")"
-  done
-  herdr pane run "$pane_id" "exec $command_line"
-}
-
 # Dart補完の遅延読み込み
 _setup_dart_completion() {
   if [[ -z "$_DART_COMPLETION_SETUP" ]] && [[ -f /Users/asonas/.dart-cli-completion/zsh-config.zsh ]]; then

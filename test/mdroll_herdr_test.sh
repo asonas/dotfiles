@@ -5,7 +5,7 @@ repo_root=$(cd "$(dirname "$0")/.." && pwd)
 tmp_dir=$(mktemp -d)
 trap 'command rm -rf "$tmp_dir"' EXIT
 
-mkdir -p "$tmp_dir/bin" "$tmp_dir/work"
+mkdir -p "$tmp_dir/bin"
 
 printf '%s\n' \
     '#!/bin/sh' \
@@ -34,45 +34,7 @@ printf '%s\n' \
     'printf "%s\\n" "$*" > "$MISE_MDROLL_EXEC_LOG"' > "$tmp_dir/bin/mdroll-real"
 chmod +x "$tmp_dir/bin/mdroll-real"
 
-printf '%s\n' \
-    '#!/bin/sh' \
-    'exit 0' > "$tmp_dir/bin/mdroll"
-chmod +x "$tmp_dir/bin/mdroll"
-
-function_source=$(awk '
-    /^mdroll\(\) \{/ { found=1 }
-    found { print }
-    found && /^\}$/ { exit }
-' "$repo_root/.zshrc")
-printf '%s\n' "$function_source" > "$tmp_dir/mdroll-function.zsh"
-
-HERDR_ENV=1 \
-HERDR_WORKSPACE_ID=w-test \
-HERDR_TAB_ID=w-test:t-test \
-MISE_MDROLL_BIN="$tmp_dir/bin/mdroll-real" \
-MISE_MDROLL_EXEC_LOG="$tmp_dir/mdroll-exec.log" \
-MDROLL_FUNCTION="$tmp_dir/mdroll-function.zsh" \
-MDROLL_TEST_WORKDIR="$tmp_dir/work" \
-PATH="$tmp_dir/bin:$PATH" \
-    HERDR_CALL_LOG="$tmp_dir/single-pane-herdr-call.log" \
-    HERDR_TAB_LIST_RESPONSE='{"result":{"tabs":[{"tab_id":"w-test:t-test","pane_count":1}]}}' \
-    HERDR_TAB_CREATE_RESPONSE='{"result":{"root_pane":{"pane_id":"w-test:p-tab"}}}' \
-    HERDR_PANE_SPLIT_RESPONSE='{"result":{"pane":{"pane_id":"w-test:p-split"}}}' \
-    /bin/zsh -f -c '
-        source "$MDROLL_FUNCTION"
-        cd "$MDROLL_TEST_WORKDIR"
-        mdroll README.md
-    '
-
 expected_tab_list="tab list --workspace w-test"
-[ "$(sed -n '1p' "$tmp_dir/single-pane-herdr-call.log")" = "$expected_tab_list" ]
-
-expected_split="pane split --current --direction right --cwd $tmp_dir/work --no-focus"
-[ "$(sed -n '2p' "$tmp_dir/single-pane-herdr-call.log")" = "$expected_split" ]
-
-expected_pane="pane run w-test:p-split exec $tmp_dir/bin/mdroll-real README.md"
-[ "$(sed -n '3p' "$tmp_dir/single-pane-herdr-call.log")" = "$expected_pane" ]
-[ "$(wc -l < "$tmp_dir/single-pane-herdr-call.log")" -eq 3 ]
 
 if HERDR_ENV=0 HERDR_WORKSPACE_ID= \
     "$repo_root/bin/mdroll-in-herdr" README.md >/dev/null 2>&1; then
@@ -94,7 +56,8 @@ PATH="$tmp_dir/bin:$PATH" \
 [ "$(sed -n '1p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_tab_list" ]
 expected_direct_split="pane split --current --direction right --cwd $repo_root --no-focus"
 [ "$(sed -n '2p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_direct_split" ]
-[ "$(sed -n '3p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_pane" ]
+expected_split_pane="pane run w-test:p-split exec $tmp_dir/bin/mdroll-real README.md"
+[ "$(sed -n '3p' "$tmp_dir/direct-command-herdr-call.log")" = "$expected_split_pane" ]
 [ "$(wc -l < "$tmp_dir/direct-command-herdr-call.log")" -eq 3 ]
 
 HERDR_ENV=1 \
@@ -102,25 +65,18 @@ HERDR_WORKSPACE_ID=w-test \
 HERDR_TAB_ID=w-test:t-test \
 MISE_MDROLL_BIN="$tmp_dir/bin/mdroll-real" \
 MISE_MDROLL_EXEC_LOG="$tmp_dir/mdroll-exec.log" \
-MDROLL_FUNCTION="$tmp_dir/mdroll-function.zsh" \
-MDROLL_TEST_WORKDIR="$tmp_dir/work" \
-    PATH="$tmp_dir/bin:$PATH" \
+PATH="$tmp_dir/bin:$PATH" \
     HERDR_CALL_LOG="$tmp_dir/multiple-pane-herdr-call.log" \
     HERDR_TAB_LIST_RESPONSE='{"result":{"tabs":[{"tab_id":"w-test:t-test","pane_count":2}]}}' \
     HERDR_TAB_CREATE_RESPONSE='{"result":{"root_pane":{"pane_id":"w-test:p-tab"}}}' \
-    HERDR_PANE_SPLIT_RESPONSE='{"result":{"pane":{"pane_id":"w-test:p-split"}}}' \
-    /bin/zsh -f -c '
-        source "$MDROLL_FUNCTION"
-        cd "$MDROLL_TEST_WORKDIR"
-        mdroll README.md
-    '
+    "$repo_root/bin/mdroll-in-herdr" README.md
 
-expected_tab="tab create --workspace w-test --cwd $tmp_dir/work --focus"
+expected_tab="tab create --workspace w-test --cwd $repo_root --focus"
 [ "$(sed -n '1p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_tab_list" ]
 [ "$(sed -n '2p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_tab" ]
 
-expected_pane="pane run w-test:p-tab exec $tmp_dir/bin/mdroll-real README.md"
-[ "$(sed -n '3p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_pane" ]
+expected_tab_pane="pane run w-test:p-tab exec $tmp_dir/bin/mdroll-real README.md"
+[ "$(sed -n '3p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_tab_pane" ]
 [ "$(wc -l < "$tmp_dir/multiple-pane-herdr-call.log")" -eq 3 ]
 
 [ ! -e "$tmp_dir/mdroll-exec.log" ]
