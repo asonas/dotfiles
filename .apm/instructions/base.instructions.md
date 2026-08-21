@@ -14,7 +14,7 @@ description: Baseline communication, commit, and review rules that apply to ever
 - レビューを依頼された時は以下の点を考慮してください
   - コードの重複を指摘するときに同じファイルに同じ処理の塊が3つ以上出てきた場合に指摘をしてください
 - Obsidian（vault の読み書き、保存先、文章スタイル、vault 組織ルール）は `/obsidian-vault` スキルを参照。Obsidianへの保存はユーザーが明示的に指示した場合のみ行う
-- 道具ごとの規範はスキルを参照: crit のレビュー URL を開くなら `/crit-open`、mairu CLI を実行するなら `/mairu`、PR description を書くなら `/pull-request-description`
+- 道具ごとの規範はスキルを参照: mairu CLI を実行するなら `/mairu`、PR description を書くなら `/pull-request-description`
 - URL の取得には、実行環境で利用可能な Web 取得機能または `ax` CLI を使い、目的に合うものを選ぶ。`curl` や使い捨ての HTML 解析スクリプトは使わない。ページの探索、構造化抽出、未知の Web ページや API の調査には `/ax` スキルを使う。User-Agent を手動指定しない
 - サブエージェントの起動は、ユーザーが明示的に依頼したときか、ユーザーが呼び出したスキルが手順として指示しているときに限る。モデルの判断で自動的に起動しない
 
