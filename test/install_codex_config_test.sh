@@ -151,6 +151,15 @@ test_preserves_existing_symlink() {
     assert_contains '[projects."/work/project"]' "$target"
 }
 
+test_deploys_workspace_network_access() {
+    config="$test_root/network-access.toml"
+
+    "$installer" "$managed_config" "$config"
+
+    assert_contains '[sandbox_workspace_write]' "$config"
+    assert_contains 'network_access = true' "$config"
+}
+
 test_managed_config_shows_usage_in_status_line() {
     assert_contains '[tui]' "$managed_config"
     assert_contains 'status_line = ["model-with-reasoning", "context-remaining", "five-hour-limit", "weekly-limit", "git-branch"]' "$managed_config"
@@ -167,5 +176,6 @@ test_preserves_other_tui_settings
 test_is_idempotent
 test_creates_missing_user_config
 test_preserves_existing_symlink
+test_deploys_workspace_network_access
 test_managed_config_shows_usage_in_status_line
 test_managed_config_uses_low_model_verbosity
