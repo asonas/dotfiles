@@ -377,6 +377,8 @@ dart() {
   command dart "$@"
 }
 
+eval "$(git wt --init zsh)"
+
 #zprof
 
 # bun completions

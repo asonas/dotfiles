@@ -53,3 +53,6 @@ npm-debug.log
 # local .git/info/exclude instead (recreated by install.sh).
 
 **/.claude/settings.local.json
+
+# APM dependencies
+apm_modules/
