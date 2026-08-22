@@ -180,6 +180,9 @@ dependencies:
     - asonas/skills/pr-review
     # legacy-code-improvement と usb-debug も同じ 188 セッションで 0 回。source は
     # asonas/skills 側に残っている。
+    - git: dietrichgebert/ponytail
+      path: skills/ponytail
+      targets: [codex]
   mcp: []
 includes: auto
 scripts: {}
