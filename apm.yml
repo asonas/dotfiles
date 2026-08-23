@@ -183,6 +183,9 @@ dependencies:
     - git: dietrichgebert/ponytail
       path: skills/ponytail
       targets: [codex]
+    - git: kotek-7/dotfiles
+      path: dot_agents/skills/sanitize-artifacts
+      targets: [codex]
   mcp: []
 includes: auto
 scripts: {}
