@@ -22,3 +22,12 @@ Tempest (drum machine)	projects/tempest909/README.md	同上。リリースマネ
 ai-cost-management	daily/2026-07-01.md	「Claude APIキー単位の使用量取得方法を調査。Admin APIのUsage Report（group_by=api_key_id）」が本文に実在。プロジェクト名ではなく作業内容で書かれている
 Workload Identity Federation	notes/2026-06-30-slack-action-items.md	ノートは「idトークンフェデレーション」という日本語表記でこの方式を指し、sorah 日記「id-token-federations」と mcp_oauth/config.ru の共有を記録している。2026-08-03 の lint で本文を読んで確認
 himari	notes/2026-06-30-slack-action-items.md	ノートは himari のデプロイ名である mcp_oauth/config.ru として言及しており、ソフトウェア名そのものは現れない。2026-08-03 の lint で本文を読んで確認
+
+# 2026-08-24 レビュー
+Agentic Coding	bookmarks/1800134171.md	t-wada の講演ページと文字起こしを取得し、AIエージェントを使うコーディングの講演内容であることを確認
+DORA	bookmarks/1800134171.md	講演の文字起こしで DORA の研究と指標への言及を確認
+Ward Cunningham	bookmarks/1800134171.md	技術的負債を扱う講演の出典。ページ本文の主張は別出典でも裏付けられている
+YAGNI	bookmarks/1761023631.md	ponytail の GitHub ページを取得し、不要な実装を避ける YAGNI の方針を確認
+ptyblues	bookmarks/1724729458.md	取得した記事本文で ptyblues の活動と人物紹介を確認
+t-wada	bookmarks/1800134171.md	Speaker Deck の講演者名と講演内容から t-wada の出典であることを確認
+技術的負債	bookmarks/1800134171.md	講演の文字起こしで cognitive debt と technical debt の説明を確認
