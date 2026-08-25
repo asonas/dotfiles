@@ -51,9 +51,11 @@ if [[ "$pane_count" == "1" ]]; then
         --no-focus |
         jq -r '.result.pane.pane_id')
 else
+    tab_label="${1##*/}"
     tab_response=$(herdr tab create \
         --workspace "$HERDR_WORKSPACE_ID" \
         --cwd "$PWD" \
+        --label "$tab_label" \
         --focus)
     pane_id=$(printf '%s\n' "$tab_response" | jq -r '.result.root_pane.pane_id')
 fi

@@ -69,13 +69,13 @@ PATH="$tmp_dir/bin:$PATH" \
     HERDR_CALL_LOG="$tmp_dir/multiple-pane-herdr-call.log" \
     HERDR_TAB_LIST_RESPONSE='{"result":{"tabs":[{"tab_id":"w-test:t-test","pane_count":2}]}}' \
     HERDR_TAB_CREATE_RESPONSE='{"result":{"root_pane":{"pane_id":"w-test:p-tab"}}}' \
-    "$repo_root/bin/mdroll-in-herdr" README.md
+    "$repo_root/bin/mdroll-in-herdr" docs/README.md
 
-expected_tab="tab create --workspace w-test --cwd $repo_root --focus"
+expected_tab="tab create --workspace w-test --cwd $repo_root --label README.md --focus"
 [ "$(sed -n '1p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_tab_list" ]
 [ "$(sed -n '2p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_tab" ]
 
-expected_tab_pane="pane run w-test:p-tab exec $tmp_dir/bin/mdroll-real README.md"
+expected_tab_pane="pane run w-test:p-tab exec $tmp_dir/bin/mdroll-real docs/README.md"
 [ "$(sed -n '3p' "$tmp_dir/multiple-pane-herdr-call.log")" = "$expected_tab_pane" ]
 [ "$(wc -l < "$tmp_dir/multiple-pane-herdr-call.log")" -eq 3 ]
 
