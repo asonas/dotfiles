@@ -78,10 +78,31 @@ dependencies:
     - git: obra/superpowers
       path: skills/writing-skills
       targets: [claude]
-    # mattpocock/skills: grill-me is the explicit user entry point and delegates
-    # the interview behavior to grilling, so both focused subpaths are required.
-    # implement also references tdd and code-review, so keep those three paths
-    # together with the explicitly selected Codex workflow skills.
+    # mattpocock/skills: install every skill published under skills/ for Codex.
+    - git: mattpocock/skills
+      path: skills/engineering/ask-matt
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/codebase-design
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/diagnosing-bugs
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/improve-codebase-architecture
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/research
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/resolving-merge-conflicts
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/setup-matt-pocock-skills
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/triage
+      targets: [codex]
     - git: mattpocock/skills
       path: skills/productivity/grill-me
       targets: [codex]
@@ -89,7 +110,19 @@ dependencies:
       path: skills/productivity/grilling
       targets: [codex]
     - git: mattpocock/skills
+      path: skills/engineering/grill-with-docs
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/domain-modeling
+      targets: [codex]
+    - git: mattpocock/skills
       path: skills/engineering/wayfinder
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/to-spec
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/engineering/to-tickets
       targets: [codex]
     - git: mattpocock/skills
       path: skills/engineering/implement
@@ -107,10 +140,55 @@ dependencies:
       path: skills/engineering/wizard
       targets: [codex]
     - git: mattpocock/skills
+      path: skills/in-progress/claude-handoff
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/in-progress/implement-spec
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/in-progress/loop-me
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/in-progress/retro
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/in-progress/setup-ts-deep-modules
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/in-progress/writing-beats
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/in-progress/writing-fragments
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/in-progress/writing-shape
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/misc/git-guardrails-claude-code
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/misc/migrate-to-shoehorn
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/misc/scaffold-exercises
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/misc/setup-pre-commit
+      targets: [codex]
+    - git: mattpocock/skills
       path: skills/productivity/handoff
       targets: [codex]
     - git: mattpocock/skills
+      path: skills/productivity/teach
+      targets: [codex]
+    - git: mattpocock/skills
       path: skills/productivity/to-questionnaire
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/productivity/wait-what
+      targets: [codex]
+    - git: mattpocock/skills
+      path: skills/productivity/writing-for-agents
       targets: [codex]
     # laiso/cman: manage via Claude Code plugin (`/plugin install cman@cman`),
     # not APM. APM only places sources; it does not register the plugin with
